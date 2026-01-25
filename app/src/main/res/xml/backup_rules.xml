@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Backup rules for Android 11 and below (API 30 and below).
+   Defines what data should be included/excluded from Auto Backup.
+
+   For Ambio, we:
+   - Include DataStore preferences (user settings like volume, last sound, mode)
+   - Include Room database (session history)
+   - Exclude cache files
+-->
+<full-backup-content>
+    <!-- Include user preferences -->
+    <include domain="sharedpref" path="." />
+    <!-- Include DataStore preferences -->
+    <include domain="file" path="datastore/" />
+    <!-- Include Room database -->
+    <include domain="database" path="." />
+    <!-- Note: cache is automatically excluded by Android, no need to specify -->
+</full-backup-content>

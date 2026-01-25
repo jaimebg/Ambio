@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Lint configuration for Ambio app module.
+
+    Suppressed/informational warnings:
+    - ObsoleteSdkInt for mipmap-anydpi-v26: Standard Android folder structure for adaptive icons.
+    - UnusedResources: Some string resources defined for future use or accessibility.
+    - GradleDependency/AndroidGradlePluginVersion: Version updates managed via version catalog.
+    - ExportedService: MediaSessionService must be exported for system media controls.
+    - MonochromeLauncherIcon: App icon designed without monochrome variant (design choice).
+    - UnusedAttribute: enableOnBackInvokedCallback only used on Android 13+, but declared for forward compatibility.
+-->
+<lint>
+    <!-- Suppress ObsoleteSdkInt - standard adaptive icon structure requires v26 qualifier -->
+    <issue id="ObsoleteSdkInt" severity="informational" />
+
+    <!-- Unused resources are acceptable during development -->
+    <issue id="UnusedResources" severity="informational" />
+
+    <!-- Dependency updates are handled through version catalog management -->
+    <issue id="GradleDependency" severity="informational" />
+    <issue id="AndroidGradlePluginVersion" severity="informational" />
+
+    <!-- MediaSessionService must be exported for system media controls integration -->
+    <issue id="ExportedService" severity="informational" />
+
+    <!-- Monochrome launcher icon is optional - current design doesn't require it -->
+    <issue id="MonochromeLauncherIcon" severity="informational" />
+
+    <!-- enableOnBackInvokedCallback is for forward compatibility with Android 13+ -->
+    <issue id="UnusedAttribute" severity="informational" />
+</lint>

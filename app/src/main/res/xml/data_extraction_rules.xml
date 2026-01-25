@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Data extraction rules for Android 12+ (API 31+) cloud backup.
+   Defines what data should be included/excluded from device-to-device transfers
+   and cloud backups.
+
+   For Ambio, we:
+   - Include DataStore preferences (user settings like volume, last sound, mode)
+   - Include Room database (session history)
+   - Exclude cache files
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Include user preferences -->
+        <include domain="sharedpref" path="." />
+        <!-- Include DataStore preferences -->
+        <include domain="file" path="datastore/" />
+        <!-- Include Room database -->
+        <include domain="database" path="." />
+        <!-- Note: cache is automatically excluded by Android -->
+    </cloud-backup>
+    <device-transfer>
+        <!-- Include everything for device-to-device transfer -->
+        <include domain="sharedpref" path="." />
+        <include domain="file" path="datastore/" />
+        <include domain="database" path="." />
+        <!-- Note: cache is automatically excluded by Android -->
+    </device-transfer>
+</data-extraction-rules>
