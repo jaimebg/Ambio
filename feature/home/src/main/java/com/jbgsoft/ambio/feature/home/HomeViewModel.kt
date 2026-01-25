@@ -2,11 +2,13 @@ package com.jbgsoft.ambio.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jbgsoft.ambio.core.common.audio.ChimePlayer
 import com.jbgsoft.ambio.core.common.haptics.HapticManager
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
+import com.jbgsoft.ambio.core.domain.repository.ChimeRepository
 import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
@@ -29,7 +31,9 @@ class HomeViewModel @Inject constructor(
     private val preferencesRepository: PreferencesRepository,
     private val saveSessionUseCase: SaveSessionUseCase,
     private val hapticManager: HapticManager,
-    private val audioServiceConnection: AudioServiceConnection
+    private val audioServiceConnection: AudioServiceConnection,
+    private val chimePlayer: ChimePlayer,
+    private val chimeRepository: ChimeRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -255,10 +259,13 @@ class HomeViewModel @Inject constructor(
 
     private fun onTimerCompleted() {
         val state = _uiState.value
-        hapticManager.timerComplete()
 
         // Stop the ambient sound when timer completes
         audioServiceConnection.stop()
+
+        // Play timer completion chime and haptic feedback
+        chimePlayer.playChime(chimeRepository.getTimerChimeResource())
+        hapticManager.timerComplete()
 
         viewModelScope.launch {
             // Save the completed session
