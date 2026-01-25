@@ -50,4 +50,9 @@ dependencies {
 
     // Coroutines
     implementation(libs.bundles.coroutines)
+
+    // Testing
+    testImplementation(libs.bundles.testing)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }

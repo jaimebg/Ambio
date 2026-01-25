@@ -23,6 +23,14 @@ coroutines = "1.10.1"
 # Java libraries
 javax-inject = "1"
 
+# Testing
+junit = "4.13.2"
+mockk = "1.13.13"
+turbine = "1.2.0"
+truth = "1.4.4"
+androidx-test-core = "1.6.1"
+robolectric = "4.14.1"
+
 [libraries]
 # AndroidX Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -70,6 +78,18 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 # Javax Inject
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
 
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test-core" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -105,4 +125,11 @@ room = [
 coroutines = [
     "kotlinx-coroutines-core",
     "kotlinx-coroutines-android"
+]
+testing = [
+    "junit",
+    "mockk",
+    "turbine",
+    "truth",
+    "kotlinx-coroutines-test"
 ]

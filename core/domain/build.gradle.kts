@@ -37,4 +37,7 @@ dependencies {
 
     // Javax Inject for @Inject annotation
     implementation(libs.javax.inject)
+
+    // Testing
+    testImplementation(libs.bundles.testing)
 }

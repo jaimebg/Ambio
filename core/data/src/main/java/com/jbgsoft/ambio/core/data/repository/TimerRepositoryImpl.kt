@@ -1,9 +1,10 @@
 package com.jbgsoft.ambio.core.data.repository
 
+import com.jbgsoft.ambio.core.common.di.DefaultDispatcher
 import com.jbgsoft.ambio.core.domain.model.TimerState
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -13,14 +14,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Implementation of TimerRepository that manages countdown timer state.
+ *
+ * Uses coroutines for countdown logic with 1-second tick intervals.
+ * The dispatcher can be injected for testing purposes.
+ *
+ * @param dispatcher The coroutine dispatcher to use for timer operations.
+ *                   Uses Dispatchers.Default (via @DefaultDispatcher) in production.
+ */
 @Singleton
-class TimerRepositoryImpl @Inject constructor() : TimerRepository {
+class TimerRepositoryImpl @Inject constructor(
+    @DefaultDispatcher private val dispatcher: CoroutineDispatcher
+) : TimerRepository {
 
     private val _timerState = MutableStateFlow<TimerState>(TimerState.Idle)
     override val timerState: Flow<TimerState> = _timerState.asStateFlow()
 
     private var timerJob: Job? = null
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(dispatcher)
 
     private var totalMs: Long = 0
     private var remainingMs: Long = 0
