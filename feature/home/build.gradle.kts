@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
     implementation(project(":ui"))
+    implementation(project(":media"))
 
     // Compose BOM
     implementation(platform(libs.compose.bom))

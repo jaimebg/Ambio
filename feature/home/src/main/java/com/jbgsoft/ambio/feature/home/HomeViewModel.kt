@@ -11,11 +11,11 @@ import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
+import com.jbgsoft.ambio.media.AudioServiceConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -28,16 +28,42 @@ class HomeViewModel @Inject constructor(
     private val timerRepository: TimerRepository,
     private val preferencesRepository: PreferencesRepository,
     private val saveSessionUseCase: SaveSessionUseCase,
-    private val hapticManager: HapticManager
+    private val hapticManager: HapticManager,
+    private val audioServiceConnection: AudioServiceConnection
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
+        connectAudioService()
         loadInitialData()
         observeTimerState()
         observePreferences()
+        observeAudioServiceState()
+    }
+
+    private fun connectAudioService() {
+        audioServiceConnection.connect()
+    }
+
+    private fun observeAudioServiceState() {
+        audioServiceConnection.isConnected
+            .onEach { isConnected ->
+                _uiState.update { it.copy(isServiceConnected = isConnected) }
+            }
+            .launchIn(viewModelScope)
+
+        audioServiceConnection.isPlaying
+            .onEach { isPlaying ->
+                _uiState.update { it.copy(isPlaying = isPlaying) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        audioServiceConnection.disconnect()
     }
 
     private fun loadInitialData() {
@@ -107,6 +133,35 @@ class HomeViewModel @Inject constructor(
             preferencesRepository.setLastSoundId(sound.id)
         }
         _uiState.update { it.copy(showSoundPicker = false) }
+
+        // If currently playing, switch to the new sound
+        if (_uiState.value.isPlaying) {
+            playSoundAudio(sound)
+        }
+    }
+
+    private fun playSoundAudio(sound: Sound) {
+        val description = when (_uiState.value.mode) {
+            AppMode.TIMER -> {
+                val timerState = _uiState.value.timerState
+                if (timerState is TimerState.Running) {
+                    val minutes = timerState.remainingMs / 60000
+                    val seconds = (timerState.remainingMs % 60000) / 1000
+                    "${minutes}:${seconds.toString().padStart(2, '0')} remaining"
+                } else {
+                    "Focus Timer"
+                }
+            }
+            AppMode.AMBIENT -> "Ambient Mode"
+        }
+        audioServiceConnection.playSound(
+            audioRes = sound.audioRes,
+            name = sound.name,
+            description = description,
+            illustrationRes = sound.illustrationRes
+        )
+        // Apply current volume
+        audioServiceConnection.setVolume(_uiState.value.volume)
     }
 
     private fun selectPreset(preset: TimerPreset) {
@@ -131,6 +186,8 @@ class HomeViewModel @Inject constructor(
     private fun setVolume(volume: Float) {
         val clampedVolume = volume.coerceIn(0f, 1f)
         _uiState.update { it.copy(volume = clampedVolume) }
+        // Apply volume to audio service immediately
+        audioServiceConnection.setVolume(clampedVolume)
         viewModelScope.launch {
             preferencesRepository.setVolume(clampedVolume)
         }
@@ -143,19 +200,27 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when {
                 state.mode == AppMode.AMBIENT -> {
-                    // In ambient mode, just toggle play/pause
-                    _uiState.update { it.copy(isPlaying = !it.isPlaying) }
+                    // In ambient mode, just toggle play/pause for audio
+                    if (state.isPlaying) {
+                        audioServiceConnection.pause()
+                    } else {
+                        state.selectedSound?.let { sound ->
+                            playSoundAudio(sound)
+                        }
+                    }
                 }
                 state.timerState is TimerState.Running -> {
+                    // Pause both timer and audio
                     timerRepository.pauseTimer()
-                    _uiState.update { it.copy(isPlaying = false) }
+                    audioServiceConnection.pause()
                 }
                 state.timerState is TimerState.Paused -> {
+                    // Resume both timer and audio
                     timerRepository.resumeTimer()
-                    _uiState.update { it.copy(isPlaying = true) }
+                    audioServiceConnection.play()
                 }
                 else -> {
-                    // Start timer
+                    // Start timer and play sound
                     val minutes = when (state.selectedPreset) {
                         TimerPreset.FOCUS_25 -> 25
                         TimerPreset.FOCUS_50 -> 50
@@ -163,7 +228,9 @@ class HomeViewModel @Inject constructor(
                     }
                     val durationMs = minutes * 60 * 1000L
                     timerRepository.startTimer(durationMs)
-                    _uiState.update { it.copy(isPlaying = true) }
+                    state.selectedSound?.let { sound ->
+                        playSoundAudio(sound)
+                    }
                 }
             }
         }
@@ -173,7 +240,7 @@ class HomeViewModel @Inject constructor(
         hapticManager.click()
         viewModelScope.launch {
             timerRepository.resetTimer()
-            _uiState.update { it.copy(isPlaying = false) }
+            audioServiceConnection.stop()
         }
     }
 
@@ -189,6 +256,9 @@ class HomeViewModel @Inject constructor(
     private fun onTimerCompleted() {
         val state = _uiState.value
         hapticManager.timerComplete()
+
+        // Stop the ambient sound when timer completes
+        audioServiceConnection.stop()
 
         viewModelScope.launch {
             // Save the completed session
@@ -213,13 +283,5 @@ class HomeViewModel @Inject constructor(
             }
             timerRepository.startBreak(breakMinutes * 60 * 1000L)
         }
-    }
-
-    fun updateServiceConnection(isConnected: Boolean) {
-        _uiState.update { it.copy(isServiceConnected = isConnected) }
-    }
-
-    fun updateIsPlaying(isPlaying: Boolean) {
-        _uiState.update { it.copy(isPlaying = isPlaying) }
     }
 }
