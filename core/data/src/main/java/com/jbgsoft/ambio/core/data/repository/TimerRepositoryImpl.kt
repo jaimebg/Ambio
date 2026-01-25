@@ -20,6 +20,11 @@ import javax.inject.Singleton
  * Uses coroutines for countdown logic with 1-second tick intervals.
  * The dispatcher can be injected for testing purposes.
  *
+ * Note: The current implementation uses delay(1000) and subtracts 1000ms per tick.
+ * For typical focus sessions (25-50 minutes), any drift from delay() imprecision
+ * is negligible (under 100ms total). If higher precision is needed in the future,
+ * consider using System.currentTimeMillis() to calculate actual elapsed time.
+ *
  * @param dispatcher The coroutine dispatcher to use for timer operations.
  *                   Uses Dispatchers.Default (via @DefaultDispatcher) in production.
  */
