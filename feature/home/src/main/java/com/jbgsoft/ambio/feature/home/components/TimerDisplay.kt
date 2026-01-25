@@ -1,5 +1,13 @@
 package com.jbgsoft.ambio.feature.home.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.TimerState
+
+private const val MODE_TRANSITION_DURATION = 300
 
 @Composable
 fun TimerDisplay(
@@ -62,19 +72,52 @@ fun TimerDisplay(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = displayText,
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
+            // Animate display text when switching modes
+            AnimatedContent(
+                targetState = mode to displayText,
+                transitionSpec = {
+                    if (initialState.first != targetState.first) {
+                        // Mode change: scale + fade animation
+                        (fadeIn(tween(MODE_TRANSITION_DURATION)) +
+                            scaleIn(tween(MODE_TRANSITION_DURATION), initialScale = 0.8f))
+                            .togetherWith(
+                                fadeOut(tween(MODE_TRANSITION_DURATION)) +
+                                    scaleOut(tween(MODE_TRANSITION_DURATION), targetScale = 0.8f)
+                            )
+                    } else {
+                        // Timer tick: no animation (instant update)
+                        ContentTransform(
+                            targetContentEnter = fadeIn(tween(0)),
+                            initialContentExit = fadeOut(tween(0))
+                        )
+                    }
+                },
+                label = "displayText"
+            ) { (_, text) ->
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center
+                )
+            }
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = subtitleText,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
+            // Animate subtitle text when changing
+            AnimatedContent(
+                targetState = subtitleText,
+                transitionSpec = {
+                    fadeIn(tween(MODE_TRANSITION_DURATION))
+                        .togetherWith(fadeOut(tween(MODE_TRANSITION_DURATION)))
+                },
+                label = "subtitleText"
+            ) { text ->
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

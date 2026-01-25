@@ -1,12 +1,17 @@
 package com.jbgsoft.ambio.ui.theme
 
+import android.app.Activity
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 
 private const val THEME_ANIMATION_DURATION = 400
@@ -65,6 +70,20 @@ fun AmbioTheme(
         outline = animatedSecondary.copy(alpha = 0.5f),
         outlineVariant = animatedSecondary.copy(alpha = 0.3f)
     )
+
+    // Update system bar colors to match theme
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = animatedBackground.toArgb()
+            window.navigationBarColor = animatedBackground.toArgb()
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = false
+                isAppearanceLightNavigationBars = false
+            }
+        }
+    }
 
     MaterialTheme(
         colorScheme = colorScheme,

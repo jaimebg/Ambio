@@ -1,8 +1,11 @@
 package com.jbgsoft.ambio.feature.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -81,8 +84,8 @@ fun HomeScreen(
                 // Timer Presets (only in Timer mode)
                 AnimatedVisibility(
                     visible = uiState.mode == AppMode.TIMER,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                    enter = fadeIn(tween(300)) + expandVertically(tween(300)),
+                    exit = fadeOut(tween(300)) + shrinkVertically(tween(300))
                 ) {
                     TimerPresetSelector(
                         selectedPreset = uiState.selectedPreset,
