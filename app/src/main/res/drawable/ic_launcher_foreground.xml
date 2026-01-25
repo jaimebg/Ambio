@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Ambient sound wave icon - abstract soundwave/circle design -->
+    <group
+        android:translateX="27"
+        android:translateY="27">
+
+        <!-- Outer ring -->
+        <path
+            android:pathData="M27,0C41.91,0 54,12.09 54,27C54,41.91 41.91,54 27,54C12.09,54 0,41.91 0,27C0,12.09 12.09,0 27,0ZM27,6C15.40,6 6,15.40 6,27C6,38.60 15.40,48 27,48C38.60,48 48,38.60 48,27C48,15.40 38.60,6 27,6Z"
+            android:fillColor="#5C7AEA"/>
+
+        <!-- Inner soundwave 1 -->
+        <path
+            android:pathData="M27,12C35.28,12 42,18.72 42,27C42,35.28 35.28,42 27,42C18.72,42 12,35.28 12,27C12,18.72 18.72,12 27,12ZM27,16C20.93,16 16,20.93 16,27C16,33.07 20.93,38 27,38C33.07,38 38,33.07 38,27C38,20.93 33.07,16 27,16Z"
+            android:fillColor="#8B9DC3"/>
+
+        <!-- Center dot -->
+        <path
+            android:pathData="M27,22C29.76,22 32,24.24 32,27C32,29.76 29.76,32 27,32C24.24,32 22,29.76 22,27C22,24.24 24.24,22 27,22Z"
+            android:fillColor="#FFFFFF"/>
+
+    </group>
+</vector>

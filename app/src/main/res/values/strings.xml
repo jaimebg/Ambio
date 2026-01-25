@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ambio</string>
+
+    <!-- Mode Toggle -->
+    <string name="mode_timer">Timer</string>
+    <string name="mode_ambient">Ambient</string>
+
+    <!-- Sound Names -->
+    <string name="sound_rain">Rain</string>
+    <string name="sound_fireplace">Fireplace</string>
+    <string name="sound_forest">Forest</string>
+    <string name="sound_ocean">Ocean</string>
+    <string name="sound_wind">Wind</string>
+
+    <!-- Sound Descriptions -->
+    <string name="sound_rain_description">Gentle rain on a window</string>
+    <string name="sound_fireplace_description">Crackling fireplace warmth</string>
+    <string name="sound_forest_description">Peaceful forest ambiance</string>
+    <string name="sound_ocean_description">Calm ocean waves</string>
+    <string name="sound_wind_description">Soft wind through leaves</string>
+
+    <!-- Timer Presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Custom</string>
+
+    <!-- Controls -->
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="volume">Volume</string>
+    <string name="change_sound">Change Sound</string>
+
+    <!-- Bottom Sheet -->
+    <string name="select_sound">Select Sound</string>
+
+    <!-- Timer States -->
+    <string name="timer_completed">Focus session completed!</string>
+    <string name="break_time">Break time</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Playback</string>
+    <string name="notification_channel_description">Audio playback controls</string>
+</resources>
