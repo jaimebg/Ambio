@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.feature.home.components.CurrentSoundBar
 import com.jbgsoft.ambio.feature.home.components.ModeToggle
@@ -29,6 +30,7 @@ import com.jbgsoft.ambio.feature.home.components.SoundBottomSheet
 import com.jbgsoft.ambio.feature.home.components.TimerDisplay
 import com.jbgsoft.ambio.feature.home.components.TimerPresetSelector
 import com.jbgsoft.ambio.feature.home.components.VolumeSlider
+import com.jbgsoft.ambio.ui.theme.AmbioTheme
 
 @Composable
 fun HomeScreen(
@@ -36,10 +38,12 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
+    // Dynamic theming: entire UI recolors based on selected sound with smooth 400ms transition
+    AmbioTheme(soundTheme = uiState.selectedSound?.theme ?: SoundTheme.RAIN) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -118,13 +122,14 @@ fun HomeScreen(
             }
         }
 
-        // Sound Picker Bottom Sheet
-        SoundBottomSheet(
-            showSheet = uiState.showSoundPicker,
-            sounds = uiState.availableSounds,
-            selectedSound = uiState.selectedSound,
-            onSoundSelected = { viewModel.onEvent(HomeEvent.SelectSound(it)) },
-            onDismiss = { viewModel.onEvent(HomeEvent.HideSoundPicker) }
-        )
+            // Sound Picker Bottom Sheet
+            SoundBottomSheet(
+                showSheet = uiState.showSoundPicker,
+                sounds = uiState.availableSounds,
+                selectedSound = uiState.selectedSound,
+                onSoundSelected = { viewModel.onEvent(HomeEvent.SelectSound(it)) },
+                onDismiss = { viewModel.onEvent(HomeEvent.HideSoundPicker) }
+            )
+        }
     }
 }
