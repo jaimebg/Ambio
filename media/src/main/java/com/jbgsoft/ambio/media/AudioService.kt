@@ -1,5 +1,6 @@
 package com.jbgsoft.ambio.media
 
+import android.app.PendingIntent
 import android.content.Intent
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -33,8 +34,22 @@ class AudioService : MediaSessionService() {
                 repeatMode = Player.REPEAT_MODE_ONE
             }
 
+        // Create PendingIntent to launch MainActivity when notification is tapped
+        // This is required for Media3 to properly manage foreground service and notifications
+        val sessionActivityPendingIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let { intent ->
+            PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
+
         mediaSession = MediaSession.Builder(this, player)
             .setCallback(MediaSessionCallback())
+            .apply {
+                sessionActivityPendingIntent?.let { setSessionActivity(it) }
+            }
             .build()
     }
 
