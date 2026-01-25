@@ -14,9 +14,14 @@ import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,6 +37,9 @@ class AudioServiceConnection @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private var controllerFuture: ListenableFuture<MediaController>? = null
+    private val scope = CoroutineScope(Dispatchers.Main)
+    private var fadeJob: Job? = null
+    private var targetVolume: Float = 1f
 
     private val _isConnected = MutableStateFlow(false)
     val isConnected: StateFlow<Boolean> = _isConnected.asStateFlow()
@@ -44,6 +52,9 @@ class AudioServiceConnection @Inject constructor(
 
     companion object {
         private const val TAG = "AudioServiceConnection"
+        private const val FADE_IN_DURATION_MS = 8000L
+        private const val FADE_OUT_DURATION_MS = 3000L
+        private const val FADE_STEP_MS = 50L
     }
 
     val controller: MediaController?
@@ -101,6 +112,7 @@ class AudioServiceConnection @Inject constructor(
         description: String,
         @RawRes illustrationRes: Int? = null
     ) {
+        fadeJob?.cancel()
         val soundUri = Uri.parse("android.resource://${context.packageName}/$audioRes")
         val artworkUri = illustrationRes?.let {
             Uri.parse("android.resource://${context.packageName}/$it")
@@ -121,31 +133,92 @@ class AudioServiceConnection @Inject constructor(
 
         controller?.apply {
             _hasError.value = false
+            volume = 0f  // Start silent for fade in
             setMediaItem(mediaItem)
             prepare()
             play()
+            fadeIn(targetVolume)
         } ?: Log.w(TAG, "Cannot play sound - controller not connected")
     }
 
     fun play() {
+        fadeJob?.cancel()
         Log.d(TAG, "Play requested")
-        controller?.play() ?: Log.w(TAG, "Cannot play - controller not connected")
+        controller?.apply {
+            volume = 0f
+            play()
+            fadeIn(targetVolume)
+        } ?: Log.w(TAG, "Cannot play - controller not connected")
     }
 
     fun pause() {
-        Log.d(TAG, "Pause requested")
-        controller?.pause() ?: Log.w(TAG, "Cannot pause - controller not connected")
+        Log.d(TAG, "Pause requested with fade out")
+        _isPlaying.value = false  // Update UI immediately
+        fadeOut {
+            controller?.pause()
+            // Restore volume for next play
+            controller?.volume = targetVolume
+        }
     }
 
     fun stop() {
-        Log.d(TAG, "Stop requested")
-        controller?.stop() ?: Log.w(TAG, "Cannot stop - controller not connected")
+        Log.d(TAG, "Stop requested with fade out")
+        _isPlaying.value = false  // Update UI immediately
+        fadeOut {
+            controller?.stop()
+            // Restore volume for next play
+            controller?.volume = targetVolume
+        }
     }
 
     fun setVolume(volume: Float) {
         val clampedVolume = volume.coerceIn(0f, 1f)
-        Log.d(TAG, "Setting volume to $clampedVolume")
-        controller?.volume = clampedVolume
+        targetVolume = clampedVolume
+        Log.d(TAG, "Setting target volume to $clampedVolume")
+        // Only apply immediately if not fading
+        if (fadeJob?.isActive != true) {
+            controller?.volume = clampedVolume
+        }
+    }
+
+    private fun fadeIn(toVolume: Float) {
+        fadeJob?.cancel()
+        fadeJob = scope.launch {
+            val steps = (FADE_IN_DURATION_MS / FADE_STEP_MS).toInt()
+            val startVolume = 0f
+            val volumeStep = (toVolume - startVolume) / steps
+
+            controller?.volume = startVolume
+            Log.d(TAG, "Starting fade in to $toVolume over ${FADE_IN_DURATION_MS}ms")
+
+            for (i in 1..steps) {
+                delay(FADE_STEP_MS)
+                val newVolume = (startVolume + volumeStep * i).coerceIn(0f, toVolume)
+                controller?.volume = newVolume
+            }
+            controller?.volume = toVolume
+            Log.d(TAG, "Fade in complete")
+        }
+    }
+
+    private fun fadeOut(onComplete: () -> Unit) {
+        fadeJob?.cancel()
+        fadeJob = scope.launch {
+            val currentVolume = controller?.volume ?: targetVolume
+            val steps = (FADE_OUT_DURATION_MS / FADE_STEP_MS).toInt()
+            val volumeStep = currentVolume / steps
+
+            Log.d(TAG, "Starting fade out from $currentVolume over ${FADE_OUT_DURATION_MS}ms")
+
+            for (i in 1..steps) {
+                delay(FADE_STEP_MS)
+                val newVolume = (currentVolume - volumeStep * i).coerceAtLeast(0f)
+                controller?.volume = newVolume
+            }
+            controller?.volume = 0f
+            Log.d(TAG, "Fade out complete")
+            onComplete()
+        }
     }
 
     private val playerListener = object : Player.Listener {
