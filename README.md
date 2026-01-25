@@ -42,7 +42,11 @@ Choose rain, and the UI shifts to cool blues. Select fireplace, and warm oranges
 
 ## Screenshots
 
-*Coming soon*
+<p align="center">
+  <img src="screenshots/timer-focus.png" alt="Timer Focus Mode" width="250">
+  <img src="screenshots/ambient-mode.png" alt="Ambient Mode" width="250">
+  <img src="screenshots/sound-selection.png" alt="Sound Selection" width="250">
+</p>
 
 ## Tech Stack
 
