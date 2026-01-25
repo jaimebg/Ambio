@@ -1,7 +1,7 @@
 package com.jbgsoft.ambio.core.common.haptics
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -9,16 +9,27 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Manages haptic feedback for user interactions throughout the app.
+ *
+ * Provides various haptic patterns for different interaction types:
+ * - click: Standard button tap feedback
+ * - tick: Subtle feedback for slider adjustments
+ * - heavyClick: Emphasized feedback for important actions (sound selection)
+ * - timerComplete: Custom 3-pulse pattern for timer completion
+ * - doubleClick: Double-tap feedback pattern
+ *
+ * Note: VIBRATE permission is declared in AndroidManifest.xml and required for all vibration methods.
+ */
 @Singleton
+@SuppressLint("MissingPermission") // VIBRATE permission declared in AndroidManifest.xml
 class HapticManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val vibrator: Vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    // minSdk 31 guarantees VibratorManager is available
+    private val vibrator: Vibrator = run {
         val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
         vibratorManager.defaultVibrator
-    } else {
-        @Suppress("DEPRECATION")
-        context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     }
 
     private val hasVibrator: Boolean = vibrator.hasVibrator()
@@ -40,7 +51,7 @@ class HapticManager @Inject constructor(
 
     fun timerComplete() {
         if (!hasVibrator) return
-        // Custom waveform: 3 pulses for timer completion
+        // Custom waveform: 3 pulses for timer completion per spec
         val timings = longArrayOf(0, 100, 100, 100, 100, 100)
         val amplitudes = intArrayOf(0, 150, 0, 150, 0, 150)
         val effect = VibrationEffect.createWaveform(timings, amplitudes, -1)
