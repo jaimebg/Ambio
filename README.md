@@ -16,6 +16,10 @@
   <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
 </p>
 
+<p align="center">
+  <img src="assets/gplay-feature-graphic.png" alt="Ambio - Focus & Flow. Powered by Nature." width="720">
+</p>
+
 ---
 
 > **Under Construction**
