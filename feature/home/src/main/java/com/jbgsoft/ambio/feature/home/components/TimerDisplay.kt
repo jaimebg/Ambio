@@ -57,6 +57,7 @@ fun TimerDisplay(
         timerState is TimerState.Running && timerState.isBreak -> "Break Time"
         timerState is TimerState.Running -> "Focus"
         timerState is TimerState.Paused -> "Paused"
+        timerState is TimerState.Completed && timerState.wasBreak -> "Break Over!"
         timerState is TimerState.Completed -> "Completed!"
         else -> "Ready"
     }

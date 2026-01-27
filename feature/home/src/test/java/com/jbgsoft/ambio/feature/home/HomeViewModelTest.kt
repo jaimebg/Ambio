@@ -454,11 +454,12 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `setCustomMinutes triggers tick haptic`() = runTest(testDispatcher) {
+    fun `customMinutesChangeFinished triggers tick haptic`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.SetCustomMinutes(45))
+        viewModel.onEvent(HomeEvent.CustomMinutesChangeFinished)
         advanceUntilIdle()
 
         verify { hapticManager.tick() }
@@ -508,11 +509,12 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `setVolume persists to preferences`() = runTest(testDispatcher) {
+    fun `volumeChangeFinished persists to preferences`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.SetVolume(0.5f))
+        viewModel.onEvent(HomeEvent.VolumeChangeFinished)
         advanceUntilIdle()
 
         coVerify { preferencesRepository.setVolume(0.5f) }
@@ -727,7 +729,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed
+        timerStateFlow.value = TimerState.Completed(wasBreak = false)
         advanceUntilIdle()
 
         verify { audioServiceConnection.stop() }
@@ -739,7 +741,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed
+        timerStateFlow.value = TimerState.Completed(wasBreak = false)
         advanceUntilIdle()
 
         verify { chimePlayer.playChime(100) }
@@ -751,7 +753,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed
+        timerStateFlow.value = TimerState.Completed(wasBreak = false)
         advanceUntilIdle()
 
         verify { hapticManager.timerComplete() }
@@ -763,7 +765,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed
+        timerStateFlow.value = TimerState.Completed(wasBreak = false)
         advanceUntilIdle()
 
         coVerify { saveSessionUseCase.invoke("rain", 25, true) }
@@ -775,7 +777,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         // Simulate timer completion with 25 min preset (default)
-        timerStateFlow.value = TimerState.Completed
+        timerStateFlow.value = TimerState.Completed(wasBreak = false)
         advanceUntilIdle()
 
         // 5 minute break
@@ -783,19 +785,33 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `timer completion starts break for 50 min preset`() = runTest(testDispatcher) {
+    fun `timer completion starts break with configured break minutes`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.FOCUS_50))
         advanceUntilIdle()
 
-        // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed
+        // Simulate timer completion (uses breakMinutes which defaults to 5)
+        timerStateFlow.value = TimerState.Completed(wasBreak = false)
         advanceUntilIdle()
 
-        // 10 minute break
-        coVerify { timerRepository.startBreak(10 * 60 * 1000L) }
+        // Default 5 minute break
+        coVerify { timerRepository.startBreak(5 * 60 * 1000L) }
+    }
+
+    @Test
+    fun `break completion resets timer instead of starting another break`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        // Simulate break completion (wasBreak = true)
+        timerStateFlow.value = TimerState.Completed(wasBreak = true)
+        advanceUntilIdle()
+
+        // Should reset timer, not start another break
+        coVerify { timerRepository.resetTimer() }
+        coVerify(exactly = 0) { timerRepository.startBreak(any()) }
     }
 
     // --- Audio Service Connection State Tests ---

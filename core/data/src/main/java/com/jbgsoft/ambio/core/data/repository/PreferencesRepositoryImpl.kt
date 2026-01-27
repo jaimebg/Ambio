@@ -28,4 +28,8 @@ class PreferencesRepositoryImpl @Inject constructor(
     override suspend fun setLastMode(mode: AppMode) {
         preferencesDataStore.setLastMode(mode)
     }
+
+    override suspend fun setBreakMinutes(minutes: Int) {
+        preferencesDataStore.setBreakMinutes(minutes)
+    }
 }

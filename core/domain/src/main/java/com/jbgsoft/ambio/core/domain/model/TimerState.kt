@@ -16,5 +16,5 @@ sealed class TimerState {
         val totalMs: Long
     ) : TimerState()
 
-    data object Completed : TimerState()
+    data class Completed(val wasBreak: Boolean = false) : TimerState()
 }

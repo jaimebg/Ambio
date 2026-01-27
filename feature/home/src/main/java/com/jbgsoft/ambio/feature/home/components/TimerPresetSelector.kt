@@ -5,59 +5,92 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 
+private val BREAK_OPTIONS = listOf(5, 10, 15, 20)
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun TimerPresetSelector(
     selectedPreset: TimerPreset,
     customMinutes: Int,
+    breakMinutes: Int,
     onPresetSelected: (TimerPreset) -> Unit,
     onCustomMinutesChanged: (Int) -> Unit,
     onCustomMinutesChangeFinished: () -> Unit,
+    onBreakMinutesChanged: (Int) -> Unit,
+    onBreakMinutesChangeFinished: () -> Unit,
     modifier: Modifier = Modifier,
     isCompact: Boolean = false
 ) {
-    val horizontalPadding = if (isCompact) 12.dp else 16.dp
-    val customSectionHorizontalPadding = if (isCompact) 16.dp else 32.dp
-    val customSectionVerticalPadding = if (isCompact) 8.dp else 16.dp
-    val spacerHeight = if (isCompact) 4.dp else 8.dp
+    val horizontalPadding = if (isCompact) 16.dp else 24.dp
+    val sectionSpacing = if (isCompact) 16.dp else 20.dp
+    val labelSpacing = if (isCompact) 6.dp else 8.dp
 
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(if (isCompact) 6.dp else 8.dp),
-            modifier = Modifier.padding(horizontal = horizontalPadding)
+        // Focus Duration - Segmented Button
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = horizontalPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TimerPreset.entries.forEach { preset ->
-                FilterChip(
-                    selected = selectedPreset == preset,
-                    onClick = { onPresetSelected(preset) },
-                    label = { Text(preset.displayName) },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.primary,
-                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+            Text(
+                text = "Focus Duration",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(labelSpacing))
+            SingleChoiceSegmentedButtonRow(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TimerPreset.entries.forEachIndexed { index, preset ->
+                    SegmentedButton(
+                        shape = SegmentedButtonDefaults.itemShape(
+                            index = index,
+                            count = TimerPreset.entries.size
+                        ),
+                        onClick = { onPresetSelected(preset) },
+                        selected = selectedPreset == preset,
+                        label = { Text(preset.displayName) }
                     )
-                )
+                }
             }
         }
 
+        // Custom Focus Time Stepper
         AnimatedVisibility(
             visible = selectedPreset == TimerPreset.CUSTOM,
             enter = expandVertically(),
@@ -66,47 +99,142 @@ fun TimerPresetSelector(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        horizontal = customSectionHorizontalPadding,
-                        vertical = customSectionVerticalPadding
-                    ),
+                    .padding(vertical = sectionSpacing),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "$customMinutes min",
-                    style = if (isCompact) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Spacer(modifier = Modifier.height(spacerHeight))
-                Slider(
-                    value = customMinutes.toFloat(),
-                    onValueChange = { onCustomMinutesChanged(it.toInt()) },
+                NumberStepper(
+                    value = customMinutes,
+                    onValueChange = onCustomMinutesChanged,
                     onValueChangeFinished = onCustomMinutesChangeFinished,
-                    valueRange = 1f..120f,
-                    steps = 118, // 120 - 1 - 1 = 118 steps for whole numbers
-                    colors = SliderDefaults.colors(
-                        thumbColor = MaterialTheme.colorScheme.primary,
-                        activeTrackColor = MaterialTheme.colorScheme.primary,
-                        inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant
-                    ),
-                    modifier = Modifier.fillMaxWidth()
+                    minValue = 1,
+                    maxValue = 120,
+                    step = 5,
+                    suffix = "min",
+                    isCompact = isCompact
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "1 min",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = "120 min",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+            }
+        }
+
+        Spacer(modifier = Modifier.height(sectionSpacing))
+
+        // Break Duration - Filter Chips
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = horizontalPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Break Duration",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(labelSpacing))
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                BREAK_OPTIONS.forEach { minutes ->
+                    val isSelected = breakMinutes == minutes
+                    FilterChip(
+                        selected = isSelected,
+                        onClick = {
+                            onBreakMinutesChanged(minutes)
+                            onBreakMinutesChangeFinished()
+                        },
+                        label = { Text("$minutes min") },
+                        leadingIcon = if (isSelected) {
+                            {
+                                Icon(
+                                    imageVector = Icons.Filled.Done,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                )
+                            }
+                        } else null,
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                            selectedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun NumberStepper(
+    value: Int,
+    onValueChange: (Int) -> Unit,
+    onValueChangeFinished: () -> Unit,
+    minValue: Int,
+    maxValue: Int,
+    step: Int,
+    suffix: String,
+    isCompact: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val buttonSize = if (isCompact) 40.dp else 48.dp
+    val iconSize = if (isCompact) 20.dp else 24.dp
+
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        // Decrease button
+        IconButton(
+            onClick = {
+                val newValue = (value - step).coerceAtLeast(minValue)
+                onValueChange(newValue)
+                onValueChangeFinished()
+            },
+            enabled = value > minValue,
+            colors = IconButtonDefaults.filledTonalIconButtonColors(),
+            modifier = Modifier.size(buttonSize)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Remove,
+                contentDescription = "Decrease",
+                modifier = Modifier.size(iconSize)
+            )
+        }
+
+        Spacer(modifier = Modifier.width(if (isCompact) 16.dp else 24.dp))
+
+        // Value display
+        Text(
+            text = "$value $suffix",
+            style = if (isCompact) {
+                MaterialTheme.typography.headlineSmall
+            } else {
+                MaterialTheme.typography.headlineMedium
+            },
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(modifier = Modifier.width(if (isCompact) 16.dp else 24.dp))
+
+        // Increase button
+        IconButton(
+            onClick = {
+                val newValue = (value + step).coerceAtMost(maxValue)
+                onValueChange(newValue)
+                onValueChangeFinished()
+            },
+            enabled = value < maxValue,
+            colors = IconButtonDefaults.filledTonalIconButtonColors(),
+            modifier = Modifier.size(buttonSize)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Increase",
+                modifier = Modifier.size(iconSize)
+            )
         }
     }
 }

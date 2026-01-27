@@ -107,7 +107,7 @@ class TimerRepositoryImpl @Inject constructor(
                 }
             }
 
-            _timerState.value = TimerState.Completed
+            _timerState.value = TimerState.Completed(wasBreak = isBreak)
         }
     }
 

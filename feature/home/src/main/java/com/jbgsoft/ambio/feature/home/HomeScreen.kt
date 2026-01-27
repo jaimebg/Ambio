@@ -152,9 +152,12 @@ fun HomeScreen(
                                     TimerPresetSelector(
                                         selectedPreset = uiState.selectedPreset,
                                         customMinutes = uiState.customMinutes,
+                                        breakMinutes = uiState.breakMinutes,
                                         onPresetSelected = { viewModel.onEvent(HomeEvent.SelectPreset(it)) },
                                         onCustomMinutesChanged = { viewModel.onEvent(HomeEvent.SetCustomMinutes(it)) },
                                         onCustomMinutesChangeFinished = { viewModel.onEvent(HomeEvent.CustomMinutesChangeFinished) },
+                                        onBreakMinutesChanged = { viewModel.onEvent(HomeEvent.SetBreakMinutes(it)) },
+                                        onBreakMinutesChangeFinished = { viewModel.onEvent(HomeEvent.BreakMinutesChangeFinished) },
                                         modifier = Modifier.fillMaxWidth(),
                                         isCompact = isSmallScreen
                                     )

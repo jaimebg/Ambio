@@ -9,5 +9,6 @@ interface PreferencesRepository {
     suspend fun setLastSoundId(soundId: String)
     suspend fun setVolume(volume: Float)
     suspend fun setLastTimerMinutes(minutes: Int)
+    suspend fun setBreakMinutes(minutes: Int)
     suspend fun setLastMode(mode: AppMode)
 }

@@ -86,8 +86,8 @@ class TimerRepositoryImplTest {
             val afterThree = awaitItem() as TimerState.Running
             assertThat(afterThree.remainingMs).isEqualTo(0L)
 
-            // Completed state
-            assertThat(awaitItem()).isEqualTo(TimerState.Completed)
+            // Completed state (wasBreak = false for regular timer)
+            assertThat(awaitItem()).isEqualTo(TimerState.Completed(wasBreak = false))
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -189,6 +189,36 @@ class TimerRepositoryImplTest {
             assertThat(breakState.isBreak).isTrue()
             assertThat(breakState.remainingMs).isEqualTo(breakDuration)
             assertThat(breakState.totalMs).isEqualTo(breakDuration)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `break completion sets wasBreak flag to true`() = runTest(testDispatcher) {
+        val breakDuration = 2000L // 2 seconds
+
+        timerRepository.timerState.test {
+            assertThat(awaitItem()).isEqualTo(TimerState.Idle)
+
+            timerRepository.startBreak(breakDuration)
+            advanceTimeBy(100)
+
+            val initial = awaitItem() as TimerState.Running
+            assertThat(initial.isBreak).isTrue()
+
+            // After 1 second
+            advanceTimeBy(1000)
+            val afterOne = awaitItem() as TimerState.Running
+            assertThat(afterOne.remainingMs).isEqualTo(1000L)
+
+            // After 2 seconds - break completes
+            advanceTimeBy(1000)
+            val afterTwo = awaitItem() as TimerState.Running
+            assertThat(afterTwo.remainingMs).isEqualTo(0L)
+
+            // Completed state with wasBreak = true
+            assertThat(awaitItem()).isEqualTo(TimerState.Completed(wasBreak = true))
 
             cancelAndIgnoreRemainingEvents()
         }

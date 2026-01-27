@@ -83,10 +83,17 @@ class TimerStateTest {
     }
 
     @Test
-    fun `Completed is a singleton`() {
-        val completed1 = TimerState.Completed
-        val completed2 = TimerState.Completed
-        assertThat(completed1).isSameInstanceAs(completed2)
+    fun `Completed with same wasBreak are equal`() {
+        val completed1 = TimerState.Completed(wasBreak = false)
+        val completed2 = TimerState.Completed(wasBreak = false)
+        assertThat(completed1).isEqualTo(completed2)
+    }
+
+    @Test
+    fun `Completed with different wasBreak are not equal`() {
+        val completedFocus = TimerState.Completed(wasBreak = false)
+        val completedBreak = TimerState.Completed(wasBreak = true)
+        assertThat(completedFocus).isNotEqualTo(completedBreak)
     }
 
     @Test

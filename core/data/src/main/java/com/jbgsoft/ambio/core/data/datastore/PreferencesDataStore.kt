@@ -26,6 +26,7 @@ class PreferencesDataStore @Inject constructor(
         val LAST_SOUND_ID = stringPreferencesKey("last_sound_id")
         val VOLUME = floatPreferencesKey("volume")
         val LAST_TIMER_MINUTES = intPreferencesKey("last_timer_minutes")
+        val BREAK_MINUTES = intPreferencesKey("break_minutes")
         val LAST_MODE = stringPreferencesKey("last_mode")
     }
 
@@ -34,6 +35,7 @@ class PreferencesDataStore @Inject constructor(
             lastSoundId = prefs[PreferencesKeys.LAST_SOUND_ID] ?: "rain",
             volume = prefs[PreferencesKeys.VOLUME] ?: 0.7f,
             lastTimerMinutes = prefs[PreferencesKeys.LAST_TIMER_MINUTES] ?: 25,
+            breakMinutes = prefs[PreferencesKeys.BREAK_MINUTES] ?: 5,
             lastMode = prefs[PreferencesKeys.LAST_MODE]?.let {
                 AppMode.valueOf(it)
             } ?: AppMode.TIMER
@@ -61,6 +63,12 @@ class PreferencesDataStore @Inject constructor(
     suspend fun setLastMode(mode: AppMode) {
         context.dataStore.edit { prefs ->
             prefs[PreferencesKeys.LAST_MODE] = mode.name
+        }
+    }
+
+    suspend fun setBreakMinutes(minutes: Int) {
+        context.dataStore.edit { prefs ->
+            prefs[PreferencesKeys.BREAK_MINUTES] = minutes
         }
     }
 }

@@ -86,7 +86,7 @@ class HomeViewModel @Inject constructor(
             .onEach { state ->
                 _uiState.update { it.copy(timerState = state) }
                 if (state is TimerState.Completed) {
-                    onTimerCompleted()
+                    onTimerCompleted(wasBreak = state.wasBreak)
                 }
             }
             .launchIn(viewModelScope)
@@ -100,7 +100,8 @@ class HomeViewModel @Inject constructor(
                         volume = prefs.volume,
                         mode = prefs.lastMode,
                         customMinutes = prefs.lastTimerMinutes.takeIf { it !in listOf(25, 50) }
-                            ?: state.customMinutes
+                            ?: state.customMinutes,
+                        breakMinutes = prefs.breakMinutes
                     )
                 }
             }
@@ -114,13 +115,15 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.SelectPreset -> selectPreset(event.preset)
             is HomeEvent.SetCustomMinutes -> setCustomMinutes(event.minutes)
             is HomeEvent.CustomMinutesChangeFinished -> persistCustomMinutes()
+            is HomeEvent.SetBreakMinutes -> setBreakMinutes(event.minutes)
+            is HomeEvent.BreakMinutesChangeFinished -> persistBreakMinutes()
             is HomeEvent.SetVolume -> setVolume(event.volume, persist = false)
             is HomeEvent.VolumeChangeFinished -> persistVolume()
             is HomeEvent.PlayPause -> playPause()
             is HomeEvent.Reset -> reset()
             is HomeEvent.ShowSoundPicker -> showSoundPicker()
             is HomeEvent.HideSoundPicker -> hideSoundPicker()
-            is HomeEvent.TimerCompleted -> onTimerCompleted()
+            is HomeEvent.TimerCompleted -> onTimerCompleted(wasBreak = false)
         }
     }
 
@@ -208,6 +211,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun setBreakMinutes(minutes: Int) {
+        val clampedMinutes = minutes.coerceIn(1, 30)
+        _uiState.update { it.copy(breakMinutes = clampedMinutes) }
+    }
+
+    private fun persistBreakMinutes() {
+        hapticManager.tick()
+        viewModelScope.launch {
+            preferencesRepository.setBreakMinutes(_uiState.value.breakMinutes)
+        }
+    }
+
     private fun setVolume(volume: Float, persist: Boolean = true) {
         val clampedVolume = volume.coerceIn(0f, 1f)
         _uiState.update { it.copy(volume = clampedVolume) }
@@ -287,7 +302,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(showSoundPicker = false) }
     }
 
-    private fun onTimerCompleted() {
+    private fun onTimerCompleted(wasBreak: Boolean) {
         val state = _uiState.value
 
         // Stop the ambient sound when timer completes
@@ -297,6 +312,15 @@ class HomeViewModel @Inject constructor(
         chimePlayer.playChime(chimeRepository.getTimerChimeResource())
         hapticManager.timerComplete()
 
+        if (wasBreak) {
+            // Break finished - reset to idle state, don't start another break
+            viewModelScope.launch {
+                timerRepository.resetTimer()
+            }
+            return
+        }
+
+        // Focus session completed
         viewModelScope.launch {
             // Save the completed session
             state.selectedSound?.let { sound ->
@@ -312,13 +336,8 @@ class HomeViewModel @Inject constructor(
                 )
             }
 
-            // Start break if applicable
-            val breakMinutes = when (state.selectedPreset) {
-                TimerPreset.FOCUS_25 -> 5
-                TimerPreset.FOCUS_50 -> 10
-                TimerPreset.CUSTOM -> 5 // Default 5 min break for custom
-            }
-            timerRepository.startBreak(breakMinutes * 60 * 1000L)
+            // Start break timer
+            timerRepository.startBreak(state.breakMinutes * 60 * 1000L)
         }
     }
 }
