@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.TimerState
@@ -31,7 +32,8 @@ fun TimerDisplay(
     mode: AppMode,
     isPlaying: Boolean,
     selectedMinutes: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    size: Dp = 300.dp
 ) {
     val progress = when (timerState) {
         is TimerState.Running -> timerState.progress
@@ -59,14 +61,18 @@ fun TimerDisplay(
         else -> "Ready"
     }
 
+    // CircularProgress is 20dp smaller than container to leave room for glow effect
+    val circularProgressSize = size - 20.dp
+
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.size(300.dp)
+        modifier = modifier.size(size)
     ) {
         CircularProgress(
             progress = progress,
             isAnimating = isAnimating,
-            modifier = Modifier.size(280.dp)
+            size = circularProgressSize,
+            modifier = Modifier.size(circularProgressSize)
         )
 
         Column(

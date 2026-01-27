@@ -15,19 +15,23 @@ import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun PlayPauseButton(
     isPlaying: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    size: Dp = 96.dp
 ) {
+    val iconSize = size / 2
+
     LargeFloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
-        modifier = modifier.size(96.dp)
+        modifier = modifier.size(size)
     ) {
         AnimatedContent(
             targetState = isPlaying,
@@ -40,7 +44,7 @@ fun PlayPauseButton(
             Icon(
                 imageVector = if (playing) Icons.Default.Pause else Icons.Default.PlayArrow,
                 contentDescription = if (playing) "Pause" else "Play",
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(iconSize)
             )
         }
     }

@@ -28,15 +28,21 @@ fun TimerPresetSelector(
     customMinutes: Int,
     onPresetSelected: (TimerPreset) -> Unit,
     onCustomMinutesChanged: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isCompact: Boolean = false
 ) {
+    val horizontalPadding = if (isCompact) 12.dp else 16.dp
+    val customSectionHorizontalPadding = if (isCompact) 16.dp else 32.dp
+    val customSectionVerticalPadding = if (isCompact) 8.dp else 16.dp
+    val spacerHeight = if (isCompact) 4.dp else 8.dp
+
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(if (isCompact) 6.dp else 8.dp),
+            modifier = Modifier.padding(horizontal = horizontalPadding)
         ) {
             TimerPreset.entries.forEach { preset ->
                 FilterChip(
@@ -59,15 +65,18 @@ fun TimerPresetSelector(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp, vertical = 16.dp),
+                    .padding(
+                        horizontal = customSectionHorizontalPadding,
+                        vertical = customSectionVerticalPadding
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "$customMinutes min",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = if (isCompact) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(spacerHeight))
                 Slider(
                     value = customMinutes.toFloat(),
                     onValueChange = { onCustomMinutesChanged(it.toInt()) },

@@ -60,6 +60,9 @@ fun SoundBottomSheet(
                             onClick = { onSoundSelected(sound) }
                         )
                     }
+                    item {
+                        ComingSoonCard()
+                    }
                 }
             }
         }
