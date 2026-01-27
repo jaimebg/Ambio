@@ -105,121 +105,127 @@ fun HomeScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .verticalScroll(scrollState)
                             .padding(vertical = verticalPadding),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Top Section - Mode Toggle
-                        ModeToggle(
-                            selectedMode = uiState.mode,
-                            onModeSelected = { viewModel.onEvent(HomeEvent.SetMode(it)) },
-                            modifier = Modifier.padding(horizontal = if (isSmallScreen) 16.dp else 32.dp)
-                        )
-
-                        Spacer(modifier = Modifier.height(sectionSpacing))
-
-                        // Center Section - Timer Display
+                        // Scrollable content
                         Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.weight(1f, fill = false),
-                            verticalArrangement = Arrangement.Center
+                            modifier = Modifier
+                                .weight(1f)
+                                .verticalScroll(scrollState),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            TimerDisplay(
-                                timerState = uiState.timerState,
-                                mode = uiState.mode,
-                                isPlaying = uiState.isPlaying,
-                                selectedMinutes = when (uiState.selectedPreset) {
-                                    TimerPreset.FOCUS_25 -> 25
-                                    TimerPreset.FOCUS_50 -> 50
-                                    TimerPreset.CUSTOM -> uiState.customMinutes
-                                },
-                                size = timerDisplaySize
+                            // Top Section - Mode Toggle
+                            ModeToggle(
+                                selectedMode = uiState.mode,
+                                onModeSelected = { viewModel.onEvent(HomeEvent.SetMode(it)) },
+                                modifier = Modifier.padding(horizontal = if (isSmallScreen) 16.dp else 32.dp)
                             )
 
                             Spacer(modifier = Modifier.height(sectionSpacing))
 
-                            // Timer Presets (only in Timer mode)
-                            AnimatedVisibility(
-                                visible = uiState.mode == AppMode.TIMER,
-                                enter = fadeIn(tween(300)) + expandVertically(tween(300)),
-                                exit = fadeOut(tween(300)) + shrinkVertically(tween(300))
+                            // Center Section - Timer Display
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                TimerPresetSelector(
-                                    selectedPreset = uiState.selectedPreset,
-                                    customMinutes = uiState.customMinutes,
-                                    onPresetSelected = { viewModel.onEvent(HomeEvent.SelectPreset(it)) },
-                                    onCustomMinutesChanged = { viewModel.onEvent(HomeEvent.SetCustomMinutes(it)) },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    isCompact = isSmallScreen
+                                TimerDisplay(
+                                    timerState = uiState.timerState,
+                                    mode = uiState.mode,
+                                    isPlaying = uiState.isPlaying,
+                                    selectedMinutes = when (uiState.selectedPreset) {
+                                        TimerPreset.FOCUS_25 -> 25
+                                        TimerPreset.FOCUS_50 -> 50
+                                        TimerPreset.CUSTOM -> uiState.customMinutes
+                                    },
+                                    size = timerDisplaySize
                                 )
-                            }
-                        }
 
-                        Spacer(modifier = Modifier.height(sectionSpacing))
+                                Spacer(modifier = Modifier.height(sectionSpacing))
 
-                        // Bottom Section - Controls
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(controlsSpacing)
-                        ) {
-                            // Play/Pause and Reset Buttons
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                // Reset Button (only visible when timer is active)
-                                val showReset = uiState.mode == AppMode.TIMER &&
-                                    (uiState.timerState is TimerState.Running || uiState.timerState is TimerState.Paused)
-
+                                // Timer Presets (only in Timer mode)
                                 AnimatedVisibility(
-                                    visible = showReset,
-                                    enter = fadeIn(tween(200)),
-                                    exit = fadeOut(tween(200))
+                                    visible = uiState.mode == AppMode.TIMER,
+                                    enter = fadeIn(tween(300)) + expandVertically(tween(300)),
+                                    exit = fadeOut(tween(300)) + shrinkVertically(tween(300))
                                 ) {
-                                    Row {
-                                        FloatingActionButton(
-                                            onClick = { viewModel.onEvent(HomeEvent.Reset) },
-                                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            elevation = FloatingActionButtonDefaults.elevation(
-                                                defaultElevation = 2.dp
-                                            ),
-                                            modifier = Modifier.size(resetButtonSize)
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.Stop,
-                                                contentDescription = "Reset Timer",
-                                                modifier = Modifier.size(if (isSmallScreen) 20.dp else 24.dp)
-                                            )
+                                    TimerPresetSelector(
+                                        selectedPreset = uiState.selectedPreset,
+                                        customMinutes = uiState.customMinutes,
+                                        onPresetSelected = { viewModel.onEvent(HomeEvent.SelectPreset(it)) },
+                                        onCustomMinutesChanged = { viewModel.onEvent(HomeEvent.SetCustomMinutes(it)) },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        isCompact = isSmallScreen
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(sectionSpacing))
+
+                            // Controls Section - Play/Pause, Reset, Volume
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(controlsSpacing)
+                            ) {
+                                // Play/Pause and Reset Buttons
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    // Reset Button (only visible when timer is active)
+                                    val showReset = uiState.mode == AppMode.TIMER &&
+                                        (uiState.timerState is TimerState.Running || uiState.timerState is TimerState.Paused)
+
+                                    AnimatedVisibility(
+                                        visible = showReset,
+                                        enter = fadeIn(tween(200)),
+                                        exit = fadeOut(tween(200))
+                                    ) {
+                                        Row {
+                                            FloatingActionButton(
+                                                onClick = { viewModel.onEvent(HomeEvent.Reset) },
+                                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                elevation = FloatingActionButtonDefaults.elevation(
+                                                    defaultElevation = 2.dp
+                                                ),
+                                                modifier = Modifier.size(resetButtonSize)
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Stop,
+                                                    contentDescription = "Reset Timer",
+                                                    modifier = Modifier.size(if (isSmallScreen) 20.dp else 24.dp)
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.width(if (isSmallScreen) 12.dp else 16.dp))
                                         }
-                                        Spacer(modifier = Modifier.width(if (isSmallScreen) 12.dp else 16.dp))
                                     }
+
+                                    // Play/Pause Button
+                                    PlayPauseButton(
+                                        isPlaying = uiState.isPlaying,
+                                        onClick = { viewModel.onEvent(HomeEvent.PlayPause) },
+                                        size = playButtonSize
+                                    )
                                 }
 
-                                // Play/Pause Button
-                                PlayPauseButton(
-                                    isPlaying = uiState.isPlaying,
-                                    onClick = { viewModel.onEvent(HomeEvent.PlayPause) },
-                                    size = playButtonSize
+                                // Volume Slider
+                                VolumeSlider(
+                                    volume = uiState.volume,
+                                    onVolumeChange = { viewModel.onEvent(HomeEvent.SetVolume(it)) },
+                                    onVolumeChangeFinished = { viewModel.onEvent(HomeEvent.VolumeChangeFinished) },
+                                    modifier = Modifier.fillMaxWidth()
                                 )
                             }
-
-                            // Volume Slider
-                            VolumeSlider(
-                                volume = uiState.volume,
-                                onVolumeChange = { viewModel.onEvent(HomeEvent.SetVolume(it)) },
-                                onVolumeChangeFinished = { viewModel.onEvent(HomeEvent.VolumeChangeFinished) },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-
-                            // Current Sound Bar
-                            CurrentSoundBar(
-                                sound = uiState.selectedSound,
-                                onChangeClick = { viewModel.onEvent(HomeEvent.ShowSoundPicker) },
-                                modifier = Modifier.fillMaxWidth()
-                            )
                         }
+
+                        // Fixed at bottom - Current Sound Bar (outside scroll)
+                        Spacer(modifier = Modifier.height(controlsSpacing))
+                        CurrentSoundBar(
+                            sound = uiState.selectedSound,
+                            onChangeClick = { viewModel.onEvent(HomeEvent.ShowSoundPicker) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
             }
