@@ -166,7 +166,7 @@ fun HomeScreen(
                         VolumeSlider(
                             volume = uiState.volume,
                             onVolumeChange = { viewModel.onEvent(HomeEvent.SetVolume(it)) },
-                            onVolumeChangeFinished = { /* Volume is saved on each change */ },
+                            onVolumeChangeFinished = { viewModel.onEvent(HomeEvent.VolumeChangeFinished) },
                             modifier = Modifier.fillMaxWidth()
                         )
 

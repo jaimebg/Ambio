@@ -113,7 +113,8 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.SelectSound -> selectSound(event.sound)
             is HomeEvent.SelectPreset -> selectPreset(event.preset)
             is HomeEvent.SetCustomMinutes -> setCustomMinutes(event.minutes)
-            is HomeEvent.SetVolume -> setVolume(event.volume)
+            is HomeEvent.SetVolume -> setVolume(event.volume, persist = false)
+            is HomeEvent.VolumeChangeFinished -> persistVolume()
             is HomeEvent.PlayPause -> playPause()
             is HomeEvent.Reset -> reset()
             is HomeEvent.ShowSoundPicker -> showSoundPicker()
@@ -203,13 +204,22 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun setVolume(volume: Float) {
+    private fun setVolume(volume: Float, persist: Boolean = true) {
         val clampedVolume = volume.coerceIn(0f, 1f)
         _uiState.update { it.copy(volume = clampedVolume) }
-        // Apply volume to audio service immediately
+        // Apply volume to audio service immediately for real-time feedback
         audioServiceConnection.setVolume(clampedVolume)
+        // Only persist to DataStore when dragging finishes to avoid lag
+        if (persist) {
+            viewModelScope.launch {
+                preferencesRepository.setVolume(clampedVolume)
+            }
+        }
+    }
+
+    private fun persistVolume() {
         viewModelScope.launch {
-            preferencesRepository.setVolume(clampedVolume)
+            preferencesRepository.setVolume(_uiState.value.volume)
         }
     }
 
