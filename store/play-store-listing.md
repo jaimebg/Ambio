@@ -1,10 +1,10 @@
 # Ambio - Google Play Store Listing
 
 ## App Name
-Ambio
+Ambio: Focus Timer & Sounds
 
 ## Short Description (max 80 characters)
-Focus timer with ambient sounds for deep work. Offline, no ads, no tracking.
+Focus timer with ambient sounds for deep work
 
 **Character count: 71**
 
