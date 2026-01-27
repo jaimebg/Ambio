@@ -124,6 +124,22 @@ class HomeViewModel @Inject constructor(
 
     private fun setMode(mode: AppMode) {
         hapticManager.click()
+
+        // Reset timer when switching to Ambient mode if timer is active
+        if (mode == AppMode.AMBIENT) {
+            val timerState = _uiState.value.timerState
+            if (timerState is TimerState.Running || timerState is TimerState.Paused) {
+                viewModelScope.launch {
+                    timerRepository.resetTimer()
+                }
+            }
+        }
+
+        // Stop audio when switching to Timer mode so button shows "play"
+        if (mode == AppMode.TIMER && _uiState.value.isPlaying) {
+            audioServiceConnection.stop()
+        }
+
         _uiState.update { it.copy(mode = mode) }
         viewModelScope.launch {
             preferencesRepository.setLastMode(mode)
