@@ -1,9 +1,9 @@
 package com.jbgsoft.ambio.core.data.repository
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.Forest
 import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.Terrain
 import androidx.compose.material.icons.filled.Waves
 import androidx.compose.material.icons.filled.WaterDrop
 import com.jbgsoft.ambio.core.data.datastore.PreferencesDataStore
@@ -59,13 +59,13 @@ class SoundRepositoryImpl @Inject constructor(
             theme = SoundTheme.OCEAN
         ),
         Sound(
-            id = "wind",
-            name = "Wind",
-            description = "Soft wind through leaves",
-            icon = Icons.Default.Air,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.wind_loop,
-            illustrationRes = com.jbgsoft.ambio.core.data.R.drawable.illustration_wind,
-            theme = SoundTheme.WIND
+            id = "cave",
+            name = "Cave",
+            description = "Echoing cave ambiance",
+            icon = Icons.Default.Terrain,
+            audioRes = com.jbgsoft.ambio.core.data.R.raw.cave_loop,
+            illustrationRes = com.jbgsoft.ambio.core.data.R.drawable.illustration_cave,
+            theme = SoundTheme.CAVE
         )
     )
 

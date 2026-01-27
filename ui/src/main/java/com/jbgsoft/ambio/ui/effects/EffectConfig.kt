@@ -89,21 +89,21 @@ fun SoundTheme.toEffectConfig(): EffectConfig = when (this) {
         maxParticles = 50
     )
 
-    SoundTheme.WIND -> EffectConfig(
+    SoundTheme.CAVE -> EffectConfig(
         type = ParticleType.WISP,
         colors = listOf(
-            Color(0xFF7B8794),
-            Color(0xFFB8C5D0),
-            Color(0xFF9AABB8),
-            Color(0xFFD0D9E0)
+            Color(0xFF6B5B4F),
+            Color(0xFF9C8A7C),
+            Color(0xFF857567),
+            Color(0xFFB0A090)
         ),
-        spawnRateRange = 4f..8f,
-        sizeRange = 20f..50f,
-        velocityXRange = 150f..300f,
-        velocityYRange = -20f..20f,
-        alphaRange = 0.15f..0.35f,
-        lifetimeRange = 3000L..5000L,
+        spawnRateRange = 2f..5f,
+        sizeRange = 30f..60f,
+        velocityXRange = -30f..30f,
+        velocityYRange = -40f..40f,
+        alphaRange = 0.1f..0.25f,
+        lifetimeRange = 4000L..7000L,
         rotationSpeedRange = 0f..0f,
-        maxParticles = 30
+        maxParticles = 20
     )
 }

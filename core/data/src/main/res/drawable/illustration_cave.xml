@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128">
+    <!-- Background circle -->
+    <path
+        android:fillColor="#6B5B4F"
+        android:pathData="M64,64m-48,0a48,48 0,1 1,96 0a48,48 0,1 1,-96 0"/>
+    <!-- Stalactites hanging from top -->
+    <path
+        android:fillColor="#9C8A7C"
+        android:pathData="M36,32L40,56L44,32Z"/>
+    <path
+        android:fillColor="#9C8A7C"
+        android:pathData="M54,32L58,48L62,32Z"/>
+    <path
+        android:fillColor="#9C8A7C"
+        android:pathData="M72,32L76,52L80,32Z"/>
+    <path
+        android:fillColor="#9C8A7C"
+        android:pathData="M88,32L92,44L96,32Z"/>
+    <!-- Stalagmites rising from bottom -->
+    <path
+        android:fillColor="#9C8A7C"
+        android:pathData="M32,96L36,76L40,96Z"/>
+    <path
+        android:fillColor="#9C8A7C"
+        android:pathData="M52,96L56,84L60,96Z"/>
+    <path
+        android:fillColor="#9C8A7C"
+        android:pathData="M76,96L80,80L84,96Z"/>
+</vector>

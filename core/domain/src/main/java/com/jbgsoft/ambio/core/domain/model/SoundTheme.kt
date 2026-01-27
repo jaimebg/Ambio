@@ -42,12 +42,12 @@ enum class SoundTheme(
         surface = Color(0xFF132F4C),
         surfaceVariant = Color(0xFF1A3D5C)
     ),
-    WIND(
-        primary = Color(0xFF7B8794),
+    CAVE(
+        primary = Color(0xFF6B5B4F),
         onPrimary = Color(0xFFFFFFFF),
-        secondary = Color(0xFFB8C5D0),
-        background = Color(0xFF1E2328),
-        surface = Color(0xFF2A3038),
-        surfaceVariant = Color(0xFF353D47)
+        secondary = Color(0xFF9C8A7C),
+        background = Color(0xFF1C1816),
+        surface = Color(0xFF2A2420),
+        surfaceVariant = Color(0xFF38302A)
     )
 }

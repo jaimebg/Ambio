@@ -11,14 +11,14 @@
     <string name="sound_fireplace">Fireplace</string>
     <string name="sound_forest">Forest</string>
     <string name="sound_ocean">Ocean</string>
-    <string name="sound_wind">Wind</string>
+    <string name="sound_cave">Cave</string>
 
     <!-- Sound Descriptions -->
     <string name="sound_rain_description">Gentle rain on a window</string>
     <string name="sound_fireplace_description">Crackling fireplace warmth</string>
     <string name="sound_forest_description">Peaceful forest ambiance</string>
     <string name="sound_ocean_description">Calm ocean waves</string>
-    <string name="sound_wind_description">Soft wind through leaves</string>
+    <string name="sound_cave_description">Echoing cave ambiance</string>
 
     <!-- Timer Presets -->
     <string name="preset_25_min">25 min</string>
