@@ -154,6 +154,7 @@ fun HomeScreen(
                                         customMinutes = uiState.customMinutes,
                                         onPresetSelected = { viewModel.onEvent(HomeEvent.SelectPreset(it)) },
                                         onCustomMinutesChanged = { viewModel.onEvent(HomeEvent.SetCustomMinutes(it)) },
+                                        onCustomMinutesChangeFinished = { viewModel.onEvent(HomeEvent.CustomMinutesChangeFinished) },
                                         modifier = Modifier.fillMaxWidth(),
                                         isCompact = isSmallScreen
                                     )

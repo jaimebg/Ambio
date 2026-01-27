@@ -28,6 +28,7 @@ fun TimerPresetSelector(
     customMinutes: Int,
     onPresetSelected: (TimerPreset) -> Unit,
     onCustomMinutesChanged: (Int) -> Unit,
+    onCustomMinutesChangeFinished: () -> Unit,
     modifier: Modifier = Modifier,
     isCompact: Boolean = false
 ) {
@@ -80,6 +81,7 @@ fun TimerPresetSelector(
                 Slider(
                     value = customMinutes.toFloat(),
                     onValueChange = { onCustomMinutesChanged(it.toInt()) },
+                    onValueChangeFinished = onCustomMinutesChangeFinished,
                     valueRange = 1f..120f,
                     steps = 118, // 120 - 1 - 1 = 118 steps for whole numbers
                     colors = SliderDefaults.colors(

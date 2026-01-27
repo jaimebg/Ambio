@@ -113,6 +113,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.SelectSound -> selectSound(event.sound)
             is HomeEvent.SelectPreset -> selectPreset(event.preset)
             is HomeEvent.SetCustomMinutes -> setCustomMinutes(event.minutes)
+            is HomeEvent.CustomMinutesChangeFinished -> persistCustomMinutes()
             is HomeEvent.SetVolume -> setVolume(event.volume, persist = false)
             is HomeEvent.VolumeChangeFinished -> persistVolume()
             is HomeEvent.PlayPause -> playPause()
@@ -196,11 +197,14 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setCustomMinutes(minutes: Int) {
-        hapticManager.tick()
         val clampedMinutes = minutes.coerceIn(1, 120)
         _uiState.update { it.copy(customMinutes = clampedMinutes) }
+    }
+
+    private fun persistCustomMinutes() {
+        hapticManager.tick()
         viewModelScope.launch {
-            preferencesRepository.setLastTimerMinutes(clampedMinutes)
+            preferencesRepository.setLastTimerMinutes(_uiState.value.customMinutes)
         }
     }
 

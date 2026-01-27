@@ -9,6 +9,7 @@ sealed class HomeEvent {
     data class SelectSound(val sound: Sound) : HomeEvent()
     data class SelectPreset(val preset: TimerPreset) : HomeEvent()
     data class SetCustomMinutes(val minutes: Int) : HomeEvent()
+    data object CustomMinutesChangeFinished : HomeEvent()
     data class SetVolume(val volume: Float) : HomeEvent()
     data object VolumeChangeFinished : HomeEvent()
     data object PlayPause : HomeEvent()
