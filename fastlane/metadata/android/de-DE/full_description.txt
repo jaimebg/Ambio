@@ -1,0 +1,46 @@
+Ambio kombiniert Fokus-Timer mit immersiven Klanglandschaften, um dir zu helfen, tiefe Arbeit und Konzentration zu erreichen.
+
+Im Gegensatz zu einfachen Timer-Apps schafft Ambio eine vollständige sensorische Umgebung. Wenn du Regen auswählst, wechselt die gesamte Oberfläche zu beruhigenden Blautönen. Wähle Kaminfeuer, und warme Orangetöne umhüllen dich. Diese dynamische Gestaltung reduziert visuelle Ablenkungen und hält dich im Flow.
+
+FOKUS-TIMER
+Nutze bewährte Pomodoro-Technik-Presets (25 oder 50 Minuten) für strukturierte Arbeitssitzungen. Ein sanfter Gong signalisiert den Abschluss, ohne dich abrupt aus der Konzentration zu reißen. Perfekt zum Lernen, Schreiben, Programmieren oder für jede Aufgabe, die anhaltende Aufmerksamkeit erfordert.
+
+AMBIENT-MODUS
+Keine Sitzung getimed? Wechsle in den Ambient-Modus für kontinuierliche Klangwiedergabe. Ideal zur Entspannung, Meditation, zum Lesen oder zum Einschlafen mit beruhigenden Klängen.
+
+5 HANDGEFERTIGTE KLANGLANDSCHAFTEN
+- Regen: Sanfter Regen am Fenster für Konzentration
+- Kaminfeuer: Knisternde Wärme für gemütlichen Fokus
+- Wald: Friedliche Waldatmosphäre für ruhiges Arbeiten
+- Ozean: Rhythmische Wellen für ruhige Energie
+- Höhle: Hallende Höhlenatmosphäre für tiefe Kontemplation
+
+DATENSCHUTZ ZUERST
+Ambio respektiert deine Zeit UND deine Daten:
+- Funktioniert komplett offline
+- Kein Konto erforderlich
+- Keine Werbung, niemals
+- Kein Tracking oder Analytics
+- Keine Daten verlassen dein Gerät
+- Open Source (MIT-Lizenz)
+
+HINTERGRUNDWIEDERGABE
+Starte deine Sitzung und minimiere die App. Ambio spielt weiter mit vollständigen Medienbenachrichtigungs-Steuerungen. Pausiere, setze fort oder stoppe direkt aus deiner Benachrichtigungsleiste oder dem Sperrbildschirm.
+
+FÜR MODERNES ANDROID GEBAUT
+- Material Design 3 mit dynamischem Theming
+- Flüssige Animationen durchgehend
+- Adaptive Icons mit Android 13+ Monochrom-Unterstützung
+- Effizienter Akkuverbrauch
+- Kleine App-Größe (~8 MB)
+
+FÜR WEN IST AMBIO?
+- Studenten, die sich auf Prüfungen vorbereiten
+- Remote-Arbeiter, die Fokus brauchen
+- Autoren im Kampf gegen Ablenkungen
+- Entwickler in der Zone
+- Jeden, der friedliche Produktivität möchte
+
+Alle Umgebungsklänge sind CC0-lizenziert (Public Domain). Die App selbst ist Open Source unter MIT-Lizenz.
+
+Lade Ambio herunter und transformiere, wie du dich konzentrierst.

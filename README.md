@@ -37,7 +37,7 @@ Choose rain, and the UI shifts to cool blues. Select fireplace, and warm oranges
 
 - **Pomodoro Timer** — 25-min and 50-min presets for focused work sessions
 - **Ambient Mode** — Continuous playback without timer for relaxation or sleep
-- **5 Soundscapes** — Rain, Fireplace, Forest, Ocean, Wind (CC0 licensed)
+- **5 Soundscapes** — Rain, Fireplace, Forest, Ocean, Cave (CC0 licensed)
 - **Dynamic Theming** — UI colors animate smoothly to match selected sound
 - **Background Playback** — Media notification controls, keeps playing when minimized
 - **Haptic Feedback** — Subtle vibrations for interactions
@@ -118,6 +118,28 @@ ui/            # Theme system, typography, shapes
 ./gradlew test            # Run unit tests (75 tests)
 ./gradlew clean           # Clean build cache
 ```
+
+## Store Deployment (Fastlane)
+
+Ambio uses [Fastlane](https://fastlane.tools/) for automated Play Store deployments with localized metadata in 8 languages.
+
+**Supported languages:** English, Spanish, Portuguese (Brazil), German, French, Japanese, Simplified Chinese, Traditional Chinese
+
+```bash
+# Install dependencies
+bundle install
+
+# Deploy metadata only
+bundle exec fastlane deploy_metadata
+
+# Deploy to internal testing
+bundle exec fastlane deploy_internal
+
+# Deploy to production
+bundle exec fastlane deploy
+```
+
+Metadata files are in `fastlane/metadata/android/<locale>/`.
 
 ## Contributing
 

@@ -1,0 +1,4 @@
+- Renamed Wind sound to Cave with new echoing ambiance
+- Fixed infinite break loop issue
+- Improved timer UI and slider performance
+- Enhanced layout for better scrolling

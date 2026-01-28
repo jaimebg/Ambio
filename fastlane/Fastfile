@@ -1,0 +1,42 @@
+default_platform(:android)
+
+platform :android do
+  desc "Deploy metadata (store listing) to Google Play"
+  lane :deploy_metadata do
+    supply(
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Deploy everything including AAB to Google Play (production)"
+  lane :deploy do
+    supply(
+      aab: "../app/build/outputs/bundle/release/app-release.aab",
+      track: "production"
+    )
+  end
+
+  desc "Deploy to internal testing track"
+  lane :deploy_internal do
+    supply(
+      aab: "../app/build/outputs/bundle/release/app-release.aab",
+      track: "internal"
+    )
+  end
+
+  desc "Validate metadata without uploading"
+  lane :validate_metadata do
+    supply(
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      validate_only: true
+    )
+  end
+end

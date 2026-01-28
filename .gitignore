@@ -64,6 +64,13 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+fastlane/.env*
+fastlane/fastlane-485709-140d1ae82e9a.json
+
+# Ruby/Bundler
+vendor/bundle/
+.bundle/
+Gemfile.lock
 
 # Version control
 vcs.xml

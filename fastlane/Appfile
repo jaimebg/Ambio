@@ -1,0 +1,2 @@
+json_key_file("fastlane/fastlane-485709-140d1ae82e9a.json") # Path to the json secret file - follow https://docs.fastlane.tools/actions/supply/#setup
+package_name("com.jbgsoft.ambio")
