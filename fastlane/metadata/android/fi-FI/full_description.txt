@@ -1,0 +1,46 @@
+Ambio yhdistää fokusajastimet upottaviin ympäristööäänimaisemiin auttaakseen sinua saavuttamaan syvän työn ja keskittymisen.
+
+Toisin kuin perusajastinsovellukset, Ambio luo täydellisen aistimympäristön. Kun valitset sateen, koko käyttöliittymä siirtyy rauhoittaviin viileisiin sinisiin sävyihin. Valitse takka, ja lämpimät oranssit sävyt ympäröivät sinut. Tämä dynaaminen teema vähentää visuaalisia häiriötekijöitä ja pitää sinut flow-tilassa.
+
+FOKUSAJASTIN
+Käytä todistettuja Pomodoro-tekniikan esiasetuksia (25 tai 50 minuuttia) jäsenneltyihin työsessioihin. Lempeä äänimerkki ilmoittaa valmistumisesta häiritsemättä keskittymistäsi. Täydellinen opiskeluun, kirjoittamiseen, koodaamiseen tai mihin tahansa tehtävään, joka vaatii jatkuvaa huomiota.
+
+AMBIENT-TILA
+Et mittaa aikaa sessiota? Vaihda ambient-tilaan jatkuvaan äänimaiseman toistoon. Ihanteellinen rentoutumiseen, meditaatioon, lukemiseen tai nukahtamiseen rauhoittavien äänien kanssa.
+
+5 KÄSINTEHTYÄ ÄÄNIMAISEMAA
+- Sade: Lempeä sade ikkunalla keskittymiseen
+- Takka: Rätisevä lämpö kodikkaaseen fokukseen
+- Metsä: Rauhallinen metsätunnelma rauhalliseen työskentelyyn
+- Valtameri: Rytmiset aallot rauhalliseen energiaan
+- Luola: Kaikuva luolatunnelma syvään mietiskelyyn
+
+YKSITYISYYS ENSIN
+Ambio kunnioittaa aikaasi JA tietojasi:
+- Toimii täysin offline
+- Tiliä ei tarvita
+- Ei mainoksia, koskaan
+- Ei seurantaa tai analytiikkaa
+- Tiedot eivät poistu laitteestasi
+- Avoin lähdekoodi (MIT-lisenssi)
+
+TAUSTATOISTO
+Aloita sessiosi ja pienennä sovellus. Ambio jatkaa toistoa täysillä mediailmoitusohjaimilla. Keskeytä, jatka tai lopeta suoraan ilmoituspaneelista tai lukitusnäytöstä.
+
+RAKENNETTU MODERNILLE ANDROIDILLE
+- Material Design 3 dynaamisella teemalla
+- Sulavat animaatiot
+- Mukautuvat kuvakkeet Android 13+ monokromi-tuella
+- Tehokas akunkäyttö
+- Pieni sovelluskoko (~8 MB)
+
+KENELLE AMBIO ON?
+- Kokeisiin valmistautuvat opiskelijat
+- Etätyöntekijät jotka tarvitsevat fokusta
+- Kirjailijat jotka taistelevat häiriötekijöitä vastaan
+- Kehittäjät vyöhykkeellä
+- Kaikki jotka haluavat rauhallista tuottavuutta
+
+Kaikki ympäristöäänet ovat CC0-lisensoituja (julkinen omaisuus). Sovellus on avointa lähdekoodia MIT-lisenssillä.
+
+Lataa Ambio ja muuta tapasi keskittyä.

@@ -1,0 +1,46 @@
+Ambio kombinuje časovače soustředění s pohlcujícími zvukovými krajinami, aby vám pomohl dosáhnout hluboké práce a koncentrace.
+
+Na rozdíl od základních aplikací s časovačem vytváří Ambio kompletní smyslové prostředí. Když vyberete déšť, celé rozhraní se přesune do uklidňujících chladných modrých tónů. Zvolte krb a teplé oranžové tóny vás obejmou. Toto dynamické téma snižuje vizuální rozptylování a udržuje vás ve stavu flow.
+
+ČASOVAČ SOUSTŘEDĚNÍ
+Použijte osvědčené předvolby techniky Pomodoro (25 nebo 50 minut) pro strukturované pracovní relace. Jemný zvuk signalizuje dokončení bez vytržení ze soustředění. Ideální pro studium, psaní, programování nebo jakýkoli úkol vyžadující trvalou pozornost.
+
+AMBIENTNÍ REŽIM
+Nečasujete relaci? Přepněte do ambientního režimu pro nepřetržité přehrávání zvukových krajin. Ideální pro relaxaci, meditaci, čtení nebo usínání při uklidňujících zvucích.
+
+5 RUČNĚ VYTVOŘENÝCH ZVUKOVÝCH KRAJIN
+- Déšť: Jemný déšť na okno pro koncentraci
+- Krb: Praskající teplo pro útulné soustředění
+- Les: Klidná lesní atmosféra pro pokojnou práci
+- Oceán: Rytmické vlny pro klidnou energii
+- Jeskyně: Ozvěny jeskyně pro hlubokou kontemplaci
+
+SOUKROMÍ NA PRVNÍM MÍSTĚ
+Ambio respektuje váš čas I vaše data:
+- Funguje zcela offline
+- Nevyžaduje účet
+- Žádné reklamy, nikdy
+- Žádné sledování ani analytika
+- Žádná data neopouštějí vaše zařízení
+- Open source (licence MIT)
+
+PŘEHRÁVÁNÍ NA POZADÍ
+Spusťte relaci a minimalizujte aplikaci. Ambio pokračuje v přehrávání s plnými ovládacími prvky v oznámení. Pozastavte, obnovte nebo zastavte přímo z panelu oznámení nebo zamykací obrazovky.
+
+VYTVOŘENO PRO MODERNÍ ANDROID
+- Material Design 3 s dynamickým tématem
+- Plynulé animace
+- Adaptivní ikony s podporou monochromatického režimu Android 13+
+- Efektivní využití baterie
+- Malá velikost aplikace (~8 MB)
+
+PRO KOHO JE AMBIO?
+- Studenti připravující se na zkoušky
+- Vzdálení pracovníci potřebující soustředění
+- Spisovatelé bojující s rozptylováním
+- Vývojáři v zóně
+- Kdokoli, kdo chce klidnou produktivitu
+
+Všechny okolní zvuky jsou licencovány CC0 (veřejné vlastnictví). Samotná aplikace je open source pod licencí MIT.
+
+Stáhněte si Ambio a proměňte způsob, jakým se soustředíte.

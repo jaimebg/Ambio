@@ -1,0 +1,46 @@
+Ambio combine des minuteurs de focus avec des paysages sonores ambiants immersifs pour vous aider à atteindre le travail en profondeur et la concentration.
+
+Contrairement aux applications de minuteur de base, Ambio crée un environnement sensoriel complet. Lorsque vous sélectionnez la pluie, toute l'interface bascule vers des bleus frais apaisants. Choisissez le foyer et des oranges chauds vous enveloppent. Ce thème dynamique réduit les distractions visuelles et vous maintient dans le flux.
+
+MINUTEUR DE FOCUS
+Utilisez les préréglages éprouvés de la technique Pomodoro (25 ou 50 minutes) pour des sessions de travail structurées. Un son doux signale l'achèvement sans vous sortir de votre concentration. Parfait pour étudier, écrire, coder ou toute tâche nécessitant une attention soutenue.
+
+MODE AMBIANT
+Vous ne chronométrez pas une session? Passez en mode ambiant pour une lecture continue des paysages sonores. Idéal pour la relaxation, la méditation, la lecture ou pour s'endormir avec des sons apaisants.
+
+5 PAYSAGES SONORES ARTISANAUX
+- Pluie: Pluie douce sur une fenêtre pour la concentration
+- Foyer: Chaleur crépitante pour un focus confortable
+- Forêt: Ambiance forestière paisible pour le travail calme
+- Océan: Vagues rythmiques pour une énergie calme
+- Grotte: Ambiance de grotte en écho pour la contemplation profonde
+
+CONFIDENTIALITÉ D'ABORD
+Ambio respecte votre temps ET vos données:
+- Fonctionne entièrement hors ligne
+- Aucun compte requis
+- Aucune publicité, jamais
+- Aucun pistage ou analytique
+- Aucune donnée ne quitte votre appareil
+- Code source ouvert (Licence MIT)
+
+LECTURE EN ARRIÈRE-PLAN
+Démarrez votre session et minimisez l'application. Ambio continue de jouer avec les contrôles complets de notification multimédia. Mettez en pause, reprenez ou arrêtez directement depuis le panneau de notifications ou l'écran de verrouillage.
+
+CONÇU POUR ANDROID MODERNE
+- Material Design 3 avec thème dynamique
+- Animations fluides
+- Icônes adaptatives avec support monochrome Android 13+
+- Utilisation efficace de la batterie
+- Petite taille d'application (~8 Mo)
+
+POUR QUI EST AMBIO?
+- Étudiants se préparant aux examens
+- Travailleurs à distance ayant besoin de focus
+- Écrivains luttant contre les distractions
+- Développeurs dans la zone
+- Toute personne désirant une productivité paisible
+
+Tous les sons ambiants sont sous licence CC0 (domaine public). L'application elle-même est à code source ouvert sous licence MIT.
+
+Téléchargez Ambio et transformez votre façon de vous concentrer.

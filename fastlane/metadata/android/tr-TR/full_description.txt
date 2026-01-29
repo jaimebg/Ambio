@@ -1,0 +1,46 @@
+Ambio, derin çalışma ve konsantrasyona ulaşmanıza yardımcı olmak için odak zamanlayıcılarını sürükleyici ortam ses manzaralarıyla birleştirir.
+
+Temel zamanlayıcı uygulamalarının aksine, Ambio eksiksiz bir duyusal ortam yaratır. Yağmuru seçtiğinizde, tüm arayüz sakinleştirici soğuk mavi tonlara kayar. Şömineyi seçin ve sıcak turuncu tonlar sizi sarar. Bu dinamik tema görsel dikkat dağıtıcıları azaltır ve sizi akış halinde tutar.
+
+ODAK ZAMANLAYICI
+Yapılandırılmış çalışma seansları için kanıtlanmış Pomodoro tekniği ön ayarlarını (25 veya 50 dakika) kullanın. Hafif bir zil sesi, sizi odaktan koparmadan tamamlandığını bildirir. Çalışma, yazma, kodlama veya sürekli dikkat gerektiren herhangi bir görev için mükemmeldir.
+
+ORTAM MODU
+Bir seans zamanlama yapmıyor musunuz? Sürekli ses manzarası çalması için ortam moduna geçin. Rahatlama, meditasyon, okuma veya sakinleştirici seslerle uykuya dalma için idealdir.
+
+5 EL YAPIMI SES MANZARASI
+- Yağmur: Konsantrasyon için cama düşen hafif yağmur
+- Şömine: Rahat odak için çıtırdayan sıcaklık
+- Orman: Sakin çalışma için huzurlu orman ortamı
+- Okyanus: Sakin enerji için ritmik dalgalar
+- Mağara: Derin düşünce için yankılanan mağara ortamı
+
+GİZLİLİK ÖNCELİKLİ
+Ambio zamanınıza VE verilerinize saygı duyar:
+- Tamamen çevrimdışı çalışır
+- Hesap gerekmez
+- Asla reklam yok
+- İzleme veya analiz yok
+- Hiçbir veri cihazınızdan çıkmaz
+- Açık kaynak (MIT Lisansı)
+
+ARKA PLAN OYNATMA
+Seansınızı başlatın ve uygulamayı küçültün. Ambio tam medya bildirim kontrolleriyle çalmaya devam eder. Bildirim çekmecenizden veya kilit ekranınızdan doğrudan duraklatın, devam ettirin veya durdurun.
+
+MODERN ANDROİD İÇİN TASARLANDI
+- Dinamik temalı Material Design 3
+- Akıcı animasyonlar
+- Android 13+ monokrom destekli uyarlanabilir simgeler
+- Verimli pil kullanımı
+- Küçük uygulama boyutu (~8 MB)
+
+AMBIO KİM İÇİN?
+- Sınavlara hazırlayan öğrenciler
+- Odaklanmaya ihtiyaç duyan uzaktan çalışanlar
+- Dikkat dağıtıcılarla savaşan yazarlar
+- Akış halindeki geliştiriciler
+- Huzurlu üretkenlik isteyen herkes
+
+Tüm ortam sesleri CC0 lisanslıdır (kamu malı). Uygulamanın kendisi MIT Lisansı altında açık kaynaktır.
+
+Ambio'yu indirin ve odaklanma şeklinizi dönüştürün.

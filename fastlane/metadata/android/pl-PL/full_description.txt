@@ -1,0 +1,46 @@
+Ambio łączy timery skupienia z wciągającymi krajobrazami dźwiękowymi, aby pomóc Ci osiągnąć głęboką pracę i koncentrację.
+
+W przeciwieństwie do podstawowych aplikacji z timerem, Ambio tworzy kompletne środowisko sensoryczne. Gdy wybierzesz deszcz, cały interfejs przechodzi w uspokajające chłodne odcienie niebieskiego. Wybierz kominek, a ciepłe pomarańcze otulą Cię. Ten dynamiczny motyw zmniejsza rozproszenia wizualne i utrzymuje Cię w stanie przepływu.
+
+TIMER SKUPIENIA
+Użyj sprawdzonych presetów techniki Pomodoro (25 lub 50 minut) do strukturyzowanych sesji pracy. Delikatny dźwięk sygnalizuje zakończenie bez wyrywania Cię ze skupienia. Idealny do nauki, pisania, programowania lub każdego zadania wymagającego ciągłej uwagi.
+
+TRYB AMBIENT
+Nie mierzysz czasu sesji? Przełącz się na tryb ambient do ciągłego odtwarzania krajobrazów dźwiękowych. Idealny do relaksu, medytacji, czytania lub zasypiania przy uspokajających dźwiękach.
+
+5 RĘCZNIE TWORZONYCH KRAJOBRAZÓW DŹWIĘKOWYCH
+- Deszcz: Łagodny deszcz za oknem dla koncentracji
+- Kominek: Trzaskające ciepło dla przytulnego skupienia
+- Las: Spokojna atmosfera lasu do cichej pracy
+- Ocean: Rytmiczne fale dla spokojnej energii
+- Jaskinia: Echowe brzmienie jaskini do głębokiej kontemplacji
+
+PRYWATNOŚĆ PRZEDE WSZYSTKIM
+Ambio szanuje Twój czas I Twoje dane:
+- Działa całkowicie offline
+- Nie wymaga konta
+- Bez reklam, nigdy
+- Bez śledzenia i analityki
+- Dane nie opuszczają Twojego urządzenia
+- Open source (Licencja MIT)
+
+ODTWARZANIE W TLE
+Rozpocznij sesję i zminimalizuj aplikację. Ambio kontynuuje odtwarzanie z pełnymi kontrolkami w powiadomieniu. Wstrzymuj, wznawiaj lub zatrzymuj bezpośrednio z panelu powiadomień lub ekranu blokady.
+
+ZBUDOWANY DLA NOWOCZESNEGO ANDROIDA
+- Material Design 3 z dynamicznym motywem
+- Płynne animacje
+- Adaptacyjne ikony ze wsparciem monochromatycznym Android 13+
+- Efektywne zużycie baterii
+- Mały rozmiar aplikacji (~8 MB)
+
+DLA KOGO JEST AMBIO?
+- Studenci przygotowujący się do egzaminów
+- Pracownicy zdalni potrzebujący skupienia
+- Pisarze walczący z rozproszeniami
+- Programiści w strefie
+- Każdy, kto chce spokojnej produktywności
+
+Wszystkie dźwięki otoczenia są licencjonowane CC0 (domena publiczna). Sama aplikacja jest open source na licencji MIT.
+
+Pobierz Ambio i zmień sposób, w jaki się skupiasz.

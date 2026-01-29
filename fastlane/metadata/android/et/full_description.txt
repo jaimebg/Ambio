@@ -1,0 +1,46 @@
+Ambio ühendab fookuse taimerid kaasahaaravate ümbritsevate helimaastikega, et aidata teil saavutada süvatööd ja keskendumist.
+
+Erinevalt põhilistest taimeri rakendustest loob Ambio täieliku sensoorse keskkonna. Kui valite vihma, nihkub kogu liides rahustavatesse jahedatesse sinistesse toonidesse. Valige kamin ja soojad oranžid toonid ümbritsevad teid. See dünaamiline teema vähendab visuaalseid segajaid ja hoiab teid voo seisundis.
+
+FOOKUSE TAIMER
+Kasutage tõestatud Pomodoro tehnika eelseadistusi (25 või 50 minutit) struktureeritud tööseansside jaoks. Õrn heli annab märku lõpetamisest ilma teid keskendumisest välja rebimata. Sobib suurepäraselt õppimiseks, kirjutamiseks, kodeerimiseks või mis tahes ülesandeks, mis nõuab püsivat tähelepanu.
+
+ÜMBRITSEV REŽIIM
+Ei mõõda seansi aega? Lülituge ümbritsevale režiimile katkematuks helimaastiku esitluseks. Ideaalne lõõgastumiseks, meditatsiooniks, lugemiseks või rahustavate helide saatel uinumiseks.
+
+5 KÄSITSI LOODUD HELIMAASTIKKU
+- Vihm: Õrn vihm aknal keskendumiseks
+- Kamin: Praksatav soojus hubases fookuses
+- Mets: Rahulik metsa atmosfäär vaikse töö jaoks
+- Ookean: Rütmilised lained rahuliku energia jaoks
+- Koobas: Kajav koopa atmosfäär sügavaks mõtiskluseks
+
+PRIVAATSUS ENNEKÕIKE
+Ambio austab teie aega JA teie andmeid:
+- Töötab täielikult võrguühenduseta
+- Kontot pole vaja
+- Reklaame pole, mitte kunagi
+- Jälgimist ega analüütikat pole
+- Andmed ei lahku teie seadmest
+- Avatud lähtekood (MIT litsents)
+
+TAUSTAESITUS
+Alustage seanssi ja minimeerige rakendus. Ambio jätkab esitamist täielike meediumiteavituse juhtnuppudega. Peatage, jätkake või peatage otse teavituspaneelilt või lukustusekraanilt.
+
+EHITATUD KAASAEGSELE ANDROIDILE
+- Material Design 3 dünaamilise teemaga
+- Sujuvad animatsioonid
+- Kohanduvad ikoonid Android 13+ ühevärvilise toega
+- Tõhus aku kasutus
+- Väike rakenduse suurus (~8 MB)
+
+KELLELE ON AMBIO?
+- Eksamiteks valmistuvad üliõpilased
+- Fookust vajavad kaugtöötajad
+- Segajatega võitlevad kirjanikud
+- Tsoonis olevad arendajad
+- Kõik, kes soovivad rahulikku tootlikkust
+
+Kõik ümbritsevad helid on CC0 litsentsiga (avalik omand). Rakendus ise on avatud lähtekoodiga MIT litsentsi all.
+
+Laadige alla Ambio ja muutke oma keskendumise viisi.

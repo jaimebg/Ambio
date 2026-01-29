@@ -1,0 +1,46 @@
+Ambio kombinuje časovače sústredenia s pohlcujúcimi zvukovými krajinami, aby vám pomohol dosiahnuť hlbokú prácu a koncentráciu.
+
+Na rozdiel od základných aplikácií s časovačom vytvára Ambio kompletné zmyslové prostredie. Keď vyberiete dážď, celé rozhranie sa presunie do upokojujúcich chladných modrých tónov. Zvoľte krb a teplé oranžové tóny vás objímú. Táto dynamická téma znižuje vizuálne rozptyľovanie a udržuje vás v stave flow.
+
+ČASOVAČ SÚSTREDENIA
+Použite overené predvoľby techniky Pomodoro (25 alebo 50 minút) pre štrukturované pracovné relácie. Jemný zvuk signalizuje dokončenie bez vytrhnutia zo sústredenia. Ideálne na štúdium, písanie, programovanie alebo akúkoľvek úlohu vyžadujúcu trvalú pozornosť.
+
+AMBIENTNÝ REŽIM
+Nečasujete reláciu? Prepnite do ambientného režimu pre nepretržité prehrávanie zvukových krajín. Ideálne na relaxáciu, meditáciu, čítanie alebo zaspávanie pri upokojujúcich zvukoch.
+
+5 RUČNE VYTVORENÝCH ZVUKOVÝCH KRAJÍN
+- Dážď: Jemný dážď na okno pre koncentráciu
+- Krb: Praskajúce teplo pre útulné sústredenie
+- Les: Pokojná lesná atmosféra pre tichú prácu
+- Oceán: Rytmické vlny pre pokojnú energiu
+- Jaskyňa: Ozveny jaskyne pre hlbokú kontempláciu
+
+SÚKROMIE NA PRVOM MIESTE
+Ambio rešpektuje váš čas AJ vaše dáta:
+- Funguje úplne offline
+- Nevyžaduje účet
+- Žiadne reklamy, nikdy
+- Žiadne sledovanie ani analytika
+- Žiadne dáta neopúšťajú vaše zariadenie
+- Open source (licencia MIT)
+
+PREHRÁVANIE NA POZADÍ
+Spustite reláciu a minimalizujte aplikáciu. Ambio pokračuje v prehrávaní s plnými ovládacími prvkami v oznámení. Pozastavte, obnovte alebo zastavte priamo z panela oznámení alebo zamykacej obrazovky.
+
+VYTVORENÉ PRE MODERNÝ ANDROID
+- Material Design 3 s dynamickou témou
+- Plynulé animácie
+- Adaptívne ikony s podporou monochromatického režimu Android 13+
+- Efektívne využitie batérie
+- Malá veľkosť aplikácie (~8 MB)
+
+PRE KOHO JE AMBIO?
+- Študenti pripravujúci sa na skúšky
+- Vzdialení pracovníci potrebujúci sústredenie
+- Spisovatelia bojujúci s rozptyľovaním
+- Vývojári v zóne
+- Ktokoľvek, kto chce pokojnú produktivitu
+
+Všetky okolité zvuky sú licencované CC0 (verejné vlastníctvo). Samotná aplikácia je open source pod licenciou MIT.
+
+Stiahnite si Ambio a premeňte spôsob, akým sa sústreďujete.

@@ -1,0 +1,46 @@
+Ambio combină timere de concentrare cu peisaje sonore ambientale imersive pentru a te ajuta să atingi munca profundă și concentrarea.
+
+Spre deosebire de aplicațiile timer de bază, Ambio creează un mediu senzorial complet. Când selectezi ploaia, întreaga interfață se schimbă în tonuri albastre reci liniștitoare. Alege șeminul și tonuri calde de portocaliu te îmbrățișează. Această temă dinamică reduce distragerile vizuale și te menține în stare de flow.
+
+TIMER DE CONCENTRARE
+Folosește preseturile dovedite ale tehnicii Pomodoro (25 sau 50 de minute) pentru sesiuni de lucru structurate. Un sunet blând semnalează finalizarea fără a te scoate din concentrare. Perfect pentru studiu, scris, programare sau orice sarcină care necesită atenție susținută.
+
+MOD AMBIENT
+Nu cronometrezi o sesiune? Comută la modul ambient pentru redare continuă a peisajelor sonore. Ideal pentru relaxare, meditație, citit sau adormit cu sunete liniștitoare.
+
+5 PEISAJE SONORE ARTIZANALE
+- Ploaie: Ploaie ușoară pe fereastră pentru concentrare
+- Șemineu: Căldură trosnindă pentru concentrare confortabilă
+- Pădure: Ambianță forestieră pașnică pentru muncă calmă
+- Ocean: Valuri ritmice pentru energie calmă
+- Peșteră: Ambianță de peșteră cu ecou pentru contemplare profundă
+
+CONFIDENȚIALITATE PE PRIMUL LOC
+Ambio respectă timpul tău ȘI datele tale:
+- Funcționează complet offline
+- Nu necesită cont
+- Fără reclame, niciodată
+- Fără urmărire sau analize
+- Nicio dată nu părăsește dispozitivul tău
+- Open source (Licență MIT)
+
+REDARE ÎN FUNDAL
+Începe sesiunea și minimizează aplicația. Ambio continuă redarea cu controale complete de notificare media. Pune pe pauză, reia sau oprește direct din panoul de notificări sau ecranul de blocare.
+
+CONSTRUIT PENTRU ANDROID MODERN
+- Material Design 3 cu temă dinamică
+- Animații fluide
+- Pictograme adaptive cu suport monocrom Android 13+
+- Utilizare eficientă a bateriei
+- Dimensiune mică a aplicației (~8 MB)
+
+PENTRU CINE ESTE AMBIO?
+- Studenți care se pregătesc pentru examene
+- Lucrători la distanță care au nevoie de concentrare
+- Scriitori care luptă cu distragerile
+- Dezvoltatori în zonă
+- Oricine dorește productivitate pașnică
+
+Toate sunetele ambientale sunt licențiate CC0 (domeniu public). Aplicația în sine este open source sub Licența MIT.
+
+Descarcă Ambio și transformă modul în care te concentrezi.

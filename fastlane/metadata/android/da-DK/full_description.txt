@@ -1,0 +1,46 @@
+Ambio kombinerer fokustimere med fordybende omgivelseslydlandskaber for at hjælpe dig med at opnå dybt arbejde og koncentration.
+
+I modsætning til basale timer-apps skaber Ambio et komplet sensorisk miljø. Når du vælger regn, skifter hele grænsefladen til beroligende kølige blå toner. Vælg pejsen, og varme orange toner omfavner dig. Dette dynamiske tema reducerer visuelle distraktioner og holder dig i flow.
+
+FOKUSTIMER
+Brug gennemprøvede Pomodoro-teknik forudindstillinger (25 eller 50 minutter) til strukturerede arbejdssessioner. En blid klokkelyd signalerer afslutning uden at rive dig ud af fokus. Perfekt til studier, skrivning, kodning eller enhver opgave der kræver vedvarende opmærksomhed.
+
+AMBIENT TILSTAND
+Timer du ikke en session? Skift til ambient tilstand for kontinuerlig lydlandskafsafspilning. Ideel til afslapning, meditation, læsning eller at falde i søvn til beroligende lyde.
+
+5 HÅNDLAVEDE LYDLANDSKABER
+- Regn: Blid regn på et vindue til koncentration
+- Pejs: Knitrende varme til hyggelig fokus
+- Skov: Fredfyldt skovambiance til roligt arbejde
+- Hav: Rytmiske bølger til rolig energi
+- Grotte: Ekkoende grotteambiance til dyb kontemplation
+
+PRIVATLIV FØRST
+Ambio respekterer din tid OG dine data:
+- Fungerer helt offline
+- Ingen konto krævet
+- Ingen reklamer, aldrig
+- Ingen sporing eller analyse
+- Ingen data forlader din enhed
+- Open source (MIT-licens)
+
+BAGGRUNDSAFSPILNING
+Start din session og minimer appen. Ambio fortsætter med at spille med fulde medienotifikationskontroller. Sæt på pause, genoptag eller stop direkte fra notifikationspanelet eller låseskærmen.
+
+BYGGET TIL MODERNE ANDROID
+- Material Design 3 med dynamisk tema
+- Glatte animationer
+- Adaptive ikoner med Android 13+ monokrom understøttelse
+- Effektivt batteriforbrug
+- Lille appstørrelse (~8 MB)
+
+HVEM ER AMBIO TIL?
+- Studerende der forbereder sig til eksamener
+- Fjernarbejdere der har brug for fokus
+- Forfattere der kæmper mod distraktioner
+- Udviklere i zonen
+- Alle der ønsker fredelig produktivitet
+
+Alle omgivelseslyde er CC0-licenserede (offentligt domæne). Appen selv er open source under MIT-licens.
+
+Download Ambio og forvandl måden du fokuserer på.

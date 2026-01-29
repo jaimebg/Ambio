@@ -1,0 +1,46 @@
+Ambio kết hợp hẹn giờ tập trung với âm thanh môi trường sống động để giúp bạn đạt được công việc sâu và sự tập trung.
+
+Không giống các ứng dụng hẹn giờ cơ bản, Ambio tạo ra môi trường cảm giác hoàn chỉnh. Khi bạn chọn mưa, toàn bộ giao diện chuyển sang tông màu xanh mát dịu. Chọn lò sưởi và tông cam ấm sẽ bao quanh bạn. Chủ đề động này giảm sự phân tâm thị giác và giữ bạn trong trạng thái dòng chảy.
+
+HẸN GIỜ TẬP TRUNG
+Sử dụng cài đặt sẵn kỹ thuật Pomodoro đã được chứng minh (25 hoặc 50 phút) cho các phiên làm việc có cấu trúc. Tiếng chuông nhẹ báo hiệu hoàn thành mà không làm gián đoạn sự tập trung của bạn. Hoàn hảo cho việc học, viết, lập trình hoặc bất kỳ nhiệm vụ nào đòi hỏi sự chú ý liên tục.
+
+CHẾ ĐỘ MÔI TRƯỜNG
+Không đang hẹn giờ? Chuyển sang chế độ môi trường để phát âm thanh liên tục. Lý tưởng cho thư giãn, thiền định, đọc sách hoặc ngủ với âm thanh êm dịu.
+
+5 CẢNH ÂM THANH THỦ CÔNG
+- Mưa: Mưa nhẹ trên cửa sổ để tập trung
+- Lò sưởi: Hơi ấm lách tách cho sự tập trung ấm cúng
+- Rừng: Không gian rừng yên bình cho công việc bình lặng
+- Đại dương: Sóng nhịp nhàng cho năng lượng bình tĩnh
+- Hang động: Âm vang hang động cho sự chiêm nghiệm sâu sắc
+
+QUYỀN RIÊNG TƯ LÀ TRÊN HẾT
+Ambio tôn trọng thời gian VÀ dữ liệu của bạn:
+- Hoạt động hoàn toàn ngoại tuyến
+- Không cần tài khoản
+- Không quảng cáo, không bao giờ
+- Không theo dõi hoặc phân tích
+- Không dữ liệu nào rời khỏi thiết bị của bạn
+- Mã nguồn mở (Giấy phép MIT)
+
+PHÁT TRONG NỀN
+Bắt đầu phiên và thu nhỏ ứng dụng. Ambio tiếp tục phát với đầy đủ điều khiển thông báo phương tiện. Tạm dừng, tiếp tục hoặc dừng trực tiếp từ thanh thông báo hoặc màn hình khóa.
+
+XÂY DỰNG CHO ANDROID HIỆN ĐẠI
+- Material Design 3 với chủ đề động
+- Hoạt ảnh mượt mà
+- Biểu tượng thích ứng với hỗ trợ đơn sắc Android 13+
+- Sử dụng pin hiệu quả
+- Kích thước ứng dụng nhỏ (~8 MB)
+
+AMBIO DÀNH CHO AI?
+- Sinh viên chuẩn bị thi
+- Người làm việc từ xa cần tập trung
+- Nhà văn chiến đấu với sự phân tâm
+- Lập trình viên đang trong trạng thái tập trung
+- Bất kỳ ai muốn năng suất bình yên
+
+Tất cả âm thanh môi trường được cấp phép CC0 (miền công cộng). Ứng dụng là mã nguồn mở theo Giấy phép MIT.
+
+Tải Ambio và thay đổi cách bạn tập trung.

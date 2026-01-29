@@ -1,0 +1,46 @@
+O Ambio combina temporizadores de foco com paisagens sonoras ambiente imersivas para o ajudar a alcançar trabalho profundo e concentração.
+
+Ao contrário das aplicações básicas de temporizador, o Ambio cria um ambiente sensorial completo. Quando seleciona a chuva, toda a interface muda para tons azuis frescos e calmantes. Escolha a lareira e tons quentes de laranja envolvem-no. Este tema dinâmico reduz as distrações visuais e mantém-no em estado de fluxo.
+
+TEMPORIZADOR DE FOCO
+Utilize predefinições comprovadas da técnica Pomodoro (25 ou 50 minutos) para sessões de trabalho estruturadas. Um som suave sinaliza a conclusão sem o retirar da concentração. Perfeito para estudar, escrever, programar ou qualquer tarefa que exija atenção sustentada.
+
+MODO AMBIENTE
+Não está a cronometrar uma sessão? Mude para o modo ambiente para reprodução contínua de paisagens sonoras. Ideal para relaxamento, meditação, leitura ou adormecer com sons calmantes.
+
+5 PAISAGENS SONORAS ARTESANAIS
+- Chuva: Chuva suave numa janela para concentração
+- Lareira: Calor crepitante para foco acolhedor
+- Floresta: Ambiente florestal pacífico para trabalho calmo
+- Oceano: Ondas rítmicas para energia calma
+- Gruta: Ambiente de gruta com eco para contemplação profunda
+
+PRIVACIDADE EM PRIMEIRO LUGAR
+O Ambio respeita o seu tempo E os seus dados:
+- Funciona completamente offline
+- Não requer conta
+- Sem anúncios, nunca
+- Sem rastreamento ou análises
+- Nenhum dado sai do seu dispositivo
+- Código aberto (Licença MIT)
+
+REPRODUÇÃO EM SEGUNDO PLANO
+Inicie a sua sessão e minimize a aplicação. O Ambio continua a reproduzir com controlos completos de notificação de multimédia. Pause, retome ou pare diretamente a partir do painel de notificações ou do ecrã de bloqueio.
+
+CONSTRUÍDO PARA ANDROID MODERNO
+- Material Design 3 com tema dinâmico
+- Animações suaves
+- Ícones adaptativos com suporte monocromático Android 13+
+- Utilização eficiente da bateria
+- Tamanho pequeno da aplicação (~8 MB)
+
+PARA QUEM É O AMBIO?
+- Estudantes a preparar-se para exames
+- Trabalhadores remotos que precisam de foco
+- Escritores a combater distrações
+- Programadores na zona
+- Qualquer pessoa que queira produtividade tranquila
+
+Todos os sons ambiente são licenciados CC0 (domínio público). A aplicação é código aberto sob Licença MIT.
+
+Transfira o Ambio e transforme a forma como se concentra.

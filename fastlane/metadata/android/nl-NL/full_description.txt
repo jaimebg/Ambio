@@ -1,0 +1,46 @@
+Ambio combineert focustimers met meeslepende omgevingsgeluiden om je te helpen diep werk en concentratie te bereiken.
+
+In tegenstelling tot basis timer-apps creëert Ambio een complete zintuiglijke omgeving. Wanneer je regen selecteert, verschuift de hele interface naar rustgevende koele blauwtinten. Kies de open haard en warme oranjetinten omhullen je. Dit dynamische thema vermindert visuele afleidingen en houdt je in de flow.
+
+FOCUSTIMER
+Gebruik bewezen Pomodoro-techniek presets (25 of 50 minuten) voor gestructureerde werksessies. Een zacht geluidje signaleert voltooiing zonder je uit je concentratie te halen. Perfect voor studeren, schrijven, programmeren of elke taak die aanhoudende aandacht vereist.
+
+AMBIENT MODUS
+Geen sessie aan het timen? Schakel over naar ambient modus voor continue geluidsweergave. Ideaal voor ontspanning, meditatie, lezen of in slaap vallen met rustgevende geluiden.
+
+5 HANDGEMAAKTE GELUIDSLANDSCHAPPEN
+- Regen: Zachte regen op een raam voor concentratie
+- Open haard: Knapperend vuur voor gezellige focus
+- Bos: Vredig bosgeluid voor rustig werken
+- Oceaan: Ritmische golven voor kalme energie
+- Grot: Echoënd grotgeluid voor diepe contemplatie
+
+PRIVACY EERST
+Ambio respecteert je tijd EN je gegevens:
+- Werkt volledig offline
+- Geen account nodig
+- Geen advertenties, nooit
+- Geen tracking of analytics
+- Geen gegevens verlaten je apparaat
+- Open source (MIT-licentie)
+
+ACHTERGRONDWEERGAVE
+Start je sessie en minimaliseer de app. Ambio blijft spelen met volledige mediameldingsbesturing. Pauzeer, hervat of stop direct vanuit je meldingenscherm of vergrendelscherm.
+
+GEBOUWD VOOR MODERN ANDROID
+- Material Design 3 met dynamisch thema
+- Vloeiende animaties
+- Adaptieve iconen met Android 13+ monochrome ondersteuning
+- Efficiënt batterijgebruik
+- Kleine app-grootte (~8 MB)
+
+VOOR WIE IS AMBIO?
+- Studenten die zich voorbereiden op examens
+- Thuiswerkers die focus nodig hebben
+- Schrijvers die afleidingen bestrijden
+- Ontwikkelaars in de zone
+- Iedereen die vredige productiviteit wil
+
+Alle omgevingsgeluiden zijn CC0-gelicentieerd (publiek domein). De app zelf is open source onder MIT-licentie.
+
+Download Ambio en transformeer hoe je focust.

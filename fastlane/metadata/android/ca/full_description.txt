@@ -1,0 +1,46 @@
+Ambio combina temporitzadors de concentració amb paisatges sonors ambientals immersius per ajudar-te a aconseguir treball profund i concentració.
+
+A diferència de les aplicacions bàsiques de temporitzador, Ambio crea un entorn sensorial complet. Quan selecciones la pluja, tota la interfície canvia a tons blaus freds i relaxants. Tria la llar de foc i tons taronja càlids t'envolten. Aquest tema dinàmic redueix les distraccions visuals i et manté en estat de flux.
+
+TEMPORITZADOR DE CONCENTRACIÓ
+Utilitza les configuracions provades de la tècnica Pomodoro (25 o 50 minuts) per a sessions de treball estructurades. Un so suau assenyala la finalització sense treure't de la concentració. Perfecte per estudiar, escriure, programar o qualsevol tasca que requereixi atenció sostinguda.
+
+MODE AMBIENT
+No estàs cronometrant una sessió? Canvia al mode ambient per a reproducció contínua de paisatges sonors. Ideal per a relaxació, meditació, lectura o adormir-se amb sons relaxants.
+
+5 PAISATGES SONORS ARTESANALS
+- Pluja: Pluja suau a la finestra per a concentració
+- Llar de foc: Escalfor crepitant per a concentració acollidora
+- Bosc: Ambient forestal pacífic per a treball tranquil
+- Oceà: Ones rítmiques per a energia calmada
+- Cova: Ambient de cova resssonant per a contemplació profunda
+
+PRIVACITAT PRIMER
+Ambio respecta el teu temps I les teves dades:
+- Funciona completament fora de línia
+- No requereix compte
+- Sense anuncis, mai
+- Sense seguiment ni analítiques
+- Cap dada surt del teu dispositiu
+- Codi obert (Llicència MIT)
+
+REPRODUCCIÓ EN SEGON PLA
+Inicia la sessió i minimitza l'aplicació. Ambio continua reproduint amb controls complets de notificació multimèdia. Pausa, reprèn o atura directament des del panell de notificacions o la pantalla de bloqueig.
+
+CONSTRUÏT PER A ANDROID MODERN
+- Material Design 3 amb tema dinàmic
+- Animacions suaus
+- Icones adaptatives amb suport monocrom Android 13+
+- Ús eficient de bateria
+- Mida petita de l'aplicació (~8 MB)
+
+PER A QUI ÉS AMBIO?
+- Estudiants que es preparen per a exàmens
+- Treballadors remots que necessiten concentració
+- Escriptors que lluiten contra les distraccions
+- Desenvolupadors en la zona
+- Qualsevol que vulgui productivitat tranquil·la
+
+Tots els sons ambientals tenen llicència CC0 (domini públic). L'aplicació en si és de codi obert sota Llicència MIT.
+
+Descarrega Ambio i transforma com et concentres.

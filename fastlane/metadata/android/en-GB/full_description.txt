@@ -1,0 +1,46 @@
+Ambio combines focus timers with immersive ambient soundscapes to help you achieve deep work and concentration.
+
+Unlike basic timer apps, Ambio creates a complete sensory environment. When you select rain, the entire interface shifts to calming cool blues. Choose fireplace, and warm oranges embrace you. This dynamic theming reduces visual distractions and keeps you in flow.
+
+FOCUS TIMER
+Use proven Pomodoro technique presets (25 or 50 minutes) for structured work sessions. A gentle chime signals completion without jarring you out of focus. Perfect for studying, writing, coding, or any task requiring sustained attention.
+
+AMBIENT MODE
+Not timing a session? Switch to ambient mode for continuous soundscape playback. Ideal for relaxation, meditation, reading, or falling asleep to calming sounds.
+
+5 HANDCRAFTED SOUNDSCAPES
+- Rain: Gentle rain on a window for concentration
+- Fireplace: Crackling warmth for cosy focus
+- Forest: Peaceful forest ambience for calm work
+- Ocean: Rhythmic waves for calm energy
+- Cave: Echoing cave ambience for deep contemplation
+
+PRIVACY FIRST
+Ambio respects your time AND your data:
+- Works completely offline
+- No account required
+- No adverts, ever
+- No tracking or analytics
+- No data leaves your device
+- Open source (MIT Licence)
+
+BACKGROUND PLAYBACK
+Start your session and minimise the app. Ambio continues playing with full media notification controls. Pause, resume, or stop directly from your notification shade or lock screen.
+
+BUILT FOR MODERN ANDROID
+- Material Design 3 with dynamic theming
+- Smooth animations throughout
+- Adaptive icons with Android 13+ monochrome support
+- Efficient battery usage
+- Small app size (~8 MB)
+
+WHO IS AMBIO FOR?
+- Students preparing for exams
+- Remote workers needing focus
+- Writers battling distractions
+- Developers in the zone
+- Anyone who wants peaceful productivity
+
+All ambient sounds are CC0 licensed (public domain). The app itself is open source under MIT Licence.
+
+Download Ambio and transform how you focus.

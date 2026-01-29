@@ -1,0 +1,46 @@
+Ambio kombinerar fokustimers med uppslukande omgivningsljudlandskap för att hjälpa dig uppnå djupt arbete och koncentration.
+
+Till skillnad från enkla timer-appar skapar Ambio en komplett sensorisk miljö. När du väljer regn skiftar hela gränssnittet till lugnande svala blå toner. Välj brasan och varma orangea toner omfamnar dig. Detta dynamiska tema minskar visuella distraktioner och håller dig i flow.
+
+FOKUSTIMER
+Använd beprövade Pomodoro-teknikens förinställningar (25 eller 50 minuter) för strukturerade arbetssessioner. Ett mjukt ljud signalerar att tiden är slut utan att rycka dig ur fokus. Perfekt för studier, skrivande, kodning eller vilken uppgift som helst som kräver ihållande uppmärksamhet.
+
+AMBIENTLÄGE
+Timar du inte en session? Växla till ambientläge för kontinuerlig ljudlandskapsspelning. Perfekt för avslappning, meditation, läsning eller för att somna till lugnande ljud.
+
+5 HANDGJORDA LJUDLANDSKAP
+- Regn: Mjukt regn mot ett fönster för koncentration
+- Brasa: Sprakande värme för mysig fokus
+- Skog: Fridfull skogsambians för lugnt arbete
+- Hav: Rytmiska vågor för lugn energi
+- Grotta: Ekande grottambians för djup kontemplation
+
+INTEGRITET FÖRST
+Ambio respekterar din tid OCH din data:
+- Fungerar helt offline
+- Inget konto behövs
+- Inga annonser, aldrig
+- Ingen spårning eller analys
+- Ingen data lämnar din enhet
+- Öppen källkod (MIT-licens)
+
+BAKGRUNDSUPPSPELNING
+Starta din session och minimera appen. Ambio fortsätter spela med fulla mediakontroller i aviseringen. Pausa, återuppta eller stoppa direkt från aviseringspanelen eller låsskärmen.
+
+BYGGT FÖR MODERNT ANDROID
+- Material Design 3 med dynamiskt tema
+- Mjuka animationer
+- Adaptiva ikoner med Android 13+ monokromt stöd
+- Effektiv batterianvändning
+- Liten appstorlek (~8 MB)
+
+VEM ÄR AMBIO FÖR?
+- Studenter som förbereder sig för prov
+- Distansarbetare som behöver fokus
+- Författare som kämpar mot distraktioner
+- Utvecklare i zonen
+- Alla som vill ha fridfull produktivitet
+
+Alla omgivningsljud är CC0-licensierade (allmän egendom). Appen är öppen källkod under MIT-licens.
+
+Ladda ner Ambio och förändra hur du fokuserar.

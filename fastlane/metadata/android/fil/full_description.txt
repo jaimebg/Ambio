@@ -1,0 +1,46 @@
+Pinagsasama ng Ambio ang mga focus timer sa nakaka-engganyo na ambient na soundscape para tulungan kang makamit ang malalim na trabaho at konsentrasyon.
+
+Hindi tulad ng mga pangunahing timer app, lumilikha ang Ambio ng kumpletong sensory na kapaligiran. Kapag pumili ka ng ulan, lumilipat ang buong interface sa nakapapayapang malamig na asul na tono. Piliin ang fireplace at maiinit na orange na tono ang yumayakap sa iyo. Ang dynamic na tema na ito ay nagbabawas ng visual na distraksyon at pinapanatili kang nasa flow.
+
+FOCUS TIMER
+Gamitin ang napatunayang Pomodoro technique preset (25 o 50 minuto) para sa structured na sesyon ng trabaho. Ang mahinang tunog ay nagbibigay-senyales ng pagkumpleto nang hindi ka naaalis sa focus. Perpekto para sa pag-aaral, pagsusulat, coding, o anumang gawain na nangangailangan ng tuloy-tuloy na atensyon.
+
+AMBIENT MODE
+Hindi nag-ta-time ng sesyon? Lumipat sa ambient mode para sa tuloy-tuloy na soundscape playback. Ideal para sa relaxation, meditation, pagbabasa, o pagtulog sa nakapapayapang mga tunog.
+
+5 HANDCRAFTED NA SOUNDSCAPE
+- Ulan: Mahinang ulan sa bintana para sa konsentrasyon
+- Fireplace: Pumapagaspas na init para sa komportableng focus
+- Kagubatan: Mapayapang kapaligiran ng kagubatan para sa tahimik na trabaho
+- Karagatan: Ritmikong alon para sa kalmadong enerhiya
+- Kuweba: Umaalingawngaw na kapaligiran ng kuweba para sa malalim na pagninilay
+
+PRIVACY MUNA
+Nirerespeto ng Ambio ang iyong oras AT ang iyong data:
+- Gumagana nang ganap na offline
+- Hindi kailangan ng account
+- Walang ads, kailanman
+- Walang tracking o analytics
+- Walang data na lumalabas sa iyong device
+- Open source (MIT License)
+
+BACKGROUND PLAYBACK
+Simulan ang iyong sesyon at i-minimize ang app. Patuloy na nagpe-play ang Ambio na may kumpletong media notification controls. I-pause, i-resume, o i-stop nang direkta mula sa notification shade o lock screen.
+
+GINAWA PARA SA MODERNONG ANDROID
+- Material Design 3 na may dynamic theming
+- Makinis na mga animation
+- Adaptive na mga icon na may Android 13+ monochrome support
+- Mahusay na paggamit ng baterya
+- Maliit na laki ng app (~8 MB)
+
+PARA KANINO ANG AMBIO?
+- Mga estudyanteng naghahanda para sa exam
+- Mga remote worker na nangangailangan ng focus
+- Mga manunulat na lumalaban sa distraksyon
+- Mga developer na nasa zone
+- Sinumang nagnanais ng mapayapang produktibidad
+
+Lahat ng ambient na tunog ay CC0 licensed (public domain). Ang app mismo ay open source sa ilalim ng MIT License.
+
+I-download ang Ambio at baguhin ang paraan ng iyong pag-focus.

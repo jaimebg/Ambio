@@ -7,7 +7,7 @@ platform :android do
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_metadata: false,
-      skip_upload_changelogs: false,
+      skip_upload_changelogs: true,
       skip_upload_images: true,
       skip_upload_screenshots: true
     )

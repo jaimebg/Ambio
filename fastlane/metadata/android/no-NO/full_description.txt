@@ -1,0 +1,46 @@
+Ambio kombinerer fokustimere med oppslukende omgivelseslydlandskap for å hjelpe deg oppnå dypt arbeid og konsentrasjon.
+
+I motsetning til enkle timer-apper skaper Ambio et komplett sensorisk miljø. Når du velger regn, skifter hele grensesnittet til beroligende kjølige blåtoner. Velg peisen, og varme oransjetoner omfavner deg. Dette dynamiske temaet reduserer visuelle distraksjoner og holder deg i flytsonen.
+
+FOKUSTIMER
+Bruk velprøvde Pomodoro-teknikk forhåndsinnstillinger (25 eller 50 minutter) for strukturerte arbeidsøkter. En mild klokkelyd signaliserer fullføring uten å rive deg ut av fokus. Perfekt for studier, skriving, koding eller enhver oppgave som krever vedvarende oppmerksomhet.
+
+AMBIENTMODUS
+Timer du ikke en økt? Bytt til ambientmodus for kontinuerlig lydlandskapavspilling. Ideelt for avslapning, meditasjon, lesing eller å sovne til beroligende lyder.
+
+5 HÅNDLAGDE LYDLANDSKAP
+- Regn: Mild regn mot et vindu for konsentrasjon
+- Peis: Knitrende varme for koselig fokus
+- Skog: Fredelig skogsambiens for rolig arbeid
+- Hav: Rytmiske bølger for rolig energi
+- Grotte: Ekkoende grotteambiens for dyp kontemplasjon
+
+PERSONVERN FØRST
+Ambio respekterer tiden din OG dataene dine:
+- Fungerer helt offline
+- Ingen konto nødvendig
+- Ingen reklame, aldri
+- Ingen sporing eller analyse
+- Ingen data forlater enheten din
+- Åpen kildekode (MIT-lisens)
+
+BAKGRUNNSAVSPILLING
+Start økten din og minimer appen. Ambio fortsetter å spille med fulle mediekontroller i varselet. Sett på pause, gjenoppta eller stopp direkte fra varselpanelet eller låseskjermen.
+
+BYGGET FOR MODERNE ANDROID
+- Material Design 3 med dynamisk tema
+- Jevne animasjoner
+- Adaptive ikoner med Android 13+ monokrom støtte
+- Effektiv batteribruk
+- Liten appstørrelse (~8 MB)
+
+HVEM ER AMBIO FOR?
+- Studenter som forbereder seg til eksamener
+- Fjernarbeidere som trenger fokus
+- Forfattere som kjemper mot distraksjoner
+- Utviklere i sonen
+- Alle som ønsker fredelig produktivitet
+
+Alle omgivelseslyder er CC0-lisensiert (offentlig domene). Appen er åpen kildekode under MIT-lisens.
+
+Last ned Ambio og forvandl måten du fokuserer på.

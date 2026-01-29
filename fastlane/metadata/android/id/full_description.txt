@@ -1,0 +1,46 @@
+Ambio menggabungkan timer fokus dengan lanskap suara ambient yang imersif untuk membantu Anda mencapai kerja mendalam dan konsentrasi.
+
+Tidak seperti aplikasi timer biasa, Ambio menciptakan lingkungan sensorik yang lengkap. Saat Anda memilih hujan, seluruh antarmuka bergeser ke warna biru sejuk yang menenangkan. Pilih perapian dan warna oranye hangat menyelimuti Anda. Tema dinamis ini mengurangi gangguan visual dan menjaga Anda tetap dalam kondisi flow.
+
+TIMER FOKUS
+Gunakan preset teknik Pomodoro yang terbukti (25 atau 50 menit) untuk sesi kerja terstruktur. Bunyi lonceng lembut menandakan selesai tanpa mengganggu fokus Anda. Sempurna untuk belajar, menulis, coding, atau tugas apa pun yang membutuhkan perhatian berkelanjutan.
+
+MODE AMBIENT
+Tidak sedang mengatur waktu sesi? Beralih ke mode ambient untuk pemutaran lanskap suara berkelanjutan. Ideal untuk relaksasi, meditasi, membaca, atau tertidur dengan suara yang menenangkan.
+
+5 LANSKAP SUARA BUATAN TANGAN
+- Hujan: Hujan lembut di jendela untuk konsentrasi
+- Perapian: Kehangatan berderak untuk fokus yang nyaman
+- Hutan: Suasana hutan yang damai untuk kerja tenang
+- Samudra: Ombak berirama untuk energi yang tenang
+- Gua: Suasana gua bergema untuk kontemplasi mendalam
+
+PRIVASI UTAMA
+Ambio menghormati waktu DAN data Anda:
+- Bekerja sepenuhnya offline
+- Tidak perlu akun
+- Tidak ada iklan, selamanya
+- Tidak ada pelacakan atau analitik
+- Tidak ada data yang meninggalkan perangkat Anda
+- Open source (Lisensi MIT)
+
+PEMUTARAN LATAR BELAKANG
+Mulai sesi Anda dan minimalkan aplikasi. Ambio terus memutar dengan kontrol notifikasi media lengkap. Jeda, lanjutkan, atau hentikan langsung dari panel notifikasi atau layar kunci.
+
+DIBANGUN UNTUK ANDROID MODERN
+- Material Design 3 dengan tema dinamis
+- Animasi halus
+- Ikon adaptif dengan dukungan monokrom Android 13+
+- Penggunaan baterai efisien
+- Ukuran aplikasi kecil (~8 MB)
+
+AMBIO UNTUK SIAPA?
+- Pelajar yang mempersiapkan ujian
+- Pekerja jarak jauh yang butuh fokus
+- Penulis yang melawan gangguan
+- Developer yang sedang dalam zona
+- Siapa saja yang menginginkan produktivitas yang damai
+
+Semua suara ambient berlisensi CC0 (domain publik). Aplikasi ini sendiri bersumber terbuka di bawah Lisensi MIT.
+
+Unduh Ambio dan ubah cara Anda fokus.

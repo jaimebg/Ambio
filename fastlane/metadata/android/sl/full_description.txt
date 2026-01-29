@@ -1,0 +1,46 @@
+Ambio združuje časovnike osredotočenosti z vživetimi okoliškimi zvočnimi pokrajinami, da vam pomaga doseči poglobljeno delo in koncentracijo.
+
+V nasprotju z osnovnimi aplikacijami za časovnik Ambio ustvari popolno čutno okolje. Ko izberete dež, se celoten vmesnik premakne v pomirjujoče hladne modre tone. Izberite kamin in topli oranžni toni vas objamejo. Ta dinamična tema zmanjša vizualne motnje in vas ohranja v stanju toka.
+
+ČASOVNIK OSREDOTOČENOSTI
+Uporabite preizkušene prednastavitve tehnike Pomodoro (25 ali 50 minut) za strukturirane delovne seje. Nežen zvok označi zaključek, ne da bi vas potegnil iz osredotočenosti. Popolno za učenje, pisanje, programiranje ali katero koli nalogo, ki zahteva trajno pozornost.
+
+AMBIENTALNI NAČIN
+Ne merite časa seje? Preklopite na ambientalni način za neprekinjeno predvajanje zvočnih pokrajin. Idealno za sprostitev, meditacijo, branje ali uspavanje ob pomirjujočih zvokih.
+
+5 ROČNO IZDELANIH ZVOČNIH POKRAJIN
+- Dež: Nežen dež na oknu za koncentracijo
+- Kamin: Pokanje toplote za prijetno osredotočenost
+- Gozd: Mirno gozdno vzdušje za tiho delo
+- Ocean: Ritmični valovi za mirno energijo
+- Jama: Odmevajoče vzdušje jame za globoko kontempliacijo
+
+ZASEBNOST NA PRVEM MESTU
+Ambio spoštuje vaš čas IN vaše podatke:
+- Deluje popolnoma brez povezave
+- Račun ni potreben
+- Brez oglasov, nikoli
+- Brez sledenja ali analitike
+- Nobeni podatki ne zapustijo vaše naprave
+- Odprtokodna (licenca MIT)
+
+PREDVAJANJE V OZADJU
+Začnite sejo in minimizirajte aplikacijo. Ambio nadaljuje s predvajanjem s polnimi medijskimi kontrolami v obvestilih. Pavzirajte, nadaljujte ali ustavite neposredno iz plošče obvestil ali zaklenjenega zaslona.
+
+ZGRAJENO ZA SODOBEN ANDROID
+- Material Design 3 z dinamično temo
+- Gladke animacije
+- Prilagodljive ikone s podporo za enobarvno Android 13+
+- Učinkovita poraba baterije
+- Majhna velikost aplikacije (~8 MB)
+
+ZA KOGA JE AMBIO?
+- Študenti, ki se pripravljajo na izpite
+- Oddaljeni delavci, ki potrebujejo osredotočenost
+- Pisci, ki se borijo z motnjami
+- Razvijalci v coni
+- Vsakdo, ki želi mirno produktivnost
+
+Vsi okoliški zvoki so licencirani CC0 (javna domena). Aplikacija sama je odprtokodna pod licenco MIT.
+
+Prenesite Ambio in spremenite način, kako se osredotočate.

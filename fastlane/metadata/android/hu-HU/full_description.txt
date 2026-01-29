@@ -1,0 +1,46 @@
+Az Ambio fókusz időzítőket kombinál magával ragadó környezeti hangképekkel, hogy segítsen elérni a mély munkát és koncentrációt.
+
+Az alap időzítő alkalmazásokkal ellentétben az Ambio teljes érzékszervi környezetet teremt. Amikor az esőt választod, az egész felület megnyugtató hűvös kék árnyalatokra vált. Válaszd a kandallót, és meleg narancs tónusok ölelnek körbe. Ez a dinamikus téma csökkenti a vizuális zavarokat és segít a flow-ban maradni.
+
+FÓKUSZ IDŐZÍTŐ
+Használd a bevált Pomodoro-technika előbeállításokat (25 vagy 50 perc) strukturált munkamenetekhez. Egy halk hang jelzi a befejezést anélkül, hogy kiragadna a fókuszból. Tökéletes tanuláshoz, íráshoz, kódoláshoz vagy bármilyen feladathoz, ami tartós figyelmet igényel.
+
+AMBIENT MÓD
+Nem időzítesz munkamenetet? Válts ambient módra a folyamatos hangkép-lejátszáshoz. Ideális pihenéshez, meditációhoz, olvasáshoz vagy nyugtató hangokkal való elalváshoz.
+
+5 KÉZZEL KÉSZÍTETT HANGKÉP
+- Eső: Finom eső az ablakon a koncentrációhoz
+- Kandalló: Ropogó melegség a kellemes fókuszhoz
+- Erdő: Békés erdei hangulat a nyugodt munkához
+- Óceán: Ritmikus hullámok a nyugodt energiához
+- Barlang: Visszhangzó barlangi hangulat a mély elmélkedéshez
+
+ADATVÉDELEM ELSŐKÉNT
+Az Ambio tiszteletben tartja az idődet ÉS az adataidat:
+- Teljesen offline működik
+- Nem igényel fiókot
+- Nincs reklám, soha
+- Nincs nyomon követés vagy elemzés
+- Semmilyen adat nem hagyja el a készülékedet
+- Nyílt forráskódú (MIT licenc)
+
+HÁTTÉRBEN LEJÁTSZÁS
+Indítsd el a munkamenetet és minimalizáld az alkalmazást. Az Ambio teljes médiaértesítési vezérléssel folytatja a lejátszást. Szüneteltesd, folytasd vagy állítsd le közvetlenül az értesítési sávból vagy a zárolási képernyőről.
+
+MODERN ANDROIDRA TERVEZVE
+- Material Design 3 dinamikus témával
+- Sima animációk
+- Adaptív ikonok Android 13+ monokróm támogatással
+- Hatékony akkumulátor-használat
+- Kis alkalmazásméret (~8 MB)
+
+KINEK SZÓL AZ AMBIO?
+- Vizsgákra készülő diákok
+- Fókuszt igénylő távmunkások
+- Zavaró tényezőkkel küzdő írók
+- Zónában lévő fejlesztők
+- Bárki, aki békés produktivitást szeretne
+
+Minden környezeti hang CC0 licencű (közkincs). Maga az alkalmazás nyílt forráskódú MIT licenc alatt.
+
+Töltsd le az Ambiót és alakítsd át a fókuszálás módját.
