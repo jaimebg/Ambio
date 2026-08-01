@@ -23,5 +23,13 @@ gradlePlugin {
             id = "ambio.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidCompose") {
+            id = "ambio.android.compose"
+            implementationClass = "AndroidComposeConventionPlugin"
+        }
+        register("androidHilt") {
+            id = "ambio.android.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
     }
 }

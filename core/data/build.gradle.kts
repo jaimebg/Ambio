@@ -1,16 +1,11 @@
 plugins {
     id("ambio.android.library")
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    id("ambio.android.compose")
+    id("ambio.android.hilt")
 }
 
 android {
     namespace = "com.jbgsoft.ambio.core.data"
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
@@ -21,10 +16,6 @@ dependencies {
     // Compose (for Icons in Sound)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.icons.extended)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
 
     // Coroutines
     implementation(libs.bundles.coroutines)

@@ -1,14 +1,10 @@
 plugins {
     id("ambio.android.library")
-    alias(libs.plugins.kotlin.compose)
+    id("ambio.android.compose")
 }
 
 android {
     namespace = "com.jbgsoft.ambio.core.domain"
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {

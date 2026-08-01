@@ -1,7 +1,6 @@
 plugins {
     id("ambio.android.library")
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    id("ambio.android.hilt")
 }
 
 android {
@@ -9,10 +8,6 @@ android {
 }
 
 dependencies {
-    // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-
     // Coroutines
     implementation(libs.bundles.coroutines)
 
