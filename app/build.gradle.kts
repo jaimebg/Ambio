@@ -1,11 +1,9 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    id("ambio.android.application")
+    id("ambio.android.compose")
+    id("ambio.android.hilt")
 }
 
 // Load keystore properties from local file (not committed to git)
@@ -18,7 +16,6 @@ val keystoreProperties = Properties().apply {
 
 android {
     namespace = "com.jbgsoft.ambio"
-    compileSdk = 36
 
     signingConfigs {
         create("release") {
@@ -33,8 +30,6 @@ android {
 
     defaultConfig {
         applicationId = "com.jbgsoft.ambio"
-        minSdk = 31
-        targetSdk = 36
         versionCode = 2
         versionName = "1.1.0"
 
@@ -55,19 +50,6 @@ android {
                 signingConfigs.getByName("debug")
             }
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -92,9 +74,7 @@ dependencies {
     implementation(libs.bundles.lifecycle)
 
     // Hilt
-    implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
 
     // Coroutines
     implementation(libs.bundles.coroutines)

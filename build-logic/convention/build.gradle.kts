@@ -19,6 +19,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("androidApplication") {
+            id = "ambio.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
         register("androidLibrary") {
             id = "ambio.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
