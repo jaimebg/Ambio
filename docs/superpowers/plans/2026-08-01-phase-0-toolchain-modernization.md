@@ -15,8 +15,11 @@
 - `compileSdk = 36` y `targetSdk = 36` **no cambian** en esta fase.
 - `minSdk = 31` no cambia.
 - Java 17 (`sourceCompatibility`, `targetCompatibility`, `jvmTarget`) en todos los módulos.
-- Ningún cambio funcional de la app. Si un paso obliga a tocar código de producción que no
-  sea configuración de build, hay que parar y reportarlo.
+- **Ningún cambio de comportamiento de la app.** Sí están permitidos los cambios de
+  configuración de build aunque vivan en ficheros `.kt` de producción — el caso concreto es
+  `exportSchema` en `AmbioDatabase.kt` (Tarea 8). Lo prohibido es alterar lo que la app hace.
+  Si una subida de versión obliga a modificar lógica, se toca lo mínimo para **restaurar el
+  comportamiento existente**, y se reporta.
 - El número de tests que pasan nunca debe bajar de la línea base registrada en la Tarea 1.
 - Cada tarea termina con el build en verde y un commit propio.
 - Rama de trabajo: `chore/phase-0-toolchain-modernization` (ya creada, contiene el spec).
@@ -140,9 +143,10 @@ gh run watch
 Esperado: los tres pasos de Gradle en verde. Si `gh` no está disponible, comprobar en la
 pestaña Actions del repositorio.
 
-Si el lint falla en CI pero pasaba localmente, no arreglar el lint aquí: anotarlo y ajustar
-el workflow para que refleje la línea base real. El objetivo de esta tarea es un verde
-honesto, no un verde forzado.
+Si el lint falla en CI pero pasaba localmente, **parar y reportarlo**. No arreglar el lint
+aquí, y sobre todo **no quitar ni debilitar el paso de lint del workflow para forzar un
+verde** — eso vaciaría de sentido el CI que esta tarea existe para crear. La decisión sobre
+qué hacer con esos warnings no es de esta tarea.
 
 ---
 
@@ -1070,8 +1074,8 @@ media3 = "1.10.1"
 
 Esperado: verde. Si `media/src/main/java/com/jbgsoft/ambio/media/AudioService.kt` o
 `AudioServiceConnection.kt` no compilan, la API de `MediaSession` ha cambiado; consultar las
-notas de versión de Media3 y adaptar. Este es el único punto del plan donde está permitido
-tocar código de producción, y sólo para restaurar el comportamiento existente.
+notas de versión de Media3 y adaptar, tocando lo mínimo para restaurar el comportamiento
+existente. No aprovechar para refactorizar ni para cambiar cómo se comporta el servicio.
 
 - [ ] **Step 3: Verificación manual en dispositivo**
 
