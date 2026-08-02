@@ -20,7 +20,17 @@
   `exportSchema` en `AmbioDatabase.kt` (Tarea 8). Lo prohibido es alterar lo que la app hace.
   Si una subida de versión obliga a modificar lógica, se toca lo mínimo para **restaurar el
   comportamiento existente**, y se reporta.
-- El número de tests que pasan nunca debe bajar de la línea base registrada en la Tarea 1.
+- El número de tests que pasan nunca debe bajar de la línea base registrada en la Tarea 1:
+  **154 tests, 0 fallos** (77 métodos `@Test` × variantes debug y release).
+- **Lint: 0 errores.** Ése es el criterio duro. *(Corregido el 2026-08-03: las tareas 1 a 6b
+  registraron la línea base de lint como "0 errores / 0 warnings", y era inexacta — el
+  recuento se leía del log de consola, que no imprime el resumen por módulo. El estado real
+  medido sobre los `lint-results-*.xml` es 0 errores y **14 warnings**: 10 en `app`, 2 en
+  `core:common`, 2 en `media`.)* De esos 14, la mayoría son `GradleDependency` y
+  `NewerVersionAvailable`, es decir avisos de dependencias desactualizadas: **se espera que
+  bajen** conforme las tareas 7-11 suban versiones. Que el número baje es correcto; lo que
+  hay que vigilar es que no aparezca ninguna **categoría** de warning nueva, y que los
+  errores sigan en 0. Medir siempre sobre los XML, no sobre el log.
 - Cada tarea termina con el build en verde y un commit propio.
 - Rama de trabajo: `chore/phase-0-toolchain-modernization` (ya creada, contiene el spec).
 
