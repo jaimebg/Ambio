@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.application")
-        pluginManager.apply("org.jetbrains.kotlin.android")
 
         extensions.configure<ApplicationExtension> {
             compileSdk = 36
