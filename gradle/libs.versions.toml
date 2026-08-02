@@ -25,11 +25,11 @@ javax-inject = "1"
 
 # Testing
 junit = "4.13.2"
-mockk = "1.13.13"
+mockk = "1.14.11"
 turbine = "1.2.0"
 truth = "1.4.4"
 androidx-test-core = "1.6.1"
-robolectric = "4.14.1"
+robolectric = "4.16.1"
 
 [libraries]
 # AndroidX Core
