@@ -138,8 +138,22 @@ Ninguna versión de dependencia ha cambiado, así que cualquier fallo aquí es a
 | Herramienta | Actual | Objetivo |
 |-------------|--------|----------|
 | AGP | 8.8.0 | 9.3.1 |
-| Kotlin | 2.0.21 | 2.4.10 |
-| KSP | 2.0.21-1.0.28 | 2.3.10 (alineado con Kotlin) |
+| Kotlin | 2.0.21 | 2.3.21 |
+| KSP | 2.0.21-1.0.28 | 2.3.10 |
+| Hilt | 2.54 | 2.60.1 |
+
+**Corrección del 2026-08-02.** El objetivo inicial de este documento era Kotlin 2.4.10. Al
+ejecutarlo se comprobó que es inalcanzable hoy, por dos motivos independientes:
+
+- **KSP no tiene ninguna release para Kotlin 2.4.x.** La última es 2.3.10, de la línea 2.3.
+  El proyecto necesita KSP para Hilt y Room, así que Kotlin 2.4 no es usable.
+- **Hilt 2.60.1 empaqueta `kotlin-metadata-jvm` 2.3.21**, que lee metadatos hasta 2.3.
+  Kotlin 2.4.10 emite 2.4.0, de modo que subir Hilt tampoco desbloquea Kotlin 2.4.
+
+Que Hilt 2.60.1 traiga precisamente `kotlin-metadata-jvm` 2.3.21 confirma que la línea 2.3
+es el objetivo coherente. Además, **la subida de Hilt se adelanta del Paso 5 a este paso**:
+Hilt 2.54 no lee los metadatos de ningún Kotlin moderno, así que está acoplada a Kotlin y
+no puede ir después.
 
 Cambio incompatible principal: `kotlinOptions { jvmTarget = "17" }` deja de existir. Se
 sustituye por la configuración de `compilerOptions` dentro del convention plugin de
@@ -159,7 +173,6 @@ Versiones estables verificadas contra Google Maven y Maven Central el 2026-08-01
 | Compose BOM | 2025.02.00 | 2026.06.01 |
 | Media3 | 1.6.0 | 1.10.1 |
 | Room | 2.7.1 | 2.8.4 |
-| Hilt | 2.54 | 2.60.1 |
 | hilt-navigation-compose | 1.2.0 | 1.4.0 |
 | Lifecycle | 2.9.0 | 2.11.0 |
 | DataStore | 1.1.4 | 1.2.1 |

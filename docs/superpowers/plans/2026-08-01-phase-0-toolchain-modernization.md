@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Poner Ambio en AGP 9.3.1 / Kotlin 2.4.10 con dependencias actuales, eliminar la duplicación de configuración entre los 8 módulos mediante convention plugins, y añadir CI que valide cada cambio.
+**Goal:** Poner Ambio en AGP 9.3.1 / Kotlin 2.3.21 con dependencias actuales, eliminar la duplicación de configuración entre los 8 módulos mediante convention plugins, y añadir CI que valide cada cambio.
 
 **Architecture:** Se extraen convention plugins **antes** de subir versiones. Esto no es preferencia estética: AGP 9 elimina el bloque `kotlinOptions`, que hoy está repetido en 8 ficheros. Al extraerlo primero a `build-logic/`, se escribe directamente en la forma nueva (`compilerOptions`, que Kotlin 2.0.21 ya soporta), y la subida de AGP posterior no tiene nada que arreglar. Después, las dependencias suben por grupos de riesgo creciente, verificando entre cada uno.
 
-**Tech Stack:** Gradle 9.6.1, AGP 9.3.1, Kotlin 2.4.10, KSP 2.3.10, Hilt 2.60.1, Compose BOM 2026.06.01, Media3 1.10.1, Room 2.8.4, GitHub Actions.
+**Tech Stack:** Gradle 9.6.1, AGP 9.3.1, Kotlin 2.3.21, KSP 2.3.10, Hilt 2.60.1, Compose BOM 2026.06.01, Media3 1.10.1, Room 2.8.4, GitHub Actions.
 
 **Spec:** `docs/superpowers/specs/2026-08-01-toolchain-modernization-design.md`
 
@@ -814,10 +814,21 @@ git commit -m "build: upgrade Gradle wrapper to 9.6.1"
 
 ---
 
-### Task 6: AGP 9.3.1, Kotlin 2.4.10, KSP 2.3.10
+### Task 6: AGP 9.3.1, Kotlin 2.3.21, KSP 2.3.10, Hilt 2.60.1
 
 El cambio incompatible de esta tarea —la desaparición de `kotlinOptions`— ya está resuelto
 por adelantado gracias a la Tarea 2. Aquí se comprueba que esa apuesta era correcta.
+
+**Corrección del 2026-08-02, tras un primer intento fallido.** Esta tarea apuntaba
+originalmente a Kotlin 2.4.10 y dejaba Hilt para la Tarea 11. Ambas cosas eran errores:
+
+- **KSP no tiene release para Kotlin 2.4.x**; la última es 2.3.10, de la línea 2.3. El plan
+  afirmaba que KSP 2.3.10 acompañaba a Kotlin 2.4.10 y era falso.
+- **Hilt 2.54 no lee metadatos de Kotlin moderno.** El build falló con
+  `[Hilt] Provided Metadata instance has version 2.4.0, while maximum supported version is
+  2.2.0`. Hilt está acoplado a Kotlin y su subida no puede esperar a la Tarea 11.
+- **Hilt 2.60.1 empaqueta `kotlin-metadata-jvm` 2.3.21**, que lee hasta metadatos 2.3 — lo
+  que confirma que la línea 2.3 de Kotlin es el objetivo coherente.
 
 **Files:**
 - Modify: `gradle/libs.versions.toml`
@@ -833,9 +844,13 @@ En `gradle/libs.versions.toml`, bloque `[versions]`:
 
 ```toml
 agp = "9.3.1"
-kotlin = "2.4.10"
+kotlin = "2.3.21"
 ksp = "2.3.10"
+hilt = "2.60.1"
 ```
+
+`hilt` sube aquí y no en la Tarea 11: Hilt 2.54 no puede procesar los metadatos que emite
+Kotlin 2.3, así que las dos versiones tienen que moverse en el mismo commit.
 
 - [ ] **Step 2: Eliminar la supresión que ya no hace falta**
 
@@ -861,10 +876,12 @@ Notas para el diagnóstico si falla:
 - El fallo esperado si algo se pasó por alto es `Unresolved reference: kotlinOptions`. Con la
   Tarea 2 hecha no debería aparecer; si aparece, hay un módulo que se saltó la migración —
   localizarlo con el `grep` del Step 4 de la Tarea 4.
-- Si KSP falla al generar el código de Hilt, comprobar que la versión de KSP corresponde a la
-  de Kotlin: el prefijo de `ksp` debe coincidir con `kotlin`. Aquí, KSP 2.3.10 acompaña a
-  Kotlin 2.4.10 según la publicación del propio artefacto.
-- Kotlin 2.4 puede introducir warnings nuevos de deprecación en código de producción. Anotarlos
+- Si KSP falla al generar código, comprobar que la línea menor de `ksp` coincide con la de
+  `kotlin`: KSP 2.3.x acompaña a Kotlin 2.3.x. No existe KSP para Kotlin 2.4.x.
+- Si Hilt falla con `Provided Metadata instance has version X, while maximum supported
+  version is Y`, la versión de Hilt es demasiado antigua para el Kotlin elegido. Hilt 2.60.1
+  empaqueta `kotlin-metadata-jvm` 2.3.21 y por tanto lee metadatos hasta 2.3.
+- Kotlin 2.3 puede introducir warnings nuevos de deprecación en código de producción. Anotarlos
   pero **no** arreglarlos en esta tarea: la restricción global prohíbe cambios funcionales.
   Si algún warning es error, parar y reportar.
 
@@ -872,7 +889,7 @@ Notas para el diagnóstico si falla:
 
 ```bash
 git add gradle/libs.versions.toml gradle.properties
-git commit -m "build: upgrade to AGP 9.3.1, Kotlin 2.4.10 and KSP 2.3.10"
+git commit -m "build: upgrade to AGP 9.3.1, Kotlin 2.3.21, KSP 2.3.10 and Hilt 2.60.1"
 ```
 
 ---
@@ -1124,9 +1141,11 @@ En `[versions]`:
 ```toml
 compose-bom = "2026.06.01"
 lifecycle = "2.11.0"
-hilt = "2.60.1"
 hilt-navigation-compose = "1.4.0"
 ```
+
+`hilt` ya no se toca aquí: se adelantó a la Tarea 6 porque está acoplado a la versión de
+Kotlin. Sólo sube `hilt-navigation-compose`, que es un artefacto de AndroidX independiente.
 
 - [ ] **Step 2: Verificar**
 
@@ -1195,7 +1214,7 @@ Esperado: CI en verde sobre el estado final de la fase.
 |---|---|---|
 | Gradle | 8.11.1 | 9.6.1 |
 | AGP | 8.8.0 | 9.3.1 |
-| Kotlin | 2.0.21 | 2.4.10 |
+| Kotlin | 2.0.21 | 2.3.21 |
 | Compose BOM | 2025.02.00 | 2026.06.01 |
 | Media3 | 1.6.0 | 1.10.1 |
 | Room | 2.7.1 | 2.8.4 (con esquemas exportados) |
