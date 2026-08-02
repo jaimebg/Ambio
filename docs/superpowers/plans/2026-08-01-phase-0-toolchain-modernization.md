@@ -894,6 +894,93 @@ git commit -m "build: upgrade to AGP 9.3.1, Kotlin 2.3.21, KSP 2.3.10 and Hilt 2
 
 ---
 
+### Task 6b: Limpiar los warnings de anotación de Kotlin 2.3
+
+**Añadida el 2026-08-02**, tras la revisión de la Tarea 6. Kotlin 2.3 introdujo 7 warnings
+nuevos sobre el target de anotaciones en constructores. La Tarea 6 tenía prohibido tocar
+código de producción, y ninguna tarea posterior los adoptaba: la rama se habría fusionado
+con salida de compilación sucia, y ese ruido camuflaría cualquier warning nuevo que
+introdujeran las tareas 7-11. Va aquí, antes de la Tarea 7, para que el resto de la
+secuencia parta de salida limpia.
+
+**Files:**
+- Modify: `core/common/src/main/java/com/jbgsoft/ambio/core/common/audio/ChimePlayer.kt:28`
+- Modify: `core/common/src/main/java/com/jbgsoft/ambio/core/common/haptics/HapticManager.kt:27`
+- Modify: `media/src/main/java/com/jbgsoft/ambio/media/AudioServiceConnection.kt:37`
+- Modify: `core/domain/src/main/java/com/jbgsoft/ambio/core/domain/model/Sound.kt:12-13`
+- Modify: `core/data/src/main/java/com/jbgsoft/ambio/core/data/datastore/PreferencesDataStore.kt:23`
+- Modify: `core/data/src/main/java/com/jbgsoft/ambio/core/data/repository/TimerRepositoryImpl.kt:33`
+
+**Interfaces:**
+- Consumes: el toolchain de la Tarea 6.
+- Produces: salida de compilación sin warnings de Kotlin, que es la referencia de las
+  tareas 7-11.
+
+- [ ] **Step 1: Capturar el estado actual de warnings**
+
+```bash
+./gradlew clean assembleDebug 2>&1 | grep -E "^w:|warning:" | tee /tmp/warnings-before.txt
+wc -l /tmp/warnings-before.txt
+```
+
+Esperado: 7 warnings de anotación en los ficheros de arriba, más 2 de API Java deprecada en
+`ui/src/main/java/com/jbgsoft/ambio/ui/theme/Theme.kt:79-80` (`statusBarColor` y
+`navigationBarColor`). Esos 2 son **preexistentes y NO se tocan**: son de otra naturaleza y
+arreglarlos cambiaría comportamiento de UI.
+
+- [ ] **Step 2: Añadir el use-site target `@param:`**
+
+En cada sitio, anteponer `param:` al nombre de la anotación. Ejemplo, `ChimePlayer.kt:28`:
+
+```kotlin
+class ChimePlayer @Inject constructor(
+    @param:ApplicationContext private val context: Context
+) {
+```
+
+Y `Sound.kt:12-13`:
+
+```kotlin
+    @param:RawRes val audioRes: Int,
+    @param:DrawableRes val illustrationRes: Int,
+```
+
+**`@param:` y no `@field:` ni `@get:`.** Hoy, sin target explícito, Kotlin aplica estas
+anotaciones al parámetro del constructor. `@param:` conserva exactamente esa semántica, que
+es lo que exige la restricción de no cambiar comportamiento. Para los cualificadores de
+Hilt es además lo correcto: la resolución de la inyección mira el parámetro.
+
+- [ ] **Step 3: Verificar que los warnings desaparecen y no aparecen otros**
+
+```bash
+./gradlew clean assembleDebug 2>&1 | grep -E "^w:|warning:" | tee /tmp/warnings-after.txt
+diff /tmp/warnings-before.txt /tmp/warnings-after.txt
+```
+
+Esperado: sólo quedan los 2 warnings de `Theme.kt`. Si aparece cualquier warning nuevo, la
+solución elegida es incorrecta para ese sitio — parar y reportar.
+
+- [ ] **Step 4: Verificar que nada se rompió**
+
+```bash
+./gradlew clean lint test assembleDebug
+```
+
+Esperado: verde, **154 tests**, 0 errores / 0 warnings de lint. Si el conteo de tests baja o
+Hilt falla a inyectar, el target de anotación elegido rompió la resolución de dependencias.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add core/common core/data core/domain media
+git commit -m "refactor: add explicit @param: annotation targets for Kotlin 2.3
+
+Kotlin 2.3 warns that constructor-property annotations without a use-site
+target will change meaning. @param: preserves today's semantics exactly."
+```
+
+---
+
 ### Task 7: Librerías de test
 
 Primer grupo de dependencias, elegido por ser el más barato: si rompe, el fallo está
