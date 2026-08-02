@@ -9,7 +9,7 @@ data class Sound(
     val name: String,
     val description: String,
     val icon: ImageVector,
-    @RawRes val audioRes: Int,
-    @DrawableRes val illustrationRes: Int,
+    @param:RawRes val audioRes: Int,
+    @param:DrawableRes val illustrationRes: Int,
     val theme: SoundTheme
 )

@@ -24,7 +24,7 @@ import javax.inject.Singleton
 @Singleton
 @SuppressLint("MissingPermission") // VIBRATE permission declared in AndroidManifest.xml
 class HapticManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     // minSdk 31 guarantees VibratorManager is available
     private val vibrator: Vibrator = run {

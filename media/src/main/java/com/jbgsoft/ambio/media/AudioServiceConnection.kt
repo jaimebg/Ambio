@@ -34,7 +34,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class AudioServiceConnection @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private val scope = CoroutineScope(Dispatchers.Main)
