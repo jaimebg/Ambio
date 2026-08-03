@@ -5,6 +5,18 @@ plugins {
 
 android {
     namespace = "com.jbgsoft.ambio.core.common"
+
+    sourceSets {
+        getByName("test") {
+            res.directories.add("src/test/res")
+        }
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -13,4 +25,9 @@ dependencies {
 
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
+
+    // Testing
+    testImplementation(libs.bundles.testing)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }
