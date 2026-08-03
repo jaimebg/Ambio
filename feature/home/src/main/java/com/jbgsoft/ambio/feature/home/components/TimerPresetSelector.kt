@@ -1,5 +1,6 @@
 package com.jbgsoft.ambio.feature.home.components
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -29,6 +30,7 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -112,6 +114,8 @@ fun TimerPresetSelector(
                     minValue = 1,
                     maxValue = 120,
                     step = 5,
+                    decreaseDescription = R.string.a11y_decrease_focus,
+                    increaseDescription = R.string.a11y_increase_focus,
                     isCompact = isCompact
                 )
             }
@@ -175,6 +179,8 @@ private fun NumberStepper(
     minValue: Int,
     maxValue: Int,
     step: Int,
+    @StringRes decreaseDescription: Int,
+    @StringRes increaseDescription: Int,
     isCompact: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -195,11 +201,11 @@ private fun NumberStepper(
             },
             enabled = value > minValue,
             colors = IconButtonDefaults.filledTonalIconButtonColors(),
-            modifier = Modifier.size(buttonSize)
+            modifier = Modifier.size(buttonSize).minimumInteractiveComponentSize()
         ) {
             Icon(
                 imageVector = Icons.Default.Remove,
-                contentDescription = stringResource(R.string.action_decrease),
+                contentDescription = stringResource(decreaseDescription),
                 modifier = Modifier.size(iconSize)
             )
         }
@@ -229,11 +235,11 @@ private fun NumberStepper(
             },
             enabled = value < maxValue,
             colors = IconButtonDefaults.filledTonalIconButtonColors(),
-            modifier = Modifier.size(buttonSize)
+            modifier = Modifier.size(buttonSize).minimumInteractiveComponentSize()
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.action_increase),
+                contentDescription = stringResource(increaseDescription),
                 modifier = Modifier.size(iconSize)
             )
         }
