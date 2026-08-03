@@ -196,8 +196,8 @@ fun HomeScreen(
                                                     defaultElevation = 2.dp
                                                 ),
                                                 modifier = Modifier
-                                                    .size(resetButtonSize)
                                                     .minimumInteractiveComponentSize()
+                                                    .size(resetButtonSize)
                                             ) {
                                                 Icon(
                                                     imageVector = Icons.Default.Stop,
