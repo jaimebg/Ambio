@@ -149,7 +149,7 @@ fun TimerPresetSelector(
                             onBreakMinutesChanged(minutes)
                             onBreakMinutesChangeFinished()
                         },
-                        label = { Text("$minutes min") },
+                        label = { Text(pluralStringResource(R.plurals.duration_minutes, minutes, minutes)) },
                         leadingIcon = if (isSelected) {
                             {
                                 Icon(

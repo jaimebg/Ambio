@@ -9,7 +9,7 @@ import kotlin.math.pow
 /**
  * WCAG AA: 3.0 for UI components, 4.5 for normal text.
  * Guards the palette so a future colour tweak cannot silently make the app
- * unreadable — four of five themes failed before Phase 2.
+ * unreadable — all five themes failed before Phase 2.
  */
 class ThemeContrastTest {
 

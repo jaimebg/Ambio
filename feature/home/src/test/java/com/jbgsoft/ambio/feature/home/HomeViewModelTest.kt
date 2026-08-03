@@ -82,8 +82,7 @@ class HomeViewModelTest {
     // Test data
     private val testSound = Sound(
         id = "rain",
-        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_rain,
-        descriptionRes = com.jbgsoft.ambio.core.data.R.string.sound_rain_description,
+        nameRes = 5,
         icon = Icons.Default.WaterDrop,
         audioRes = 1,
         illustrationRes = 2,
@@ -92,8 +91,7 @@ class HomeViewModelTest {
 
     private val testSoundForest = Sound(
         id = "forest",
-        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_forest,
-        descriptionRes = com.jbgsoft.ambio.core.data.R.string.sound_forest_description,
+        nameRes = 6,
         icon = Icons.Default.WaterDrop,
         audioRes = 3,
         illustrationRes = 4,
@@ -361,7 +359,7 @@ class HomeViewModelTest {
         verify {
             audioServiceConnection.playSound(
                 3,
-                stringProvider.get(com.jbgsoft.ambio.core.data.R.string.sound_forest),
+                stringProvider.get(6),
                 any(),
                 4
             )
@@ -558,7 +556,7 @@ class HomeViewModelTest {
         verify {
             audioServiceConnection.playSound(
                 1,
-                stringProvider.get(com.jbgsoft.ambio.core.data.R.string.sound_rain),
+                stringProvider.get(5),
                 any(),
                 2
             )
@@ -655,7 +653,7 @@ class HomeViewModelTest {
         verify {
             audioServiceConnection.playSound(
                 1,
-                stringProvider.get(com.jbgsoft.ambio.core.data.R.string.sound_rain),
+                stringProvider.get(5),
                 stringProvider.get(R.string.state_ambient_mode),
                 2
             )

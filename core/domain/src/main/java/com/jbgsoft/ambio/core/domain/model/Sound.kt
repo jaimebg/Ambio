@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class Sound(
     val id: String,
     @param:StringRes val nameRes: Int,
-    @param:StringRes val descriptionRes: Int,
     val icon: ImageVector,
     @param:RawRes val audioRes: Int,
     @param:DrawableRes val illustrationRes: Int,
