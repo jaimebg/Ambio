@@ -59,7 +59,7 @@ fun SoundCard(
         ) {
             Icon(
                 imageVector = sound.icon,
-                contentDescription = stringResource(sound.nameRes),
+                contentDescription = null,
                 modifier = Modifier.size(36.dp),
                 tint = if (isSelected) {
                     MaterialTheme.colorScheme.primary
@@ -107,7 +107,7 @@ fun ComingSoonCard(
         ) {
             Icon(
                 imageVector = Icons.Default.MoreHoriz,
-                contentDescription = "More sounds coming soon",
+                contentDescription = null,
                 modifier = Modifier.size(36.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )

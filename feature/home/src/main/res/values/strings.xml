@@ -29,8 +29,6 @@
     <string name="action_pause">Pause</string>
     <string name="action_reset">Reset timer</string>
     <string name="action_change_sound">Change</string>
-    <string name="action_decrease">Decrease</string>
-    <string name="action_increase">Increase</string>
 
     <!-- Sound picker -->
     <string name="sound_picker_title">Select Sound</string>
@@ -41,11 +39,12 @@
     <string name="label_focus_duration">Focus Duration</string>
     <string name="label_break_duration">Break Duration</string>
 
-    <!-- Volume slider -->
-    <string name="volume_low">Low volume</string>
-    <string name="volume_high">High volume</string>
-
     <!-- Media notification -->
     <string name="notification_focus_timer">Focus Timer</string>
     <string name="notification_time_remaining">%1$s remaining</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Decrease focus duration</string>
+    <string name="a11y_increase_focus">Increase focus duration</string>
+    <string name="a11y_volume_slider">Volume</string>
 </resources>
