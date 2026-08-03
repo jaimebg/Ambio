@@ -24,8 +24,8 @@ class SoundRepositoryImpl @Inject constructor(
     private val sounds = listOf(
         Sound(
             id = "rain",
-            name = "Rain",
-            description = "Gentle rain on a window",
+            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_rain,
+            descriptionRes = com.jbgsoft.ambio.core.data.R.string.sound_rain_description,
             icon = Icons.Default.WaterDrop,
             audioRes = com.jbgsoft.ambio.core.data.R.raw.rain_loop,
             illustrationRes = com.jbgsoft.ambio.core.data.R.drawable.illustration_rain,
@@ -33,8 +33,8 @@ class SoundRepositoryImpl @Inject constructor(
         ),
         Sound(
             id = "fireplace",
-            name = "Fireplace",
-            description = "Crackling fireplace warmth",
+            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_fireplace,
+            descriptionRes = com.jbgsoft.ambio.core.data.R.string.sound_fireplace_description,
             icon = Icons.Default.LocalFireDepartment,
             audioRes = com.jbgsoft.ambio.core.data.R.raw.fireplace_loop,
             illustrationRes = com.jbgsoft.ambio.core.data.R.drawable.illustration_fireplace,
@@ -42,8 +42,8 @@ class SoundRepositoryImpl @Inject constructor(
         ),
         Sound(
             id = "forest",
-            name = "Forest",
-            description = "Peaceful forest ambiance",
+            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_forest,
+            descriptionRes = com.jbgsoft.ambio.core.data.R.string.sound_forest_description,
             icon = Icons.Default.Forest,
             audioRes = com.jbgsoft.ambio.core.data.R.raw.forest_loop,
             illustrationRes = com.jbgsoft.ambio.core.data.R.drawable.illustration_forest,
@@ -51,8 +51,8 @@ class SoundRepositoryImpl @Inject constructor(
         ),
         Sound(
             id = "ocean",
-            name = "Ocean",
-            description = "Calm ocean waves",
+            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_ocean,
+            descriptionRes = com.jbgsoft.ambio.core.data.R.string.sound_ocean_description,
             icon = Icons.Default.Waves,
             audioRes = com.jbgsoft.ambio.core.data.R.raw.ocean_loop,
             illustrationRes = com.jbgsoft.ambio.core.data.R.drawable.illustration_ocean,
@@ -60,8 +60,8 @@ class SoundRepositoryImpl @Inject constructor(
         ),
         Sound(
             id = "cave",
-            name = "Cave",
-            description = "Echoing cave ambiance",
+            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_cave,
+            descriptionRes = com.jbgsoft.ambio.core.data.R.string.sound_cave_description,
             icon = Icons.Default.Terrain,
             audioRes = com.jbgsoft.ambio.core.data.R.raw.cave_loop,
             illustrationRes = com.jbgsoft.ambio.core.data.R.drawable.illustration_cave,

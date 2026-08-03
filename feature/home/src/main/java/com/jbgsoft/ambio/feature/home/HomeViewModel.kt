@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jbgsoft.ambio.core.common.audio.ChimePlayer
 import com.jbgsoft.ambio.core.common.haptics.HapticManager
+import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
@@ -33,7 +34,8 @@ class HomeViewModel @Inject constructor(
     private val hapticManager: HapticManager,
     private val audioServiceConnection: AudioServiceConnection,
     private val chimePlayer: ChimePlayer,
-    private val chimeRepository: ChimeRepository
+    private val chimeRepository: ChimeRepository,
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -181,7 +183,7 @@ class HomeViewModel @Inject constructor(
         }
         audioServiceConnection.playSound(
             audioRes = sound.audioRes,
-            name = sound.name,
+            name = stringProvider.get(sound.nameRes),
             description = description,
             illustrationRes = sound.illustrationRes
         )

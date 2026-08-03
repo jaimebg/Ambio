@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.Sound
@@ -57,7 +58,7 @@ fun SoundCard(
         ) {
             Icon(
                 imageVector = sound.icon,
-                contentDescription = sound.name,
+                contentDescription = stringResource(sound.nameRes),
                 modifier = Modifier.size(36.dp),
                 tint = if (isSelected) {
                     MaterialTheme.colorScheme.primary
@@ -67,7 +68,7 @@ fun SoundCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = sound.name,
+                text = stringResource(sound.nameRes),
                 style = MaterialTheme.typography.titleSmall,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.onPrimaryContainer

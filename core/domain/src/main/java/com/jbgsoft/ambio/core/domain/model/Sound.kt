@@ -2,12 +2,13 @@ package com.jbgsoft.ambio.core.domain.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
+import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class Sound(
     val id: String,
-    val name: String,
-    val description: String,
+    @param:StringRes val nameRes: Int,
+    @param:StringRes val descriptionRes: Int,
     val icon: ImageVector,
     @param:RawRes val audioRes: Int,
     @param:DrawableRes val illustrationRes: Int,
