@@ -12,13 +12,13 @@ hilt = "2.60.1"
 hilt-navigation-compose = "1.2.0"
 media3 = "1.6.0"
 room = "2.8.4"
-datastore = "1.1.4"
+datastore = "1.2.1"
 lifecycle = "2.9.0"
-core-ktx = "1.16.0"
-activity-compose = "1.10.0"
+core-ktx = "1.19.0"
+activity-compose = "1.13.0"
 
 # Kotlin libraries
-coroutines = "1.10.1"
+coroutines = "1.11.0"
 
 # Java libraries
 javax-inject = "1"
