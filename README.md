@@ -9,8 +9,20 @@
 </p>
 
 <p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.jbgsoft.ambio">
+    <img src="https://img.shields.io/badge/Google%20Play-Download-414141?logo=googleplay&logoColor=white" alt="Get it on Google Play">
+  </a>
+  <a href="https://github.com/jaimebg/Ambio/releases/latest">
+    <img src="https://img.shields.io/github/v/release/jaimebg/Ambio?label=release&color=3DDC84" alt="Latest release">
+  </a>
+  <a href="https://github.com/jaimebg/Ambio/actions/workflows/ci.yml">
+    <img src="https://github.com/jaimebg/Ambio/actions/workflows/ci.yml/badge.svg" alt="CI">
+  </a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Android-12%2B-3DDC84?logo=android&logoColor=white" alt="Android 12+">
-  <img src="https://img.shields.io/badge/Kotlin-2.0-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin 2.0">
+  <img src="https://img.shields.io/badge/Kotlin-2.3-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin 2.3">
   <img src="https://img.shields.io/badge/Jetpack%20Compose-UI-4285F4?logo=jetpackcompose&logoColor=white" alt="Jetpack Compose">
   <img src="https://img.shields.io/badge/Material%20Design%203-darkblue" alt="Material Design 3">
   <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
@@ -86,7 +98,7 @@ ui/            # Theme system, typography, shapes
 
 - Android 12+ (API 31)
 - Java 17
-- Android Studio Ladybug or newer
+- Android Studio Otter or newer (AGP 9 requires it)
 
 ## Getting Started
 
@@ -115,7 +127,7 @@ ui/            # Theme system, typography, shapes
 ```bash
 ./gradlew assembleDebug   # Build debug APK
 ./gradlew lint            # Run lint checks
-./gradlew test            # Run unit tests (75 tests)
+./gradlew test            # Run unit tests (154: 77 tests × debug and release variants)
 ./gradlew clean           # Clean build cache
 ```
 
