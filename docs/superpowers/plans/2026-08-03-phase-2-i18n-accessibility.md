@@ -17,9 +17,12 @@
 - **No se toca el modo claro.** La app usa `darkColorScheme` incondicional y sigue igual.
 - **No se corrige el `ImageVector` de `Sound.kt`.** Sigue haciendo que `core:domain` dependa
   de Compose; es refactor de producto, fuera de alcance.
-- Los 154 tests siguen pasando y el lint sigue en 0 errores tras cada tarea.
-- Ninguna versión de dependencia cambia, salvo añadir `libs.bundles.testing` al módulo `ui`
-  en la Tarea 6, que no toca `[versions]`.
+- **El número de tests nunca baja.** Parte de 154 y crece: **158** tras la Tarea 1 y **164**
+  tras la Tarea 6. Cada tarea indica el número que debe ver.
+- El lint sigue en **0 errores** tras cada tarea.
+- Ninguna versión de dependencia cambia. Las Tareas 1 y 6 añaden dependencias de test ya
+  presentes en el catálogo (`libs.bundles.testing`, `libs.robolectric`,
+  `libs.androidx.test.core`) a `core:common` y `ui` respectivamente; eso no toca `[versions]`.
 - Rama de trabajo: `chore/phase-2-i18n-accessibility` (ya creada, contiene el spec).
 
 ## File Structure
@@ -56,7 +59,33 @@ abstracción inyectable.
   y su implementación `AndroidStringProvider`, vinculada por Hilt. Las tareas 2, 3 y 4 la
   inyectan en `HomeViewModel`.
 
-- [ ] **Step 1: Escribir el test primero**
+- [ ] **Step 1a: Crear los recursos de prueba del módulo**
+
+El test necesita recursos propios. Depender de los de la plataforma (`android.R.string.ok`)
+sería frágil: su texto cambia entre versiones de Android y entre locales del emulador.
+
+Crear `core/common/src/test/res/values/strings.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="test_plain">Plain value</string>
+    <string name="test_formatted">Volume at %1$d percent</string>
+</resources>
+```
+
+Y declarar ese directorio como fuente de recursos de test en `core/common/build.gradle.kts`,
+dentro del bloque `android { }`:
+
+```kotlin
+    sourceSets {
+        getByName("test") {
+            res.srcDirs("src/test/res")
+        }
+    }
+```
+
+- [ ] **Step 1b: Escribir el test**
 
 Crear `core/common/src/test/java/com/jbgsoft/ambio/core/common/resources/StringProviderTest.kt`:
 
@@ -66,6 +95,7 @@ package com.jbgsoft.ambio.core.common.resources
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
+import com.jbgsoft.ambio.core.common.test.R
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -77,21 +107,30 @@ class StringProviderTest {
     private val provider = AndroidStringProvider(context)
 
     @Test
-    fun `resolves a simple string resource`() {
-        assertThat(provider.get(android.R.string.ok)).isEqualTo("OK")
+    fun `resolves a plain string resource`() {
+        assertThat(provider.get(R.string.test_plain)).isEqualTo("Plain value")
     }
 
     @Test
-    fun `resolves a formatted string resource with arguments`() {
-        // android.R.string.selected_count tiene el formato "%1$d selected"
-        val result = provider.get(android.R.string.selected_count, 3)
-        assertThat(result).contains("3")
+    fun `substitutes arguments into a formatted string resource`() {
+        assertThat(provider.get(R.string.test_formatted, 70))
+            .isEqualTo("Volume at 70 percent")
     }
 }
 ```
 
-Se usan recursos de la plataforma (`android.R.string`) a propósito: el test valida el
-mecanismo de resolución sin depender de strings del proyecto que aún no existen.
+El segundo test es el que importa: verifica que los argumentos se sustituyen de verdad, que
+es el caso que `HomeViewModel` va a usar para el tiempo restante de la notificación.
+
+**Si el import `com.jbgsoft.ambio.core.common.test.R` no resuelve**, es que AGP genera el `R`
+de test con otro nombre de paquete en esta configuración. Comprobar cuál con:
+
+```bash
+find core/common/build -name "R.java" -path "*test*" | head -2
+```
+
+y usar el que corresponda. Si no se genera ninguno, reportar en vez de volver a los recursos
+de plataforma.
 
 - [ ] **Step 2: Añadir las dependencias de test al módulo**
 
