@@ -42,8 +42,16 @@ detectar lo que los tests existentes no cubren.
 
 Quedan explícitamente fuera de esta fase:
 
-- Subir `compileSdk` / `targetSdk` por encima de 36. Es una decisión con su propio riesgo
-  de cambio de comportamiento; mezclarla aquí impide atribuir fallos.
+- ~~Subir `compileSdk` / `targetSdk` por encima de 36.~~ **Revocado el 2026-08-03.** Al
+  ejecutar el Paso 5 se descubrió que dos dependencias objetivo lo exigen:
+  `core-ktx` 1.19.0 y `hilt-navigation-compose` 1.4.0 declaran `minCompileSdk=37`. Con
+  `compileSdk 36` los techos reales serían 1.18.0 y 1.3.0 respectivamente. El dueño decidió
+  subir **`compileSdk` y `targetSdk` a 37** en vez de topar las versiones. El SDK 37 está
+  en el canal estable (`platforms;android-37.1`, `build-tools;37.0.0`).
+  Consecuencia asumida: `targetSdk 37` activa los cambios de comportamiento de Android 17.
+  Para una app con `MediaSessionService` en segundo plano, las políticas de foreground
+  service son el punto de rotura clásico, y **ningún test automático lo cubre** — la
+  verificación manual en dispositivo del Paso 5 pasa de recomendable a imprescindible.
 - Corregir la violación de arquitectura donde `core/domain/.../Sound.kt` importa
   `androidx.compose.ui.graphics.vector.ImageVector`, lo que obliga a `core:domain` a
   depender de Compose. El arreglo (usar `@DrawableRes Int`, como ya hace `illustrationRes`

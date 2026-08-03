@@ -12,7 +12,10 @@
 
 ## Global Constraints
 
-- `compileSdk = 36` y `targetSdk = 36` **no cambian** en esta fase.
+- `compileSdk` y `targetSdk` pasan de 36 a **37** en la Tarea 8b. *(Cambio del 2026-08-03:
+  originalmente no debían cambiar. Se revocó porque `core-ktx` 1.19.0 y
+  `hilt-navigation-compose` 1.4.0 declaran `minCompileSdk=37`; ver Tarea 8b.)* Hasta la
+  Tarea 8b siguen en 36; a partir de ella, en 37.
 - `minSdk = 31` no cambia.
 - Java 17 (`sourceCompatibility`, `targetCompatibility`, `jvmTarget`) en todos los módulos.
 - **Ningún cambio de comportamiento de la app.** Sí están permitidos los cambios de
@@ -1119,6 +1122,81 @@ git commit -m "build: upgrade Room to 2.8.4 and export database schemas
 Schemas were not being exported, which made future database migrations
 untestable. The generated schema is now versioned."
 ```
+
+---
+
+### Task 8b: Subir compileSdk y targetSdk a 37
+
+**Añadida el 2026-08-03**, tras el bloqueo de la Tarea 9. El primer intento de esa tarea
+falló con `checkDebugAarMetadata` en `core:common`, `core:data` y `media`: `core-ktx` 1.19.0
+declara `minCompileSdk=37` y el proyecto compila contra `android-36`. Un sondeo de todos los
+objetivos restantes encontró un segundo caso, `hilt-navigation-compose` 1.4.0 (Tarea 11).
+
+Con `compileSdk 36` los techos reales serían `core-ktx` 1.18.0 y `hilt-navigation-compose`
+1.3.0. El dueño decidió subir el SDK en vez de topar las versiones.
+
+**Files:**
+- Modify: `build-logic/convention/src/main/kotlin/AndroidLibraryConventionPlugin.kt`
+- Modify: `build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt`
+
+**Interfaces:**
+- Consumes: los convention plugins de las Tareas 2 y 4.
+- Produces: `compileSdk = 37` en ambos plugins y `targetSdk = 37` en el de aplicación, lo
+  que desbloquea `core-ktx` 1.19.0 (Tarea 9) y `hilt-navigation-compose` 1.4.0 (Tarea 11).
+
+- [ ] **Step 1: Comprobar que el SDK 37 está instalado**
+
+```bash
+ls ~/Library/Android/sdk/platforms/ | grep 37
+```
+
+Esperado: aparece `android-37.1`. Si no está, instalarlo:
+
+```bash
+~/Library/Android/sdk/cmdline-tools/latest/bin/sdkmanager \
+  --install "platforms;android-37.1" "build-tools;37.0.0"
+```
+
+- [ ] **Step 2: Subir el SDK en los dos convention plugins**
+
+En `AndroidLibraryConventionPlugin.kt`, cambiar `compileSdk = 36` por `compileSdk = 37`.
+
+En `AndroidApplicationConventionPlugin.kt`, cambiar `compileSdk = 36` por `compileSdk = 37`
+y `targetSdk = 36` por `targetSdk = 37`.
+
+`minSdk = 31` no se toca en ninguno de los dos.
+
+Nota: el SDK 37 usa versionado con minor (`37.0`, `37.1`). Si AGP 9 pide desambiguar,
+existe `compileSdkMinor`. Empezar con `compileSdk = 37` a secas y sólo añadir el minor si
+el build lo exige — y decirlo en el informe si hace falta.
+
+- [ ] **Step 3: Verificar**
+
+```bash
+./gradlew clean lint test assembleDebug
+```
+
+Esperado: verde, **154 tests**, 0 errores de lint. Es esperable que aparezcan warnings de
+lint **nuevos** en esta tarea, a diferencia del resto de la fase: compilar contra un SDK más
+nuevo hace que lint conozca APIs y avisos que antes no veía. Documentar cuáles aparecen y de
+qué categoría; no arreglarlos aquí salvo que sean errores.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add build-logic
+git commit -m "build: raise compileSdk and targetSdk to 37
+
+core-ktx 1.19.0 and hilt-navigation-compose 1.4.0 both declare
+minCompileSdk=37. Raising the SDK unblocks them instead of capping both
+dependencies below their current releases."
+```
+
+**Riesgo que esta tarea introduce y que no cierra.** `targetSdk 37` activa los cambios de
+comportamiento de Android 17. Para una app cuyo núcleo es un `MediaSessionService` en
+segundo plano, las políticas de foreground service son el punto de rotura clásico, y ningún
+test automático las cubre. La verificación manual en dispositivo de la Tarea 10 deja de ser
+recomendable y pasa a ser el criterio que decide si esta subida fue segura.
 
 ---
 
