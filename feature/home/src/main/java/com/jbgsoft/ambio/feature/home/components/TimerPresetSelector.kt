@@ -71,7 +71,7 @@ fun TimerPresetSelector(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Focus Duration",
+                text = stringResource(R.string.label_focus_duration),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -127,7 +127,7 @@ fun TimerPresetSelector(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Break Duration",
+                text = stringResource(R.string.label_break_duration),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -199,7 +199,7 @@ private fun NumberStepper(
         ) {
             Icon(
                 imageVector = Icons.Default.Remove,
-                contentDescription = "Decrease",
+                contentDescription = stringResource(R.string.action_decrease),
                 modifier = Modifier.size(iconSize)
             )
         }
@@ -233,7 +233,7 @@ private fun NumberStepper(
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Increase",
+                contentDescription = stringResource(R.string.action_increase),
                 modifier = Modifier.size(iconSize)
             )
         }

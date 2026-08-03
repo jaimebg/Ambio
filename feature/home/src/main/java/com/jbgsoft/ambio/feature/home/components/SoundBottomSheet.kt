@@ -15,8 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.feature.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +43,7 @@ fun SoundBottomSheet(
                     .padding(bottom = 32.dp)
             ) {
                 Text(
-                    text = "Select Sound",
+                    text = stringResource(R.string.sound_picker_title),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

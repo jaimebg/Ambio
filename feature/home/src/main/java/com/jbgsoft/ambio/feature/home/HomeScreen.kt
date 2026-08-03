@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -197,7 +198,7 @@ fun HomeScreen(
                                             ) {
                                                 Icon(
                                                     imageVector = Icons.Default.Stop,
-                                                    contentDescription = "Reset Timer",
+                                                    contentDescription = stringResource(R.string.action_reset),
                                                     modifier = Modifier.size(if (isSmallScreen) 20.dp else 24.dp)
                                                 )
                                             }

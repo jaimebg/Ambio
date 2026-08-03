@@ -15,8 +15,10 @@ import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.jbgsoft.ambio.feature.home.R
 
 @Composable
 fun PlayPauseButton(
@@ -43,7 +45,11 @@ fun PlayPauseButton(
         ) { playing ->
             Icon(
                 imageVector = if (playing) Icons.Default.Pause else Icons.Default.PlayArrow,
-                contentDescription = if (playing) "Pause" else "Play",
+                contentDescription = if (playing) {
+                    stringResource(R.string.action_pause)
+                } else {
+                    stringResource(R.string.action_play)
+                },
                 modifier = Modifier.size(iconSize)
             )
         }
