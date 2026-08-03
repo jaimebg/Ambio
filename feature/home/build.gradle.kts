@@ -1,31 +1,11 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    id("ambio.android.library")
+    id("ambio.android.compose")
+    id("ambio.android.hilt")
 }
 
 android {
     namespace = "com.jbgsoft.ambio.feature.home"
-    compileSdk = 36
-
-    defaultConfig {
-        minSdk = 31
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
@@ -44,9 +24,7 @@ dependencies {
     implementation(libs.bundles.lifecycle)
 
     // Hilt
-    implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
 
     // Coroutines
     implementation(libs.bundles.coroutines)

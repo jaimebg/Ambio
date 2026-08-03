@@ -8,7 +8,7 @@ import com.jbgsoft.ambio.core.data.local.entity.SessionEntity
 @Database(
     entities = [SessionEntity::class],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class AmbioDatabase : RoomDatabase() {
     abstract fun sessionDao(): SessionDao

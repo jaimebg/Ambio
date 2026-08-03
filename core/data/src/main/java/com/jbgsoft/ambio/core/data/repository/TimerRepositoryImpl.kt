@@ -30,7 +30,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class TimerRepositoryImpl @Inject constructor(
-    @DefaultDispatcher private val dispatcher: CoroutineDispatcher
+    @param:DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) : TimerRepository {
 
     private val _timerState = MutableStateFlow<TimerState>(TimerState.Idle)
