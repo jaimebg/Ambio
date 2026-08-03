@@ -1,35 +1,35 @@
 [versions]
 # Build tools
-agp = "8.8.0"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.28"
+agp = "9.3.1"
+kotlin = "2.3.21"
+ksp = "2.3.10"
 
 # Compose - Using BOM for version management
-compose-bom = "2025.02.00"
+compose-bom = "2026.06.01"
 
 # AndroidX
-hilt = "2.54"
-hilt-navigation-compose = "1.2.0"
-media3 = "1.6.0"
-room = "2.7.1"
-datastore = "1.1.4"
-lifecycle = "2.9.0"
-core-ktx = "1.16.0"
-activity-compose = "1.10.0"
+hilt = "2.60.1"
+hilt-navigation-compose = "1.4.0"
+media3 = "1.10.1"
+room = "2.8.4"
+datastore = "1.2.1"
+lifecycle = "2.11.0"
+core-ktx = "1.19.0"
+activity-compose = "1.13.0"
 
 # Kotlin libraries
-coroutines = "1.10.1"
+coroutines = "1.11.0"
 
 # Java libraries
 javax-inject = "1"
 
 # Testing
 junit = "4.13.2"
-mockk = "1.13.13"
+mockk = "1.14.11"
 turbine = "1.2.0"
 truth = "1.4.4"
 androidx-test-core = "1.6.1"
-robolectric = "4.14.1"
+robolectric = "4.16.1"
 
 [libraries]
 # AndroidX Core
@@ -90,6 +90,12 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 
+# Gradle plugins como dependencias de build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -97,6 +103,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
 compose = [
