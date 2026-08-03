@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.bundles.coroutines)
 
     // Testing
+    testImplementation(project(":core:data"))
     testImplementation(libs.bundles.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
