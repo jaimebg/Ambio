@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.feature.home.R
 
 @Composable
 fun CurrentSoundBar(
@@ -49,7 +50,7 @@ fun CurrentSoundBar(
                 )
             } else {
                 Text(
-                    text = "No sound selected",
+                    text = stringResource(R.string.sound_none_selected),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -57,7 +58,7 @@ fun CurrentSoundBar(
         }
 
         FilledTonalButton(onClick = onChangeClick) {
-            Text("Change")
+            Text(stringResource(R.string.action_change_sound))
         }
     }
 }

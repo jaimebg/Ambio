@@ -10,4 +10,42 @@
         <item quantity="one">%1$d min</item>
         <item quantity="other">%1$d min</item>
     </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Timer</string>
+    <string name="mode_ambient">Ambient</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Ambient Mode</string>
+    <string name="state_break_time">Break Time</string>
+    <string name="state_focus">Focus</string>
+    <string name="state_paused">Paused</string>
+    <string name="state_break_over">Break Over!</string>
+    <string name="state_completed">Completed!</string>
+    <string name="state_ready">Ready</string>
+
+    <!-- Controls -->
+    <string name="action_play">Play</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_reset">Reset timer</string>
+    <string name="action_change_sound">Change</string>
+    <string name="action_decrease">Decrease</string>
+    <string name="action_increase">Increase</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Select Sound</string>
+    <string name="sound_none_selected">No sound selected</string>
+    <string name="sound_more_coming">More coming soon</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Focus Duration</string>
+    <string name="label_break_duration">Break Duration</string>
+
+    <!-- Volume slider -->
+    <string name="volume_low">Low volume</string>
+    <string name="volume_high">High volume</string>
+
+    <!-- Media notification -->
+    <string name="notification_focus_timer">Focus Timer</string>
+    <string name="notification_time_remaining">%1$s remaining</string>
 </resources>

@@ -656,7 +656,7 @@ class HomeViewModelTest {
             audioServiceConnection.playSound(
                 1,
                 stringProvider.get(com.jbgsoft.ambio.core.data.R.string.sound_rain),
-                "Ambient Mode",
+                stringProvider.get(R.string.state_ambient_mode),
                 2
             )
         }

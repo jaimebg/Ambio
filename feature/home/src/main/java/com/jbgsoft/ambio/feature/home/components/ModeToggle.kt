@@ -7,7 +7,9 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.feature.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,8 +32,8 @@ fun ModeToggle(
                 label = {
                     Text(
                         text = when (mode) {
-                            AppMode.TIMER -> "Timer"
-                            AppMode.AMBIENT -> "Ambient"
+                            AppMode.TIMER -> stringResource(R.string.mode_timer)
+                            AppMode.AMBIENT -> stringResource(R.string.mode_ambient)
                         }
                     )
                 }

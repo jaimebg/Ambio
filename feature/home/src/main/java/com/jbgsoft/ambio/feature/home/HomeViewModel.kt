@@ -174,12 +174,15 @@ class HomeViewModel @Inject constructor(
                 if (timerState is TimerState.Running) {
                     val minutes = timerState.remainingMs / 60000
                     val seconds = (timerState.remainingMs % 60000) / 1000
-                    "${minutes}:${seconds.toString().padStart(2, '0')} remaining"
+                    stringProvider.get(
+                        R.string.notification_time_remaining,
+                        "${minutes}:${seconds.toString().padStart(2, '0')}"
+                    )
                 } else {
-                    "Focus Timer"
+                    stringProvider.get(R.string.notification_focus_timer)
                 }
             }
-            AppMode.AMBIENT -> "Ambient Mode"
+            AppMode.AMBIENT -> stringProvider.get(R.string.state_ambient_mode)
         }
         audioServiceConnection.playSound(
             audioRes = sound.audioRes,

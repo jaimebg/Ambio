@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.feature.home.R
 
 @Composable
 fun SoundCard(
@@ -112,7 +113,7 @@ fun ComingSoonCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "More coming soon",
+                text = stringResource(R.string.sound_more_coming),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
