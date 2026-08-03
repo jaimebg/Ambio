@@ -2,10 +2,15 @@ plugins {
     id("ambio.android.library")
     id("ambio.android.compose")
     id("ambio.android.hilt")
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "com.jbgsoft.ambio.core.data"
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {

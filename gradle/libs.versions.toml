@@ -11,7 +11,7 @@ compose-bom = "2025.02.00"
 hilt = "2.60.1"
 hilt-navigation-compose = "1.2.0"
 media3 = "1.6.0"
-room = "2.7.1"
+room = "2.8.4"
 datastore = "1.1.4"
 lifecycle = "2.9.0"
 core-ktx = "1.16.0"
@@ -103,6 +103,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
 compose = [
