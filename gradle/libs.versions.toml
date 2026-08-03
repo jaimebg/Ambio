@@ -5,15 +5,15 @@ kotlin = "2.3.21"
 ksp = "2.3.10"
 
 # Compose - Using BOM for version management
-compose-bom = "2025.02.00"
+compose-bom = "2026.06.01"
 
 # AndroidX
 hilt = "2.60.1"
-hilt-navigation-compose = "1.2.0"
+hilt-navigation-compose = "1.4.0"
 media3 = "1.10.1"
 room = "2.8.4"
 datastore = "1.2.1"
-lifecycle = "2.9.0"
+lifecycle = "2.11.0"
 core-ktx = "1.19.0"
 activity-compose = "1.13.0"
 
