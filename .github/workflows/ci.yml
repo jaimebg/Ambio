@@ -55,3 +55,36 @@ jobs:
             **/build/reports/lint-results-*.html
             **/build/reports/tests/
           retention-days: 7
+
+  release:
+    name: Publicar release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar notas de la release
+        run: |
+          VERSION_CODE=$(grep -oE 'versionCode = [0-9]+' app/build.gradle.kts | grep -oE '[0-9]+')
+          CHANGELOG_DIR=fastlane/metadata/android/en-US/changelogs
+          if [ -f "$CHANGELOG_DIR/$VERSION_CODE.txt" ]; then
+            NOTES_FILE="$CHANGELOG_DIR/$VERSION_CODE.txt"
+          else
+            NOTES_FILE="$CHANGELOG_DIR/default.txt"
+          fi
+          echo "versionCode $VERSION_CODE, notas desde $NOTES_FILE"
+          cp "$NOTES_FILE" release-notes.md
+
+      - name: Crear la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md \
+            --generate-notes
