@@ -32,9 +32,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
+import com.jbgsoft.ambio.feature.home.R
 
 private val BREAK_OPTIONS = listOf(5, 10, 15, 20)
 
@@ -84,7 +87,7 @@ fun TimerPresetSelector(
                         ),
                         onClick = { onPresetSelected(preset) },
                         selected = selectedPreset == preset,
-                        label = { Text(preset.displayName) }
+                        label = { Text(preset.label()) }
                     )
                 }
             }
@@ -109,7 +112,6 @@ fun TimerPresetSelector(
                     minValue = 1,
                     maxValue = 120,
                     step = 5,
-                    suffix = "min",
                     isCompact = isCompact
                 )
             }
@@ -173,7 +175,6 @@ private fun NumberStepper(
     minValue: Int,
     maxValue: Int,
     step: Int,
-    suffix: String,
     isCompact: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -207,7 +208,7 @@ private fun NumberStepper(
 
         // Value display
         Text(
-            text = "$value $suffix",
+            text = pluralStringResource(R.plurals.duration_minutes, value, value),
             style = if (isCompact) {
                 MaterialTheme.typography.headlineSmall
             } else {
@@ -238,3 +239,12 @@ private fun NumberStepper(
         }
     }
 }
+
+@Composable
+private fun TimerPreset.label(): String = stringResource(
+    when (this) {
+        TimerPreset.FOCUS_25 -> R.string.preset_25_min
+        TimerPreset.FOCUS_50 -> R.string.preset_50_min
+        TimerPreset.CUSTOM -> R.string.preset_custom
+    }
+)
