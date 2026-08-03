@@ -8,6 +8,14 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
+        // AGP 9 applies Kotlin support implicitly (android.builtInKotlin) as part of
+        // registering the "com.android.library" plugin, which is what makes the
+        // KotlinAndroidProjectExtension below resolvable even though no Kotlin plugin
+        // is applied anywhere in this file. Do NOT add an explicit
+        // pluginManager.apply("org.jetbrains.kotlin.android") call: with AGP 9, applying
+        // it explicitly on top of the built-in one is a build error, not a no-op. The
+        // order here — Android plugin first, then configuring KotlinAndroidProjectExtension
+        // — is load-bearing; do not reorder these two blocks.
         pluginManager.apply("com.android.library")
 
         extensions.configure<LibraryExtension> {

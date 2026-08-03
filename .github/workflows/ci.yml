@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -37,6 +40,9 @@ jobs:
 
       - name: Build debug
         run: ./gradlew assembleDebug
+
+      - name: Build release bundle
+        run: ./gradlew bundleRelease
 
       - name: Publicar informes
         if: always()
