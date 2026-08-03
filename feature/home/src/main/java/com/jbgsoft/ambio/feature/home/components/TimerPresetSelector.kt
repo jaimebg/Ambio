@@ -201,7 +201,7 @@ private fun NumberStepper(
             },
             enabled = value > minValue,
             colors = IconButtonDefaults.filledTonalIconButtonColors(),
-            modifier = Modifier.size(buttonSize).minimumInteractiveComponentSize()
+            modifier = Modifier.minimumInteractiveComponentSize().size(buttonSize)
         ) {
             Icon(
                 imageVector = Icons.Default.Remove,
@@ -235,7 +235,7 @@ private fun NumberStepper(
             },
             enabled = value < maxValue,
             colors = IconButtonDefaults.filledTonalIconButtonColors(),
-            modifier = Modifier.size(buttonSize).minimumInteractiveComponentSize()
+            modifier = Modifier.minimumInteractiveComponentSize().size(buttonSize)
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
