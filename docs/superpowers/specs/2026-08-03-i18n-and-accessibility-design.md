@@ -17,7 +17,8 @@ Estado al empezar, medido sobre el código:
 | Locales de la ficha de Play | 48 |
 | Idiomas de la app | 1 (inglés) |
 | `app/src/main/res/values/strings.xml` | 25 strings, **24 de ellos código muerto** |
-| Temas que cumplen WCAG AA | **1 de 5** |
+| `ui/.../theme/Color.kt` | paleta entera, **código muerto**: nadie la referencia |
+| Temas que cumplen WCAG AA | **0 de 5** |
 
 Dos hallazgos que definen el trabajo:
 
@@ -101,8 +102,14 @@ Dos strings necesitan formato, no sustitución directa:
 
 ### 4. Contraste
 
-Ratios actuales, medidos sobre `ui/src/main/java/com/jbgsoft/ambio/ui/theme/Color.kt`.
-Umbrales WCAG AA: 3.0 para componentes de UI, 4.5 para texto normal.
+**Los colores viven en `core/domain/.../model/SoundTheme.kt`, no en `ui/.../theme/Color.kt`.**
+`Theme.kt` lee `soundTheme.primary`, `soundTheme.background`, etc. del enum de dominio.
+`Color.kt` es una segunda copia de la paleta que **nadie referencia**: es código muerto, como
+el `strings.xml` de `app`, y con valores que además ya divergen — su bloque `Wind*` define
+Cave en gris `7B8794` mientras el enum real la define en marrón `6B5B4F`. Se borra.
+
+Ratios actuales, medidos sobre los valores reales de `SoundTheme.kt`. Umbrales WCAG AA: 3.0
+para componentes de UI, 4.5 para texto normal.
 
 | Tema | primary/fondo | primary/surface | onPrimary/primary |
 |---|---|---|---|
@@ -110,7 +117,9 @@ Umbrales WCAG AA: 3.0 para componentes de UI, 4.5 para texto normal.
 | Fireplace | 4.80 | 4.17 | **3.50** ✗ |
 | Forest | **2.26** ✗ | **1.87** ✗ | 6.39 |
 | Ocean | 3.64 | **2.80** ✗ | 4.87 |
-| Cave | 4.32 | 3.63 | **3.66** ✗ |
+| Cave | **2.71** ✗ | **2.36** ✗ | 6.49 |
+
+**Fallan los cinco temas**, no cuatro.
 
 **La corrección principal no está en los primarios: está en `onPrimary`.** Forzar blanco
 como color del texto sobre el botón es lo que crea el conflicto — el primario tendría que ser
@@ -121,20 +130,24 @@ Material 3 no exige blanco: sobre un primario claro, lo correcto es texto oscuro
 **propio color de fondo de cada tema** como `onPrimary` —un color que ya existe en la
 paleta, no uno nuevo— el conflicto desaparece:
 
-| Tema | primary | onPrimary | p/fondo | p/surface | on/p | ΔL |
-|---|---|---|---|---|---|---|
-| Rain | `5C7AEA` → `6481EB` | `1A1F3C` (fondo) | 4.51 | 3.86 | 4.51 | +0.018 |
-| Fireplace | **sin cambio** | `2D1810` (fondo) | 4.80 | 4.17 | 4.80 | 0 |
-| Forest | `2D6A4F` → `44A178` | `1B2E1F` (fondo) | 4.54 | 3.77 | 4.54 | +0.153 |
-| Ocean | `0077B6` → `007CBD` | `FFFFFF` (blanco) | 3.90 | 3.00 | 4.55 | +0.014 |
-| Cave | `7B8794` → `7E8A97` | `1E2328` (fondo) | 4.50 | 3.78 | 4.50 | +0.012 |
+| Tema | primary | onPrimary | p/fondo | p/surface | on/p | on/sec | ΔL |
+|---|---|---|---|---|---|---|---|
+| Rain | `5C7AEA` → `6481EB` | `1A1F3C` (fondo) | 4.51 | 3.86 | 4.51 | 5.91 | +0.018 |
+| Fireplace | **sin cambio** | `2D1810` (fondo) | 4.80 | 4.17 | 4.80 | 8.25 | 0 |
+| Forest | `2D6A4F` → `44A178` | `1B2E1F` (fondo) | 4.54 | 3.77 | 4.54 | 5.82 | +0.153 |
+| Ocean | `0077B6` → `0087CE` | `0A1929` (fondo) | 4.52 | 3.48 | 4.52 | 9.16 | +0.047 |
+| Cave | `6B5B4F` → `927D6C` | `1C1816` (fondo) | 4.51 | 3.92 | 4.51 | 5.32 | +0.134 |
 
-Cuatro de los cinco cambian menos de 0.02 de luminosidad, imperceptible. Fireplace no cambia
-ningún color. **Forest es la única excepción y no es evitable:** con 1.87 de contraste su
-botón de play es hoy casi invisible sobre las tarjetas. Pasa de verde oscuro a verde medio.
+La columna `on/sec` importa porque `Theme.kt` mapea también `onSecondary` a `onPrimary`: los
+cinco pasan con holgura.
 
-Nota: las constantes de Cave siguen llamándose `Wind*` en `Color.kt`, resto del renombrado
-del sonido. Se renombran de paso, ya que se tocan esas líneas.
+Fireplace no cambia ningún color, y Rain y Ocean cambian menos de 0.05 de luminosidad.
+**Forest y Cave sí cambian de forma visible, y no es evitable:** con 1.87 y 2.36 de contraste
+contra las tarjetas, sus botones de play son hoy casi invisibles. Forest pasa de verde oscuro
+a verde medio; Cave, de marrón oscuro a marrón medio.
+
+Nota: `Color.kt` se borra entero en lugar de corregirlo. Mantener dos paletas de las que sólo
+una se usa es cómo se llegó a que Cave tuviera dos colores distintos según el fichero.
 
 #### El cambio de `onPrimary` obliga a separar roles en `Theme.kt`
 
