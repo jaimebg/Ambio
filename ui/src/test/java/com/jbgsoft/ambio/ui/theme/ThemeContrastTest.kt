@@ -1,7 +1,7 @@
 package com.jbgsoft.ambio.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import org.junit.Test
 import kotlin.math.pow
@@ -32,16 +32,20 @@ class ThemeContrastTest {
     @Test
     fun `primary is legible against background and surface in every theme`() {
         SoundTheme.entries.forEach { theme ->
-            assertThat(contrast(theme.primary, theme.background)).isAtLeast(3.0)
-            assertThat(contrast(theme.primary, theme.surface)).isAtLeast(3.0)
+            assertWithMessage("%s: primary on background", theme.name)
+                .that(contrast(theme.primary, theme.background)).isAtLeast(3.0)
+            assertWithMessage("%s: primary on surface", theme.name)
+                .that(contrast(theme.primary, theme.surface)).isAtLeast(3.0)
         }
     }
 
     @Test
     fun `onPrimary is legible on primary and on secondary in every theme`() {
         SoundTheme.entries.forEach { theme ->
-            assertThat(contrast(theme.onPrimary, theme.primary)).isAtLeast(4.5)
-            assertThat(contrast(theme.onPrimary, theme.secondary)).isAtLeast(4.5)
+            assertWithMessage("%s: onPrimary on primary", theme.name)
+                .that(contrast(theme.onPrimary, theme.primary)).isAtLeast(4.5)
+            assertWithMessage("%s: onPrimary on secondary", theme.name)
+                .that(contrast(theme.onPrimary, theme.secondary)).isAtLeast(4.5)
         }
     }
 
@@ -50,7 +54,8 @@ class ThemeContrastTest {
         // Theme.kt maps primaryContainer and secondaryContainer to surfaceVariant,
         // and their on- roles to white. This is the pair that guards that mapping.
         SoundTheme.entries.forEach { theme ->
-            assertThat(contrast(Color.White, theme.surfaceVariant)).isAtLeast(4.5)
+            assertWithMessage("%s: white on surfaceVariant", theme.name)
+                .that(contrast(Color.White, theme.surfaceVariant)).isAtLeast(4.5)
         }
     }
 }
