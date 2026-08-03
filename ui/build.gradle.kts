@@ -19,4 +19,7 @@ dependencies {
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+
+    // Testing
+    testImplementation(libs.bundles.testing)
 }
