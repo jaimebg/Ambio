@@ -2,7 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [ main, chore/** ]
+    branches: [ main ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -42,6 +43,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Build release bundle
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
         run: ./gradlew bundleRelease
 
       - name: Publicar informes
