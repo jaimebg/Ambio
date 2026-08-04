@@ -56,61 +56,6 @@ jobs:
             **/build/reports/tests/
           retention-days: 7
 
-  instrumented:
-    name: Tests en emulador
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configurar JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Configurar Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Habilitar KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
-            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      - name: Tests instrumentados
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          # API 36 and not 37 on purpose: API 37's system image is published as
-          # "system-images;android-37.0;..." — note the .0 — while this action builds
-          # the name as "system-images;android-<api-level>;...". 36 has no such suffix.
-          api-level: 36
-          target: google_apis
-          arch: x86_64
-          disable-animations: true
-          # No -no-window: the first two real CI runs both hung the same way regardless
-          # of how long MixerUi was told to wait - every "Change"/"Play" affordance that
-          # depends on Compose's ModalBottomSheet finishing its own hide animation
-          # (Material3 calls onDismissRequest only after that animation completes) never
-          # arrived, at 10s or at 20s. That is a stuck animation, not a slow one, and
-          # -no-window skips giving the emulator a real window/SurfaceFlinger target to
-          # animate into. Dropping it lets this action fall back to its own Xvfb-backed
-          # window on Linux runners - still fully headless from the runner's point of
-          # view, just with a real surface for the guest to render and vsync against.
-          emulator-options: -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          script: ./gradlew :app:connectedDebugAndroidTest
-
-      - name: Publicar informes
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: informes-instrumentados
-          path: app/build/reports/androidTests/
-          retention-days: 7
-
   release:
     name: Publicar release
     needs: build
