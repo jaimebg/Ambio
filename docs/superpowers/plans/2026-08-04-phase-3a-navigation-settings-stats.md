@@ -270,10 +270,11 @@ el fichero:
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.PlayPause)
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
         advanceUntilIdle()
 
-        verify(exactly = 0) { hapticManager.click() }
         verify(exactly = 0) { hapticManager.heavyClick() }
+        verify(exactly = 0) { hapticManager.click() }
     }
 
     @Test
@@ -285,15 +286,27 @@ el fichero:
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.PlayPause)
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
         advanceUntilIdle()
 
         verify(atLeast = 1) { hapticManager.heavyClick() }
+        verify(atLeast = 1) { hapticManager.click() }
     }
 ```
 
-**El par importa.** El primero solo prueba que algo no pasa, y pasaría también si el evento
-estuviera roto y no hiciera nada. El segundo demuestra que en el mismo camino, con el ajuste
-activo, sí ocurre — que es lo que convierte al primero en una prueba real de la puerta.
+**Por qué dos eventos y no uno.** `playPause()` llama sólo a `heavyClick()` y `setMode()`
+sólo a `click()`. Con un único evento, una de las dos aserciones de "no se dispara" sería
+cierta de todos modos —el método nunca llama a ese háptico— y no probaría nada sobre la
+puerta. Disparando ambos, las cuatro aserciones son significativas y la puerta queda probada
+sobre dos tipos de háptico distintos.
+
+**Y por qué el par de tests.** El primero solo comprueba que algo no ocurre, y pasaría
+también si los eventos estuvieran rotos y no hicieran nada. El segundo demuestra que por ese
+mismo camino, con el ajuste activo, sí ocurre — que es lo que convierte al primero en una
+prueba real.
+
+`HomeEvent.SetMode` toma un `AppMode`; si el nombre del evento o su parámetro no coincidiera
+con el del fichero, usa el que exista y dilo en el informe.
 
 El fichero ya tiene `private fun createViewModel(): HomeViewModel` en la línea 180, y los
 mocks se llaman exactamente `hapticManager` y `preferencesRepository`. Los dos tests encajan
