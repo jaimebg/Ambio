@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Rain</string>
+
+    <string name="sound_fireplace">Fireplace</string>
+
+    <string name="sound_forest">Forest</string>
+
+    <string name="sound_ocean">Ocean</string>
+
+    <string name="sound_cave">Cave</string>
+</resources>

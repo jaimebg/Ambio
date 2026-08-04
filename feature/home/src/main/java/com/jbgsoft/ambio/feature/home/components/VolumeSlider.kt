@@ -15,7 +15,11 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.jbgsoft.ambio.feature.home.R
 
 @Composable
 fun VolumeSlider(
@@ -24,6 +28,8 @@ fun VolumeSlider(
     onVolumeChangeFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val volumeSliderDescription = stringResource(R.string.a11y_volume_slider)
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -33,7 +39,7 @@ fun VolumeSlider(
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.VolumeDown,
-            contentDescription = "Low volume",
+            contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(24.dp)
         )
@@ -48,12 +54,16 @@ fun VolumeSlider(
                 activeTrackColor = MaterialTheme.colorScheme.primary,
                 inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant
             ),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .semantics {
+                    contentDescription = volumeSliderDescription
+                }
         )
 
         Icon(
             imageVector = Icons.AutoMirrored.Filled.VolumeUp,
-            contentDescription = "High volume",
+            contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(24.dp)
         )
