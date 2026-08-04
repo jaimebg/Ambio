@@ -3,6 +3,7 @@ package com.jbgsoft.ambio.media
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
@@ -95,10 +96,14 @@ class AudioService : MediaSessionService() {
             args: Bundle
         ): ListenableFuture<SessionResult> {
             when (customCommand.customAction) {
-                MixCommands.SET_MIX -> player.setMix(
-                    mix = decodeMix(args),
-                    title = args.getString(MixCommands.ARG_TITLE).orEmpty()
-                )
+                MixCommands.SET_MIX -> if (!applySetMix(player, args)) {
+                    // Refused, not applied: a bundle we cannot read must leave the mix
+                    // alone rather than resolve to "no sounds" and silence everything.
+                    Log.w(TAG, "Ignoring malformed ${MixCommands.SET_MIX}")
+                    return Futures.immediateFuture(
+                        SessionResult(SessionError.ERROR_BAD_VALUE)
+                    )
+                }
                 // @SessionResult.Code is declared in terms of SessionError's constants in
                 // 1.10.1; SessionResult.RESULT_ERROR_NOT_SUPPORTED holds the same value
                 // but is outside the IntDef, and lint rejects it.
@@ -108,17 +113,9 @@ class AudioService : MediaSessionService() {
             }
             return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
         }
+    }
 
-        /**
-         * Three parallel arrays back into entries, truncated to the shortest so a
-         * malformed bundle can never index out of bounds.
-         */
-        private fun decodeMix(args: Bundle): List<MixEntry> {
-            val ids = args.getStringArray(MixCommands.ARG_SOUND_IDS) ?: return emptyList()
-            val audioRes = args.getIntArray(MixCommands.ARG_AUDIO_RES) ?: return emptyList()
-            val levels = args.getFloatArray(MixCommands.ARG_LEVELS) ?: return emptyList()
-            val size = minOf(ids.size, audioRes.size, levels.size)
-            return (0 until size).map { MixEntry(ids[it], audioRes[it], levels[it]) }
-        }
+    private companion object {
+        const val TAG = "AudioService"
     }
 }
