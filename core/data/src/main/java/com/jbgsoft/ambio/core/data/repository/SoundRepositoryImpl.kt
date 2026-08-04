@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -69,6 +71,11 @@ class SoundRepositoryImpl @Inject constructor(
 
     private val mixOverride = MutableStateFlow<String?>(null)
 
+    // Serializes the read-modify-write in setSoundActive/setSoundLevel so two
+    // overlapping calls (rapid taps, each its own viewModelScope.launch) can't
+    // both read the same snapshot and have the second silently drop the first.
+    private val mutex = Mutex()
+
     override fun getAllSounds(): List<Sound> = sounds
 
     override fun getSoundById(id: String): Sound? = sounds.find { it.id == id }
@@ -82,38 +89,54 @@ class SoundRepositoryImpl @Inject constructor(
 
     override suspend fun setSoundActive(soundId: String, active: Boolean) {
         if (getSoundById(soundId) == null) return
-        val current = currentMix()
-        val updated = when {
-            active -> if (current.any { it.sound.id == soundId }) current
-                      else current + ActiveSound(getSoundById(soundId)!!, 1.0f)
-            // The mix is never empty.
-            current.size == 1 -> return
-            else -> current.filterNot { it.sound.id == soundId }
+        mutex.withLock {
+            val current = currentMix()
+            val updated = when {
+                active -> if (current.any { it.sound.id == soundId }) current
+                          else current + ActiveSound(getSoundById(soundId)!!, 1.0f)
+                // The mix is never empty.
+                current.size == 1 -> return
+                else -> current.filterNot { it.sound.id == soundId }
+            }
+            persist(updated)
         }
-        persist(updated)
     }
 
     override suspend fun setSoundLevel(soundId: String, level: Float) {
-        val current = currentMix()
-        if (current.none { it.sound.id == soundId }) return
-        persist(
-            current.map { active ->
-                if (active.sound.id == soundId) active.copy(level = level.coerceIn(0f, 1f))
-                else active
-            }
-        )
+        mutex.withLock {
+            val current = currentMix()
+            if (current.none { it.sound.id == soundId }) return
+            persist(
+                current.map { active ->
+                    if (active.sound.id == soundId) active.copy(level = level.coerceIn(0f, 1f))
+                    else active
+                }
+            )
+        }
     }
 
     private suspend fun currentMix(): List<ActiveSound> =
         MixCodec.decode(mixOverride.value ?: preferencesDataStore.preferences.first().lastMix, sounds)
 
+    /**
+     * Updates [mixOverride] optimistically so the caller's own toggle is visible
+     * without waiting a frame for DataStore, but rolls it back if the store write
+     * fails — a failed write must never leave the override claiming a mix the
+     * store doesn't hold. The exception still propagates to the caller.
+     */
     private suspend fun persist(mix: List<ActiveSound>) {
         val encoded = MixCodec.encode(
             // Re-decoding normalises the order before it is written or observed.
             MixCodec.decode(MixCodec.encode(mix, withLevels = true), sounds),
             withLevels = true
         )
+        val previous = mixOverride.value
         mixOverride.value = encoded
-        preferencesDataStore.setLastMix(encoded)
+        try {
+            preferencesDataStore.setLastMix(encoded)
+        } catch (e: Exception) {
+            mixOverride.value = previous
+            throw e
+        }
     }
 }
