@@ -11,4 +11,7 @@ interface PreferencesRepository {
     suspend fun setLastTimerMinutes(minutes: Int)
     suspend fun setBreakMinutes(minutes: Int)
     suspend fun setLastMode(mode: AppMode)
+    suspend fun setHapticsEnabled(enabled: Boolean)
+    suspend fun setChimeEnabled(enabled: Boolean)
+    suspend fun setEffectsEnabled(enabled: Boolean)
 }
