@@ -67,10 +67,12 @@ fun HomeScreen(
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 // Ambient effects BEHIND content
-                AmbientEffectsOverlay(
-                    isPlaying = uiState.isPlaying,
-                    soundTheme = uiState.selectedSound?.theme ?: SoundTheme.RAIN
-                )
+                if (uiState.effectsEnabled) {
+                    AmbientEffectsOverlay(
+                        isPlaying = uiState.isPlaying,
+                        soundTheme = uiState.selectedSound?.theme ?: SoundTheme.RAIN
+                    )
+                }
 
                 // Main UI content ON TOP
                 BoxWithConstraints(
