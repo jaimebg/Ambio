@@ -112,6 +112,15 @@ class MixPlayerTest {
     }
 
     @Test
+    fun `a sound activated while paused starts paused`() {
+        val mix = player()
+
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+
+        assertThat(tracks["rain"]!!.paused).isTrue()
+    }
+
+    @Test
     fun `stopping releases every track`() {
         val mix = player()
         mix.setSoundActive("rain", audioRes = 1, active = true)
@@ -158,5 +167,16 @@ class MixPlayerTest {
 
         assertThat(tracks["rain"]).isSameInstanceAs(first)
         assertThat(first!!.released).isFalse()
+    }
+
+    @Test
+    fun `activating a sound after release does not create or start a track`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.release()
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        assertThat(tracks["ocean"]).isNull()
     }
 }

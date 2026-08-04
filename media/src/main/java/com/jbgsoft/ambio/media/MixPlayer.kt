@@ -36,6 +36,13 @@ class MixPlayer(
     private var masterVolume = 1f
     private var title = ""
 
+    // SimpleBasePlayer's own `released` flag is private, so the standard Player
+    // methods' !released guard (see shouldHandleCommand()) doesn't cover these three
+    // methods below, which are MixPlayer's own API rather than overrides of Player.
+    // Track it ourselves and make all three no-ops afterward, so a call arriving after
+    // release() can never create or start a track that nothing can ever stop again.
+    private var released = false
+
     private val commands = Player.Commands.Builder()
         .addAll(
             Player.COMMAND_PLAY_PAUSE,
@@ -53,6 +60,7 @@ class MixPlayer(
     // --- the mixer's own API, reached through custom session commands ---
 
     fun setSoundActive(soundId: String, @RawRes audioRes: Int, active: Boolean) {
+        if (released) return
         if (active) {
             if (entries.containsKey(soundId)) return
             val track = createTrack(soundId)
@@ -67,6 +75,7 @@ class MixPlayer(
     }
 
     fun setSoundLevel(soundId: String, level: Float) {
+        if (released) return
         val entry = entries[soundId] ?: return
         entry.level = level.coerceIn(0f, 1f)
         entry.track.setVolume(entry.level * masterVolume)
@@ -74,6 +83,7 @@ class MixPlayer(
     }
 
     fun setMixTitle(title: String) {
+        if (released) return
         this.title = title
         invalidateState()
     }
@@ -128,6 +138,7 @@ class MixPlayer(
     }
 
     override fun handleRelease(): ListenableFuture<*> {
+        released = true
         releaseAllTracks()
         return Futures.immediateVoidFuture()
     }
