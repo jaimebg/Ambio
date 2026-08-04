@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.annotation.RawRes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
@@ -79,6 +78,7 @@ class AudioServiceConnection @Inject constructor(
         )
 
         controllerFuture = MediaController.Builder(context, sessionToken)
+            .setListener(controllerListener)
             .buildAsync()
 
         controllerFuture?.addListener({
@@ -106,30 +106,24 @@ class AudioServiceConnection @Inject constructor(
     }
 
     /**
-     * Adds [soundId] to the mix or removes it. The service is told the raw resource
-     * rather than anything domain-shaped: media does not depend on core:domain.
+     * Declares the whole mix — every active sound, its level, and the title the media
+     * notification shows. Idempotent: re-sending the same mix is a no-op service-side,
+     * so callers re-assert rather than track what the service currently holds.
+     *
+     * Sounds are described by raw resource, not by anything domain-shaped: media does
+     * not depend on core:domain.
      */
-    fun setSoundActive(soundId: String, @RawRes audioRes: Int, active: Boolean) {
+    fun setMix(mix: List<MixEntry>, title: String) {
         val args = Bundle().apply {
-            putString(MixCommands.ARG_SOUND_ID, soundId)
-            putInt(MixCommands.ARG_AUDIO_RES, audioRes)
-            putBoolean(MixCommands.ARG_ACTIVE, active)
+            putStringArray(MixCommands.ARG_SOUND_IDS, mix.map { it.soundId }.toTypedArray())
+            putIntArray(MixCommands.ARG_AUDIO_RES, mix.map { it.audioRes }.toIntArray())
+            putFloatArray(
+                MixCommands.ARG_LEVELS,
+                mix.map { it.level.coerceIn(0f, 1f) }.toFloatArray()
+            )
+            putString(MixCommands.ARG_TITLE, title)
         }
-        send(MixCommands.SET_ACTIVE, args)
-    }
-
-    /** Per-sound level, relative to the master volume the fades act on. */
-    fun setSoundLevel(soundId: String, level: Float) {
-        val args = Bundle().apply {
-            putString(MixCommands.ARG_SOUND_ID, soundId)
-            putFloat(MixCommands.ARG_LEVEL, level.coerceIn(0f, 1f))
-        }
-        send(MixCommands.SET_LEVEL, args)
-    }
-
-    /** The single line the media notification shows for the whole mix. */
-    fun setMixTitle(title: String) {
-        send(MixCommands.SET_TITLE, Bundle().apply { putString(MixCommands.ARG_TITLE, title) })
+        send(MixCommands.SET_MIX, args)
     }
 
     private fun send(action: String, args: Bundle) {
@@ -218,6 +212,25 @@ class AudioServiceConnection @Inject constructor(
             controller?.volume = 0f
             Log.d(TAG, "Fade out complete")
             onComplete()
+        }
+    }
+
+    /**
+     * Without this, [_isConnected] only ever went false in [disconnect] — a service
+     * that died or was rebound left the flag stuck at true, so observers waiting for
+     * the connection to come back up were never told it had gone down, and the mix
+     * was never re-pushed.
+     *
+     * The stale future is cleared so a later [connect] can build a fresh controller.
+     * Reconnection is not attempted here: retry policy belongs to whoever owns the
+     * lifecycle, not to the connection.
+     */
+    private val controllerListener = object : MediaController.Listener {
+        override fun onDisconnected(controller: MediaController) {
+            Log.w(TAG, "Disconnected from AudioService")
+            controllerFuture = null
+            _isConnected.value = false
+            _isPlaying.value = false
         }
     }
 

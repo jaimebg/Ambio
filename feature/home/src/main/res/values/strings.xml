@@ -47,10 +47,6 @@
     <string name="label_focus_duration">Focus Duration</string>
     <string name="label_break_duration">Break Duration</string>
 
-    <!-- Media notification -->
-    <string name="notification_focus_timer">Focus Timer</string>
-    <string name="notification_time_remaining">%1$s remaining</string>
-
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Decrease focus duration</string>
     <string name="a11y_increase_focus">Increase focus duration</string>
