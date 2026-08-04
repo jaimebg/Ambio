@@ -6,8 +6,7 @@ data class SessionRow(
     val id: Long,
     @param:StringRes val soundNameRes: Int?,
     val durationMinutes: Int,
-    val completedAt: Long,
-    val wasCompleted: Boolean
+    val completedAt: Long
 )
 
 data class StatsUiState(

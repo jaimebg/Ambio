@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.domain.model.Session
 import com.jbgsoft.ambio.core.domain.repository.SessionRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
+import com.jbgsoft.ambio.core.domain.usecase.DeleteSessionUseCase
 import com.jbgsoft.ambio.core.domain.usecase.GetSessionHistoryUseCase
 import com.jbgsoft.ambio.core.domain.usecase.GetSessionStatsUseCase
 import io.mockk.coVerify
@@ -50,7 +51,7 @@ class StatsViewModelTest {
         return StatsViewModel(
             getSessionStats = GetSessionStatsUseCase(sessionRepository),
             getSessionHistory = GetSessionHistoryUseCase(sessionRepository),
-            sessionRepository = sessionRepository,
+            deleteSession = DeleteSessionUseCase(sessionRepository),
             soundRepository = soundRepository
         )
     }
