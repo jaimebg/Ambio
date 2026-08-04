@@ -169,6 +169,90 @@ class MixPlayerTest {
         assertThat(first!!.released).isFalse()
     }
 
+    // --- setMix: the full-state command the session actually exposes ---
+
+    @Test
+    fun `setMix releases sounds that are no longer in the mix`() {
+        val mix = player()
+        mix.setMix(
+            listOf(MixEntry("rain", 1, 1f), MixEntry("ocean", 2, 1f)),
+            title = "Rain + Ocean"
+        )
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+
+        assertThat(tracks["ocean"]!!.released).isTrue()
+        assertThat(tracks["rain"]!!.released).isFalse()
+    }
+
+    @Test
+    fun `setMix starts newly added sounds and applies their levels`() {
+        val mix = player()
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+
+        mix.setMix(
+            listOf(MixEntry("rain", 1, 0.5f), MixEntry("forest", 7, 0.25f)),
+            title = "Rain + Forest"
+        )
+
+        assertThat(tracks["forest"]!!.startedWith).isEqualTo(7)
+        assertThat(tracks["forest"]!!.appliedVolume).isWithin(0.001f).of(0.25f)
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.5f)
+    }
+
+    @Test
+    fun `setMix does not restart sounds that are already playing`() {
+        val mix = player()
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        val first = tracks["rain"]
+
+        mix.setMix(
+            listOf(MixEntry("rain", 1, 1f), MixEntry("ocean", 2, 1f)),
+            title = "Rain + Ocean"
+        )
+
+        assertThat(tracks["rain"]).isSameInstanceAs(first)
+        assertThat(first!!.released).isFalse()
+    }
+
+    @Test
+    fun `setMix rebuilds the mix after stop released every track`() {
+        // The Player contract lets stop() clear everything; the mix has to be
+        // re-declarable, or "stop then play" is silence.
+        val mix = player()
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.play()
+        mix.stop()
+        assertThat(mix.playbackState).isEqualTo(Player.STATE_IDLE)
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.play()
+
+        assertThat(tracks["rain"]!!.startedWith).isEqualTo(1)
+        assertThat(tracks["rain"]!!.released).isFalse()
+        assertThat(tracks["rain"]!!.paused).isFalse()
+        assertThat(mix.playbackState).isEqualTo(Player.STATE_READY)
+    }
+
+    @Test
+    fun `setMix carries the title into the media metadata`() {
+        val mix = player()
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain + Fireplace")
+
+        assertThat(mix.mediaMetadata.title.toString()).isEqualTo("Rain + Fireplace")
+    }
+
+    @Test
+    fun `setMix after release does not create or start a track`() {
+        val mix = player()
+        mix.release()
+
+        mix.setMix(listOf(MixEntry("ocean", 2, 1f)), title = "Ocean")
+
+        assertThat(tracks["ocean"]).isNull()
+    }
+
     @Test
     fun `activating a sound after release does not create or start a track`() {
         val mix = player()

@@ -20,13 +20,16 @@ import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
 import com.jbgsoft.ambio.media.AudioServiceConnection
+import com.jbgsoft.ambio.media.MixEntry
 import io.mockk.Runs
+import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
+import io.mockk.verifyOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -158,9 +161,7 @@ class HomeViewModelTest {
             every { disconnect() } just Runs
             every { isConnected } returns isConnectedFlow
             every { isPlaying } returns isPlayingFlow
-            every { setSoundActive(any(), any(), any()) } just Runs
-            every { setSoundLevel(any(), any()) } just Runs
-            every { setMixTitle(any()) } just Runs
+            every { setMix(any(), any()) } just Runs
             every { play() } just Runs
             every { pause() } just Runs
             every { stop() } just Runs
@@ -959,35 +960,53 @@ class HomeViewModelTest {
     // --- Mixer Tests ---
 
     @Test
-    fun `toggling a sound on adds it to the mix and to the audio service`() = runTest {
+    fun `toggling a sound on tells only the repository`() = runTest {
         val viewModel = createViewModel()
         // Without this the mix flow has not emitted yet and every toggle below would
         // read an empty mix — three of these tests would then pass vacuously.
         advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
 
         viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
         coVerify { soundRepository.setSoundActive("forest", true) }
-        verify { audioServiceConnection.setSoundActive("forest", 3, true) }
+        // The service hears about it through getActiveMix, never from the event: two
+        // writers would be two sources of truth that can disagree.
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 
     @Test
-    fun `toggling an active sound off removes it`() = runTest {
+    fun `toggling an active sound off tells only the repository`() = runTest {
         activeMixFlow.value = listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 1f))
         val viewModel = createViewModel()
         advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
 
         viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
         coVerify { soundRepository.setSoundActive("forest", false) }
-        verify { audioServiceConnection.setSoundActive("forest", 3, false) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 
     @Test
-    fun `the last active sound cannot be toggled off`() = runTest {
-        // Exactly one sound, or the assertion below proves nothing.
+    fun `a rejected toggle reaches neither the repository nor the service`() = runTest {
+        // Exactly one sound, or the assertions below prove nothing.
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f))
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        viewModel.onEvent(HomeEvent.ToggleSound(testSound))
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+    }
+
+    @Test
+    fun `a rejected toggle does not buzz`() = runTest {
         activeMixFlow.value = listOf(ActiveSound(testSound, 1f))
         val viewModel = createViewModel()
         advanceUntilIdle()
@@ -995,38 +1014,94 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.ToggleSound(testSound))
         advanceUntilIdle()
 
-        coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false) }
-        verify(exactly = 0) { audioServiceConnection.setSoundActive("rain", 1, false) }
+        verify(exactly = 0) { hapticManager.heavyClick() }
     }
 
     @Test
-    fun `setting a level reaches both the repository and the audio service`() = runTest {
+    fun `setting a level goes only through the repository`() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
 
         viewModel.onEvent(HomeEvent.SetSoundLevel("rain", 0.3f))
         advanceUntilIdle()
 
         coVerify { soundRepository.setSoundLevel("rain", 0.3f) }
-        verify { audioServiceConnection.setSoundLevel("rain", 0.3f) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 
     @Test
-    fun `connecting replays the whole mix to the service`() = runTest {
-        // The service keeps no per-sound state across a disconnect: if this replay
-        // is skipped the app looks fine until the service restarts, then plays nothing.
+    fun `every mix emission pushes the whole mix to the service`() = runTest {
+        createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 0.4f))
+        advanceUntilIdle()
+
+        verify {
+            audioServiceConnection.setMix(
+                listOf(MixEntry("rain", 1, 1f), MixEntry("forest", 3, 0.4f)),
+                any()
+            )
+        }
+    }
+
+    @Test
+    fun `connecting pushes the whole mix to the service`() = runTest {
+        // The service keeps no state across a disconnect: if this push is skipped the
+        // app looks fine until the service restarts, then plays nothing.
         activeMixFlow.value = listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 0.4f))
         createViewModel()
         advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
 
         isConnectedFlow.value = true
         advanceUntilIdle()
 
-        verify { audioServiceConnection.setSoundActive("rain", 1, true) }
-        verify { audioServiceConnection.setSoundLevel("rain", 1f) }
-        verify { audioServiceConnection.setSoundActive("forest", 3, true) }
-        verify { audioServiceConnection.setSoundLevel("forest", 0.4f) }
-        verify { audioServiceConnection.setMixTitle(any()) }
+        verify {
+            audioServiceConnection.setMix(
+                listOf(MixEntry("rain", 1, 1f), MixEntry("forest", 3, 0.4f)),
+                any()
+            )
+        }
+    }
+
+    @Test
+    fun `connecting before the mix resolves still ends up pushing it`() = runTest {
+        // getActiveMix is a combine over DataStore and the controller future resolves
+        // independently, so either can win. Whichever loses must still push.
+        activeMixFlow.value = emptyList()
+        createViewModel()
+        isConnectedFlow.value = true
+        advanceUntilIdle()
+
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any()) }
+    }
+
+    @Test
+    fun `stop then play re-declares the mix before playing`() = runTest {
+        // stop() releases every track service-side. Without the re-declaration the
+        // user presses play after a reset and hears silence.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.Reset)
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verifyOrder {
+            audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any())
+            audioServiceConnection.play()
+        }
     }
 
     @Test

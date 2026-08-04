@@ -59,6 +59,33 @@ class MixPlayer(
 
     // --- the mixer's own API, reached through custom session commands ---
 
+    /**
+     * Makes the mix exactly [mix]: sounds no longer present are released, missing ones
+     * are started, and every level plus the title are re-asserted.
+     *
+     * This is the only entry point the session exposes, and it is idempotent by
+     * construction. handleStop() releases every track, and the service can be killed
+     * and rebound at any time; a caller that only sent deltas would have no way to
+     * rebuild that state, and no way to know it had drifted. Sending the whole mix
+     * means "re-send it" is always a valid repair, so the caller never has to model
+     * what the service currently holds.
+     */
+    fun setMix(mix: List<MixEntry>, title: String) {
+        if (released) return
+        val desired = mix.mapTo(mutableSetOf()) { it.soundId }
+        entries.keys.toList()
+            .filterNot { it in desired }
+            .forEach { entries.remove(it)?.track?.release() }
+        mix.forEach { entry ->
+            // Already-active sounds are left running by setSoundActive; setSoundLevel
+            // then re-asserts the level for new and existing tracks alike.
+            setSoundActive(entry.soundId, entry.audioRes, active = true)
+            setSoundLevel(entry.soundId, entry.level)
+        }
+        setMixTitle(title)
+        invalidateState()
+    }
+
     fun setSoundActive(soundId: String, @RawRes audioRes: Int, active: Boolean) {
         if (released) return
         if (active) {

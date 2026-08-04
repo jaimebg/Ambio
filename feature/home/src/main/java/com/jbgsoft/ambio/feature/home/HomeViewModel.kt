@@ -17,6 +17,7 @@ import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
 import com.jbgsoft.ambio.media.AudioServiceConnection
+import com.jbgsoft.ambio.media.MixEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -59,19 +60,11 @@ class HomeViewModel @Inject constructor(
         audioServiceConnection.isConnected
             .onEach { isConnected ->
                 _uiState.update { it.copy(isServiceConnected = isConnected) }
-                if (isConnected) {
-                    // The service keeps no per-sound state across a disconnect, so the
-                    // whole mix has to be replayed every time the controller comes back.
-                    _uiState.value.activeMix.forEach { active ->
-                        audioServiceConnection.setSoundActive(
-                            active.sound.id,
-                            active.sound.audioRes,
-                            true
-                        )
-                        audioServiceConnection.setSoundLevel(active.sound.id, active.level)
-                    }
-                    audioServiceConnection.setMixTitle(mixTitle(_uiState.value.activeMix))
-                }
+                // The service keeps no state across a disconnect, so re-assert the mix
+                // whenever the controller comes up. If the mix has not resolved yet this
+                // is a no-op and the getActiveMix observer does the push instead — the
+                // two orderings converge because both send full state.
+                if (isConnected) pushMix()
             }
             .launchIn(viewModelScope)
 
@@ -94,9 +87,26 @@ class HomeViewModel @Inject constructor(
         soundRepository.getActiveMix()
             .onEach { mix ->
                 _uiState.update { it.copy(activeMix = mix) }
-                audioServiceConnection.setMixTitle(mixTitle(mix))
+                pushMix(mix)
             }
             .launchIn(viewModelScope)
+    }
+
+    /**
+     * The single place the service is told anything about the mix.
+     *
+     * The repository decides what the mix is; this pushes whatever it decided, in
+     * full. Nothing sends the service a delta, so there is no path where the two can
+     * disagree: any missed or reordered push is repaired by the next one. Called on
+     * every emission, on every reconnect, and before every play() — stop() releases
+     * the service's tracks, so playing again has to re-declare them.
+     */
+    private fun pushMix(mix: List<ActiveSound> = _uiState.value.activeMix) {
+        if (mix.isEmpty()) return
+        audioServiceConnection.setMix(
+            mix.map { MixEntry(it.sound.id, it.sound.audioRes, it.level) },
+            mixTitle(mix)
+        )
     }
 
     private fun observeTimerState() {
@@ -173,20 +183,26 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Only the repository decides. It serializes overlapping toggles under a mutex and
+     * refuses to empty the mix; the service hears about the outcome through
+     * getActiveMix, never from here. Two rapid deactivations therefore cannot tell the
+     * service to drop both sounds while the repository keeps one.
+     *
+     * The size check below is a UI affordance — it avoids a pointless round-trip and a
+     * buzz for a tap the repository would reject — not a correctness guarantee.
+     */
     private fun toggleSound(sound: Sound) {
-        haptic { heavyClick() }
         val isActive = _uiState.value.activeMix.any { it.sound.id == sound.id }
-        // The repository refuses to empty the mix; don't tell the service otherwise.
         if (isActive && _uiState.value.activeMix.size == 1) return
+        haptic { heavyClick() }
         viewModelScope.launch {
             soundRepository.setSoundActive(sound.id, active = !isActive)
         }
-        audioServiceConnection.setSoundActive(sound.id, sound.audioRes, !isActive)
     }
 
     private fun setSoundLevel(soundId: String, level: Float) {
         viewModelScope.launch { soundRepository.setSoundLevel(soundId, level) }
-        audioServiceConnection.setSoundLevel(soundId, level)
     }
 
     private fun mixTitle(mix: List<ActiveSound>): String =
@@ -197,10 +213,12 @@ class HomeViewModel @Inject constructor(
         }
 
     /**
-     * The mix itself already reached the service through [observeAudioServiceState];
-     * starting playback is only the master volume plus the fade-in.
+     * stop() releases every track service-side, and every stop in this ViewModel is
+     * followed by a play in normal use (mode switch, reset, timer completion then
+     * break). Re-declaring the mix first is what keeps "stop, then play" audible.
      */
     private fun startPlayback() {
+        pushMix()
         audioServiceConnection.setVolume(_uiState.value.volume)
         audioServiceConnection.play()
     }

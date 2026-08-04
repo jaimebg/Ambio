@@ -81,9 +81,7 @@ class AudioService : MediaSessionService() {
             controller: MediaSession.ControllerInfo
         ): MediaSession.ConnectionResult {
             val commands = SessionCommands.Builder()
-                .add(SessionCommand(MixCommands.SET_ACTIVE, Bundle.EMPTY))
-                .add(SessionCommand(MixCommands.SET_LEVEL, Bundle.EMPTY))
-                .add(SessionCommand(MixCommands.SET_TITLE, Bundle.EMPTY))
+                .add(SessionCommand(MixCommands.SET_MIX, Bundle.EMPTY))
                 .build()
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(commands)
@@ -97,17 +95,9 @@ class AudioService : MediaSessionService() {
             args: Bundle
         ): ListenableFuture<SessionResult> {
             when (customCommand.customAction) {
-                MixCommands.SET_ACTIVE -> player.setSoundActive(
-                    soundId = args.getString(MixCommands.ARG_SOUND_ID).orEmpty(),
-                    audioRes = args.getInt(MixCommands.ARG_AUDIO_RES),
-                    active = args.getBoolean(MixCommands.ARG_ACTIVE)
-                )
-                MixCommands.SET_LEVEL -> player.setSoundLevel(
-                    soundId = args.getString(MixCommands.ARG_SOUND_ID).orEmpty(),
-                    level = args.getFloat(MixCommands.ARG_LEVEL)
-                )
-                MixCommands.SET_TITLE -> player.setMixTitle(
-                    args.getString(MixCommands.ARG_TITLE).orEmpty()
+                MixCommands.SET_MIX -> player.setMix(
+                    mix = decodeMix(args),
+                    title = args.getString(MixCommands.ARG_TITLE).orEmpty()
                 )
                 // @SessionResult.Code is declared in terms of SessionError's constants in
                 // 1.10.1; SessionResult.RESULT_ERROR_NOT_SUPPORTED holds the same value
@@ -117,6 +107,18 @@ class AudioService : MediaSessionService() {
                 )
             }
             return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+        }
+
+        /**
+         * Three parallel arrays back into entries, truncated to the shortest so a
+         * malformed bundle can never index out of bounds.
+         */
+        private fun decodeMix(args: Bundle): List<MixEntry> {
+            val ids = args.getStringArray(MixCommands.ARG_SOUND_IDS) ?: return emptyList()
+            val audioRes = args.getIntArray(MixCommands.ARG_AUDIO_RES) ?: return emptyList()
+            val levels = args.getFloatArray(MixCommands.ARG_LEVELS) ?: return emptyList()
+            val size = minOf(ids.size, audioRes.size, levels.size)
+            return (0 until size).map { MixEntry(ids[it], audioRes[it], levels[it]) }
         }
     }
 }
