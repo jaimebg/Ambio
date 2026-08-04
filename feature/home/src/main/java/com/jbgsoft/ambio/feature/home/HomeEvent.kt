@@ -8,6 +8,7 @@ sealed class HomeEvent {
     data class SetMode(val mode: AppMode) : HomeEvent()
     data class ToggleSound(val sound: Sound) : HomeEvent()
     data class SetSoundLevel(val soundId: String, val level: Float) : HomeEvent()
+    data class SoundLevelChangeFinished(val soundId: String) : HomeEvent()
     data class SelectPreset(val preset: TimerPreset) : HomeEvent()
     data class SetCustomMinutes(val minutes: Int) : HomeEvent()
     data object CustomMinutesChangeFinished : HomeEvent()

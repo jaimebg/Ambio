@@ -29,6 +29,7 @@ fun SoundBottomSheet(
     activeMix: List<ActiveSound>,
     onToggleSound: (Sound) -> Unit,
     onLevelChange: (String, Float) -> Unit,
+    onLevelChangeFinished: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -67,7 +68,8 @@ fun SoundBottomSheet(
                             level = active?.level ?: 1f,
                             canDeactivate = activeMix.size > 1,
                             onToggle = { onToggleSound(sound) },
-                            onLevelChange = { onLevelChange(sound.id, it) }
+                            onLevelChange = { onLevelChange(sound.id, it) },
+                            onLevelChangeFinished = { onLevelChangeFinished(sound.id) }
                         )
                     }
                     item {

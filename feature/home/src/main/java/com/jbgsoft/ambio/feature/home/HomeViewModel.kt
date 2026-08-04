@@ -144,6 +144,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.SetMode -> setMode(event.mode)
             is HomeEvent.ToggleSound -> toggleSound(event.sound)
             is HomeEvent.SetSoundLevel -> setSoundLevel(event.soundId, event.level)
+            is HomeEvent.SoundLevelChangeFinished -> persistSoundLevel(event.soundId)
             is HomeEvent.SelectPreset -> selectPreset(event.preset)
             is HomeEvent.SetCustomMinutes -> setCustomMinutes(event.minutes)
             is HomeEvent.CustomMinutesChangeFinished -> persistCustomMinutes()
@@ -201,7 +202,41 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * The same shape as the master volume slider, for the same reason: the level lands
+     * in state and on the service on every frame of the drag, so the thumb tracks the
+     * finger and the mix is audibly live, but the store is written once, when the finger
+     * lifts (see [persistSoundLevel]). Going through the repository per frame put a
+     * DataStore edit — serialized behind the repository's mutex — on the drag path, and
+     * left the thumb waiting on the round trip back.
+     *
+     * This is the one thing about the mix the ViewModel tells the service directly, and
+     * it is safe where a membership change would not be. Membership carries invariants
+     * the repository owns — the mix is never empty, overlapping toggles must not cancel
+     * each other — so two writers there could disagree. A level is a last-write-wins
+     * scalar on a sound that is already in the mix, and the repository re-asserts the
+     * whole mix through getActiveMix the moment the drag ends.
+     *
+     * Which sounds are active is untouched here, so the palette — a function of exactly
+     * that, never of levels — cannot move while a slider does.
+     */
     private fun setSoundLevel(soundId: String, level: Float) {
+        val clampedLevel = level.coerceIn(0f, 1f)
+        _uiState.update { state ->
+            state.copy(
+                activeMix = state.activeMix.map { active ->
+                    if (active.sound.id == soundId) active.copy(level = clampedLevel) else active
+                }
+            )
+        }
+        pushMix()
+    }
+
+    private fun persistSoundLevel(soundId: String) {
+        val level = _uiState.value.activeMix
+            .firstOrNull { it.sound.id == soundId }
+            ?.level
+            ?: return
         viewModelScope.launch { soundRepository.setSoundLevel(soundId, level) }
     }
 
