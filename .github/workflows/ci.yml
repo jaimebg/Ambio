@@ -91,7 +91,16 @@ jobs:
           target: google_apis
           arch: x86_64
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          # No -no-window: the first two real CI runs both hung the same way regardless
+          # of how long MixerUi was told to wait - every "Change"/"Play" affordance that
+          # depends on Compose's ModalBottomSheet finishing its own hide animation
+          # (Material3 calls onDismissRequest only after that animation completes) never
+          # arrived, at 10s or at 20s. That is a stuck animation, not a slow one, and
+          # -no-window skips giving the emulator a real window/SurfaceFlinger target to
+          # animate into. Dropping it lets this action fall back to its own Xvfb-backed
+          # window on Linux runners - still fully headless from the runner's point of
+          # view, just with a real surface for the guest to render and vsync against.
+          emulator-options: -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           script: ./gradlew :app:connectedDebugAndroidTest
 
       - name: Publicar informes
