@@ -958,4 +958,38 @@ class HomeViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    // --- Haptics Preference Gate Tests ---
+
+    @Test
+    fun `no haptic feedback fires when haptics are disabled`() = runTest {
+        every { preferencesRepository.preferences } returns flowOf(
+            UserPreferences(hapticsEnabled = false)
+        )
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
+        advanceUntilIdle()
+
+        verify(exactly = 0) { hapticManager.heavyClick() }
+        verify(exactly = 0) { hapticManager.click() }
+    }
+
+    @Test
+    fun `haptic feedback fires when haptics are enabled`() = runTest {
+        every { preferencesRepository.preferences } returns flowOf(
+            UserPreferences(hapticsEnabled = true)
+        )
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
+        advanceUntilIdle()
+
+        verify(atLeast = 1) { hapticManager.heavyClick() }
+        verify(atLeast = 1) { hapticManager.click() }
+    }
 }

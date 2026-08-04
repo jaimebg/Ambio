@@ -103,7 +103,10 @@ class HomeViewModel @Inject constructor(
                         mode = prefs.lastMode,
                         customMinutes = prefs.lastTimerMinutes.takeIf { it !in listOf(25, 50) }
                             ?: state.customMinutes,
-                        breakMinutes = prefs.breakMinutes
+                        breakMinutes = prefs.breakMinutes,
+                        hapticsEnabled = prefs.hapticsEnabled,
+                        chimeEnabled = prefs.chimeEnabled,
+                        effectsEnabled = prefs.effectsEnabled
                     )
                 }
             }
@@ -130,7 +133,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setMode(mode: AppMode) {
-        hapticManager.click()
+        haptic { click() }
 
         // Reset timer when switching to Ambient mode if timer is active
         if (mode == AppMode.AMBIENT) {
@@ -154,7 +157,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun selectSound(sound: Sound) {
-        hapticManager.heavyClick()
+        haptic { heavyClick() }
         viewModelScope.launch {
             soundRepository.setSelectedSound(sound.id)
             preferencesRepository.setLastSoundId(sound.id)
@@ -195,7 +198,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun selectPreset(preset: TimerPreset) {
-        hapticManager.click()
+        haptic { click() }
         _uiState.update { it.copy(selectedPreset = preset) }
         if (preset != TimerPreset.CUSTOM) {
             viewModelScope.launch {
@@ -210,7 +213,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun persistCustomMinutes() {
-        hapticManager.tick()
+        haptic { tick() }
         viewModelScope.launch {
             preferencesRepository.setLastTimerMinutes(_uiState.value.customMinutes)
         }
@@ -222,7 +225,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun persistBreakMinutes() {
-        hapticManager.tick()
+        haptic { tick() }
         viewModelScope.launch {
             preferencesRepository.setBreakMinutes(_uiState.value.breakMinutes)
         }
@@ -248,7 +251,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun playPause() {
-        hapticManager.heavyClick()
+        haptic { heavyClick() }
         val state = _uiState.value
 
         viewModelScope.launch {
@@ -291,7 +294,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun reset() {
-        hapticManager.click()
+        haptic { click() }
         viewModelScope.launch {
             timerRepository.resetTimer()
             audioServiceConnection.stop()
@@ -299,7 +302,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun showSoundPicker() {
-        hapticManager.click()
+        haptic { click() }
         _uiState.update { it.copy(showSoundPicker = true) }
     }
 
@@ -314,8 +317,10 @@ class HomeViewModel @Inject constructor(
         audioServiceConnection.stop()
 
         // Play timer completion chime and haptic feedback
-        chimePlayer.playChime(chimeRepository.getTimerChimeResource())
-        hapticManager.timerComplete()
+        if (_uiState.value.chimeEnabled) {
+            chimePlayer.playChime(chimeRepository.getTimerChimeResource())
+        }
+        haptic { timerComplete() }
 
         if (wasBreak) {
             // Break finished - reset to idle state, don't start another break
@@ -344,5 +349,9 @@ class HomeViewModel @Inject constructor(
             // Start break timer
             timerRepository.startBreak(state.breakMinutes * 60 * 1000L)
         }
+    }
+
+    private fun haptic(action: HapticManager.() -> Unit) {
+        if (_uiState.value.hapticsEnabled) hapticManager.action()
     }
 }
