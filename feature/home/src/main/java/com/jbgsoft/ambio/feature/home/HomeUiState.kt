@@ -8,7 +8,6 @@ import com.jbgsoft.ambio.core.domain.model.TimerState
 
 data class HomeUiState(
     val mode: AppMode = AppMode.TIMER,
-    val selectedSound: Sound? = null,
     val activeMix: List<ActiveSound> = emptyList(),
     val availableSounds: List<Sound> = emptyList(),
     val timerState: TimerState = TimerState.Idle,

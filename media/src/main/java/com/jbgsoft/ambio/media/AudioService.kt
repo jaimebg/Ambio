@@ -2,37 +2,38 @@ package com.jbgsoft.ambio.media
 
 import android.app.PendingIntent
 import android.content.Intent
-import androidx.media3.common.AudioAttributes
-import androidx.media3.common.C
-import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
+import android.os.Bundle
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
+import androidx.media3.session.SessionCommand
+import androidx.media3.session.SessionCommands
+import androidx.media3.session.SessionError
+import androidx.media3.session.SessionResult
+import com.google.common.util.concurrent.Futures
+import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
+/**
+ * Opted in wholesale rather than at each call site: MixPlayer, the SimpleBasePlayer
+ * it extends and SessionError are all @UnstableApi in Media3 1.10.1.
+ *
+ * @OptIn rather than @UnstableApi: the latter would mark AudioService itself as
+ * unstable and force the same marker onto AudioServiceConnection, and from there
+ * onto every caller of it.
+ */
+@OptIn(markerClass = [UnstableApi::class])
 @AndroidEntryPoint
 class AudioService : MediaSessionService() {
 
     private var mediaSession: MediaSession? = null
-    private lateinit var player: ExoPlayer
+    private lateinit var player: MixPlayer
 
     override fun onCreate() {
         super.onCreate()
 
-        player = ExoPlayer.Builder(this)
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
-                    .setUsage(C.USAGE_MEDIA)
-                    .build(),
-                true // handleAudioFocus
-            )
-            .setHandleAudioBecomingNoisy(true)
-            .build()
-            .apply {
-                repeatMode = Player.REPEAT_MODE_ONE
-            }
+        player = MixPlayer(mainLooper) { ExoPlayerSoundTrack(this) }
 
         // Create PendingIntent to launch MainActivity when notification is tapped
         // This is required for Media3 to properly manage foreground service and notifications
@@ -74,6 +75,48 @@ class AudioService : MediaSessionService() {
     }
 
     private inner class MediaSessionCallback : MediaSession.Callback {
-        // Default implementation handles play, pause, stop, etc.
+
+        override fun onConnect(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo
+        ): MediaSession.ConnectionResult {
+            val commands = SessionCommands.Builder()
+                .add(SessionCommand(MixCommands.SET_ACTIVE, Bundle.EMPTY))
+                .add(SessionCommand(MixCommands.SET_LEVEL, Bundle.EMPTY))
+                .add(SessionCommand(MixCommands.SET_TITLE, Bundle.EMPTY))
+                .build()
+            return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
+                .setAvailableSessionCommands(commands)
+                .build()
+        }
+
+        override fun onCustomCommand(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            customCommand: SessionCommand,
+            args: Bundle
+        ): ListenableFuture<SessionResult> {
+            when (customCommand.customAction) {
+                MixCommands.SET_ACTIVE -> player.setSoundActive(
+                    soundId = args.getString(MixCommands.ARG_SOUND_ID).orEmpty(),
+                    audioRes = args.getInt(MixCommands.ARG_AUDIO_RES),
+                    active = args.getBoolean(MixCommands.ARG_ACTIVE)
+                )
+                MixCommands.SET_LEVEL -> player.setSoundLevel(
+                    soundId = args.getString(MixCommands.ARG_SOUND_ID).orEmpty(),
+                    level = args.getFloat(MixCommands.ARG_LEVEL)
+                )
+                MixCommands.SET_TITLE -> player.setMixTitle(
+                    args.getString(MixCommands.ARG_TITLE).orEmpty()
+                )
+                // @SessionResult.Code is declared in terms of SessionError's constants in
+                // 1.10.1; SessionResult.RESULT_ERROR_NOT_SUPPORTED holds the same value
+                // but is outside the IntDef, and lint rejects it.
+                else -> return Futures.immediateFuture(
+                    SessionResult(SessionError.ERROR_NOT_SUPPORTED)
+                )
+            }
+            return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+        }
     }
 }

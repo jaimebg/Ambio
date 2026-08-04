@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.jbgsoft.ambio.core.common.audio.ChimePlayer
 import com.jbgsoft.ambio.core.common.haptics.HapticManager
 import com.jbgsoft.ambio.core.common.resources.StringProvider
+import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.MixCodec
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
@@ -57,6 +59,19 @@ class HomeViewModel @Inject constructor(
         audioServiceConnection.isConnected
             .onEach { isConnected ->
                 _uiState.update { it.copy(isServiceConnected = isConnected) }
+                if (isConnected) {
+                    // The service keeps no per-sound state across a disconnect, so the
+                    // whole mix has to be replayed every time the controller comes back.
+                    _uiState.value.activeMix.forEach { active ->
+                        audioServiceConnection.setSoundActive(
+                            active.sound.id,
+                            active.sound.audioRes,
+                            true
+                        )
+                        audioServiceConnection.setSoundLevel(active.sound.id, active.level)
+                    }
+                    audioServiceConnection.setMixTitle(mixTitle(_uiState.value.activeMix))
+                }
             }
             .launchIn(viewModelScope)
 
@@ -78,7 +93,8 @@ class HomeViewModel @Inject constructor(
 
         soundRepository.getActiveMix()
             .onEach { mix ->
-                _uiState.update { it.copy(activeMix = mix, selectedSound = mix.first().sound) }
+                _uiState.update { it.copy(activeMix = mix) }
+                audioServiceConnection.setMixTitle(mixTitle(mix))
             }
             .launchIn(viewModelScope)
     }
@@ -116,7 +132,8 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.SetMode -> setMode(event.mode)
-            is HomeEvent.SelectSound -> selectSound(event.sound)
+            is HomeEvent.ToggleSound -> toggleSound(event.sound)
+            is HomeEvent.SetSoundLevel -> setSoundLevel(event.soundId, event.level)
             is HomeEvent.SelectPreset -> selectPreset(event.preset)
             is HomeEvent.SetCustomMinutes -> setCustomMinutes(event.minutes)
             is HomeEvent.CustomMinutesChangeFinished -> persistCustomMinutes()
@@ -156,42 +173,36 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun selectSound(sound: Sound) {
+    private fun toggleSound(sound: Sound) {
         haptic { heavyClick() }
+        val isActive = _uiState.value.activeMix.any { it.sound.id == sound.id }
+        // The repository refuses to empty the mix; don't tell the service otherwise.
+        if (isActive && _uiState.value.activeMix.size == 1) return
         viewModelScope.launch {
-            soundRepository.setSoundActive(sound.id, active = true)
+            soundRepository.setSoundActive(sound.id, active = !isActive)
         }
-        _uiState.update { it.copy(showSoundPicker = false) }
-        if (_uiState.value.isPlaying) {
-            playSoundAudio(sound)
-        }
+        audioServiceConnection.setSoundActive(sound.id, sound.audioRes, !isActive)
     }
 
-    private fun playSoundAudio(sound: Sound) {
-        val description = when (_uiState.value.mode) {
-            AppMode.TIMER -> {
-                val timerState = _uiState.value.timerState
-                if (timerState is TimerState.Running) {
-                    val minutes = timerState.remainingMs / 60000
-                    val seconds = (timerState.remainingMs % 60000) / 1000
-                    stringProvider.get(
-                        R.string.notification_time_remaining,
-                        "${minutes}:${seconds.toString().padStart(2, '0')}"
-                    )
-                } else {
-                    stringProvider.get(R.string.notification_focus_timer)
-                }
-            }
-            AppMode.AMBIENT -> stringProvider.get(R.string.state_ambient_mode)
+    private fun setSoundLevel(soundId: String, level: Float) {
+        viewModelScope.launch { soundRepository.setSoundLevel(soundId, level) }
+        audioServiceConnection.setSoundLevel(soundId, level)
+    }
+
+    private fun mixTitle(mix: List<ActiveSound>): String =
+        if (mix.size <= 2) {
+            mix.joinToString(" + ") { stringProvider.get(it.sound.nameRes) }
+        } else {
+            stringProvider.get(R.string.mix_sound_count, mix.size)
         }
-        audioServiceConnection.playSound(
-            audioRes = sound.audioRes,
-            name = stringProvider.get(sound.nameRes),
-            description = description,
-            illustrationRes = sound.illustrationRes
-        )
-        // Apply current volume
+
+    /**
+     * The mix itself already reached the service through [observeAudioServiceState];
+     * starting playback is only the master volume plus the fade-in.
+     */
+    private fun startPlayback() {
         audioServiceConnection.setVolume(_uiState.value.volume)
+        audioServiceConnection.play()
     }
 
     private fun selectPreset(preset: TimerPreset) {
@@ -258,9 +269,7 @@ class HomeViewModel @Inject constructor(
                     if (state.isPlaying) {
                         audioServiceConnection.pause()
                     } else {
-                        state.selectedSound?.let { sound ->
-                            playSoundAudio(sound)
-                        }
+                        startPlayback()
                     }
                 }
                 state.timerState is TimerState.Running -> {
@@ -282,9 +291,7 @@ class HomeViewModel @Inject constructor(
                     }
                     val durationMs = minutes * 60 * 1000L
                     timerRepository.startTimer(durationMs)
-                    state.selectedSound?.let { sound ->
-                        playSoundAudio(sound)
-                    }
+                    startPlayback()
                 }
             }
         }
@@ -329,15 +336,16 @@ class HomeViewModel @Inject constructor(
 
         // Focus session completed
         viewModelScope.launch {
-            // Save the completed session
-            state.selectedSound?.let { sound ->
+            // Save the completed session against the whole mix, not one sound
+            val mix = state.activeMix
+            if (mix.isNotEmpty()) {
                 val minutes = when (state.selectedPreset) {
                     TimerPreset.FOCUS_25 -> 25
                     TimerPreset.FOCUS_50 -> 50
                     TimerPreset.CUSTOM -> state.customMinutes
                 }
                 saveSessionUseCase(
-                    soundId = sound.id,
+                    soundId = MixCodec.encode(mix, withLevels = false),
                     durationMinutes = minutes,
                     wasCompleted = true
                 )
