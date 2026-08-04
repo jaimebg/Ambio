@@ -107,8 +107,20 @@ object MixerUi {
         device.waitForIdle()
     }
 
+    /**
+     * Counts every "Remove X from the mix" card, scrolling to look for each one the same
+     * way [findInSheet] does — not a bare, unscrolled [device.findObject] read.
+     *
+     * `SoundBottomSheet` lays its cards out in a `LazyVerticalGrid(columns =
+     * GridCells.Fixed(2))`. Lazy grids do not compose off-screen items at all - they are
+     * absent from the accessibility tree, not merely slow to appear. With five active
+     * cards (each grown to 160dp) plus the "Coming Soon" tile, that is three rows, and the
+     * last row can be scrolled out of view whenever the sheet is freshly reopened. A bare
+     * findObject-per-name silently undercounts whatever fell below the fold; reusing
+     * findInSheet's scroll-until-found loop per name fixes that by scrolling each card into
+     * view before counting it, exactly as activateAllSounds() already does to find and
+     * click it.
+     */
     fun activeSoundCount(): Int =
-        soundNames.count { name ->
-            device.findObject(By.desc("Remove $name from the mix")) != null
-        }
+        soundNames.count { name -> findInSheet("Remove $name from the mix") }
 }
