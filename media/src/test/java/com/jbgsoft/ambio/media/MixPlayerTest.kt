@@ -30,10 +30,25 @@ class MixPlayerTest {
         override fun release() { released = true }
     }
 
+    private class FakeFocus : AudioFocus {
+        var granted = true
+        var requests = 0
+        var abandons = 0
+        private var listener: ((FocusChange) -> Unit)? = null
+
+        override fun request(): Boolean { requests++; return granted }
+        override fun abandon() { abandons++ }
+        override fun onChange(listener: (FocusChange) -> Unit) { this.listener = listener }
+
+        /** Drives the player the way the system would. */
+        fun emit(change: FocusChange) { listener?.invoke(change) }
+    }
+
     private val tracks = mutableMapOf<String, FakeTrack>()
+    private val focus = FakeFocus()
 
     private fun player(): MixPlayer =
-        MixPlayer(Looper.getMainLooper()) { id -> FakeTrack().also { tracks[id] = it } }
+        MixPlayer(Looper.getMainLooper(), { id -> FakeTrack().also { tracks[id] = it } }, focus)
 
     @Test
     fun `activating a sound starts a track for it`() {
@@ -262,5 +277,141 @@ class MixPlayerTest {
         mix.setSoundActive("ocean", audioRes = 2, active = true)
 
         assertThat(tracks["ocean"]).isNull()
+    }
+
+    // --- audio focus ---
+
+    @Test
+    fun `playing requests audio focus once for the whole mix`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        mix.play()
+
+        assertThat(focus.requests).isEqualTo(1)
+    }
+
+    @Test
+    fun `a denied focus request leaves the mix paused`() {
+        focus.granted = false
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+
+        mix.play()
+
+        assertThat(mix.playWhenReady).isFalse()
+        assertThat(tracks["rain"]!!.paused).isTrue()
+    }
+
+    @Test
+    fun `a transient loss pauses every track and keeps the focus`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+
+        focus.emit(FocusChange.LOST_TRANSIENT)
+
+        assertThat(tracks.values.all { it.paused }).isTrue()
+        assertThat(focus.abandons).isEqualTo(0)
+    }
+
+    @Test
+    fun `regaining focus after a transient loss resumes every track`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+        focus.emit(FocusChange.LOST_TRANSIENT)
+
+        focus.emit(FocusChange.GAINED)
+
+        assertThat(tracks.values.none { it.paused }).isTrue()
+    }
+
+    @Test
+    fun `regaining focus does not resume a mix the user paused`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        mix.pause()
+
+        focus.emit(FocusChange.GAINED)
+
+        assertThat(tracks["rain"]!!.paused).isTrue()
+        assertThat(mix.playWhenReady).isFalse()
+    }
+
+    @Test
+    fun `a permanent loss pauses the mix and abandons the focus`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+
+        focus.emit(FocusChange.LOST)
+
+        assertThat(tracks["rain"]!!.paused).isTrue()
+        assertThat(focus.abandons).isEqualTo(1)
+    }
+
+    @Test
+    fun `ducking lowers the volume without stopping or losing the master`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        mix.volume = 0.5f
+
+        focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
+
+        assertThat(tracks["rain"]!!.paused).isFalse()
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.1f)  // 1.0 * 0.5 * 0.2
+    }
+
+    @Test
+    fun `regaining focus after ducking restores the exact master volume`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        mix.volume = 0.5f
+        focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
+
+        focus.emit(FocusChange.GAINED)
+
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.5f)
+    }
+
+    @Test
+    fun `a sound added while ducked comes in ducked too`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(0.2f)
+    }
+
+    @Test
+    fun `stopping abandons the focus`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+
+        mix.stop()
+
+        assertThat(focus.abandons).isEqualTo(1)
+    }
+
+    @Test
+    fun `pausing does not abandon the focus`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+
+        mix.pause()
+
+        assertThat(focus.abandons).isEqualTo(0)
     }
 }

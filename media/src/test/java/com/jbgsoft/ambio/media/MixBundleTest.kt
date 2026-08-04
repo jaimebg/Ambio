@@ -31,10 +31,16 @@ class MixBundleTest {
         override fun release() { released = true }
     }
 
+    private class FakeFocus : AudioFocus {
+        override fun request(): Boolean = true
+        override fun abandon() {}
+        override fun onChange(listener: (FocusChange) -> Unit) {}
+    }
+
     private val tracks = mutableMapOf<String, FakeTrack>()
 
     private fun player(): MixPlayer =
-        MixPlayer(Looper.getMainLooper()) { id -> FakeTrack().also { tracks[id] = it } }
+        MixPlayer(Looper.getMainLooper(), { id -> FakeTrack().also { tracks[id] = it } }, FakeFocus())
 
     private val rain = MixEntry("rain", 42, 0.75f)
     private val ocean = MixEntry("ocean", 7, 0.5f)
