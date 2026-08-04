@@ -29,8 +29,12 @@ fun AmbioApp(viewModel: AmbioAppViewModel = hiltViewModel()) {
         NavHost(navController = navController, startDestination = Routes.HOME) {
             composable(Routes.HOME) {
                 HomeScreen(
-                    onNavigateToSettings = { navController.navigate(Routes.SETTINGS) },
-                    onNavigateToStats = { navController.navigate(Routes.STATS) }
+                    onNavigateToSettings = {
+                        navController.navigate(Routes.SETTINGS) { launchSingleTop = true }
+                    },
+                    onNavigateToStats = {
+                        navController.navigate(Routes.STATS) { launchSingleTop = true }
+                    }
                 )
             }
             composable(Routes.SETTINGS) {

@@ -11,7 +11,6 @@ android {
 dependencies {
     // Project modules
     implementation(project(":core:domain"))
-    implementation(project(":ui"))
 
     // Compose BOM
     implementation(platform(libs.compose.bom))

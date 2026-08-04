@@ -2,8 +2,8 @@ package com.jbgsoft.ambio.feature.stats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jbgsoft.ambio.core.domain.repository.SessionRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
+import com.jbgsoft.ambio.core.domain.usecase.DeleteSessionUseCase
 import com.jbgsoft.ambio.core.domain.usecase.GetSessionHistoryUseCase
 import com.jbgsoft.ambio.core.domain.usecase.GetSessionStatsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class StatsViewModel @Inject constructor(
     private val getSessionStats: GetSessionStatsUseCase,
     private val getSessionHistory: GetSessionHistoryUseCase,
-    private val sessionRepository: SessionRepository,
+    private val deleteSession: DeleteSessionUseCase,
     private val soundRepository: SoundRepository
 ) : ViewModel() {
 
@@ -36,8 +36,7 @@ class StatsViewModel @Inject constructor(
                             id = session.id,
                             soundNameRes = soundRepository.getSoundById(session.soundId)?.nameRes,
                             durationMinutes = session.durationMinutes,
-                            completedAt = session.completedAt,
-                            wasCompleted = session.wasCompleted
+                            completedAt = session.completedAt
                         )
                     }
                 )
@@ -46,6 +45,6 @@ class StatsViewModel @Inject constructor(
     }
 
     fun onDeleteSession(id: Long) {
-        viewModelScope.launch { sessionRepository.deleteSession(id) }
+        viewModelScope.launch { deleteSession(id) }
     }
 }

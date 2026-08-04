@@ -16,4 +16,10 @@
     <string name="stats_empty">No sessions yet. Finish a focus session and it will show up here.</string>
     <string name="stats_unknown_sound">Removed sound</string>
     <string name="stats_delete_session">Delete session</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Delete this session?</string>
+    <string name="stats_delete_session_message">This focus session will be permanently removed from your history. This can\'t be undone.</string>
+    <string name="stats_delete_session_confirm">Delete</string>
+    <string name="stats_delete_session_cancel">Cancel</string>
 </resources>
