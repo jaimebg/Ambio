@@ -2,10 +2,6 @@ package com.jbgsoft.ambio
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.Until
 import com.google.common.truth.Truth.assertThat
 import org.junit.FixMethodOrder
 import org.junit.Test
@@ -29,9 +25,6 @@ import org.junit.runners.MethodSorters
 @LargeTest
 class MixPersistenceTest {
 
-    private val device: UiDevice
-        get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-
     @Test
     fun step1_activateAllFiveSounds() {
         MixerUi.launchApp()
@@ -39,13 +32,13 @@ class MixPersistenceTest {
 
         // activeSoundCount() only reads while the picker sheet is open, and
         // activateAllSounds() always leaves it closed (see MixerUi's own doc comment) -
-        // reopen it the same way MixPlaybackTest.allFiveSoundsPlayAtOnce() does, so this
-        // assertion has something to observe instead of reading the home screen's zero.
-        device.wait(Until.findObject(By.text("Change")), 10_000)?.click()
-        device.waitForIdle()
+        // reopen it the same confirmed way MixerUi.openSoundPicker() opens it everywhere
+        // else, so this assertion has something to observe instead of reading the home
+        // screen's zero, and a swallowed tap here fails loudly instead of reading back
+        // as a wrong sound count.
+        MixerUi.openSoundPicker()
         assertThat(MixerUi.activeSoundCount()).isEqualTo(5)
-        device.pressBack()
-        device.waitForIdle()
+        MixerUi.closeSoundPicker()
     }
 
     @Test

@@ -2,10 +2,6 @@ package com.jbgsoft.ambio
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.Until
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -19,9 +15,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class MixPlaybackTest {
-
-    private val device: UiDevice
-        get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
     @Before
     fun startFresh() {
@@ -48,15 +41,14 @@ class MixPlaybackTest {
         // joined-names label instead, with no per-sound affordance. So activeSoundCount()
         // can only ever report a real number while that sheet is open; called against the
         // home screen it is always 0, regardless of the actual mix. Reopening the sheet
-        // the same way activateAllSounds() itself does (tap "Change"), reading the count,
-        // then closing it the same way (system back) puts the assertion the brief calls
-        // for - catching a picker regression before it is misread as an audio-focus one -
-        // somewhere it can actually observe the mix.
-        device.wait(Until.findObject(By.text("Change")), 10_000)?.click()
-        device.waitForIdle()
+        // through the same confirmed open/close MixerUi uses everywhere else, reading the
+        // count, then closing it puts the assertion the brief calls for - catching a
+        // picker regression before it is misread as an audio-focus one - somewhere it can
+        // actually observe the mix, without a swallowed tap reading back as that same
+        // regression.
+        MixerUi.openSoundPicker()
         assertThat(MixerUi.activeSoundCount()).isEqualTo(5)
-        device.pressBack()
-        device.waitForIdle()
+        MixerUi.closeSoundPicker()
 
         MixerUi.pressPlay()
 
