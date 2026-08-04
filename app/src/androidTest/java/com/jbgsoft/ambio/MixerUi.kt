@@ -4,6 +4,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
+import java.util.regex.Pattern
 
 /** Drives the real app the way a person would, through UiAutomator. */
 object MixerUi {
@@ -12,18 +13,106 @@ object MixerUi {
     private val PACKAGE: String get() = AudioState.targetPackage
     private const val TIMEOUT = 10_000L
 
+    // Generous relative to TIMEOUT: this is waiting on a cold DataStore disk read plus
+    // Hilt/Compose startup, not a click response, and a cold CI emulator is slower than
+    // a warm local one.
+    private const val HYDRATION_TIMEOUT = 20_000L
+
     private val device: UiDevice
         get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
     val soundNames = listOf("Rain", "Fireplace", "Forest", "Ocean", "Cave")
 
+    // Matches any "Remove <sound> from the mix" card, whichever sound(s) happen to be
+    // active - see the note on awaitMixHydration() for why the identity of the sound
+    // doesn't matter here, only that one exists.
+    private val anyRemoveCard: Pattern = Pattern.compile("^Remove .+ from the mix$")
+
+    // Matches any picker card at all, active or not - evidence the sheet is genuinely
+    // showing its grid, as opposed to a tap having merely been dispatched at it.
+    private val anyMixCard: Pattern = Pattern.compile("^(Add|Remove) .+ (to|from) the mix$")
+
     fun clearAppData() {
         AudioState.shell("pm clear $PACKAGE")
     }
 
+    /**
+     * Launches the app and waits until its mix has actually hydrated, not just until its
+     * window exists.
+     *
+     * `SoundRepositoryImpl.getActiveMix()` is a `combine` over a `MutableStateFlow` and
+     * the DataStore-backed preferences flow; `combine` produces nothing until *both* have
+     * emitted at least once, and the DataStore side needs an async disk read to do that.
+     * Until then `HomeViewModel` holds `activeMix = emptyList()` (its seed value), so a
+     * test that starts interacting the moment the root window appears can land clicks on
+     * a UI that is still showing that empty seed - on a fast run this never shows up, on
+     * a slow one it produces a `was: 0` failure several calls away from the real cause.
+     *
+     * The wait can't be a fixed sleep - there's no duration that's both fast on a warm
+     * local emulator and safe on a slower, colder CI one - so instead this waits for
+     * direct evidence the real mix arrived: the picker sheet showing at least one
+     * "Remove <sound> from the mix" card. The repository guarantees the mix is never
+     * empty (see its own comment), so once hydration completes there is always at least
+     * one such card, regardless of which sound(s) ended up active. Neither the root
+     * window nor the "Change" button work as that signal - both exist unconditionally,
+     * before and after hydration.
+     */
     fun launchApp() {
         AudioState.shell("am start -n $PACKAGE/.MainActivity")
         device.wait(Until.hasObject(By.pkg(PACKAGE).depth(0)), TIMEOUT)
+        awaitMixHydration()
+    }
+
+    private fun awaitMixHydration() {
+        openSoundPicker()
+
+        val hydrated = device.wait(Until.hasObject(By.desc(anyRemoveCard)), HYDRATION_TIMEOUT)
+        check(hydrated) {
+            "MixerUi.launchApp(): the mix never hydrated - no 'Remove ... from the mix' " +
+                "card appeared within ${HYDRATION_TIMEOUT}ms of opening the picker"
+        }
+
+        closeSoundPicker()
+    }
+
+    /**
+     * Taps "Change" and confirms the sheet actually opened before returning, retrying
+     * the tap if it didn't.
+     *
+     * A tap on "Change" can be dispatched successfully by UiAutomator's standards and
+     * still not open anything: it can land on the scrim of this same sheet still
+     * finishing a previous dismissal, or race the sheet's own opening animation. Either
+     * way the click "succeeds" with nothing to show for it, and every caller downstream
+     * — scrolling a grid that was never there, searching for a card that will never
+     * appear — pays for that several seconds later with no clue the tap was the actual
+     * problem. Confirming a card is visible, and retrying when it isn't, catches it here
+     * instead.
+     */
+    fun openSoundPicker(attempts: Int = 3) {
+        repeat(attempts) {
+            device.wait(Until.findObject(By.text("Change")), TIMEOUT)?.click()
+            if (device.wait(Until.hasObject(By.desc(anyMixCard)), 3_000)) return
+        }
+        error("MixerUi.openSoundPicker(): the sheet never showed a card after $attempts attempts")
+    }
+
+    /**
+     * Dismisses the sheet and confirms the home screen is actually reachable again
+     * before returning.
+     *
+     * The counterpart to [openSoundPicker] for the same reason: a caller that presses
+     * on right after `pressBack()` can find every affordance it looks for missing, not
+     * because the app broke but because the dismissal hadn't actually finished landing.
+     * "Change" only being findable once this window is active again is what's confirmed
+     * here, the same signal [openSoundPicker] waits for on the way in.
+     */
+    fun closeSoundPicker() {
+        device.pressBack()
+        val closed = device.wait(Until.hasObject(By.text("Change")), TIMEOUT)
+        check(closed) {
+            "MixerUi.closeSoundPicker(): 'Change' never reappeared within ${TIMEOUT}ms"
+        }
+        device.waitForIdle()
     }
 
     fun forceStop() {
@@ -94,7 +183,7 @@ object MixerUi {
      * missing or why. Failing here, by name, keeps that diagnosis local to this helper.
      */
     fun activateAllSounds() {
-        device.wait(Until.findObject(By.text("Change")), TIMEOUT)?.click()
+        openSoundPicker()
 
         soundNames.forEach { name -> activateOne(name) }
 
@@ -103,8 +192,7 @@ object MixerUi {
             "MixerUi.activateAllSounds(): failed to activate: ${notActivated.joinToString(", ")}"
         }
 
-        device.pressBack()
-        device.waitForIdle()
+        closeSoundPicker()
     }
 
     /**
