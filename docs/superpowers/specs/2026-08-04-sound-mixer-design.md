@@ -140,6 +140,40 @@ comprobado. Si se porta mal, el foco se centraliza en `MixPlayer` y los reproduc
 carátula: las ilustraciones son XML vectorial y `RawResourceDataSource` no las puede abrir.
 Es una deuda anterior, anotada desde la Fase 3a, y esta fase no la cierra.
 
+### El canal de control: comandos de sesión personalizados
+
+`AudioServiceConnection` no habla con el servicio por referencia directa, sino a través de un
+`MediaController`. La interfaz `Player` que ese controlador expone tiene `play`, `pause`,
+`volume` — y ningún sitio por el que quepa "pon el sonido X al 60%".
+
+El canal correcto son los comandos personalizados de Media3, verificados presentes en
+`media3-session` 1.10.1:
+
+```kotlin
+// en el modulo media, compartidos por servicio y conexion
+object MixCommands {
+    const val SET_ACTIVE = "com.jbgsoft.ambio.SET_SOUND_ACTIVE"
+    const val SET_LEVEL  = "com.jbgsoft.ambio.SET_SOUND_LEVEL"
+    const val ARG_SOUND_ID  = "sound_id"
+    const val ARG_AUDIO_RES = "audio_res"
+    const val ARG_TITLE     = "title"
+    const val ARG_ACTIVE    = "active"
+    const val ARG_LEVEL     = "level"
+}
+```
+
+`MediaSession.Callback.onConnect` los declara con `AcceptedResultBuilder`, y
+`onCustomCommand` los traduce a llamadas sobre `MixPlayer`.
+
+**Lo que viaja son primitivas, no objetos de dominio.** El módulo `media` no depende de
+`core:domain` —comprobado en su `build.gradle.kts`— y no va a empezar a hacerlo: `MixPlayer`
+recibe un id opaco, un `@RawRes` y un título, exactamente como el `playSound(audioRes, name,
+description, illustrationRes)` que ya existe. El servicio no sabe qué es un `Sound`, y no
+tiene por qué.
+
+Es la parte del diseño que más fácil se subestima: sin este apartado, la primera
+implementación descubre a mitad de camino que no tiene por dónde mandar un nivel.
+
 ### Interfaz que cambia
 
 ```kotlin
