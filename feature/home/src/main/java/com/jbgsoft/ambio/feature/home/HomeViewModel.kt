@@ -76,9 +76,9 @@ class HomeViewModel @Inject constructor(
         val sounds = soundRepository.getAllSounds()
         _uiState.update { it.copy(availableSounds = sounds) }
 
-        soundRepository.getSelectedSound()
-            .onEach { sound ->
-                _uiState.update { it.copy(selectedSound = sound) }
+        soundRepository.getActiveMix()
+            .onEach { mix ->
+                _uiState.update { it.copy(activeMix = mix, selectedSound = mix.first().sound) }
             }
             .launchIn(viewModelScope)
     }
@@ -159,12 +159,9 @@ class HomeViewModel @Inject constructor(
     private fun selectSound(sound: Sound) {
         haptic { heavyClick() }
         viewModelScope.launch {
-            soundRepository.setSelectedSound(sound.id)
-            preferencesRepository.setLastMix(sound.id)
+            soundRepository.setSoundActive(sound.id, active = true)
         }
         _uiState.update { it.copy(showSoundPicker = false) }
-
-        // If currently playing, switch to the new sound
         if (_uiState.value.isPlaying) {
             playSoundAudio(sound)
         }

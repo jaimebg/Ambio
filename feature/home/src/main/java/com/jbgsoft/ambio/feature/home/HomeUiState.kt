@@ -1,5 +1,6 @@
 package com.jbgsoft.ambio.feature.home
 
+import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
@@ -8,6 +9,7 @@ import com.jbgsoft.ambio.core.domain.model.TimerState
 data class HomeUiState(
     val mode: AppMode = AppMode.TIMER,
     val selectedSound: Sound? = null,
+    val activeMix: List<ActiveSound> = emptyList(),
     val availableSounds: List<Sound> = emptyList(),
     val timerState: TimerState = TimerState.Idle,
     val selectedPreset: TimerPreset = TimerPreset.FOCUS_25,

@@ -7,6 +7,7 @@ import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.common.audio.ChimePlayer
 import com.jbgsoft.ambio.core.common.haptics.HapticManager
 import com.jbgsoft.ambio.core.common.resources.StringProvider
+import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
@@ -74,7 +75,7 @@ class HomeViewModelTest {
 
     // Flows for controlling state
     private lateinit var timerStateFlow: MutableStateFlow<TimerState>
-    private lateinit var selectedSoundFlow: MutableStateFlow<Sound>
+    private lateinit var activeMixFlow: MutableStateFlow<List<ActiveSound>>
     private lateinit var preferencesFlow: MutableStateFlow<UserPreferences>
     private lateinit var isConnectedFlow: MutableStateFlow<Boolean>
     private lateinit var isPlayingFlow: MutableStateFlow<Boolean>
@@ -106,7 +107,7 @@ class HomeViewModelTest {
 
         // Initialize flows
         timerStateFlow = MutableStateFlow(TimerState.Idle)
-        selectedSoundFlow = MutableStateFlow(testSound)
+        activeMixFlow = MutableStateFlow(listOf(ActiveSound(testSound, 1.0f)))
         preferencesFlow = MutableStateFlow(UserPreferences())
         isConnectedFlow = MutableStateFlow(false)
         isPlayingFlow = MutableStateFlow(false)
@@ -114,8 +115,8 @@ class HomeViewModelTest {
         // Create mocks
         soundRepository = mockk {
             every { getAllSounds() } returns testSounds
-            every { getSelectedSound() } returns selectedSoundFlow
-            coEvery { setSelectedSound(any()) } just Runs
+            every { getActiveMix() } returns activeMixFlow
+            coEvery { setSoundActive(any(), any()) } just Runs
         }
 
         timerRepository = mockk {
@@ -313,18 +314,20 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
         advanceUntilIdle()
 
-        coVerify { soundRepository.setSelectedSound("forest") }
+        coVerify { soundRepository.setSoundActive("forest", true) }
     }
 
     @Test
-    fun `selectSound saves to preferences`() = runTest(testDispatcher) {
+    fun `selectSound no longer persists directly to preferences`() = runTest(testDispatcher) {
+        // Persistence now happens inside SoundRepositoryImpl.setSoundActive, not here —
+        // this guards against the call creeping back and double-writing the store.
         val viewModel = createViewModel()
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
         advanceUntilIdle()
 
-        coVerify { preferencesRepository.setLastMix("forest") }
+        coVerify(exactly = 0) { preferencesRepository.setLastMix(any()) }
     }
 
     @Test

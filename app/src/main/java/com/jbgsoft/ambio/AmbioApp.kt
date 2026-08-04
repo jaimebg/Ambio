@@ -7,7 +7,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.jbgsoft.ambio.core.domain.model.toPalette
 import com.jbgsoft.ambio.feature.home.HomeScreen
 import com.jbgsoft.ambio.feature.settings.SettingsScreen
 import com.jbgsoft.ambio.feature.stats.StatsScreen
@@ -21,12 +20,12 @@ object Routes {
 
 @Composable
 fun AmbioApp(viewModel: AmbioAppViewModel = hiltViewModel()) {
-    val soundTheme by viewModel.soundTheme.collectAsStateWithLifecycle()
+    val palette by viewModel.palette.collectAsStateWithLifecycle()
     val navController = rememberNavController()
 
     // The theme wraps the whole graph, not just Home, so Settings and Stats
-    // inherit the palette of the selected sound.
-    AmbioTheme(palette = soundTheme.toPalette()) {
+    // inherit the palette of the active mix.
+    AmbioTheme(palette = palette) {
         NavHost(navController = navController, startDestination = Routes.HOME) {
             composable(Routes.HOME) {
                 HomeScreen(
