@@ -64,7 +64,7 @@ class SoundRepositoryImpl @Inject constructor(
         )
     )
 
-    private val selectedSoundIdFlow = MutableStateFlow("rain")
+    private val selectedSoundIdFlow = MutableStateFlow<String?>(null)
 
     override fun getAllSounds(): List<Sound> = sounds
 
@@ -74,7 +74,9 @@ class SoundRepositoryImpl @Inject constructor(
         selectedSoundIdFlow,
         preferencesDataStore.preferences
     ) { currentId, prefs ->
-        getSoundById(currentId) ?: getSoundById(prefs.lastSoundId) ?: sounds.first()
+        currentId?.let { getSoundById(it) }
+            ?: getSoundById(prefs.lastSoundId)
+            ?: sounds.first()
     }
 
     override suspend fun setSelectedSound(soundId: String) {
