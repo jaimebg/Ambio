@@ -62,4 +62,20 @@ class MixPlaybackTest {
 
         assertThat(AudioState.awaitStartedTracks(expected = 5)).isEqualTo(5)
     }
+
+    @Test
+    fun losingFocusPausesTheWholeMixAndGettingItBackResumesIt() {
+        MixerUi.activateAllSounds()
+        MixerUi.pressPlay()
+        assertThat(AudioState.awaitStartedTracks(expected = 5)).isEqualTo(5)
+
+        FocusIntruder.grabTransiently()
+        try {
+            assertThat(AudioState.awaitStartedTracks(expected = 0)).isEqualTo(0)
+        } finally {
+            FocusIntruder.release()
+        }
+
+        assertThat(AudioState.awaitStartedTracks(expected = 5)).isEqualTo(5)
+    }
 }
