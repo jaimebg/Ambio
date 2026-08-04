@@ -2,14 +2,12 @@ package com.jbgsoft.ambio.media
 
 import android.content.ComponentName
 import android.content.Context
-import android.net.Uri
+import android.os.Bundle
 import android.util.Log
-import androidx.annotation.RawRes
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
+import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
@@ -36,6 +34,10 @@ import javax.inject.Singleton
 class AudioServiceConnection @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) {
+    // Volatile because the identity checks below are read from whichever thread finished
+    // a connection (the completion listener runs on directExecutor()), and a guard that
+    // compares against a stale copy of this field is not a guard.
+    @Volatile
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private val scope = CoroutineScope(Dispatchers.Main)
     private var fadeJob: Job? = null
@@ -67,6 +69,22 @@ class AudioServiceConnection @Inject constructor(
             }
         }
 
+    /**
+     * How a controller is built. Production always builds the real one; the unit test
+     * substitutes a future it can complete and dispatch by hand, because the two
+     * identity checks in [connect] and [ConnectionListener.onDisconnected] only matter
+     * across an interleaving a real future cannot be made to produce on one thread.
+     */
+    internal var buildController: (MediaController.Listener) -> ListenableFuture<MediaController> =
+        { listener ->
+            MediaController.Builder(
+                context,
+                SessionToken(context, ComponentName(context, AudioService::class.java))
+            )
+                .setListener(listener)
+                .buildAsync()
+        }
+
     fun connect() {
         if (controllerFuture != null) {
             Log.d(TAG, "Already connected or connecting")
@@ -74,15 +92,26 @@ class AudioServiceConnection @Inject constructor(
         }
 
         Log.d(TAG, "Connecting to AudioService...")
-        val sessionToken = SessionToken(
-            context,
-            ComponentName(context, AudioService::class.java)
-        )
 
-        controllerFuture = MediaController.Builder(context, sessionToken)
-            .buildAsync()
+        // The listener has to be handed over before the future it belongs to exists, so
+        // it is told which future that is on the line after. Neither of its callbacks
+        // can run before buildController has returned.
+        val listener = ConnectionListener()
+        val future = buildController(listener)
+        listener.own = future
+        controllerFuture = future
 
-        controllerFuture?.addListener({
+        future.addListener({
+            if (controllerFuture !== future) {
+                // A superseded attempt finishing late: disconnect() cleared the field,
+                // or a later connect() replaced it. Both branches below write the field,
+                // and writing it here would strand whatever connection now owns it —
+                // the else branch in particular would null a live future that nothing
+                // holds a reference to and nothing will rebuild, leaving the app silent
+                // until the process dies. A stale completion has to be inert.
+                Log.d(TAG, "Ignoring the completion of a superseded connection attempt")
+                return@addListener
+            }
             val mediaController = controller
             if (mediaController != null) {
                 Log.d(TAG, "Connected to AudioService")
@@ -92,53 +121,48 @@ class AudioServiceConnection @Inject constructor(
                 _isPlaying.value = mediaController.isPlaying
             } else {
                 Log.e(TAG, "Failed to connect to AudioService")
+                // Never leave a failed future behind: connect() early-returns while one
+                // is set, so keeping it would make every later attempt a silent no-op
+                // forever. Clearing it is inert — nothing in this class calls connect(),
+                // so only an external caller can try again, and each such call is one
+                // attempt. This branch is where an automatic rebuild comes to rest.
+                controllerFuture = null
             }
         }, MoreExecutors.directExecutor())
     }
 
     fun disconnect() {
         Log.d(TAG, "Disconnecting from AudioService")
-        controller?.removeListener(playerListener)
-        controllerFuture?.let { MediaController.releaseFuture(it) }
-        controllerFuture = null
+        // Clear the flag first. Releasing the controller dispatches onDisconnected, and
+        // the automatic rebuild there is gated on this flag — lowering it up front is
+        // what tells a deliberate teardown apart from a connection we lost.
         _isConnected.value = false
         _isPlaying.value = false
         _hasError.value = false
+        controller?.removeListener(playerListener)
+        controllerFuture?.let { MediaController.releaseFuture(it) }
+        controllerFuture = null
     }
 
-    fun playSound(
-        @RawRes audioRes: Int,
-        name: String,
-        description: String,
-        @RawRes illustrationRes: Int? = null
-    ) {
-        fadeJob?.cancel()
-        val soundUri = Uri.parse("android.resource://${context.packageName}/$audioRes")
-        val artworkUri = illustrationRes?.let {
-            Uri.parse("android.resource://${context.packageName}/$it")
+    /**
+     * Declares the whole mix — every active sound, its level, and the title the media
+     * notification shows. Idempotent: re-sending the same mix is a no-op service-side,
+     * so callers re-assert rather than track what the service currently holds.
+     *
+     * Sounds are described by raw resource, not by anything domain-shaped: media does
+     * not depend on core:domain.
+     */
+    fun setMix(mix: List<MixEntry>, title: String) {
+        send(MixCommands.SET_MIX, MixBundle.encode(mix, title))
+    }
+
+    private fun send(action: String, args: Bundle) {
+        val mediaController = controller
+        if (mediaController == null) {
+            Log.w(TAG, "Cannot send $action - controller not connected")
+            return
         }
-
-        Log.d(TAG, "Playing sound: $name (uri=$soundUri)")
-
-        val mediaItem = MediaItem.Builder()
-            .setUri(soundUri)
-            .setMediaMetadata(
-                MediaMetadata.Builder()
-                    .setTitle(name)
-                    .setArtist(description)
-                    .setArtworkUri(artworkUri)
-                    .build()
-            )
-            .build()
-
-        controller?.apply {
-            _hasError.value = false
-            volume = 0f  // Start silent for fade in
-            setMediaItem(mediaItem)
-            prepare()
-            play()
-            fadeIn(targetVolume)
-        } ?: Log.w(TAG, "Cannot play sound - controller not connected")
+        mediaController.sendCustomCommand(SessionCommand(action, Bundle.EMPTY), args)
     }
 
     fun play() {
@@ -218,6 +242,55 @@ class AudioServiceConnection @Inject constructor(
             controller?.volume = 0f
             Log.d(TAG, "Fade out complete")
             onComplete()
+        }
+    }
+
+    /**
+     * Without this, [_isConnected] only ever went false in [disconnect] — a service
+     * that died or was rebound left the flag stuck at true, so observers waiting for
+     * the connection to come back up were never told it had gone down, and the mix was
+     * never re-pushed. Falling is only half of it though: nothing else in the app calls
+     * [connect], so the flag also has to be able to rise again.
+     *
+     * Exactly one rebuild per connection lost, and it cannot become a retry loop:
+     *
+     *  - The attempt is gated on [_isConnected] having been true, and that flag is set
+     *    true in exactly one place — after a controller was successfully obtained. So a
+     *    rebuild is only ever attempted for a connection that had been established.
+     *  - The flag is lowered *before* the attempt. If the rebuild fails, it is never
+     *    raised again, so any later onDisconnected sees false and does nothing.
+     *  - Reaching N automatic attempts therefore requires N successful connections that
+     *    were each subsequently lost. That is real service churn, not this code
+     *    hammering: between any two attempts there is a connection that worked.
+     *  - A failed rebuild leaves controllerFuture null (see [connect]), so the class is
+     *    quiescent but not wedged: a later external [connect] can still succeed.
+     *
+     * The same gate means [disconnect]'s own release, which also dispatches here, is
+     * correctly read as deliberate and not rebuilt.
+     *
+     * One listener is built per connection attempt, and it acts only while [own] — the
+     * future it was created alongside — is still the one this class holds. The
+     * controller that dispatched a stale callback is by definition not the live one, so
+     * clearing the field for it would strand a connection nobody can reach and nothing
+     * will rebuild.
+     */
+    private inner class ConnectionListener : MediaController.Listener {
+
+        @Volatile
+        var own: ListenableFuture<MediaController>? = null
+
+        override fun onDisconnected(controller: MediaController) {
+            val ownFuture = own
+            if (ownFuture == null || ownFuture !== controllerFuture) {
+                Log.d(TAG, "Ignoring onDisconnected from a superseded connection")
+                return
+            }
+            val wasConnected = _isConnected.value
+            Log.w(TAG, "Disconnected from AudioService (wasConnected=$wasConnected)")
+            controllerFuture = null
+            _isConnected.value = false
+            _isPlaying.value = false
+            if (wasConnected) connect()
         }
     }
 

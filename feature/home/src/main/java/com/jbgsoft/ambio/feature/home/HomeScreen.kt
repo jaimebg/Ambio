@@ -72,7 +72,7 @@ fun HomeScreen(
             if (uiState.effectsEnabled) {
                 AmbientEffectsOverlay(
                     isPlaying = uiState.isPlaying,
-                    soundTheme = uiState.selectedSound?.theme ?: SoundTheme.RAIN
+                    soundTheme = uiState.activeMix.firstOrNull()?.sound?.theme ?: SoundTheme.RAIN
                 )
             }
 
@@ -254,7 +254,7 @@ fun HomeScreen(
                     // Fixed at bottom - Current Sound Bar (outside scroll)
                     Spacer(modifier = Modifier.height(controlsSpacing))
                     CurrentSoundBar(
-                        sound = uiState.selectedSound,
+                        activeMix = uiState.activeMix,
                         onChangeClick = { viewModel.onEvent(HomeEvent.ShowSoundPicker) },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -266,8 +266,10 @@ fun HomeScreen(
         SoundBottomSheet(
             showSheet = uiState.showSoundPicker,
             sounds = uiState.availableSounds,
-            selectedSound = uiState.selectedSound,
-            onSoundSelected = { viewModel.onEvent(HomeEvent.SelectSound(it)) },
+            activeMix = uiState.activeMix,
+            onToggleSound = { viewModel.onEvent(HomeEvent.ToggleSound(it)) },
+            onLevelChange = { id, level -> viewModel.onEvent(HomeEvent.SetSoundLevel(id, level)) },
+            onLevelChangeFinished = { id -> viewModel.onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
             onDismiss = { viewModel.onEvent(HomeEvent.HideSoundPicker) }
         )
     }

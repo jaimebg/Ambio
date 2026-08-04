@@ -19,6 +19,8 @@ class PreferencesDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
     private object PreferencesKeys {
+        // The key string must stay "last_sound_id": it now holds a mix, but changing
+        // the string would compile fine and silently wipe every user's stored mix.
         val LAST_SOUND_ID = stringPreferencesKey("last_sound_id")
         val VOLUME = floatPreferencesKey("volume")
         val LAST_TIMER_MINUTES = intPreferencesKey("last_timer_minutes")
@@ -31,7 +33,7 @@ class PreferencesDataStore @Inject constructor(
 
     val preferences: Flow<UserPreferences> = dataStore.data.map { prefs ->
         UserPreferences(
-            lastSoundId = prefs[PreferencesKeys.LAST_SOUND_ID] ?: "rain",
+            lastMix = prefs[PreferencesKeys.LAST_SOUND_ID] ?: "rain",
             volume = prefs[PreferencesKeys.VOLUME] ?: 0.7f,
             lastTimerMinutes = prefs[PreferencesKeys.LAST_TIMER_MINUTES] ?: 25,
             breakMinutes = prefs[PreferencesKeys.BREAK_MINUTES] ?: 5,
@@ -44,9 +46,9 @@ class PreferencesDataStore @Inject constructor(
         )
     }
 
-    suspend fun setLastSoundId(soundId: String) {
+    suspend fun setLastMix(encoded: String) {
         dataStore.edit { prefs ->
-            prefs[PreferencesKeys.LAST_SOUND_ID] = soundId
+            prefs[PreferencesKeys.LAST_SOUND_ID] = encoded
         }
     }
 

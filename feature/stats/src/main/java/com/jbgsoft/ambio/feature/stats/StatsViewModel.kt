@@ -34,7 +34,11 @@ class StatsViewModel @Inject constructor(
                     sessions = sessions.map { session ->
                         SessionRow(
                             id = session.id,
-                            soundNameRes = soundRepository.getSoundById(session.soundId)?.nameRes,
+                            soundNameResIds = session.soundId
+                                .split(',')
+                                .map { it.trim().substringBefore(':') }
+                                .filter { it.isNotEmpty() }
+                                .map { soundRepository.getSoundById(it)?.nameRes },
                             durationMinutes = session.durationMinutes,
                             completedAt = session.completedAt
                         )

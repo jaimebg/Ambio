@@ -56,4 +56,18 @@ class PreferencesDataStoreTest {
         assertThat(prefs.chimeEnabled).isFalse()
         assertThat(prefs.volume).isEqualTo(0.42f)
     }
+
+    @Test
+    fun `the stored mix survives a write and reads back verbatim`() = runTest {
+        val dataStore = newPreferencesDataStore()
+
+        dataStore.setLastMix("rain:1.00,fireplace:0.60")
+
+        assertThat(dataStore.preferences.first().lastMix).isEqualTo("rain:1.00,fireplace:0.60")
+    }
+
+    @Test
+    fun `the mix defaults to rain when nothing was ever stored`() = runTest {
+        assertThat(newPreferencesDataStore().preferences.first().lastMix).isEqualTo("rain")
+    }
 }

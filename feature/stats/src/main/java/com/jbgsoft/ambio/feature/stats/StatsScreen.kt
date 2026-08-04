@@ -160,9 +160,11 @@ private fun Total(label: String, value: String) {
 
 @Composable
 private fun SessionItem(session: SessionRow, onDelete: () -> Unit) {
-    val soundName = session.soundNameRes
-        ?.let { stringResource(it) }
-        ?: stringResource(R.string.stats_unknown_sound)
+    // joinToString's transform parameter is crossinline, which the Compose compiler
+    // rejects for @Composable calls like stringResource; resolve each name first.
+    val soundName = session.soundNameResIds
+        .map { nameRes -> nameRes?.let { stringResource(it) } ?: stringResource(R.string.stats_unknown_sound) }
+        .joinToString(" + ")
 
     Row(
         modifier = Modifier
