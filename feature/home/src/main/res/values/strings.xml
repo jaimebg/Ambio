@@ -29,6 +29,8 @@
     <string name="action_pause">Pause</string>
     <string name="action_reset">Reset timer</string>
     <string name="action_change_sound">Change</string>
+    <string name="action_open_settings">Settings</string>
+    <string name="action_open_stats">Statistics</string>
 
     <!-- Sound picker -->
     <string name="sound_picker_title">Select Sound</string>
