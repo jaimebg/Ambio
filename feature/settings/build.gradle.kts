@@ -22,7 +22,7 @@ dependencies {
     implementation(libs.bundles.lifecycle)
 
     // Hilt
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
 
     // Coroutines
     implementation(libs.bundles.coroutines)
