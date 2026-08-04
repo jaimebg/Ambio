@@ -36,6 +36,7 @@ fun SoundCard(
     canDeactivate: Boolean,
     onToggle: () -> Unit,
     onLevelChange: (Float) -> Unit,
+    onLevelChangeFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val toggleLabel = stringResource(
@@ -91,9 +92,13 @@ fun SoundCard(
                 textAlign = TextAlign.Center
             )
             if (isActive) {
+                // onValueChangeFinished is what keeps the drag off the disk: every
+                // frame moves the level, only the lift persists it. Same contract as
+                // VolumeSlider.
                 Slider(
                     value = level,
                     onValueChange = onLevelChange,
+                    onValueChangeFinished = onLevelChangeFinished,
                     modifier = Modifier.semantics { contentDescription = levelLabel }
                 )
             }

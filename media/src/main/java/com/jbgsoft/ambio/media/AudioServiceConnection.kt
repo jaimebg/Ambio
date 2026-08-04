@@ -34,6 +34,10 @@ import javax.inject.Singleton
 class AudioServiceConnection @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) {
+    // Volatile because the identity checks below are read from whichever thread finished
+    // a connection (the completion listener runs on directExecutor()), and a guard that
+    // compares against a stale copy of this field is not a guard.
+    @Volatile
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private val scope = CoroutineScope(Dispatchers.Main)
     private var fadeJob: Job? = null
@@ -65,6 +69,22 @@ class AudioServiceConnection @Inject constructor(
             }
         }
 
+    /**
+     * How a controller is built. Production always builds the real one; the unit test
+     * substitutes a future it can complete and dispatch by hand, because the two
+     * identity checks in [connect] and [ConnectionListener.onDisconnected] only matter
+     * across an interleaving a real future cannot be made to produce on one thread.
+     */
+    internal var buildController: (MediaController.Listener) -> ListenableFuture<MediaController> =
+        { listener ->
+            MediaController.Builder(
+                context,
+                SessionToken(context, ComponentName(context, AudioService::class.java))
+            )
+                .setListener(listener)
+                .buildAsync()
+        }
+
     fun connect() {
         if (controllerFuture != null) {
             Log.d(TAG, "Already connected or connecting")
@@ -72,16 +92,26 @@ class AudioServiceConnection @Inject constructor(
         }
 
         Log.d(TAG, "Connecting to AudioService...")
-        val sessionToken = SessionToken(
-            context,
-            ComponentName(context, AudioService::class.java)
-        )
 
-        controllerFuture = MediaController.Builder(context, sessionToken)
-            .setListener(controllerListener)
-            .buildAsync()
+        // The listener has to be handed over before the future it belongs to exists, so
+        // it is told which future that is on the line after. Neither of its callbacks
+        // can run before buildController has returned.
+        val listener = ConnectionListener()
+        val future = buildController(listener)
+        listener.own = future
+        controllerFuture = future
 
-        controllerFuture?.addListener({
+        future.addListener({
+            if (controllerFuture !== future) {
+                // A superseded attempt finishing late: disconnect() cleared the field,
+                // or a later connect() replaced it. Both branches below write the field,
+                // and writing it here would strand whatever connection now owns it —
+                // the else branch in particular would null a live future that nothing
+                // holds a reference to and nothing will rebuild, leaving the app silent
+                // until the process dies. A stale completion has to be inert.
+                Log.d(TAG, "Ignoring the completion of a superseded connection attempt")
+                return@addListener
+            }
             val mediaController = controller
             if (mediaController != null) {
                 Log.d(TAG, "Connected to AudioService")
@@ -237,9 +267,24 @@ class AudioServiceConnection @Inject constructor(
      *
      * The same gate means [disconnect]'s own release, which also dispatches here, is
      * correctly read as deliberate and not rebuilt.
+     *
+     * One listener is built per connection attempt, and it acts only while [own] — the
+     * future it was created alongside — is still the one this class holds. The
+     * controller that dispatched a stale callback is by definition not the live one, so
+     * clearing the field for it would strand a connection nobody can reach and nothing
+     * will rebuild.
      */
-    private val controllerListener = object : MediaController.Listener {
+    private inner class ConnectionListener : MediaController.Listener {
+
+        @Volatile
+        var own: ListenableFuture<MediaController>? = null
+
         override fun onDisconnected(controller: MediaController) {
+            val ownFuture = own
+            if (ownFuture == null || ownFuture !== controllerFuture) {
+                Log.d(TAG, "Ignoring onDisconnected from a superseded connection")
+                return
+            }
             val wasConnected = _isConnected.value
             Log.w(TAG, "Disconnected from AudioService (wasConnected=$wasConnected)")
             controllerFuture = null

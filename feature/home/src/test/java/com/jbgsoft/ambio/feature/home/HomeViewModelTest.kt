@@ -1017,8 +1017,14 @@ class HomeViewModelTest {
         verify(exactly = 0) { hapticManager.heavyClick() }
     }
 
+    // --- Per-sound level tests ---
+    //
+    // A level slider is a drag: it fires on every frame. It therefore follows the master
+    // volume slider's contract — state and audio move now, the store is written when the
+    // finger lifts — rather than the toggle's, which goes to the repository and waits.
+
     @Test
-    fun `setting a level goes only through the repository`() = runTest {
+    fun `dragging a level reaches the service without touching the store`() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
         clearMocks(audioServiceConnection, answers = false)
@@ -1026,8 +1032,70 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.SetSoundLevel("rain", 0.3f))
         advanceUntilIdle()
 
-        coVerify { soundRepository.setSoundLevel("rain", 0.3f) }
-        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        // Live audio, because a level the user cannot hear until they let go is
+        // unusable for balancing a mix.
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.3f)), any()) }
+        // But no write: the repository's setSoundLevel is a DataStore edit behind a
+        // mutex, and a drag would queue one per frame.
+        coVerify(exactly = 0) { soundRepository.setSoundLevel(any(), any()) }
+    }
+
+    @Test
+    fun `the level is in state before the event handler returns`() = runTest {
+        // No advanceUntilIdle: if this needed one, the thumb would be waiting on a round
+        // trip through the repository and would lag behind the finger.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetSoundLevel("rain", 0.3f))
+
+        assertThat(viewModel.uiState.value.activeMix.single().level).isEqualTo(0.3f)
+    }
+
+    @Test
+    fun `a level is clamped into zero to one`() = runTest {
+        // Starts below 1f so an unclamped value would be visible in both places.
+        activeMixFlow.value = listOf(ActiveSound(testSound, 0.5f))
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        viewModel.onEvent(HomeEvent.SetSoundLevel("rain", 4f))
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.activeMix.single().level).isEqualTo(1f)
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any()) }
+    }
+
+    @Test
+    fun `dragging a level changes neither the membership nor another sound's level`() =
+        runTest {
+            // The palette is a function of which sounds are active and of nothing else,
+            // so a slider must not be able to move it.
+            activeMixFlow.value =
+                listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 0.8f))
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            viewModel.onEvent(HomeEvent.SetSoundLevel("forest", 0.2f))
+            advanceUntilIdle()
+
+            val mix = viewModel.uiState.value.activeMix
+            assertThat(mix.map { it.sound.id }).containsExactly("rain", "forest").inOrder()
+            assertThat(mix.single { it.sound.id == "rain" }.level).isEqualTo(1f)
+        }
+
+    @Test
+    fun `letting go of a level slider persists the level the drag ended on`() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetSoundLevel("rain", 0.3f))
+        viewModel.onEvent(HomeEvent.SetSoundLevel("rain", 0.6f))
+        viewModel.onEvent(HomeEvent.SoundLevelChangeFinished("rain"))
+        advanceUntilIdle()
+
+        coVerify(exactly = 1) { soundRepository.setSoundLevel("rain", 0.6f) }
     }
 
     @Test

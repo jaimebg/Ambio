@@ -269,6 +269,7 @@ fun HomeScreen(
             activeMix = uiState.activeMix,
             onToggleSound = { viewModel.onEvent(HomeEvent.ToggleSound(it)) },
             onLevelChange = { id, level -> viewModel.onEvent(HomeEvent.SetSoundLevel(id, level)) },
+            onLevelChangeFinished = { id -> viewModel.onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
             onDismiss = { viewModel.onEvent(HomeEvent.HideSoundPicker) }
         )
     }

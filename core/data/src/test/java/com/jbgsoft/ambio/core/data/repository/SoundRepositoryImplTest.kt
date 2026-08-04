@@ -9,6 +9,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -125,9 +126,23 @@ class SoundRepositoryImplTest {
     @Test
     fun `overlapping activations do not lose a toggle`() = runTest {
         val repository = repositoryStoring("rain")
-        // Makes the store write slow enough that two concurrently-launched
-        // calls actually overlap instead of trivially interleaving.
-        coEvery { dataStore.setLastMix(any()) } coAnswers { delay(50) }
+        // The *read* is what has to be able to suspend.
+        //
+        // Slowing the store write down instead proves nothing: persist() publishes to
+        // mixOverride before it writes, so the second coroutine reads the first one's
+        // result whether or not a mutex exists. And with the flowOf(...) this class
+        // uses everywhere else, .first() never suspends at all, so the first coroutine
+        // runs start to finish before the second is even dispatched. Under either of
+        // those the assertion below holds with the mutex deleted.
+        //
+        // A read that suspends is what puts both coroutines inside the
+        // read-modify-write at once — the situation two rapid taps create, each on its
+        // own viewModelScope.launch — and the only thing that gets them out of it with
+        // both toggles intact is the mutex.
+        every { dataStore.preferences } returns flow {
+            delay(10)
+            emit(UserPreferences(lastMix = "rain"))
+        }
 
         val first = launch { repository.setSoundActive("cave", active = true) }
         val second = launch { repository.setSoundActive("ocean", active = true) }
@@ -136,6 +151,27 @@ class SoundRepositoryImplTest {
 
         assertThat(repository.getActiveMix().first().map { it.sound.id })
             .containsExactly("rain", "cave", "ocean")
+    }
+
+    @Test
+    fun `a level write overlapping an activation loses neither`() = runTest {
+        // setSoundLevel does the same read-modify-write and needs the same lock: a
+        // level landing on a snapshot taken before an activation writes the mix back
+        // without the sound that was just added.
+        val repository = repositoryStoring("rain")
+        every { dataStore.preferences } returns flow {
+            delay(10)
+            emit(UserPreferences(lastMix = "rain"))
+        }
+
+        val activation = launch { repository.setSoundActive("cave", active = true) }
+        val levelChange = launch { repository.setSoundLevel("rain", 0.25f) }
+        activation.join()
+        levelChange.join()
+
+        val mix = repository.getActiveMix().first()
+        assertThat(mix.map { it.sound.id }).containsExactly("rain", "cave").inOrder()
+        assertThat(mix.single { it.sound.id == "rain" }.level).isEqualTo(0.25f)
     }
 
     @Test
