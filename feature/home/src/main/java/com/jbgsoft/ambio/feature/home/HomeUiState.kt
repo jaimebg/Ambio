@@ -16,5 +16,8 @@ data class HomeUiState(
     val volume: Float = 0.7f,
     val isPlaying: Boolean = false,
     val showSoundPicker: Boolean = false,
-    val isServiceConnected: Boolean = false
+    val isServiceConnected: Boolean = false,
+    val hapticsEnabled: Boolean = true,
+    val chimeEnabled: Boolean = true,
+    val effectsEnabled: Boolean = true
 )

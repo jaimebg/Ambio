@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="settings_back">Back</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptic feedback</string>
+    <string name="settings_haptics_summary">Vibrate on taps and timer events</string>
+    <string name="settings_chime">Completion chime</string>
+    <string name="settings_chime_summary">Play a sound when a focus session ends</string>
+    <string name="settings_effects">Ambient effects</string>
+    <string name="settings_effects_summary">Animated particles behind the timer</string>
+</resources>
