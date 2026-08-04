@@ -60,6 +60,8 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:di"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:stats"))
     implementation(project(":media"))
     implementation(project(":ui"))
 
@@ -71,10 +73,11 @@ dependencies {
     // AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.bundles.lifecycle)
 
     // Hilt
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
 
     // Coroutines
     implementation(libs.bundles.coroutines)

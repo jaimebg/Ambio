@@ -5,15 +5,12 @@ plugins {
 }
 
 android {
-    namespace = "com.jbgsoft.ambio.feature.home"
+    namespace = "com.jbgsoft.ambio.feature.settings"
 }
 
 dependencies {
     // Project modules
     implementation(project(":core:domain"))
-    implementation(project(":core:common"))
-    implementation(project(":ui"))
-    implementation(project(":media"))
 
     // Compose BOM
     implementation(platform(libs.compose.bom))
@@ -31,6 +28,4 @@ dependencies {
 
     // Testing
     testImplementation(libs.bundles.testing)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.test.core)
 }

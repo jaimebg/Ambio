@@ -15,6 +15,21 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
+/**
+ * Provides Hilt bindings for the app's cross-cutting singletons.
+ *
+ * Rule: even when the type being provided belongs to another `core` module — as with
+ * [HapticManager] and [ChimePlayer], both owned by `core:common` — its Hilt binding still lives
+ * here in `core:di`, not inside the owning module. This keeps DI wiring discoverable in one
+ * place rather than scattered across every `core` module, each of which would otherwise need
+ * its own Hilt module (and most already apply the Hilt plugin regardless, so nothing technical
+ * forces the split either way — see below).
+ *
+ * Known exception: `StringProviderModule`, which binds `StringProvider` inside `core:common`
+ * itself (`core/common/.../resources/StringProvider.kt`). That predates this rule being written
+ * down and is left as-is rather than moved here as part of documenting the convention. New
+ * bindings should follow the pattern below, not that exception.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {

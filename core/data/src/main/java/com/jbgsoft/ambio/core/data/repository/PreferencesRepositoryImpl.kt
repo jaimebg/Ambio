@@ -32,4 +32,13 @@ class PreferencesRepositoryImpl @Inject constructor(
     override suspend fun setBreakMinutes(minutes: Int) {
         preferencesDataStore.setBreakMinutes(minutes)
     }
+
+    override suspend fun setHapticsEnabled(enabled: Boolean) =
+        preferencesDataStore.setHapticsEnabled(enabled)
+
+    override suspend fun setChimeEnabled(enabled: Boolean) =
+        preferencesDataStore.setChimeEnabled(enabled)
+
+    override suspend fun setEffectsEnabled(enabled: Boolean) =
+        preferencesDataStore.setEffectsEnabled(enabled)
 }
