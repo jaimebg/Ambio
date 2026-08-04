@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PreferencesRepository {
     val preferences: Flow<UserPreferences>
-    suspend fun setLastSoundId(soundId: String)
+    suspend fun setLastMix(encoded: String)
     suspend fun setVolume(volume: Float)
     suspend fun setLastTimerMinutes(minutes: Int)
     suspend fun setBreakMinutes(minutes: Int)

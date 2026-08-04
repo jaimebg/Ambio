@@ -160,7 +160,7 @@ class HomeViewModel @Inject constructor(
         haptic { heavyClick() }
         viewModelScope.launch {
             soundRepository.setSelectedSound(sound.id)
-            preferencesRepository.setLastSoundId(sound.id)
+            preferencesRepository.setLastMix(sound.id)
         }
         _uiState.update { it.copy(showSoundPicker = false) }
 

@@ -129,7 +129,7 @@ class HomeViewModelTest {
 
         preferencesRepository = mockk {
             every { preferences } returns preferencesFlow
-            coEvery { setLastSoundId(any()) } just Runs
+            coEvery { setLastMix(any()) } just Runs
             coEvery { setVolume(any()) } just Runs
             coEvery { setLastTimerMinutes(any()) } just Runs
             coEvery { setLastMode(any()) } just Runs
@@ -324,7 +324,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
         advanceUntilIdle()
 
-        coVerify { preferencesRepository.setLastSoundId("forest") }
+        coVerify { preferencesRepository.setLastMix("forest") }
     }
 
     @Test

@@ -75,7 +75,7 @@ class SoundRepositoryImpl @Inject constructor(
         preferencesDataStore.preferences
     ) { currentId, prefs ->
         currentId?.let { getSoundById(it) }
-            ?: getSoundById(prefs.lastSoundId)
+            ?: getSoundById(prefs.lastMix)
             ?: sounds.first()
     }
 

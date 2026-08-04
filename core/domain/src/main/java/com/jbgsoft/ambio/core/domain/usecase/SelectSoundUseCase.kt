@@ -10,6 +10,6 @@ class SelectSoundUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(soundId: String) {
         soundRepository.setSelectedSound(soundId)
-        preferencesRepository.setLastSoundId(soundId)
+        preferencesRepository.setLastMix(soundId)
     }
 }

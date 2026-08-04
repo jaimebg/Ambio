@@ -12,9 +12,9 @@ import org.junit.Test
 
 class SoundRepositoryImplTest {
 
-    private fun repositoryStoring(lastSoundId: String): SoundRepositoryImpl {
+    private fun repositoryStoring(lastMix: String): SoundRepositoryImpl {
         val dataStore = mockk<PreferencesDataStore>()
-        every { dataStore.preferences } returns flowOf(UserPreferences(lastSoundId = lastSoundId))
+        every { dataStore.preferences } returns flowOf(UserPreferences(lastMix = lastMix))
         return SoundRepositoryImpl(dataStore)
     }
 
