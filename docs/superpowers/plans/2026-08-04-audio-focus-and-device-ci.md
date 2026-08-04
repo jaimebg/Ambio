@@ -45,8 +45,9 @@ These were measured before this plan was written. Trust them.
 | `app/src/androidTest/java/com/jbgsoft/ambio/AudioState.kt` | Reads `dumpsys audio` through `UiAutomation` and counts this process's started tracks |
 | `app/src/androidTest/java/com/jbgsoft/ambio/MixerUi.kt` | UiAutomator helpers: launch, press play, open the picker, activate every sound |
 | `app/src/androidTest/java/com/jbgsoft/ambio/LaunchTest.kt` | The app starts and stays up |
-| `app/src/androidTest/java/com/jbgsoft/ambio/MixPlaybackTest.kt` | Five sounds actually play; an incoming call pauses and resumes them |
-| `app/src/androidTest/java/com/jbgsoft/ambio/MixPersistenceTest.kt` | The mix survives the process being killed |
+| `app/src/androidTest/java/com/jbgsoft/ambio/MixPlaybackTest.kt` | Five sounds actually play; losing audio focus pauses them all and regaining it resumes them |
+| `app/src/androidTest/java/com/jbgsoft/ambio/FocusIntruder.kt` | Takes transient audio focus the way an incoming call does |
+| `app/src/androidTest/java/com/jbgsoft/ambio/MixPersistenceTest.kt` | The mix is rebuilt from disk in a fresh process |
 
 **Modified** — `MixPlayer.kt`, `SoundTrack.kt`, `AudioService.kt`, `MixPlayerTest.kt`, `app/build.gradle.kts`, `gradle/libs.versions.toml`, `.github/workflows/ci.yml`.
 
@@ -829,79 +830,159 @@ track, this test fails reporting one started track instead of five."
 
 ---
 
-## Task 4: The incoming call, and surviving a restart
+## Task 4: Losing focus mid-mix, and surviving a restart
+
+**This task was rewritten during execution.** Its first version could not work, for two independent reasons found by running it. Both are recorded here because they are the kind of thing only execution reveals:
+
+1. **`Emulator.kt` could never have run.** It shelled out to `adb emu gsm call` with a `ProcessBuilder`, but instrumented tests execute *on the device*, where no `adb` binary exists.
+2. **The persistence test killed itself.** It called `MixerUi.forceStop()` and `MixerUi.clearAppData()`, and instrumentation runs inside the app's own process — force-stopping the package or clearing its data terminates the test host mid-test.
+
+The replacements are better than workarounds, not worse. The focus test now provokes a *real* system focus loss from inside the test process, which works on physical devices too rather than only on emulators. The persistence test runs under Android Test Orchestrator, which gives every test method a fresh process — so the mix genuinely has to come back from disk.
 
 **Files:**
+- Modify: `gradle/libs.versions.toml`
+- Modify: `app/build.gradle.kts`
 - Modify: `app/src/androidTest/java/com/jbgsoft/ambio/MixPlaybackTest.kt`
+- Create: `app/src/androidTest/java/com/jbgsoft/ambio/FocusIntruder.kt`
 - Create: `app/src/androidTest/java/com/jbgsoft/ambio/MixPersistenceTest.kt`
 
 **Interfaces:**
-- Consumes: everything from Tasks 2 and 3.
-- Produces: nothing later tasks depend on.
+- Consumes: `AudioState.awaitStartedTracks`, `AudioState.shell`, `MixerUi.launchApp/pressPlay/activateAllSounds/activeSoundCount` (Tasks 2-3).
+- Produces: `FocusIntruder.grabTransiently()` and `FocusIntruder.release()`.
 
-- [ ] **Step 1: Write the incoming-call test**
+- [ ] **Step 1: Add Test Orchestrator**
 
-Add to `MixPlaybackTest`. `adb emu gsm call` and `adb emu gsm cancel` were verified working on the local AVD before this plan was written, but they reach the emulator console, not the device shell — so they run through the host, not through `AudioState.shell`:
+In `gradle/libs.versions.toml`, under `[versions]`:
+
+```toml
+androidx-test-orchestrator = "1.6.1"
+```
+
+under `[libraries]`:
+
+```toml
+androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "androidx-test-orchestrator" }
+```
+
+In `app/build.gradle.kts`:
 
 ```kotlin
-    @Test
-    fun anIncomingCallPausesTheWholeMixAndHangingUpResumesIt() {
-        MixerUi.activateAllSounds()
-        MixerUi.pressPlay()
-        assertThat(AudioState.awaitStartedTracks(expected = 5)).isEqualTo(5)
+    androidTestUtil(libs.androidx.test.orchestrator)
+```
 
-        Emulator.call()
-        assertThat(AudioState.awaitStartedTracks(expected = 0)).isEqualTo(0)
+and inside the `android { }` block:
 
-        Emulator.hangUp()
-        assertThat(AudioState.awaitStartedTracks(expected = 5)).isEqualTo(5)
+```kotlin
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
 ```
 
-Create `app/src/androidTest/java/com/jbgsoft/ambio/Emulator.kt`:
+> **Do not set `clearPackageData`.** Orchestrator clears app data between tests only when asked, and the persistence test below depends on the mix *surviving* from one method to the next. Turning it on silently deletes the very state under test, and the test would then fail for a reason that has nothing to do with persistence.
+
+If `1.6.1` does not resolve, run `./gradlew :app:dependencies --configuration androidTestUtil` and pin the newest that does; record what you changed.
+
+- [ ] **Step 2: Write the focus intruder**
+
+Create `app/src/androidTest/java/com/jbgsoft/ambio/FocusIntruder.kt`:
 
 ```kotlin
 package com.jbgsoft.ambio
 
-import org.junit.Assume.assumeTrue
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
+import androidx.test.platform.app.InstrumentationRegistry
 
 /**
- * Simulates an incoming call through the emulator console.
+ * Takes audio focus away from the app, the way an incoming call does.
  *
- * These commands go to the emulator itself, not to the device shell, so they are sent
- * with `adb emu` from the host rather than through UiAutomation. On a physical device
- * they do not exist, and the test skips instead of failing — a real phone cannot be
- * told to ring itself.
+ * A phone call interrupts music by requesting transient audio focus; every other
+ * holder gets AUDIOFOCUS_LOSS_TRANSIENT and is expected to pause. This asks the
+ * system for exactly that, so what the app receives is a genuine framework callback
+ * and not a stub of one — the system decides, not the test.
+ *
+ * It replaces an earlier attempt that shelled out to `adb emu gsm call`. That could
+ * never have worked: instrumented tests run on the device, where there is no adb
+ * binary. It is also better than the thing it replaces, because this runs on a
+ * physical phone as well as on an emulator.
+ *
+ * The real `adb emu gsm call` path was verified by hand on API 37 and took the mix
+ * 5 -> 0 -> 5, so this is a faithful proxy for it and not a weaker substitute.
  */
-object Emulator {
+object FocusIntruder {
 
-    private const val NUMBER = "5551234567"
+    private val audioManager: AudioManager
+        get() = InstrumentationRegistry.getInstrumentation().context
+            .getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-    private fun isEmulator(): Boolean =
-        AudioState.shell("getprop ro.kernel.qemu").trim() == "1" ||
-            AudioState.shell("getprop ro.product.model").contains("sdk", ignoreCase = true)
+    private var request: AudioFocusRequest? = null
 
-    private fun emu(vararg args: String) {
-        assumeTrue("This test needs an emulator console", isEmulator())
-        ProcessBuilder(listOf("adb", "emu") + args).start().waitFor()
+    /** Grabs transient focus. The app under test should pause every sound. */
+    fun grabTransiently() {
+        val req = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
+                    .build()
+            )
+            .setOnAudioFocusChangeListener { }
+            .build()
+        request = req
+        check(audioManager.requestAudioFocus(req) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            "FocusIntruder could not take audio focus; the test cannot prove anything"
+        }
     }
 
-    fun call() = emu("gsm", "call", NUMBER)
-    fun hangUp() = emu("gsm", "cancel", NUMBER)
+    /** Gives it back. The app under test should resume every sound. */
+    fun release() {
+        request?.let { audioManager.abandonAudioFocusRequest(it) }
+        request = null
+    }
 }
 ```
 
-> **This is the riskiest step in the plan.** Instrumented tests run *inside* the device, so `ProcessBuilder("adb", ...)` executes on the device, where no `adb` binary exists — it will not work as written. Verify it in step 2. If it fails, the fallback is to drive the call from the Gradle/CI side instead: keep the pause and resume assertions in separate test methods, and have the workflow run `adb emu gsm call` between them. Report which route you took and why; do not leave a test that silently skips on an emulator, because a permanently-skipped test is indistinguishable from a passing one in the CI summary.
+> The `check(...)` matters. If the request were ever denied, a test that carried on would assert "the mix paused" against a mix nobody ever interrupted, and pass for the wrong reason.
 
-- [ ] **Step 2: Run it and confirm the call actually reaches the emulator**
+- [ ] **Step 3: Write the focus-loss test**
 
-```bash
-./gradlew :app:connectedDebugAndroidTest --tests '*MixPlaybackTest*' 2>&1 | grep -E "BUILD|FAILED|SKIPPED|tests" | tail -6
+Add to `MixPlaybackTest`:
+
+```kotlin
+    @Test
+    fun losingFocusPausesTheWholeMixAndGettingItBackResumesIt() {
+        MixerUi.activateAllSounds()
+        MixerUi.pressPlay()
+        assertThat(AudioState.awaitStartedTracks(expected = 5)).isEqualTo(5)
+
+        FocusIntruder.grabTransiently()
+        try {
+            assertThat(AudioState.awaitStartedTracks(expected = 0)).isEqualTo(0)
+        } finally {
+            FocusIntruder.release()
+        }
+
+        assertThat(AudioState.awaitStartedTracks(expected = 5)).isEqualTo(5)
+    }
 ```
 
-Expected: PASS with 2 tests, neither skipped. **A skipped call test is a failure of this step**, not a pass — check the report XML under `app/build/outputs/androidTest-results/connected/` to confirm the method ran.
+> The `finally` is not decoration. Without it, a failed middle assertion leaves the test process holding audio focus, and every later test in the run fails for a reason that has nothing to do with what it was testing.
 
-- [ ] **Step 3: Write the persistence test**
+- [ ] **Step 4: Run it and prove it discriminates**
+
+```bash
+./gradlew :app:connectedDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=com.jbgsoft.ambio.MixPlaybackTest 2>&1 \
+  | grep -E "BUILD|FAILED|tests" | tail -5
+```
+
+Expected: PASS, 2 tests.
+
+Then break the production behaviour it guards and confirm it fails. Comment out the `LOST_TRANSIENT` branch's `pauseForFocusLoss()` call in `MixPlayer.kt`'s `onFocusChange`, re-run, and expect a failure reporting 5 where 0 was expected. Restore with `git checkout -- media/` and confirm green again. Record both outputs.
+
+- [ ] **Step 5: Write the persistence test**
 
 Create `app/src/androidTest/java/com/jbgsoft/ambio/MixPersistenceTest.kt`:
 
@@ -911,27 +992,38 @@ package com.jbgsoft.ambio
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.google.common.truth.Truth.assertThat
+import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
 /**
- * Phase 3b fixed a bug where the selected sound was lost on every restart. That fix is
- * covered by JVM tests over the repository; nothing until now checked that the whole
- * path — DataStore, repository, service and UI — actually reassembles a five-sound mix
- * after the process dies.
+ * Two methods, deliberately, because a single one could not do this.
+ *
+ * Under Android Test Orchestrator each test method runs in its own process, so the
+ * app is genuinely torn down between the two halves and the second has to rebuild
+ * the mix from DataStore. Written as one method it would have had to kill the app
+ * itself — and instrumentation lives inside the app's process, so that kills the test.
+ *
+ * Phase 3b's persistence fix is covered by JVM tests over the repository; nothing
+ * until now checked that the whole path — DataStore, repository, service and UI —
+ * actually reassembles a five-sound mix after the process dies.
  */
 @RunWith(AndroidJUnit4::class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 class MixPersistenceTest {
 
     @Test
-    fun theMixAndItsLevelsSurviveTheProcessBeingKilled() {
-        MixerUi.clearAppData()
+    fun step1_activateAllFiveSounds() {
         MixerUi.launchApp()
         MixerUi.activateAllSounds()
-        assertThat(MixerUi.activeSoundCount()).isEqualTo(5)
 
-        MixerUi.forceStop()
+        assertThat(MixerUi.activeSoundCount()).isEqualTo(5)
+    }
+
+    @Test
+    fun step2_theMixIsRebuiltInAFreshProcess() {
         MixerUi.launchApp()
         MixerUi.pressPlay()
 
@@ -940,22 +1032,39 @@ class MixPersistenceTest {
 }
 ```
 
-- [ ] **Step 4: Run the whole instrumented suite**
+> `activeSoundCount()` only reads while the picker sheet is open, and `activateAllSounds()` closes it — reopen it before counting, the way `MixPlaybackTest` already does.
+
+- [ ] **Step 6: Prove the two methods really ran in different processes**
+
+This is the claim the whole test rests on, and it is invisible in a pass/fail line. Have each method record `android.os.Process.myPid()` to logcat, run the class, and read the two values back:
 
 ```bash
-./gradlew :app:connectedDebugAndroidTest 2>&1 | grep -E "BUILD|FAILED|SKIPPED|tests" | tail -6
+./gradlew :app:connectedDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=com.jbgsoft.ambio.MixPersistenceTest 2>&1 \
+  | grep -E "BUILD|FAILED|tests" | tail -5
+adb logcat -d | grep "MixPersistenceTest pid"
 ```
 
-Expected: PASS, 4 tests, none skipped.
+Expected: PASS, 2 tests, and **two different pids**. If the pids match, Orchestrator is not actually in effect, the second method is reading state from a process that never died, and the test proves nothing — fix the configuration before continuing. Remove the logging once confirmed, and report both pids.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 7: Run the whole instrumented suite**
 
 ```bash
-git add app/src/androidTest/
-git commit -m "test: cover the incoming call and surviving a restart
+./gradlew :app:connectedDebugAndroidTest 2>&1 | grep -E "BUILD|FAILED|tests" | tail -6
+```
 
-Criterion 10 of the Phase 3b spec, which shipped unverified because nobody
-had run the app, is now checked on every run."
+Expected: PASS, 5 tests across four classes, none skipped.
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add gradle/libs.versions.toml app/build.gradle.kts app/src/androidTest/
+git commit -m "test: cover losing audio focus mid-mix and surviving a restart
+
+The focus test provokes a real transient focus loss from the test process,
+which is what an incoming call does and works on physical devices too. The
+persistence test runs under Test Orchestrator, so its two halves execute in
+different processes and the mix genuinely has to come back from disk."
 ```
 
 ---
