@@ -50,7 +50,7 @@ import org.junit.Test
  * These tests are critical for ensuring:
  * - Timer mode correctly starts/pauses/resumes the timer and audio
  * - Ambient mode toggles audio playback without timer
- * - Sound selection updates the UI and plays the selected sound
+ * - Toggling sounds builds a mix and pushes each change to the audio service
  * - Volume changes are applied immediately and persisted
  * - Timer completion triggers chime, haptic feedback, and session saving
  */
@@ -117,6 +117,7 @@ class HomeViewModelTest {
             every { getAllSounds() } returns testSounds
             every { getActiveMix() } returns activeMixFlow
             coEvery { setSoundActive(any(), any()) } just Runs
+            coEvery { setSoundLevel(any(), any()) } just Runs
         }
 
         timerRepository = mockk {
@@ -157,7 +158,9 @@ class HomeViewModelTest {
             every { disconnect() } just Runs
             every { isConnected } returns isConnectedFlow
             every { isPlaying } returns isPlayingFlow
-            every { playSound(any(), any(), any(), any()) } just Runs
+            every { setSoundActive(any(), any(), any()) } just Runs
+            every { setSoundLevel(any(), any()) } just Runs
+            every { setMixTitle(any()) } just Runs
             every { play() } just Runs
             every { pause() } just Runs
             every { stop() } just Runs
@@ -222,13 +225,13 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `loads selected sound on init`() = runTest(testDispatcher) {
+    fun `loads the active mix on init`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
         viewModel.uiState.test {
             val state = awaitItem()
-            assertThat(state.selectedSound).isEqualTo(testSound)
+            assertThat(state.activeMix).isEqualTo(listOf(ActiveSound(testSound, 1.0f)))
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -296,76 +299,45 @@ class HomeViewModelTest {
     // --- Sound Selection Tests ---
 
     @Test
-    fun `selectSound triggers haptic feedback`() = runTest(testDispatcher) {
+    fun `toggleSound triggers haptic feedback`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
-        viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
+        viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
         verify { hapticManager.heavyClick() }
     }
 
     @Test
-    fun `selectSound saves sound to repository`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
-        advanceUntilIdle()
-
-        coVerify { soundRepository.setSoundActive("forest", true) }
-    }
-
-    @Test
-    fun `selectSound no longer persists directly to preferences`() = runTest(testDispatcher) {
+    fun `toggleSound no longer persists directly to preferences`() = runTest(testDispatcher) {
         // Persistence now happens inside SoundRepositoryImpl.setSoundActive, not here —
         // this guards against the call creeping back and double-writing the store.
         val viewModel = createViewModel()
         advanceUntilIdle()
 
-        viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
+        viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
         coVerify(exactly = 0) { preferencesRepository.setLastMix(any()) }
     }
 
     @Test
-    fun `selectSound hides sound picker`() = runTest(testDispatcher) {
+    fun `toggleSound leaves the sound picker open`() = runTest(testDispatcher) {
+        // Building a mix takes several taps, so the sheet stays until dismissed.
         val viewModel = createViewModel()
         advanceUntilIdle()
 
-        // First show the picker
         viewModel.onEvent(HomeEvent.ShowSoundPicker)
         advanceUntilIdle()
 
-        // Then select a sound
-        viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
+        viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
         viewModel.uiState.test {
             val state = awaitItem()
-            assertThat(state.showSoundPicker).isFalse()
+            assertThat(state.showSoundPicker).isTrue()
             cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `selectSound plays new sound if currently playing`() = runTest(testDispatcher) {
-        isPlayingFlow.value = true
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
-        advanceUntilIdle()
-
-        verify {
-            audioServiceConnection.playSound(
-                3,
-                stringProvider.get(6),
-                any(),
-                4
-            )
         }
     }
 
@@ -556,14 +528,9 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        verify {
-            audioServiceConnection.playSound(
-                1,
-                stringProvider.get(5),
-                any(),
-                2
-            )
-        }
+        // The mix already reached the service; starting it is volume plus the fade-in.
+        verify { audioServiceConnection.setVolume(0.7f) }
+        verify { audioServiceConnection.play() }
     }
 
     @Test
@@ -653,14 +620,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        verify {
-            audioServiceConnection.playSound(
-                1,
-                stringProvider.get(5),
-                stringProvider.get(R.string.state_ambient_mode),
-                2
-            )
-        }
+        verify { audioServiceConnection.play() }
     }
 
     @Test
@@ -994,5 +954,96 @@ class HomeViewModelTest {
 
         verify(atLeast = 1) { hapticManager.heavyClick() }
         verify(atLeast = 1) { hapticManager.click() }
+    }
+
+    // --- Mixer Tests ---
+
+    @Test
+    fun `toggling a sound on adds it to the mix and to the audio service`() = runTest {
+        val viewModel = createViewModel()
+        // Without this the mix flow has not emitted yet and every toggle below would
+        // read an empty mix — three of these tests would then pass vacuously.
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
+        advanceUntilIdle()
+
+        coVerify { soundRepository.setSoundActive("forest", true) }
+        verify { audioServiceConnection.setSoundActive("forest", 3, true) }
+    }
+
+    @Test
+    fun `toggling an active sound off removes it`() = runTest {
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 1f))
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
+        advanceUntilIdle()
+
+        coVerify { soundRepository.setSoundActive("forest", false) }
+        verify { audioServiceConnection.setSoundActive("forest", 3, false) }
+    }
+
+    @Test
+    fun `the last active sound cannot be toggled off`() = runTest {
+        // Exactly one sound, or the assertion below proves nothing.
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f))
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.ToggleSound(testSound))
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false) }
+        verify(exactly = 0) { audioServiceConnection.setSoundActive("rain", 1, false) }
+    }
+
+    @Test
+    fun `setting a level reaches both the repository and the audio service`() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetSoundLevel("rain", 0.3f))
+        advanceUntilIdle()
+
+        coVerify { soundRepository.setSoundLevel("rain", 0.3f) }
+        verify { audioServiceConnection.setSoundLevel("rain", 0.3f) }
+    }
+
+    @Test
+    fun `connecting replays the whole mix to the service`() = runTest {
+        // The service keeps no per-sound state across a disconnect: if this replay
+        // is skipped the app looks fine until the service restarts, then plays nothing.
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 0.4f))
+        createViewModel()
+        advanceUntilIdle()
+
+        isConnectedFlow.value = true
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setSoundActive("rain", 1, true) }
+        verify { audioServiceConnection.setSoundLevel("rain", 1f) }
+        verify { audioServiceConnection.setSoundActive("forest", 3, true) }
+        verify { audioServiceConnection.setSoundLevel("forest", 0.4f) }
+        verify { audioServiceConnection.setMixTitle(any()) }
+    }
+
+    @Test
+    fun `a completed session records every sound in the mix`() = runTest {
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 0.5f))
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        timerStateFlow.value = TimerState.Completed(wasBreak = false)
+        advanceUntilIdle()
+
+        coVerify {
+            saveSessionUseCase(
+                soundId = "rain,forest",
+                durationMinutes = any(),
+                wasCompleted = true
+            )
+        }
     }
 }

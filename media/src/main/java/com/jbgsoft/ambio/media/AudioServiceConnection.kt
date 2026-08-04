@@ -2,14 +2,13 @@ package com.jbgsoft.ambio.media
 
 import android.content.ComponentName
 import android.content.Context
-import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RawRes
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
+import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
@@ -106,39 +105,40 @@ class AudioServiceConnection @Inject constructor(
         _hasError.value = false
     }
 
-    fun playSound(
-        @RawRes audioRes: Int,
-        name: String,
-        description: String,
-        @RawRes illustrationRes: Int? = null
-    ) {
-        fadeJob?.cancel()
-        val soundUri = Uri.parse("android.resource://${context.packageName}/$audioRes")
-        val artworkUri = illustrationRes?.let {
-            Uri.parse("android.resource://${context.packageName}/$it")
+    /**
+     * Adds [soundId] to the mix or removes it. The service is told the raw resource
+     * rather than anything domain-shaped: media does not depend on core:domain.
+     */
+    fun setSoundActive(soundId: String, @RawRes audioRes: Int, active: Boolean) {
+        val args = Bundle().apply {
+            putString(MixCommands.ARG_SOUND_ID, soundId)
+            putInt(MixCommands.ARG_AUDIO_RES, audioRes)
+            putBoolean(MixCommands.ARG_ACTIVE, active)
         }
+        send(MixCommands.SET_ACTIVE, args)
+    }
 
-        Log.d(TAG, "Playing sound: $name (uri=$soundUri)")
+    /** Per-sound level, relative to the master volume the fades act on. */
+    fun setSoundLevel(soundId: String, level: Float) {
+        val args = Bundle().apply {
+            putString(MixCommands.ARG_SOUND_ID, soundId)
+            putFloat(MixCommands.ARG_LEVEL, level.coerceIn(0f, 1f))
+        }
+        send(MixCommands.SET_LEVEL, args)
+    }
 
-        val mediaItem = MediaItem.Builder()
-            .setUri(soundUri)
-            .setMediaMetadata(
-                MediaMetadata.Builder()
-                    .setTitle(name)
-                    .setArtist(description)
-                    .setArtworkUri(artworkUri)
-                    .build()
-            )
-            .build()
+    /** The single line the media notification shows for the whole mix. */
+    fun setMixTitle(title: String) {
+        send(MixCommands.SET_TITLE, Bundle().apply { putString(MixCommands.ARG_TITLE, title) })
+    }
 
-        controller?.apply {
-            _hasError.value = false
-            volume = 0f  // Start silent for fade in
-            setMediaItem(mediaItem)
-            prepare()
-            play()
-            fadeIn(targetVolume)
-        } ?: Log.w(TAG, "Cannot play sound - controller not connected")
+    private fun send(action: String, args: Bundle) {
+        val mediaController = controller
+        if (mediaController == null) {
+            Log.w(TAG, "Cannot send $action - controller not connected")
+            return
+        }
+        mediaController.sendCustomCommand(SessionCommand(action, Bundle.EMPTY), args)
     }
 
     fun play() {
