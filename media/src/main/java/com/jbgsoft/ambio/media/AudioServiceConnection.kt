@@ -91,18 +91,27 @@ class AudioServiceConnection @Inject constructor(
                 _isPlaying.value = mediaController.isPlaying
             } else {
                 Log.e(TAG, "Failed to connect to AudioService")
+                // Never leave a failed future behind: connect() early-returns while one
+                // is set, so keeping it would make every later attempt a silent no-op
+                // forever. Clearing it is inert — nothing in this class calls connect(),
+                // so only an external caller can try again, and each such call is one
+                // attempt. This branch is where an automatic rebuild comes to rest.
+                controllerFuture = null
             }
         }, MoreExecutors.directExecutor())
     }
 
     fun disconnect() {
         Log.d(TAG, "Disconnecting from AudioService")
-        controller?.removeListener(playerListener)
-        controllerFuture?.let { MediaController.releaseFuture(it) }
-        controllerFuture = null
+        // Clear the flag first. Releasing the controller dispatches onDisconnected, and
+        // the automatic rebuild there is gated on this flag — lowering it up front is
+        // what tells a deliberate teardown apart from a connection we lost.
         _isConnected.value = false
         _isPlaying.value = false
         _hasError.value = false
+        controller?.removeListener(playerListener)
+        controllerFuture?.let { MediaController.releaseFuture(it) }
+        controllerFuture = null
     }
 
     /**
@@ -114,16 +123,7 @@ class AudioServiceConnection @Inject constructor(
      * not depend on core:domain.
      */
     fun setMix(mix: List<MixEntry>, title: String) {
-        val args = Bundle().apply {
-            putStringArray(MixCommands.ARG_SOUND_IDS, mix.map { it.soundId }.toTypedArray())
-            putIntArray(MixCommands.ARG_AUDIO_RES, mix.map { it.audioRes }.toIntArray())
-            putFloatArray(
-                MixCommands.ARG_LEVELS,
-                mix.map { it.level.coerceIn(0f, 1f) }.toFloatArray()
-            )
-            putString(MixCommands.ARG_TITLE, title)
-        }
-        send(MixCommands.SET_MIX, args)
+        send(MixCommands.SET_MIX, MixBundle.encode(mix, title))
     }
 
     private fun send(action: String, args: Bundle) {
@@ -218,19 +218,34 @@ class AudioServiceConnection @Inject constructor(
     /**
      * Without this, [_isConnected] only ever went false in [disconnect] — a service
      * that died or was rebound left the flag stuck at true, so observers waiting for
-     * the connection to come back up were never told it had gone down, and the mix
-     * was never re-pushed.
+     * the connection to come back up were never told it had gone down, and the mix was
+     * never re-pushed. Falling is only half of it though: nothing else in the app calls
+     * [connect], so the flag also has to be able to rise again.
      *
-     * The stale future is cleared so a later [connect] can build a fresh controller.
-     * Reconnection is not attempted here: retry policy belongs to whoever owns the
-     * lifecycle, not to the connection.
+     * Exactly one rebuild per connection lost, and it cannot become a retry loop:
+     *
+     *  - The attempt is gated on [_isConnected] having been true, and that flag is set
+     *    true in exactly one place — after a controller was successfully obtained. So a
+     *    rebuild is only ever attempted for a connection that had been established.
+     *  - The flag is lowered *before* the attempt. If the rebuild fails, it is never
+     *    raised again, so any later onDisconnected sees false and does nothing.
+     *  - Reaching N automatic attempts therefore requires N successful connections that
+     *    were each subsequently lost. That is real service churn, not this code
+     *    hammering: between any two attempts there is a connection that worked.
+     *  - A failed rebuild leaves controllerFuture null (see [connect]), so the class is
+     *    quiescent but not wedged: a later external [connect] can still succeed.
+     *
+     * The same gate means [disconnect]'s own release, which also dispatches here, is
+     * correctly read as deliberate and not rebuilt.
      */
     private val controllerListener = object : MediaController.Listener {
         override fun onDisconnected(controller: MediaController) {
-            Log.w(TAG, "Disconnected from AudioService")
+            val wasConnected = _isConnected.value
+            Log.w(TAG, "Disconnected from AudioService (wasConnected=$wasConnected)")
             controllerFuture = null
             _isConnected.value = false
             _isPlaying.value = false
+            if (wasConnected) connect()
         }
     }
 
