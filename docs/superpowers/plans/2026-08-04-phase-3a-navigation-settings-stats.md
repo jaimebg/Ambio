@@ -14,7 +14,16 @@
 
 - **El número de tests nunca baja.** Parte de **164** y crece; cada tarea indica el número que debe ver.
 - **Lint: 0 errores** tras cada tarea, medido sobre los ficheros `lint-results-*.xml`, nunca sobre el log de consola.
-- **Warnings de compilador Kotlin: 3**, todos preexistentes (`ui/theme/Theme.kt:79`, `:80`, `feature/home/HomeScreen.kt:58`). No se añade ninguno y no se arregla ninguno. Sólo se ven con `clean` + `--no-build-cache`.
+- **Warnings de compilador Kotlin: 2.** *(Corregido durante la Tarea 3: eran 3, y el tercero
+  —la deprecación de `hiltViewModel()` en `HomeScreen.kt`— se cerró al descubrir que su
+  reemplazo vive en `androidx.hilt:hilt-lifecycle-viewmodel-compose:1.4.0`, artefacto aparte
+  de la misma versión. Era deuda diferida desde la Fase 1.)* Los dos que quedan están en
+  `ui/theme/Theme.kt:79` y `:80` — `statusBarColor` y `navigationBarColor` deprecados, de otra
+  naturaleza y fuera del alcance de esta fase. No se añade ninguno y no se arregla ninguno.
+  Sólo se ven con `clean` + `--no-build-cache`.
+- **Usa `androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`**, no el de
+  `androidx.hilt.navigation.compose`, que está deprecado. La dependencia del catálogo es
+  `libs.hilt.lifecycle.viewmodel.compose`.
 - **Ningún string hardcodeado.** Todo texto visible va a `strings.xml` del módulo que lo pinta, como estableció la Fase 2. Los nuevos módulos crean el suyo.
 - **`navigation-compose` se declara en el catálogo en la versión `2.9.8`.** Hoy llega transitivamente en la 2.9.0 vía `hilt-navigation-compose`, y usar su API sin declararla deja su versión en manos de otra dependencia.
 - No se toca `AudioService` ni la capa de audio: eso es la Fase 3b.
@@ -457,7 +466,7 @@ dependencies {
     implementation(libs.bundles.lifecycle)
 
     // Hilt
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
 
     // Coroutines
     implementation(libs.bundles.coroutines)
@@ -665,7 +674,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
@@ -827,7 +836,7 @@ dependencies {
     implementation(libs.bundles.lifecycle)
 
     // Hilt
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
 
     // Coroutines
     implementation(libs.bundles.coroutines)
@@ -1127,7 +1136,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.text.DateFormat
 import java.util.Date
@@ -1354,7 +1363,7 @@ package com.jbgsoft.ambio
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
