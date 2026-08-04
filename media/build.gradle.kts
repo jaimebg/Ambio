@@ -19,4 +19,9 @@ dependencies {
 
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
+
+    // Testing
+    testImplementation(libs.bundles.testing)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }

@@ -2,7 +2,7 @@ package com.jbgsoft.ambio.core.domain.model
 
 data class UserPreferences(
     // Session state — where the user left off
-    val lastSoundId: String = "rain",
+    val lastMix: String = "rain",
     val volume: Float = 0.7f,
     val lastTimerMinutes: Int = 25,
     val breakMinutes: Int = 5,

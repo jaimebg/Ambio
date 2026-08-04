@@ -20,12 +20,12 @@ object Routes {
 
 @Composable
 fun AmbioApp(viewModel: AmbioAppViewModel = hiltViewModel()) {
-    val soundTheme by viewModel.soundTheme.collectAsStateWithLifecycle()
+    val palette by viewModel.palette.collectAsStateWithLifecycle()
     val navController = rememberNavController()
 
     // The theme wraps the whole graph, not just Home, so Settings and Stats
-    // inherit the palette of the selected sound.
-    AmbioTheme(soundTheme = soundTheme) {
+    // inherit the palette of the active mix.
+    AmbioTheme(palette = palette) {
         NavHost(navController = navController, startDestination = Routes.HOME) {
             composable(Routes.HOME) {
                 HomeScreen(

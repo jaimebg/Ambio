@@ -13,8 +13,8 @@ class PreferencesRepositoryImpl @Inject constructor(
 
     override val preferences: Flow<UserPreferences> = preferencesDataStore.preferences
 
-    override suspend fun setLastSoundId(soundId: String) {
-        preferencesDataStore.setLastSoundId(soundId)
+    override suspend fun setLastMix(encoded: String) {
+        preferencesDataStore.setLastMix(encoded)
     }
 
     override suspend fun setVolume(volume: Float) {

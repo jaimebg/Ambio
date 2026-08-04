@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.jbgsoft.ambio.core.common.audio.ChimePlayer
 import com.jbgsoft.ambio.core.common.haptics.HapticManager
 import com.jbgsoft.ambio.core.common.resources.StringProvider
+import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.MixCodec
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
@@ -15,6 +17,7 @@ import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
 import com.jbgsoft.ambio.media.AudioServiceConnection
+import com.jbgsoft.ambio.media.MixEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -57,6 +60,11 @@ class HomeViewModel @Inject constructor(
         audioServiceConnection.isConnected
             .onEach { isConnected ->
                 _uiState.update { it.copy(isServiceConnected = isConnected) }
+                // The service keeps no state across a disconnect, so re-assert the mix
+                // whenever the controller comes up. If the mix has not resolved yet this
+                // is a no-op and the getActiveMix observer does the push instead — the
+                // two orderings converge because both send full state.
+                if (isConnected) pushMix()
             }
             .launchIn(viewModelScope)
 
@@ -76,11 +84,29 @@ class HomeViewModel @Inject constructor(
         val sounds = soundRepository.getAllSounds()
         _uiState.update { it.copy(availableSounds = sounds) }
 
-        soundRepository.getSelectedSound()
-            .onEach { sound ->
-                _uiState.update { it.copy(selectedSound = sound) }
+        soundRepository.getActiveMix()
+            .onEach { mix ->
+                _uiState.update { it.copy(activeMix = mix) }
+                pushMix(mix)
             }
             .launchIn(viewModelScope)
+    }
+
+    /**
+     * The single place the service is told anything about the mix.
+     *
+     * The repository decides what the mix is; this pushes whatever it decided, in
+     * full. Nothing sends the service a delta, so there is no path where the two can
+     * disagree: any missed or reordered push is repaired by the next one. Called on
+     * every emission, on every reconnect, and before every play() — stop() releases
+     * the service's tracks, so playing again has to re-declare them.
+     */
+    private fun pushMix(mix: List<ActiveSound> = _uiState.value.activeMix) {
+        if (mix.isEmpty()) return
+        audioServiceConnection.setMix(
+            mix.map { MixEntry(it.sound.id, it.sound.audioRes, it.level) },
+            mixTitle(mix)
+        )
     }
 
     private fun observeTimerState() {
@@ -116,7 +142,9 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.SetMode -> setMode(event.mode)
-            is HomeEvent.SelectSound -> selectSound(event.sound)
+            is HomeEvent.ToggleSound -> toggleSound(event.sound)
+            is HomeEvent.SetSoundLevel -> setSoundLevel(event.soundId, event.level)
+            is HomeEvent.SoundLevelChangeFinished -> persistSoundLevel(event.soundId)
             is HomeEvent.SelectPreset -> selectPreset(event.preset)
             is HomeEvent.SetCustomMinutes -> setCustomMinutes(event.minutes)
             is HomeEvent.CustomMinutesChangeFinished -> persistCustomMinutes()
@@ -156,45 +184,78 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun selectSound(sound: Sound) {
+    /**
+     * Only the repository decides. It serializes overlapping toggles under a mutex and
+     * refuses to empty the mix; the service hears about the outcome through
+     * getActiveMix, never from here. Two rapid deactivations therefore cannot tell the
+     * service to drop both sounds while the repository keeps one.
+     *
+     * The size check below is a UI affordance — it avoids a pointless round-trip and a
+     * buzz for a tap the repository would reject — not a correctness guarantee.
+     */
+    private fun toggleSound(sound: Sound) {
+        val isActive = _uiState.value.activeMix.any { it.sound.id == sound.id }
+        if (isActive && _uiState.value.activeMix.size == 1) return
         haptic { heavyClick() }
         viewModelScope.launch {
-            soundRepository.setSelectedSound(sound.id)
-            preferencesRepository.setLastSoundId(sound.id)
-        }
-        _uiState.update { it.copy(showSoundPicker = false) }
-
-        // If currently playing, switch to the new sound
-        if (_uiState.value.isPlaying) {
-            playSoundAudio(sound)
+            soundRepository.setSoundActive(sound.id, active = !isActive)
         }
     }
 
-    private fun playSoundAudio(sound: Sound) {
-        val description = when (_uiState.value.mode) {
-            AppMode.TIMER -> {
-                val timerState = _uiState.value.timerState
-                if (timerState is TimerState.Running) {
-                    val minutes = timerState.remainingMs / 60000
-                    val seconds = (timerState.remainingMs % 60000) / 1000
-                    stringProvider.get(
-                        R.string.notification_time_remaining,
-                        "${minutes}:${seconds.toString().padStart(2, '0')}"
-                    )
-                } else {
-                    stringProvider.get(R.string.notification_focus_timer)
+    /**
+     * The same shape as the master volume slider, for the same reason: the level lands
+     * in state and on the service on every frame of the drag, so the thumb tracks the
+     * finger and the mix is audibly live, but the store is written once, when the finger
+     * lifts (see [persistSoundLevel]). Going through the repository per frame put a
+     * DataStore edit — serialized behind the repository's mutex — on the drag path, and
+     * left the thumb waiting on the round trip back.
+     *
+     * This is the one thing about the mix the ViewModel tells the service directly, and
+     * it is safe where a membership change would not be. Membership carries invariants
+     * the repository owns — the mix is never empty, overlapping toggles must not cancel
+     * each other — so two writers there could disagree. A level is a last-write-wins
+     * scalar on a sound that is already in the mix, and the repository re-asserts the
+     * whole mix through getActiveMix the moment the drag ends.
+     *
+     * Which sounds are active is untouched here, so the palette — a function of exactly
+     * that, never of levels — cannot move while a slider does.
+     */
+    private fun setSoundLevel(soundId: String, level: Float) {
+        val clampedLevel = level.coerceIn(0f, 1f)
+        _uiState.update { state ->
+            state.copy(
+                activeMix = state.activeMix.map { active ->
+                    if (active.sound.id == soundId) active.copy(level = clampedLevel) else active
                 }
-            }
-            AppMode.AMBIENT -> stringProvider.get(R.string.state_ambient_mode)
+            )
         }
-        audioServiceConnection.playSound(
-            audioRes = sound.audioRes,
-            name = stringProvider.get(sound.nameRes),
-            description = description,
-            illustrationRes = sound.illustrationRes
-        )
-        // Apply current volume
+        pushMix()
+    }
+
+    private fun persistSoundLevel(soundId: String) {
+        val level = _uiState.value.activeMix
+            .firstOrNull { it.sound.id == soundId }
+            ?.level
+            ?: return
+        viewModelScope.launch { soundRepository.setSoundLevel(soundId, level) }
+    }
+
+    private fun mixTitle(mix: List<ActiveSound>): String =
+        if (mix.size <= 2) {
+            mix.joinToString(" + ") { stringProvider.get(it.sound.nameRes) }
+        } else {
+            stringProvider.get(R.string.mix_sound_count, mix.size)
+        }
+
+    /**
+     * stop() releases every track service-side, and every stop in this ViewModel is
+     * followed by a play in normal use (mode switch, reset, timer completion then
+     * break). Re-declaring the mix first is what keeps "stop, then play" audible.
+     */
+    private fun startPlayback() {
+        pushMix()
         audioServiceConnection.setVolume(_uiState.value.volume)
+        audioServiceConnection.play()
     }
 
     private fun selectPreset(preset: TimerPreset) {
@@ -261,9 +322,7 @@ class HomeViewModel @Inject constructor(
                     if (state.isPlaying) {
                         audioServiceConnection.pause()
                     } else {
-                        state.selectedSound?.let { sound ->
-                            playSoundAudio(sound)
-                        }
+                        startPlayback()
                     }
                 }
                 state.timerState is TimerState.Running -> {
@@ -285,9 +344,7 @@ class HomeViewModel @Inject constructor(
                     }
                     val durationMs = minutes * 60 * 1000L
                     timerRepository.startTimer(durationMs)
-                    state.selectedSound?.let { sound ->
-                        playSoundAudio(sound)
-                    }
+                    startPlayback()
                 }
             }
         }
@@ -332,15 +389,16 @@ class HomeViewModel @Inject constructor(
 
         // Focus session completed
         viewModelScope.launch {
-            // Save the completed session
-            state.selectedSound?.let { sound ->
+            // Save the completed session against the whole mix, not one sound
+            val mix = state.activeMix
+            if (mix.isNotEmpty()) {
                 val minutes = when (state.selectedPreset) {
                     TimerPreset.FOCUS_25 -> 25
                     TimerPreset.FOCUS_50 -> 50
                     TimerPreset.CUSTOM -> state.customMinutes
                 }
                 saveSessionUseCase(
-                    soundId = sound.id,
+                    soundId = MixCodec.encode(mix, withLevels = false),
                     durationMinutes = minutes,
                     wasCompleted = true
                 )

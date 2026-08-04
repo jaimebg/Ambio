@@ -1,10 +1,9 @@
 package com.jbgsoft.ambio.feature.stats
 
-import androidx.annotation.StringRes
-
 data class SessionRow(
     val id: Long,
-    @param:StringRes val soundNameRes: Int?,
+    // One entry per recorded sound; null where that sound no longer exists.
+    val soundNameResIds: List<Int?>,
     val durationMinutes: Int,
     val completedAt: Long
 )

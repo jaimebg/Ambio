@@ -1,8 +1,12 @@
 package com.jbgsoft.ambio.feature.stats
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.WaterDrop
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.domain.model.Session
+import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.repository.SessionRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.usecase.DeleteSessionUseCase
@@ -30,9 +34,29 @@ class StatsViewModelTest {
     private val soundRepository: SoundRepository = mockk(relaxed = true)
     private val dispatcher = StandardTestDispatcher()
 
-    private val session = Session(
+    private val rainSound = Sound(
+        id = "rain",
+        nameRes = 101,
+        icon = Icons.Default.WaterDrop,
+        audioRes = 1,
+        illustrationRes = 2,
+        theme = SoundTheme.RAIN
+    )
+
+    private val fireplaceSound = Sound(
+        id = "fireplace",
+        nameRes = 102,
+        icon = Icons.Default.WaterDrop,
+        audioRes = 3,
+        illustrationRes = 4,
+        theme = SoundTheme.FIREPLACE
+    )
+
+    // "wind" is the real pre-rename id of what is now "cave"; it is deliberately
+    // never stubbed to a Sound, so getSoundById("wind") resolves to null.
+    private fun session(soundId: String) = Session(
         id = 1L,
-        soundId = "wind",
+        soundId = soundId,
         durationMinutes = 25,
         completedAt = 1_700_000_000_000L,
         wasCompleted = true
@@ -44,8 +68,8 @@ class StatsViewModelTest {
     @After
     fun tearDown() = Dispatchers.resetMain()
 
-    private fun createViewModel(): StatsViewModel {
-        every { sessionRepository.getAllSessions() } returns flowOf(listOf(session))
+    private fun createViewModel(sessions: List<Session> = listOf(session("wind"))): StatsViewModel {
+        every { sessionRepository.getAllSessions() } returns flowOf(sessions)
         every { sessionRepository.getTotalFocusMinutes() } returns flowOf(25)
         every { sessionRepository.getCompletedSessionCount() } returns flowOf(1)
         return StatsViewModel(
@@ -66,7 +90,8 @@ class StatsViewModelTest {
         viewModel.uiState.test {
             val state = awaitItem()
             assertThat(state.sessions).hasSize(1)
-            assertThat(state.sessions.first().soundNameRes).isNull()
+            assertThat(state.sessions.first().soundNameResIds).hasSize(1)
+            assertThat(state.sessions.first().soundNameResIds.single()).isNull()
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -97,5 +122,54 @@ class StatsViewModelTest {
         advanceUntilIdle()
 
         coVerify(exactly = 1) { sessionRepository.deleteSession(1L) }
+    }
+
+    @Test
+    fun `a session recorded before the mixer shows its single sound`() = runTest {
+        every { soundRepository.getSoundById("rain") } returns rainSound
+
+        val viewModel = createViewModel(sessions = listOf(session("rain")))
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            val row = awaitItem().sessions.single()
+            assertThat(row.soundNameResIds).hasSize(1)
+            assertThat(row.soundNameResIds.single()).isNotNull()
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `a session recorded with a mix shows every sound`() = runTest {
+        every { soundRepository.getSoundById("rain") } returns rainSound
+        every { soundRepository.getSoundById("fireplace") } returns fireplaceSound
+
+        val viewModel = createViewModel(sessions = listOf(session("rain,fireplace")))
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            val row = awaitItem().sessions.single()
+            assertThat(row.soundNameResIds).hasSize(2)
+            assertThat(row.soundNameResIds.none { it == null }).isTrue()
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `an unknown id inside a mix does not drop the sounds beside it`() = runTest {
+        // "wind" is the real pre-rename id of what is now "cave".
+        every { soundRepository.getSoundById("rain") } returns rainSound
+        every { soundRepository.getSoundById("wind") } returns null
+
+        val viewModel = createViewModel(sessions = listOf(session("rain,wind")))
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            val row = awaitItem().sessions.single()
+            assertThat(row.soundNameResIds).hasSize(2)
+            assertThat(row.soundNameResIds[0]).isNotNull()
+            assertThat(row.soundNameResIds[1]).isNull()
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 }

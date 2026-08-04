@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.feature.home.R
 
@@ -25,8 +26,10 @@ import com.jbgsoft.ambio.feature.home.R
 fun SoundBottomSheet(
     showSheet: Boolean,
     sounds: List<Sound>,
-    selectedSound: Sound?,
-    onSoundSelected: (Sound) -> Unit,
+    activeMix: List<ActiveSound>,
+    onToggleSound: (Sound) -> Unit,
+    onLevelChange: (String, Float) -> Unit,
+    onLevelChangeFinished: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -55,11 +58,18 @@ fun SoundBottomSheet(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
+                    // The sheet deliberately stays open on tap: building a mix takes
+                    // several taps, so the user dismisses it when they are done.
                     items(sounds) { sound ->
+                        val active = activeMix.firstOrNull { it.sound.id == sound.id }
                         SoundCard(
                             sound = sound,
-                            isSelected = sound.id == selectedSound?.id,
-                            onClick = { onSoundSelected(sound) }
+                            isActive = active != null,
+                            level = active?.level ?: 1f,
+                            canDeactivate = activeMix.size > 1,
+                            onToggle = { onToggleSound(sound) },
+                            onLevelChange = { onLevelChange(sound.id, it) },
+                            onLevelChangeFinished = { onLevelChangeFinished(sound.id) }
                         )
                     }
                     item {

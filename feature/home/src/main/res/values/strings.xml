@@ -37,13 +37,15 @@
     <string name="sound_none_selected">No sound selected</string>
     <string name="sound_more_coming">More coming soon</string>
 
+    <!-- Sound mixer -->
+    <string name="mix_sound_count">%1$d sounds</string>
+    <string name="mix_level_for">Level for %1$s</string>
+    <string name="mix_remove_sound">Remove %1$s from the mix</string>
+    <string name="mix_add_sound">Add %1$s to the mix</string>
+
     <!-- Section labels -->
     <string name="label_focus_duration">Focus Duration</string>
     <string name="label_break_duration">Break Duration</string>
-
-    <!-- Media notification -->
-    <string name="notification_focus_timer">Focus Timer</string>
-    <string name="notification_time_remaining">%1$s remaining</string>
 
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Decrease focus duration</string>
