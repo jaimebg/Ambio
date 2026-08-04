@@ -12,42 +12,44 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.jbgsoft.ambio.core.domain.model.AmbioPalette
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
+import com.jbgsoft.ambio.core.domain.model.toPalette
 
 private const val THEME_ANIMATION_DURATION = 400
 
 @Composable
 fun AmbioTheme(
-    soundTheme: SoundTheme = SoundTheme.RAIN,
+    palette: AmbioPalette = SoundTheme.RAIN.toPalette(),
     content: @Composable () -> Unit
 ) {
     val animatedPrimary by animateColorAsState(
-        targetValue = soundTheme.primary,
+        targetValue = palette.primary,
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "primary"
     )
     val animatedOnPrimary by animateColorAsState(
-        targetValue = soundTheme.onPrimary,
+        targetValue = palette.onPrimary,
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "onPrimary"
     )
     val animatedSecondary by animateColorAsState(
-        targetValue = soundTheme.secondary,
+        targetValue = palette.secondary,
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "secondary"
     )
     val animatedBackground by animateColorAsState(
-        targetValue = soundTheme.background,
+        targetValue = palette.background,
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "background"
     )
     val animatedSurface by animateColorAsState(
-        targetValue = soundTheme.surface,
+        targetValue = palette.surface,
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "surface"
     )
     val animatedSurfaceVariant by animateColorAsState(
-        targetValue = soundTheme.surfaceVariant,
+        targetValue = palette.surfaceVariant,
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "surfaceVariant"
     )
