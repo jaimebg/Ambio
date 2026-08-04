@@ -2,11 +2,13 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make all five ambient sounds actually play at once — they do not today — and prove it with the repository's first instrumented tests, running on an emulator in CI.
+**Goal:** Make all five ambient sounds actually play at once — they do not today — and prove it with the repository's first instrumented tests.
+
+> **Task 5 was rewritten during execution.** It originally added an emulator job to CI. The owner ruled that out — an emulator costs more CI time per pull request than the whole existing workflow — so the tests ship as documented local tooling instead. Nothing in `.github/workflows/` changes.
 
 **Architecture:** Every `ExoPlayerSoundTrack` stops requesting audio focus; `MixPlayer` requests it once for the whole mix through a narrow `AudioFocus` interface, the same shape `SoundTrack` already uses, so `MixPlayer` keeps no `Context` and stays JVM-testable. Four instrumented tests drive the real UI with UiAutomator and assert against `dumpsys audio` rather than against anything the app reports about itself.
 
-**Tech Stack:** Kotlin 2.3.21, Media3 1.10.1 (`SimpleBasePlayer`), Hilt 2.60.1, Compose, `androidx.test.uiautomator`, `reactivecircus/android-emulator-runner`, GitHub Actions.
+**Tech Stack:** Kotlin 2.3.21, Media3 1.10.1 (`SimpleBasePlayer`), Hilt 2.60.1, Compose, `androidx.test.uiautomator`, Android Test Orchestrator.
 
 **Spec:** `docs/superpowers/specs/2026-08-04-audio-focus-and-device-ci-design.md`
 
@@ -31,7 +33,7 @@ These were measured before this plan was written. Trust them.
 - With focus disabled and nothing replacing it, `adb emu gsm call` does **not** pause the mix — so removing the flag alone trades one bug for another.
 - `adb emu gsm call <number>` and `adb emu gsm cancel <number>` both work and return `OK`.
 - The app's own UI exposes the content descriptions the tests will use: `"Play"`, `"Change"`, `"Add <Name> to the mix"`, `"Remove <Name> from the mix"`.
-- **System images:** `system-images;android-36;google_apis;x86_64` is published under that exact name. API 37's package is named `system-images;android-37.0;google_apis;x86_64` — note the `.0`. `reactivecircus/android-emulator-runner` builds the package name as `system-images;android-<api-level>;...`, so **API 36 is the safe choice** and API 37 may not resolve. This is why Task 5 pins 36.
+- **System images (now moot, kept as a record):** API 37's package is named `system-images;android-37.0;google_apis;x86_64` — note the `.0` — while `system-images;android-36;google_apis;x86_64` has no suffix. This mattered only for the CI emulator job that Task 5 no longer adds.
 
 ---
 
@@ -49,7 +51,7 @@ These were measured before this plan was written. Trust them.
 | `app/src/androidTest/java/com/jbgsoft/ambio/FocusIntruder.kt` | Takes transient audio focus the way an incoming call does |
 | `app/src/androidTest/java/com/jbgsoft/ambio/MixPersistenceTest.kt` | The mix is rebuilt from disk in a fresh process |
 
-**Modified** — `MixPlayer.kt`, `SoundTrack.kt`, `AudioService.kt`, `MixPlayerTest.kt`, `app/build.gradle.kts`, `gradle/libs.versions.toml`, `.github/workflows/ci.yml`.
+**Modified** — `MixPlayer.kt`, `SoundTrack.kt`, `AudioService.kt`, `MixPlayerTest.kt`, `app/build.gradle.kts`, `gradle/libs.versions.toml`, `CLAUDE.md`. **No workflow file is touched.**
 
 ---
 
@@ -1069,98 +1071,81 @@ different processes and the mix genuinely has to come back from disk."
 
 ---
 
-## Task 5: Run it all on an emulator in CI
+## Task 5: Make the suite reliable, and write down how to run it
+
+**This task was rewritten during execution.** Its original version added an emulator job to
+`.github/workflows/ci.yml`. The owner ruled that out: an emulator adds several minutes to
+every pull request — more than lint, unit tests, `assembleDebug` and `bundleRelease` take
+together — and the cost is not considered worth it. No CI changes are made.
+
+The tests are still worth having; they simply live as local tooling. That does not lower the
+bar for reliability. A suite that fails one run in five is not usable locally either — nobody
+runs it twice to find out whether the red meant anything.
 
 **Files:**
-- Modify: `.github/workflows/ci.yml`
+- Modify: `app/src/androidTest/java/com/jbgsoft/ambio/MixerUi.kt`
+- Modify: `CLAUDE.md`
+- **Do not touch `.github/workflows/ci.yml`.**
 
 **Interfaces:**
-- Consumes: the instrumented suite from Tasks 2-4.
-- Produces: nothing.
+- Consumes: `MixerUi`, `AudioState` (Tasks 2-4).
+- Produces: nothing later tasks depend on.
 
-- [ ] **Step 1: Add the job**
+- [ ] **Step 1: Close the cold-start race in `launchApp()`**
 
-Add to `.github/workflows/ci.yml`, as a sibling of `build`, before the `release` job:
+Roughly one full-suite run in five fails with `was: 0` at `MixPersistenceTest.kt:46`, on a
+cold-process first launch. The cause is understood and needs no production change.
 
-```yaml
-  instrumented:
-    name: Tests en emulador
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
+`SoundRepositoryImpl.getActiveMix()` is a `combine` over the DataStore flow, so it emits
+nothing until the first asynchronous disk read completes, and `HomeViewModel` seeds its mix at
+`emptyList()` until then. `MixerUi.launchApp()` currently waits only for the app's root window
+to exist, so it can return while the UI still shows that empty seed — and a test that reads the
+mix in that window sees nothing.
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+Make `launchApp()` wait for evidence the mix has actually hydrated: a real sound affordance
+rather than the window or a static label. Give it a bounded timeout and fail clearly, naming
+what it waited for, if it never arrives.
 
-      - name: Configurar JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+**Do not use a fixed `Thread.sleep`.** A sleep tuned to this emulator is a flake waiting to
+return on slower hardware, and this task exists precisely because an intermittent test is
+worse than none.
 
-      - name: Configurar Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Habilitar KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
-            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      - name: Tests instrumentados
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          # API 36 and not 37 on purpose: API 37's system image is published as
-          # "system-images;android-37.0;..." — note the .0 — while this action builds
-          # the name as "system-images;android-<api-level>;...". 36 has no such suffix.
-          api-level: 36
-          target: google_apis
-          arch: x86_64
-          disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          script: ./gradlew :app:connectedDebugAndroidTest
-
-      - name: Publicar informes
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: informes-instrumentados
-          path: app/build/reports/androidTests/
-          retention-days: 7
-```
-
-> `-noaudio` tells the emulator not to open a host audio device. It does **not** stop tracks from reaching the `started` state, which is what these tests count — but if the suite turns out to report zero tracks in CI while passing locally, this flag is the first thing to try removing, and the reason must be recorded rather than worked around silently.
-
-- [ ] **Step 2: Push and watch the run**
+- [ ] **Step 2: Prove the suite is stable**
 
 ```bash
-git add .github/workflows/ci.yml
-git commit -m "ci: run the instrumented tests on an emulator
-
-CI compiled, tested and shrank the app but never started it, which is how a
-mixer that only played one of five sounds reached main."
-git push
+./gradlew :app:connectedDebugAndroidTest 2>&1 | grep -E "BUILD|FAILED|tests" | tail -5
 ```
 
-Then watch the actual run — this is the step that cannot be done by reading:
+Run it **five consecutive times** and report each result individually. All five must pass. One
+green run proves nothing about an intermittent defect; that is the whole lesson of this task.
+
+If five clean runs are not reachable, stop and report BLOCKED with the evidence rather than
+declaring it done.
+
+- [ ] **Step 3: Write down how to run them**
+
+`CLAUDE.md` documents this project's build and validation commands. The instrumented suite is
+useless if nobody knows it exists, and it is now the only thing standing between this bug and
+its return. Add it to the Validation section, including:
+
+- that it needs a running emulator or attached device, and that CI does **not** run it
+- the command, `./gradlew :app:connectedDebugAndroidTest`
+- how to run one class: `-Pandroid.testInstrumentationRunnerArguments.class=com.jbgsoft.ambio.MixPlaybackTest` — and that `--tests` does **not** work for this task
+- what the suite covers, in one line: the app launches, five sounds actually play at once, losing audio focus pauses the whole mix, and the mix is rebuilt from disk in a fresh process
+- that it should be run before releasing, since nothing else exercises audio at all
+
+- [ ] **Step 4: Commit**
 
 ```bash
-gh pr checks --watch
-```
+git add app/src/androidTest/ CLAUDE.md
+git commit -m "test: make the instrumented suite stable, and document running it
 
-- [ ] **Step 3: Fix what the real run reveals**
+launchApp() returned as soon as the window existed, which could be before
+the stored mix had been read back from DataStore — roughly one full-suite
+run in five failed on that race. It now waits for the mix itself.
 
-The failure modes to expect, in order of likelihood: the API level or image name does not resolve; the emulator boots but the tests time out; `adb emu` is unreachable from the test process (see Task 4's fallback); `dumpsys audio` reports no started tracks under `-noaudio`.
-
-Fix whatever appears, push, and watch again. **Do not mark this task done on a workflow that has not gone green in GitHub Actions.** A CI job that has only been reasoned about is exactly the kind of unverified completion criterion this whole piece of work exists to eliminate.
-
-- [ ] **Step 4: Commit any fixes**
-
-```bash
-git add .github/workflows/ci.yml
-git commit -m "ci: <what the real run required>"
-git push
+These tests are local tooling by decision: an emulator job would cost more
+CI time per pull request than the entire existing workflow."
 ```
 
 ---

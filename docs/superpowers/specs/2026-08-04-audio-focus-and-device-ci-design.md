@@ -128,17 +128,24 @@ También está hoy por reproductor, así que desenchufar los auriculares dispara
 independientes. Se centraliza igual, por coherencia y por la misma razón: lo que decide sobre
 la mezcla debe ser una sola cosa.
 
-## 2. El emulador en CI
+## 2. Los tests son herramienta local, no un job de CI
 
-Un job nuevo en `.github/workflows/ci.yml`, con `reactivecircus/android-emulator-runner`.
+**Decisión del dueño, tomada durante la ejecución y en contra de lo que este spec proponía
+originalmente:** no se añade un job de emulador a `.github/workflows/ci.yml`. Un emulador
+tarda varios minutos por pull request —más que lint, tests unitarios, `assembleDebug` y
+`bundleRelease` juntos— y ese coste no se considera justificado.
 
-**El riesgo real, y no se cierra leyendo documentación.** El AVD local es API 37 y ahí está
-todo verificado, pero las imágenes disponibles para el runner van por detrás. Si 37 no está,
-hay que bajar a la más alta que sí esté y **comprobarlo ejecutando el workflow**. La Fase 2
-metió tres errores en un plan escrito sólo con lecturas y greps; éste no se escribe así.
+Los cuatro tests se entregan como algo que se ejecuta a mano contra un emulador local, con
+las instrucciones escritas en el repositorio.
 
-El job corre en cada PR. La alternativa —sólo en `main`— dejaría entrar exactamente el tipo de
-fallo que este proyecto acaba de sufrir, y lo detectaría después de fusionarlo.
+**Que no corran en CI no rebaja la exigencia de fiabilidad.** Una suite que falla una vez de
+cada cinco tampoco sirve en local: nadie la ejecuta dos veces para saber si el rojo iba en
+serio. Sigue haciendo falta demostrar estabilidad con ejecuciones consecutivas limpias, no
+con una verde suelta.
+
+Lo que se pierde con esta decisión, y conviene tenerlo escrito: nada impide que el fallo que
+originó este trabajo vuelva a entrar en `main` sin que nadie lo note. La red existe, pero hay
+que descolgarla a mano.
 
 ## 3. Cuatro tests, y el primero es el que faltaba
 
@@ -197,7 +204,10 @@ tarda minutos en vez de segundos.
 3. Una pausa hecha por el usuario **no** se reanuda al recuperar el foco.
 4. La app arranca sin excepción fatal, verificado por un test.
 5. La mezcla y sus niveles sobreviven a matar el proceso, verificado por un test.
-6. Los cuatro tests corren en CI sobre un emulador, en cada pull request.
+6. Los cuatro tests se ejecutan de un tirón contra un emulador local, **cinco veces
+   consecutivas sin un solo fallo**, y el repositorio documenta cómo lanzarlos. El criterio
+   original de esta línea era "corren en CI en cada pull request"; se sustituyó por decisión
+   del dueño (ver §2).
 7. Los tests unitarios de `MixPlayer` siguen ejecutándose en JVM sin dispositivo: la interfaz
    `AudioFocus` no puede haber arrastrado un `Context` dentro de `MixPlayer`.
 8. El lint sigue en 0 errores y los avisos del compilador de Kotlin no suben de 2.
