@@ -34,7 +34,7 @@ class AudioService : MediaSessionService() {
     override fun onCreate() {
         super.onCreate()
 
-        player = MixPlayer(mainLooper) { ExoPlayerSoundTrack(this) }
+        player = MixPlayer(mainLooper, { ExoPlayerSoundTrack(this) }, AndroidAudioFocus(this))
 
         // Create PendingIntent to launch MainActivity when notification is tapped
         // This is required for Media3 to properly manage foreground service and notifications

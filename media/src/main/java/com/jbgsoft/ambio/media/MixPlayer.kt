@@ -26,7 +26,8 @@ import com.google.common.util.concurrent.ListenableFuture
 @UnstableApi
 class MixPlayer(
     looper: Looper,
-    private val createTrack: (soundId: String) -> SoundTrack
+    private val createTrack: (soundId: String) -> SoundTrack,
+    private val audioFocus: AudioFocus
 ) : SimpleBasePlayer(looper) {
 
     private class Entry(val track: SoundTrack, var level: Float)
@@ -35,6 +36,52 @@ class MixPlayer(
     private var playWhenReadyValue = false
     private var masterVolume = 1f
     private var title = ""
+
+    // Ducking must not overwrite masterVolume, or there is nothing exact to restore.
+    private var duckMultiplier = 1f
+
+    // A pause the system caused is not a pause the user asked for. Only the first resumes
+    // when focus comes back; conflating them makes hanging up a call restart audio the
+    // user had deliberately silenced.
+    private var pausedByFocusLoss = false
+
+    init {
+        audioFocus.onChange(::onFocusChange)
+    }
+
+    private fun onFocusChange(change: FocusChange) {
+        when (change) {
+            FocusChange.LOST -> {
+                if (playWhenReadyValue) pauseForFocusLoss()
+                audioFocus.abandon()
+            }
+            FocusChange.LOST_TRANSIENT -> if (playWhenReadyValue) pauseForFocusLoss()
+            FocusChange.LOST_TRANSIENT_DUCK -> {
+                duckMultiplier = DUCK_MULTIPLIER
+                applyVolumes()
+            }
+            FocusChange.GAINED -> {
+                duckMultiplier = 1f
+                applyVolumes()
+                if (pausedByFocusLoss) {
+                    pausedByFocusLoss = false
+                    playWhenReadyValue = true
+                    entries.values.forEach { it.track.resume() }
+                }
+            }
+        }
+        invalidateState()
+    }
+
+    private fun pauseForFocusLoss() {
+        pausedByFocusLoss = true
+        playWhenReadyValue = false
+        entries.values.forEach { it.track.pause() }
+    }
+
+    private fun applyVolumes() {
+        entries.values.forEach { it.track.setVolume(it.level * masterVolume * duckMultiplier) }
+    }
 
     // SimpleBasePlayer's own `released` flag is private, so the standard Player
     // methods' !released guard (see shouldHandleCommand()) doesn't cover these three
@@ -93,7 +140,7 @@ class MixPlayer(
             val track = createTrack(soundId)
             track.start(audioRes)
             entries[soundId] = Entry(track, level = 1f)
-            track.setVolume(masterVolume)
+            track.setVolume(masterVolume * duckMultiplier)
             if (!playWhenReadyValue) track.pause()
         } else {
             entries.remove(soundId)?.track?.release()
@@ -105,7 +152,7 @@ class MixPlayer(
         if (released) return
         val entry = entries[soundId] ?: return
         entry.level = level.coerceIn(0f, 1f)
-        entry.track.setVolume(entry.level * masterVolume)
+        entry.track.setVolume(entry.level * masterVolume * duckMultiplier)
         invalidateState()
     }
 
@@ -142,6 +189,15 @@ class MixPlayer(
             .build()
 
     override fun handleSetPlayWhenReady(playWhenReady: Boolean): ListenableFuture<*> {
+        if (playWhenReady) {
+            // Do not play without focus; a denied request leaves the mix paused.
+            if (!audioFocus.request()) return Futures.immediateVoidFuture()
+            pausedByFocusLoss = false
+        } else {
+            // A deliberate pause keeps the focus: abandoning and re-requesting on every
+            // pause would let another app take our place while the user is deciding.
+            pausedByFocusLoss = false
+        }
         playWhenReadyValue = playWhenReady
         entries.values.forEach { if (playWhenReady) it.track.resume() else it.track.pause() }
         return Futures.immediateVoidFuture()
@@ -154,19 +210,22 @@ class MixPlayer(
     @Suppress("OVERRIDE_DEPRECATION")
     override fun handleSetVolume(volume: Float): ListenableFuture<*> {
         masterVolume = volume.coerceIn(0f, 1f)
-        entries.values.forEach { it.track.setVolume(it.level * masterVolume) }
+        applyVolumes()
         return Futures.immediateVoidFuture()
     }
 
     override fun handleStop(): ListenableFuture<*> {
         releaseAllTracks()
         playWhenReadyValue = false
+        pausedByFocusLoss = false
+        audioFocus.abandon()
         return Futures.immediateVoidFuture()
     }
 
     override fun handleRelease(): ListenableFuture<*> {
         released = true
         releaseAllTracks()
+        audioFocus.abandon()
         return Futures.immediateVoidFuture()
     }
 
@@ -177,5 +236,6 @@ class MixPlayer(
 
     private companion object {
         const val MIX_ITEM_ID = "ambio_mix"
+        const val DUCK_MULTIPLIER = 0.2f
     }
 }
