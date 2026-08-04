@@ -11,12 +11,22 @@ object MixerUi {
 
     // Not BuildConfig: see the note on AudioState.targetPackage.
     private val PACKAGE: String get() = AudioState.targetPackage
-    private const val TIMEOUT = 10_000L
+
+    // 20s and not something tighter: the first CI run (headless, software-rendered via
+    // swiftshader, on a shared runner) showed every "Change"/"Play" wait that a local,
+    // hardware-accelerated emulator clears in well under a second occasionally take
+    // several seconds there instead - Compose's own animations are wall-clock timed,
+    // not frame-count timed, but a main thread that is itself CPU-starved delivers
+    // those animation frames late, which stretches the wall-clock time a transition
+    // takes even though its target duration never changed. `disable-animations` (set on
+    // the CI job) does not help here: it zeroes the classic View system's animator
+    // duration scale, which Compose's coroutine-driven animations don't read.
+    private const val TIMEOUT = 20_000L
 
     // Generous relative to TIMEOUT: this is waiting on a cold DataStore disk read plus
     // Hilt/Compose startup, not a click response, and a cold CI emulator is slower than
     // a warm local one.
-    private const val HYDRATION_TIMEOUT = 20_000L
+    private const val HYDRATION_TIMEOUT = 30_000L
 
     private val device: UiDevice
         get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -91,7 +101,7 @@ object MixerUi {
     fun openSoundPicker(attempts: Int = 3) {
         repeat(attempts) {
             device.wait(Until.findObject(By.text("Change")), TIMEOUT)?.click()
-            if (device.wait(Until.hasObject(By.desc(anyMixCard)), 3_000)) return
+            if (device.wait(Until.hasObject(By.desc(anyMixCard)), TIMEOUT)) return
         }
         error("MixerUi.openSoundPicker(): the sheet never showed a card after $attempts attempts")
     }
