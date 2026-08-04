@@ -40,6 +40,42 @@ object AudioState {
         shell("pidof $targetPackage").trim().split(" ").firstOrNull { it.isNotEmpty() }
 
     /**
+     * Clears the crash buffer.
+     *
+     * `logcat -b crash` is cumulative for the emulator's entire life and shared by every
+     * package on it - it is not scoped to a single test run. Left unclear, a crash from
+     * hours-old testing (a different package's crash, or a bug deliberately reintroduced
+     * earlier to prove a test discriminates) lingers forever and fails every future launch
+     * check regardless of what that run's launch actually did. Call this before launching,
+     * not after: clearing after the launch would also discard a real crash the launch itself
+     * caused.
+     */
+    fun clearCrashLog() {
+        shell("logcat -b crash -c")
+    }
+
+    /**
+     * Whether the crash buffer holds a FATAL EXCEPTION attributed to [targetPackage] itself,
+     * as opposed to anywhere on the device.
+     *
+     * The crash buffer is shared by every process, and its per-line output carries a pid/tid,
+     * not a package name, so "FATAL EXCEPTION" appearing somewhere in the dump is not evidence
+     * about *which* package crashed - androidx.test.orchestrator crashing is a real, observed
+     * example that has nothing to do with this app. The runtime does print the crashing
+     * package two lines below "FATAL EXCEPTION", as "Process: <package>, PID: <pid>", so a
+     * crash only counts here when that line names [targetPackage] near a FATAL EXCEPTION line,
+     * not merely when both strings occur somewhere in the same dump.
+     */
+    fun crashedTargetPackage(): Boolean {
+        val lines = shell("logcat -d -b crash").lines()
+        return lines.indices.any { i ->
+            lines[i].contains("FATAL EXCEPTION") &&
+                lines.subList(i, minOf(i + 5, lines.size))
+                    .any { line -> line.contains("Process: $targetPackage,") }
+        }
+    }
+
+    /**
      * dumpsys audio lists every app's playback, and those lines carry no package name —
      * only "u/pid:<uid>/<pid>". Filtering by package would match nothing and quietly
      * count the emulator's other audio instead.

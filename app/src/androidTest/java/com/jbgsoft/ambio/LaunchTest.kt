@@ -23,10 +23,22 @@ class LaunchTest {
         // ~40ms after the test starts) - which Gradle reports as "Instrumentation run failed
         // due to Process crashed" rather than as a test failure. launchApp() alone is enough:
         // there is nothing to force-stop before the very first launch of a fresh instrumentation.
+
+        // Cleared here, not just read here: the crash buffer is cumulative for the emulator's
+        // entire life and shared by every package on it, so a stale FATAL EXCEPTION from hours
+        // of earlier testing - possibly this very app's, from a bug deliberately reintroduced
+        // to prove these tests discriminate - would otherwise fail this assertion forever,
+        // regardless of whether *this* launch crashed.
+        AudioState.clearCrashLog()
+
         MixerUi.launchApp()
         Thread.sleep(3_000)
 
         assertThat(MixerUi.isRunning()).isTrue()
-        assertThat(AudioState.shell("logcat -d -b crash").contains("FATAL EXCEPTION")).isFalse()
+        // Scoped to this app's own package, not the whole buffer: the buffer is shared by
+        // every process on the device (androidx.test.orchestrator crashing is a real,
+        // observed example), so a bare "FATAL EXCEPTION" substring check can fail on a crash
+        // that has nothing to do with this app, or this launch.
+        assertThat(AudioState.crashedTargetPackage()).isFalse()
     }
 }
