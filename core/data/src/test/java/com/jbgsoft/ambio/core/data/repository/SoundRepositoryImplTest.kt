@@ -7,10 +7,13 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import java.io.IOException
 
 class SoundRepositoryImplTest {
 
@@ -117,5 +120,37 @@ class SoundRepositoryImplTest {
             .forEach { repository.setSoundActive(it, active = true) }
 
         assertThat(repository.getActiveMix().first()).hasSize(5)
+    }
+
+    @Test
+    fun `overlapping activations do not lose a toggle`() = runTest {
+        val repository = repositoryStoring("rain")
+        // Makes the store write slow enough that two concurrently-launched
+        // calls actually overlap instead of trivially interleaving.
+        coEvery { dataStore.setLastMix(any()) } coAnswers { delay(50) }
+
+        val first = launch { repository.setSoundActive("cave", active = true) }
+        val second = launch { repository.setSoundActive("ocean", active = true) }
+        first.join()
+        second.join()
+
+        assertThat(repository.getActiveMix().first().map { it.sound.id })
+            .containsExactly("rain", "cave", "ocean")
+    }
+
+    @Test
+    fun `a failed write does not leave the override diverged from the store`() = runTest {
+        val repository = repositoryStoring("rain")
+        coEvery { dataStore.setLastMix(any()) } throws IOException("disk full")
+
+        try {
+            repository.setSoundActive("cave", active = true)
+        } catch (expected: IOException) {
+            // The failure is expected to surface to the caller; what matters
+            // here is that the override doesn't keep claiming "cave" is active.
+        }
+
+        assertThat(repository.getActiveMix().first().map { it.sound.id })
+            .containsExactly("rain")
     }
 }
