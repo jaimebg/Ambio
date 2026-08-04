@@ -18,11 +18,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.TimerState
+import com.jbgsoft.ambio.feature.home.R
 
 private const val MODE_TRANSITION_DURATION = 300
 
@@ -53,13 +58,13 @@ fun TimerDisplay(
     }
 
     val subtitleText = when {
-        mode == AppMode.AMBIENT -> "Ambient Mode"
-        timerState is TimerState.Running && timerState.isBreak -> "Break Time"
-        timerState is TimerState.Running -> "Focus"
-        timerState is TimerState.Paused -> "Paused"
-        timerState is TimerState.Completed && timerState.wasBreak -> "Break Over!"
-        timerState is TimerState.Completed -> "Completed!"
-        else -> "Ready"
+        mode == AppMode.AMBIENT -> stringResource(R.string.state_ambient_mode)
+        timerState is TimerState.Running && timerState.isBreak -> stringResource(R.string.state_break_time)
+        timerState is TimerState.Running -> stringResource(R.string.state_focus)
+        timerState is TimerState.Paused -> stringResource(R.string.state_paused)
+        timerState is TimerState.Completed && timerState.wasBreak -> stringResource(R.string.state_break_over)
+        timerState is TimerState.Completed -> stringResource(R.string.state_completed)
+        else -> stringResource(R.string.state_ready)
     }
 
     // CircularProgress is 20dp smaller than container to leave room for glow effect
@@ -122,7 +127,8 @@ fun TimerDisplay(
                     text = text,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
                 )
             }
         }

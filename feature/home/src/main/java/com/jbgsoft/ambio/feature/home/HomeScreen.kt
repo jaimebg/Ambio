@@ -28,10 +28,12 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -193,11 +195,13 @@ fun HomeScreen(
                                                 elevation = FloatingActionButtonDefaults.elevation(
                                                     defaultElevation = 2.dp
                                                 ),
-                                                modifier = Modifier.size(resetButtonSize)
+                                                modifier = Modifier
+                                                    .minimumInteractiveComponentSize()
+                                                    .size(resetButtonSize)
                                             ) {
                                                 Icon(
                                                     imageVector = Icons.Default.Stop,
-                                                    contentDescription = "Reset Timer",
+                                                    contentDescription = stringResource(R.string.action_reset),
                                                     modifier = Modifier.size(if (isSmallScreen) 20.dp else 24.dp)
                                                 )
                                             }

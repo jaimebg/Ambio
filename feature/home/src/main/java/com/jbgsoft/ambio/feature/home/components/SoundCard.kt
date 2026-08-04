@@ -19,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.feature.home.R
 
 @Composable
 fun SoundCard(
@@ -57,7 +59,7 @@ fun SoundCard(
         ) {
             Icon(
                 imageVector = sound.icon,
-                contentDescription = sound.name,
+                contentDescription = null,
                 modifier = Modifier.size(36.dp),
                 tint = if (isSelected) {
                     MaterialTheme.colorScheme.primary
@@ -67,7 +69,7 @@ fun SoundCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = sound.name,
+                text = stringResource(sound.nameRes),
                 style = MaterialTheme.typography.titleSmall,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.onPrimaryContainer
@@ -105,13 +107,13 @@ fun ComingSoonCard(
         ) {
             Icon(
                 imageVector = Icons.Default.MoreHoriz,
-                contentDescription = "More sounds coming soon",
+                contentDescription = null,
                 modifier = Modifier.size(36.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "More coming soon",
+                text = stringResource(R.string.sound_more_coming),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center

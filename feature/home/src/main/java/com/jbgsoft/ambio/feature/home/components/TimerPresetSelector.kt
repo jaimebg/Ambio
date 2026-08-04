@@ -1,5 +1,6 @@
 package com.jbgsoft.ambio.feature.home.components
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -29,12 +30,16 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
+import com.jbgsoft.ambio.feature.home.R
 
 private val BREAK_OPTIONS = listOf(5, 10, 15, 20)
 
@@ -68,7 +73,7 @@ fun TimerPresetSelector(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Focus Duration",
+                text = stringResource(R.string.label_focus_duration),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -84,7 +89,7 @@ fun TimerPresetSelector(
                         ),
                         onClick = { onPresetSelected(preset) },
                         selected = selectedPreset == preset,
-                        label = { Text(preset.displayName) }
+                        label = { Text(preset.label()) }
                     )
                 }
             }
@@ -109,7 +114,8 @@ fun TimerPresetSelector(
                     minValue = 1,
                     maxValue = 120,
                     step = 5,
-                    suffix = "min",
+                    decreaseDescription = R.string.a11y_decrease_focus,
+                    increaseDescription = R.string.a11y_increase_focus,
                     isCompact = isCompact
                 )
             }
@@ -125,7 +131,7 @@ fun TimerPresetSelector(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Break Duration",
+                text = stringResource(R.string.label_break_duration),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -143,7 +149,7 @@ fun TimerPresetSelector(
                             onBreakMinutesChanged(minutes)
                             onBreakMinutesChangeFinished()
                         },
-                        label = { Text("$minutes min") },
+                        label = { Text(pluralStringResource(R.plurals.duration_minutes, minutes, minutes)) },
                         leadingIcon = if (isSelected) {
                             {
                                 Icon(
@@ -173,7 +179,8 @@ private fun NumberStepper(
     minValue: Int,
     maxValue: Int,
     step: Int,
-    suffix: String,
+    @StringRes decreaseDescription: Int,
+    @StringRes increaseDescription: Int,
     isCompact: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -194,11 +201,11 @@ private fun NumberStepper(
             },
             enabled = value > minValue,
             colors = IconButtonDefaults.filledTonalIconButtonColors(),
-            modifier = Modifier.size(buttonSize)
+            modifier = Modifier.minimumInteractiveComponentSize().size(buttonSize)
         ) {
             Icon(
                 imageVector = Icons.Default.Remove,
-                contentDescription = "Decrease",
+                contentDescription = stringResource(decreaseDescription),
                 modifier = Modifier.size(iconSize)
             )
         }
@@ -207,7 +214,7 @@ private fun NumberStepper(
 
         // Value display
         Text(
-            text = "$value $suffix",
+            text = pluralStringResource(R.plurals.duration_minutes, value, value),
             style = if (isCompact) {
                 MaterialTheme.typography.headlineSmall
             } else {
@@ -228,13 +235,22 @@ private fun NumberStepper(
             },
             enabled = value < maxValue,
             colors = IconButtonDefaults.filledTonalIconButtonColors(),
-            modifier = Modifier.size(buttonSize)
+            modifier = Modifier.minimumInteractiveComponentSize().size(buttonSize)
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Increase",
+                contentDescription = stringResource(increaseDescription),
                 modifier = Modifier.size(iconSize)
             )
         }
     }
 }
+
+@Composable
+private fun TimerPreset.label(): String = stringResource(
+    when (this) {
+        TimerPreset.FOCUS_25 -> R.string.preset_25_min
+        TimerPreset.FOCUS_50 -> R.string.preset_50_min
+        TimerPreset.CUSTOM -> R.string.preset_custom
+    }
+)

@@ -6,6 +6,7 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.common.audio.ChimePlayer
 import com.jbgsoft.ambio.core.common.haptics.HapticManager
+import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
@@ -67,6 +68,10 @@ class HomeViewModelTest {
     private lateinit var chimePlayer: ChimePlayer
     private lateinit var chimeRepository: ChimeRepository
 
+    private val stringProvider = object : StringProvider {
+        override fun get(id: Int, vararg args: Any): String = "test-string-$id"
+    }
+
     // Flows for controlling state
     private lateinit var timerStateFlow: MutableStateFlow<TimerState>
     private lateinit var selectedSoundFlow: MutableStateFlow<Sound>
@@ -77,8 +82,7 @@ class HomeViewModelTest {
     // Test data
     private val testSound = Sound(
         id = "rain",
-        name = "Rain",
-        description = "Gentle rain sounds",
+        nameRes = 5,
         icon = Icons.Default.WaterDrop,
         audioRes = 1,
         illustrationRes = 2,
@@ -87,8 +91,7 @@ class HomeViewModelTest {
 
     private val testSoundForest = Sound(
         id = "forest",
-        name = "Forest",
-        description = "Forest ambiance",
+        nameRes = 6,
         icon = Icons.Default.WaterDrop,
         audioRes = 3,
         illustrationRes = 4,
@@ -183,7 +186,8 @@ class HomeViewModelTest {
             hapticManager = hapticManager,
             audioServiceConnection = audioServiceConnection,
             chimePlayer = chimePlayer,
-            chimeRepository = chimeRepository
+            chimeRepository = chimeRepository,
+            stringProvider = stringProvider
         )
     }
 
@@ -352,7 +356,14 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.SelectSound(testSoundForest))
         advanceUntilIdle()
 
-        verify { audioServiceConnection.playSound(3, "Forest", any(), 4) }
+        verify {
+            audioServiceConnection.playSound(
+                3,
+                stringProvider.get(6),
+                any(),
+                4
+            )
+        }
     }
 
     // --- Timer Preset Tests ---
@@ -542,7 +553,14 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        verify { audioServiceConnection.playSound(1, "Rain", any(), 2) }
+        verify {
+            audioServiceConnection.playSound(
+                1,
+                stringProvider.get(5),
+                any(),
+                2
+            )
+        }
     }
 
     @Test
@@ -632,7 +650,14 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        verify { audioServiceConnection.playSound(1, "Rain", "Ambient Mode", 2) }
+        verify {
+            audioServiceConnection.playSound(
+                1,
+                stringProvider.get(5),
+                stringProvider.get(R.string.state_ambient_mode),
+                2
+            )
+        }
     }
 
     @Test
