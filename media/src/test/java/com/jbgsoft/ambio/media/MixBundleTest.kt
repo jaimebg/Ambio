@@ -40,7 +40,7 @@ class MixBundleTest {
     private val tracks = mutableMapOf<String, FakeTrack>()
 
     private fun player(): MixPlayer =
-        MixPlayer(Looper.getMainLooper(), { id -> FakeTrack().also { tracks[id] = it } }, FakeFocus())
+        MixPlayer(Looper.getMainLooper(), { id -> FakeTrack().also { tracks[id] = it } }, FakeFocus(), {})
 
     private val rain = MixEntry("rain", 42, 0.75f)
     private val ocean = MixEntry("ocean", 7, 0.5f)

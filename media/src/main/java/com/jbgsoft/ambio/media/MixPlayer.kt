@@ -27,7 +27,8 @@ import com.google.common.util.concurrent.ListenableFuture
 class MixPlayer(
     looper: Looper,
     private val createTrack: (soundId: String) -> SoundTrack,
-    private val audioFocus: AudioFocus
+    private val audioFocus: AudioFocus,
+    private val onPlayRequestedWithEmptyMix: () -> Unit
 ) : SimpleBasePlayer(looper) {
 
     private class Entry(val track: SoundTrack, var level: Float)
@@ -190,6 +191,16 @@ class MixPlayer(
 
     override fun handleSetPlayWhenReady(playWhenReady: Boolean): ListenableFuture<*> {
         if (playWhenReady) {
+            // Before anything else, and specifically before asking for audio focus.
+            // A play request can arrive from the Quick Settings tile with the app closed,
+            // and this player then holds nothing: taking focus at that point silences
+            // whatever the user was actually listening to, in order to play silence.
+            // The service owns the fix — it can read the stored mix, and this class
+            // deliberately cannot.
+            if (entries.isEmpty()) {
+                onPlayRequestedWithEmptyMix()
+                return Futures.immediateVoidFuture()
+            }
             // Do not play without focus; a denied request leaves the mix paused.
             if (!audioFocus.request()) return Futures.immediateVoidFuture()
             pausedByFocusLoss = false

@@ -73,7 +73,16 @@ class AudioService : MediaSessionService() {
     override fun onCreate() {
         super.onCreate()
 
-        player = MixPlayer(mainLooper, { ExoPlayerSoundTrack(this) }, AndroidAudioFocus(this))
+        player = MixPlayer(
+            mainLooper,
+            { ExoPlayerSoundTrack(this) },
+            AndroidAudioFocus(this),
+            onPlayRequestedWithEmptyMix = {
+                // Loading the stored mix on a cold start is a separate task; for now the
+                // player's refusal to take focus over nothing is reported, not yet acted on.
+                Log.w(TAG, "Play requested with no sounds in the mix; ignoring")
+            }
+        )
         player.addListener(playbackBroadcaster)
 
         // NOT_EXPORTED: ACTION_AUDIO_BECOMING_NOISY is a protected broadcast, so only the

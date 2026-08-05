@@ -46,9 +46,15 @@ class MixPlayerTest {
 
     private val tracks = mutableMapOf<String, FakeTrack>()
     private val focus = FakeFocus()
+    private var emptyPlayRequests = 0
 
     private fun player(): MixPlayer =
-        MixPlayer(Looper.getMainLooper(), { id -> FakeTrack().also { tracks[id] = it } }, focus)
+        MixPlayer(
+            Looper.getMainLooper(),
+            { id -> FakeTrack().also { tracks[id] = it } },
+            focus,
+            { emptyPlayRequests++ }
+        )
 
     @Test
     fun `activating a sound starts a track for it`() {
@@ -467,5 +473,56 @@ class MixPlayerTest {
         mix.pause()
 
         assertThat(focus.abandons).isEqualTo(0)
+    }
+
+    // --- refusing to play an empty mix ---
+
+    @Test
+    fun `playing with no sounds does not request audio focus`() {
+        val mix = player()
+
+        mix.play()
+
+        assertThat(focus.requests).isEqualTo(0)
+    }
+
+    @Test
+    fun `playing with no sounds tells the service instead`() {
+        val mix = player()
+
+        mix.play()
+
+        assertThat(emptyPlayRequests).isEqualTo(1)
+    }
+
+    @Test
+    fun `playing with no sounds leaves the player paused`() {
+        val mix = player()
+
+        mix.play()
+
+        assertThat(mix.playWhenReady).isFalse()
+    }
+
+    @Test
+    fun `playing with sounds present still works and does not call back`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+
+        mix.play()
+
+        assertThat(mix.playWhenReady).isTrue()
+        assertThat(focus.requests).isEqualTo(1)
+        assertThat(emptyPlayRequests).isEqualTo(0)
+        assertThat(tracks["rain"]!!.paused).isFalse()
+    }
+
+    @Test
+    fun `pausing with no sounds does not call back`() {
+        val mix = player()
+
+        mix.pause()
+
+        assertThat(emptyPlayRequests).isEqualTo(0)
     }
 }
