@@ -117,8 +117,8 @@ class AudioService : MediaSessionService() {
     }
 
     override fun onDestroy() {
-        // The last thing this service says. Without it the widget keeps showing a pause
-        // button over a service that no longer exists, and keeps showing it forever.
+        // The last thing this service says. Without it the tile keeps showing Active
+        // over a service that no longer exists, and keeps showing it forever.
         broadcastPlayback(false)
         unregisterReceiver(becomingNoisyReceiver)
         mediaSession?.run {
@@ -176,8 +176,9 @@ class AudioService : MediaSessionService() {
          * Broadcast when playback starts or stops, and once more as the service dies.
          *
          * A broadcast rather than a direct call because media must not depend on any
-         * feature module: it declares no project dependencies at all today, and the widget
-         * module pulls core:domain, which this module is not allowed to reach.
+         * feature module: it declares no project dependencies at all today, and
+         * feature:tile already depends on this module for these constants — a direct
+         * call the other way would create a cycle.
          */
         const val ACTION_PLAYBACK_CHANGED = "com.jbgsoft.ambio.PLAYBACK_CHANGED"
         const val EXTRA_IS_PLAYING = "is_playing"
