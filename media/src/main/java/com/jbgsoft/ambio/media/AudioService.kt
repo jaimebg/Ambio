@@ -21,6 +21,12 @@ import androidx.media3.session.SessionResult
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Opted in wholesale rather than at each call site: MixPlayer, the SimpleBasePlayer
@@ -36,6 +42,11 @@ class AudioService : MediaSessionService() {
 
     private var mediaSession: MediaSession? = null
     private lateinit var player: MixPlayer
+
+    @Inject
+    lateinit var mixSource: MixSource
+
+    private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     /**
      * Pauses the whole mix when the audio output stops being a private one — headphones
@@ -77,11 +88,7 @@ class AudioService : MediaSessionService() {
             mainLooper,
             { ExoPlayerSoundTrack(this) },
             AndroidAudioFocus(this),
-            onPlayRequestedWithEmptyMix = {
-                // Loading the stored mix on a cold start is a separate task; for now the
-                // player's refusal to take focus over nothing is reported, not yet acted on.
-                Log.w(TAG, "Play requested with no sounds in the mix; ignoring")
-            }
+            ::loadStoredMixAndPlay
         )
         player.addListener(playbackBroadcaster)
 
@@ -114,6 +121,36 @@ class AudioService : MediaSessionService() {
             .build()
     }
 
+    /**
+     * Called when something asks this service to play while it holds no sounds — the
+     * Quick Settings tile with the app closed, in practice.
+     *
+     * Starting the service is not enough on its own: it comes up empty, and an empty
+     * player publishes an empty timeline, so Media3 shows no notification, so
+     * startForeground() is never called, so the system kills the process with
+     * ForegroundServiceDidNotStartInTimeException. Loading the mix is what closes that
+     * chain.
+     */
+    private fun loadStoredMixAndPlay() {
+        serviceScope.launch {
+            val mix = mixSource.currentMix()
+            if (mix.isEmpty()) {
+                // Should not happen — the repository never yields an empty mix — but the
+                // bug this guards against was a service waiting forever for a
+                // startForeground that could not come. Stopping is the difference between
+                // a no-op and a system-level crash.
+                stopSelf()
+                return@launch
+            }
+            // Empty title, deliberately: media cannot see sound names — they are string
+            // resources in core:data, which this module is not allowed to reach — and the
+            // notification's text is not what this fix is about. The app overwrites it with
+            // a real title the moment it next pushes a mix.
+            player.setMix(mix, "")
+            player.play()
+        }
+    }
+
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
     }
@@ -130,6 +167,7 @@ class AudioService : MediaSessionService() {
         // over a service that no longer exists, and keeps showing it forever.
         broadcastPlayback(false)
         unregisterReceiver(becomingNoisyReceiver)
+        serviceScope.cancel()
         mediaSession?.run {
             player.release()
             release()
