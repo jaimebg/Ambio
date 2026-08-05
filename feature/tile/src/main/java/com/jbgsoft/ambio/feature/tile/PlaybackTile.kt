@@ -1,4 +1,4 @@
-package com.jbgsoft.ambio.feature.widget
+package com.jbgsoft.ambio.feature.tile
 
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
@@ -30,7 +30,7 @@ class PlaybackTile : TileService() {
 
     private fun refresh() {
         qsTile?.apply {
-            state = if (WidgetUpdater.isPlaying(this@PlaybackTile)) {
+            state = if (PlaybackFlag.isPlaying(this@PlaybackTile)) {
                 Tile.STATE_ACTIVE
             } else {
                 Tile.STATE_INACTIVE
