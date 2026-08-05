@@ -51,10 +51,6 @@ android {
             }
         }
     }
-
-    testOptions {
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    }
 }
 
 dependencies {
@@ -97,9 +93,4 @@ dependencies {
     implementation(libs.bundles.media3)
 
     // Instrumented tests
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.uiautomator)
-    androidTestImplementation(libs.truth)
-    androidTestUtil(libs.androidx.test.orchestrator)
 }

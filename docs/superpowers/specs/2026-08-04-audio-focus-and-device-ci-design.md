@@ -128,88 +128,55 @@ También está hoy por reproductor, así que desenchufar los auriculares dispara
 independientes. Se centraliza igual, por coherencia y por la misma razón: lo que decide sobre
 la mezcla debe ser una sola cosa.
 
-## 2. Los tests son herramienta local, no un job de CI
+## 2. Los tests instrumentados: escritos, y luego eliminados
 
-**Decisión del dueño, tomada durante la ejecución y en contra de lo que este spec proponía
-originalmente:** no se añade un job de emulador a `.github/workflows/ci.yml`. Un emulador
-tarda varios minutos por pull request —más que lint, tests unitarios, `assembleDebug` y
-`bundleRelease` juntos— y ese coste no se considera justificado.
+Esta sección describía originalmente cuatro tests instrumentados y un job de emulador en CI.
+Ambas cosas se retiraron durante la ejecución, en dos decisiones separadas del dueño, y se
+deja escrito el recorrido porque el resultado condiciona lo que se entrega.
 
-Los cuatro tests se entregan como algo que se ejecuta a mano contra un emulador local, con
-las instrucciones escritas en el repositorio.
+**Primero cayó el job de CI:** un emulador tarda varios minutos por pull request, más que
+lint, tests unitarios, `assembleDebug` y `bundleRelease` juntos.
 
-**Que no corran en CI no rebaja la exigencia de fiabilidad.** Una suite que falla una vez de
-cada cinco tampoco sirve en local: nadie la ejecuta dos veces para saber si el rojo iba en
-serio. Sigue haciendo falta demostrar estabilidad con ejecuciones consecutivas limpias, no
-con una verde suelta.
+**Después cayeron los tests.** Se llegaron a escribir los cuatro y funcionaron, pero
+acumularon un historial que no compensaba: dos defectos intermitentes distintos —uno con un
+60% de fallo—, tres helpers que leían la rejilla sin hacer scroll cuando un `LazyVerticalGrid`
+ni siquiera compone lo que no se ve, y una última tanda en la que la suite pasó de 66 segundos
+a 16 minutos con dos tests reventando en su preparación por degradación del emulador. Una
+suite que hay que interpretar antes de creerla cuesta más de lo que protege.
 
-Lo que se pierde con esta decisión, y conviene tenerlo escrito: nada impide que el fallo que
-originó este trabajo vuelva a entrar en `main` sin que nadie lo note. La red existe, pero hay
-que descolgarla a mano.
+Lo único que sobrevive de aquel trabajo es lo que se aprendió midiendo, que está en el
+apartado de contexto de arriba y es lo que permitió encontrar y arreglar el fallo.
 
-## 3. Cuatro tests, y el primero es el que faltaba
+### Lo que esto cuesta, dicho sin adornos
 
-| Test | Qué falla si se rompe |
-|---|---|
-| **Los cinco sonidos están sonando** | el fallo de hoy, exactamente |
-| La app arranca sin estrellarse | la clase de fallo que se coló dos tareas enteras en la Fase 2 con CI en verde |
-| Una llamada entrante pausa la mezcla, colgar la reanuda | el criterio 10 |
-| La mezcla y sus niveles sobreviven a matar el proceso | la persistencia, hoy cubierta sólo en JVM |
+El arreglo del foco sigue entero y cubierto por 372 tests JVM. Lo que desaparece es la
+verificación automática de que *suena*: varios criterios de abajo pasan de "verificado por un
+test" a "comprobado a mano una vez, sobre API 37, durante esta sesión". Esa comprobación
+existió y sus números están en el contexto, pero nada la repetirá sola.
 
-El primero no estaba en el alcance acordado y se añade con motivo: sin él, el arreglo llega
-sin la red que impide que vuelva.
-
-### Sobre qué se asierta
-
-**Los tests no le preguntan a la app por su estado.** Es el punto central de este diseño y
-sale directamente de lo que pasó: `MixPlayer` reportaba `PLAYING` con cuatro pistas pausadas,
-así que un test que asertara sobre `MixPlayer`, sobre el `MediaController` o sobre el
-`PlaybackState` de la sesión **habría pasado en verde durante todo el fallo**.
-
-La aserción va contra lo que reporta el sistema: `dumpsys audio`, leído desde el test con
-`UiAutomation.executeShellCommand`, contando las `AudioPlaybackConfiguration` del proceso de
-la app que están en `state:started`. Es la fuente que no está contaminada por el bug que se
-busca.
-
-**Cómo aísla el test su propio proceso.** `dumpsys audio` lista las configuraciones de todo el
-sistema, así que hay que filtrar. Cada línea trae `u/pid:<uid>/<pid>`, y el test obtiene el
-suyo por el mismo canal de shell: `pidof <packageName>`. Filtrar por nombre de paquete no
-sirve — `dumpsys audio` no lo incluye en esas líneas. Sin este filtro el test contaría el audio
-de otras apps del emulador y pasaría por motivos ajenos, que es la forma más silenciosa de
-tener un test inútil.
-
-**Y hay que esperar, no medir de inmediato.** La app arranca las pistas con un fundido de
-entrada de 8 segundos y el estado del sistema tarda en reflejarse; una medición tomada justo
-después de pulsar reproducir da un recuento a medias. El test sondea hasta que el recuento se
-estabiliza o se agota un plazo, en vez de dormir una cantidad fija elegida a ojo.
-
-Para la llamada entrante, `adb emu gsm call <número>` y `adb emu gsm cancel <número>`
-—verificados funcionando sobre el AVD local antes de escribir esto—. El test los invoca por
-el mismo camino de shell.
-
-### Lo que esto le cuesta al repositorio
-
-`:app` no tiene source set `androidTest`, y no hay un solo test instrumentado en todo el
-proyecto: es el seguimiento más antiguo, abierto desde la Fase 0. Esta parte lo cierra, y con
-él llega su coste — un runner de Hilt para tests, las reglas de Compose, y un job de CI que
-tarda minutos en vez de segundos.
-
----
+Queda por tanto en pie el riesgo que originó todo este trabajo: **un cambio futuro puede
+volver a romper la mezcla sin que nada avise.** Es una decisión consciente sobre coste, no un
+descuido, y se anota para que quien lo lea después no crea que hay una red que no hay.
 
 ## Criterio de terminación
 
-1. Con los cinco sonidos activos, `dumpsys audio` reporta **cinco** configuraciones en
-   `state:started` para el proceso de la app. Verificado por un test, no a mano.
-2. Una llamada entrante simulada pausa las cinco, y colgar las reanuda las cinco.
-3. Una pausa hecha por el usuario **no** se reanuda al recuperar el foco.
-4. La app arranca sin excepción fatal, verificado por un test.
-5. La mezcla y sus niveles sobreviven a matar el proceso, verificado por un test.
-6. Los cuatro tests se ejecutan de un tirón contra un emulador local, **cinco veces
-   consecutivas sin un solo fallo**, y el repositorio documenta cómo lanzarlos. El criterio
-   original de esta línea era "corren en CI en cada pull request"; se sustituyó por decisión
-   del dueño (ver §2).
-7. Los tests unitarios de `MixPlayer` siguen ejecutándose en JVM sin dispositivo: la interfaz
-   `AudioFocus` no puede haber arrastrado un `Context` dentro de `MixPlayer`.
-8. El lint sigue en 0 errores y los avisos del compilador de Kotlin no suben de 2.
-9. Ningún string nuevo queda hardcodeado, comprobado con
-   `Text\("|text = "|contentDescription = "`.
+Reescrito tras eliminar la suite instrumentada. Cada línea dice cómo está verificada de
+verdad, no cómo se pensaba verificar.
+
+1. Con los cinco sonidos activos suenan cinco pistas. **Comprobado a mano**, API 37:
+   `dumpsys audio` reportaba 1 de 5 antes del arreglo y 5 de 5 después. No hay test.
+2. Una llamada entrante pausa las cinco y colgar las reanuda. **Comprobado a mano** con
+   `adb emu gsm call` / `cancel`: 5 → 0 → 5. No hay test.
+3. Una pausa del usuario **no** se reanuda al recuperar el foco. **Cubierto por test JVM** en
+   `MixPlayerTest`, y validado por mutación: borrar `pausedByFocusLoss = false` lo hace fallar.
+4. Desenchufar los auriculares pausa la mezcla. **Sin verificar.** El receptor está escrito y
+   revisado en `AudioService`, pero las dos mediciones que se intentaron salieron inconclusas.
+   Es lo único de esta lista que se entrega sin haber sido observado funcionando ni una vez.
+5. La mezcla y sus niveles sobreviven a matar el proceso. **Comprobado a mano** para la mezcla;
+   los niveles no se comprobaron en ningún momento.
+6. El foco es uno solo para toda la mezcla, no uno por reproductor. **Cubierto por test JVM.**
+7. `MixPlayer` sigue testeándose en JVM sin dispositivo: `AudioFocus` no arrastró un `Context`
+   dentro. **Cubierto**, y verificado en la revisión final.
+8. Lint en 0 errores y los avisos de Kotlin en 2. **Cubierto**, medido con `--rerun-tasks
+   --no-build-cache`.
+9. Ningún string nuevo hardcodeado. **Cubierto** por el grep de la Fase 2.

@@ -344,6 +344,25 @@ class MixPlayerTest {
     }
 
     @Test
+    fun `a user pause during a transient loss survives regaining focus`() {
+        // The pair to the test above, and the one that actually pins the reset: there,
+        // pausedByFocusLoss is false the whole way through, so the mix would stay paused
+        // even if nothing ever cleared the flag. Here the transient loss sets it first,
+        // so only an explicit reset on the user's pause keeps GAINED from overriding a
+        // decision the user made after the interruption started.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        focus.emit(FocusChange.LOST_TRANSIENT)
+
+        mix.pause()
+        focus.emit(FocusChange.GAINED)
+
+        assertThat(tracks["rain"]!!.paused).isTrue()
+        assertThat(mix.playWhenReady).isFalse()
+    }
+
+    @Test
     fun `a permanent loss pauses the mix and abandons the focus`() {
         val mix = player()
         mix.setSoundActive("rain", audioRes = 1, active = true)
@@ -391,6 +410,41 @@ class MixPlayerTest {
         mix.setSoundActive("ocean", audioRes = 2, active = true)
 
         assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(0.2f)
+    }
+
+    @Test
+    fun `pressing play after a permanent loss while ducked restores the master volume`() {
+        // GAINED is not a reachable exit from this state: a permanent loss abandons the
+        // focus, so the system has nothing left to hand back. Pressing play is the only
+        // way out, and it has to undo the duck itself or the mix is quiet for good.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        mix.volume = 0.5f
+        focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
+        focus.emit(FocusChange.LOST)
+
+        mix.play()
+
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.5f)
+        assertThat(tracks["rain"]!!.paused).isFalse()
+    }
+
+    @Test
+    fun `stopping clears the duck so a rebuilt mix does not come back quiet`() {
+        // stop() releases every track and abandons the focus, so the duck it was holding
+        // no longer refers to anything. setSoundActive() applies the multiplier at
+        // creation time, so a stale one silently quiets tracks that never existed when
+        // the ducking app was playing.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
+
+        mix.stop()
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(1f)
     }
 
     @Test

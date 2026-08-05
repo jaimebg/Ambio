@@ -15,13 +15,6 @@ Clean and build:
 - Build: `./gradlew assembleDebug`
 - Lint: `./gradlew lint`
 - Tests: `./gradlew test`
-- Instrumented tests (needs a running emulator or attached device — CI does **not** run
-  these): `./gradlew :app:connectedDebugAndroidTest`
-  - To run a single class, use `-Pandroid.testInstrumentationRunnerArguments.class=com.jbgsoft.ambio.MixPlaybackTest`
-    (`--tests` does not work with `connectedAndroidTest`).
-  - Covers: the app launches, five sounds actually play at once, losing audio focus pauses
-    the whole mix, and the mix is rebuilt from disk in a fresh process.
-  - Run this before every release — nothing else in this project exercises audio at all.
 
 ## Operational Notes
 
