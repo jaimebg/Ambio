@@ -1,10 +1,15 @@
 package com.jbgsoft.ambio.media
 
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.media.AudioManager
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.OptIn
+import androidx.core.content.ContextCompat
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
@@ -31,10 +36,41 @@ class AudioService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
     private lateinit var player: MixPlayer
 
+    /**
+     * Pauses the whole mix when the audio output stops being a private one — headphones
+     * unplugged, Bluetooth headset disconnected.
+     *
+     * This lives here rather than in MixPlayer for two reasons. It is a *broadcast*, not
+     * an audio-focus change: unplugging a headset never fires OnAudioFocusChangeListener,
+     * so MixPlayer's focus handling cannot see it and does not cover it. And receiving a
+     * broadcast needs a Context, which MixPlayer deliberately does not take — AudioService
+     * already has one.
+     *
+     * One receiver for the whole mix, not one per track: five ExoPlayers each pausing
+     * themselves would be five uncoordinated decisions about a single logical playback.
+     */
+    private val becomingNoisyReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == AudioManager.ACTION_AUDIO_BECOMING_NOISY) {
+                player.pause()
+            }
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
 
-        player = MixPlayer(mainLooper) { ExoPlayerSoundTrack(this) }
+        player = MixPlayer(mainLooper, { ExoPlayerSoundTrack(this) }, AndroidAudioFocus(this))
+
+        // NOT_EXPORTED: ACTION_AUDIO_BECOMING_NOISY is a protected broadcast, so only the
+        // system can ever send it — and protected system broadcasts still reach a
+        // not-exported receiver. Nothing legitimate is turned away by refusing other apps.
+        ContextCompat.registerReceiver(
+            this,
+            becomingNoisyReceiver,
+            IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
 
         // Create PendingIntent to launch MainActivity when notification is tapped
         // This is required for Media3 to properly manage foreground service and notifications
@@ -67,6 +103,7 @@ class AudioService : MediaSessionService() {
     }
 
     override fun onDestroy() {
+        unregisterReceiver(becomingNoisyReceiver)
         mediaSession?.run {
             player.release()
             release()

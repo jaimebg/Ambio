@@ -91,4 +91,6 @@ dependencies {
 
     // Media3
     implementation(libs.bundles.media3)
+
+    // Instrumented tests
 }
