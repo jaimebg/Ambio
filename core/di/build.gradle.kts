@@ -29,4 +29,15 @@ dependencies {
 
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
+
+    // Testing
+    testImplementation(libs.bundles.testing)
+    // RepositoryMixSource.currentMix() maps ActiveSound (core:domain), whose Sound.icon
+    // and SoundTheme colors are androidx.compose.ui types declared `implementation` (not
+    // `api`) in core:domain's own build.gradle.kts. That keeps them off this module's main
+    // compile classpath, but a test that constructs a real Sound still needs them, so they
+    // are added test-only here rather than promoted to `api` over there for one test file.
+    testImplementation(platform(libs.compose.bom))
+    testImplementation(libs.compose.ui)
+    testImplementation(libs.compose.icons.extended)
 }
