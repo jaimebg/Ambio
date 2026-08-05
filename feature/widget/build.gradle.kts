@@ -13,6 +13,15 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
 
+    // Compose BOM, so androidx.compose.ui:ui-graphics (and everything else Compose)
+    // resolves to the project's pinned versions on this module's own compile classpath,
+    // instead of the much older versions Glance pins and pulls in transitively. Without
+    // this, the ImageVector type Sound.icon carries — and any Color/ColorProvider a
+    // Glance composable in this module references directly — resolve to Glance's old
+    // 1.1.1 copy instead of the one core:domain compiled against. core:domain and
+    // feature:stats both add this for the same reason; this follows the same pattern.
+    implementation(platform(libs.compose.bom))
+
     // Glance
     implementation(libs.glance.appwidget)
     implementation(libs.glance.material3)
@@ -26,11 +35,12 @@ dependencies {
     // Testing
     testImplementation(libs.bundles.testing)
 
-    // Compose BOM, so the icons the test builds fixtures with (and the ImageVector type
-    // Sound.icon carries) resolve to the same versions core:domain compiled against,
-    // instead of the much older androidx.compose.ui:ui-graphics that Glance pulls in
-    // transitively. Without this, WidgetDisplayTest fails to compile with "Unresolved
-    // reference 'Icons'" and "Cannot access class 'ImageVector'".
-    testImplementation(platform(libs.compose.bom))
+    // material-icons-extended, for the ImageVector fixtures WidgetDisplayTest builds via
+    // Sound(icon = Icons.Default.WaterDrop, ...). The compose.bom above already
+    // constrains this module's unit-test compile classpath too — AGP's unit-test compile
+    // classpath extends this module's own `implementation` configuration, which is why
+    // glance-appwidget above was already visible on debugUnitTestCompileClasspath before
+    // this dependency existed. A separate testImplementation(platform(...)) is therefore
+    // not needed; only the extra library itself is.
     testImplementation(libs.compose.icons.extended)
 }
