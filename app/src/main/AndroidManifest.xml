@@ -43,6 +43,25 @@
             </intent-filter>
         </service>
 
+        <!-- Media3 routes ACTION_MEDIA_BUTTON here and starts AudioService if it is not
+             already running, which is what lets the widget and the tile control playback
+             hours after the app was last opened.
+
+             Declared here rather than in feature:widget, beside the AudioService it routes
+             to and whose declaration it depends on: it is app-wide plumbing, not widget
+             plumbing. Headset and Bluetooth media buttons use this route too, so putting it
+             in a feature module would mean unwiring that module silently removed
+             hardware-button support from the whole app. media3-session's own AAR manifest
+             declares no receiver, so this declaration is required and conflicts with
+             nothing. -->
+        <receiver
+            android:name="androidx.media3.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

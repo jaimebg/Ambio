@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
@@ -57,10 +58,23 @@ class AudioService : MediaSessionService() {
         }
     }
 
+    private fun broadcastPlayback(isPlaying: Boolean) {
+        sendBroadcast(
+            Intent(ACTION_PLAYBACK_CHANGED)
+                .setPackage(packageName)
+                .putExtra(EXTRA_IS_PLAYING, isPlaying)
+        )
+    }
+
+    private val playbackBroadcaster = object : Player.Listener {
+        override fun onIsPlayingChanged(isPlaying: Boolean) = broadcastPlayback(isPlaying)
+    }
+
     override fun onCreate() {
         super.onCreate()
 
         player = MixPlayer(mainLooper, { ExoPlayerSoundTrack(this) }, AndroidAudioFocus(this))
+        player.addListener(playbackBroadcaster)
 
         // NOT_EXPORTED: ACTION_AUDIO_BECOMING_NOISY is a protected broadcast, so only the
         // system can ever send it — and protected system broadcasts still reach a
@@ -103,6 +117,9 @@ class AudioService : MediaSessionService() {
     }
 
     override fun onDestroy() {
+        // The last thing this service says. Without it the widget keeps showing a pause
+        // button over a service that no longer exists, and keeps showing it forever.
+        broadcastPlayback(false)
         unregisterReceiver(becomingNoisyReceiver)
         mediaSession?.run {
             player.release()
@@ -152,7 +169,17 @@ class AudioService : MediaSessionService() {
         }
     }
 
-    private companion object {
-        const val TAG = "AudioService"
+    companion object {
+        private const val TAG = "AudioService"
+
+        /**
+         * Broadcast when playback starts or stops, and once more as the service dies.
+         *
+         * A broadcast rather than a direct call because media must not depend on any
+         * feature module: it declares no project dependencies at all today, and the widget
+         * module pulls core:domain, which this module is not allowed to reach.
+         */
+        const val ACTION_PLAYBACK_CHANGED = "com.jbgsoft.ambio.PLAYBACK_CHANGED"
+        const val EXTRA_IS_PLAYING = "is_playing"
     }
 }
