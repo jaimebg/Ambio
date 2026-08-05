@@ -21,6 +21,7 @@ import androidx.media3.session.SessionResult
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -130,10 +131,26 @@ class AudioService : MediaSessionService() {
      * startForeground() is never called, so the system kills the process with
      * ForegroundServiceDidNotStartInTimeException. Loading the mix is what closes that
      * chain.
+     *
+     * mixSource.currentMix() reads a DataStore-backed preferences file; a corrupted
+     * file or a disk error surfaces as an exception there, not as an empty list. Left
+     * uncaught, that would propagate out of this coroutine (a bare SupervisorJob, no
+     * CoroutineExceptionHandler) and crash the process — the same class of failure
+     * this method exists to close, just triggered by I/O instead of a cold start.
+     * stopSelf() is the same fallback as the empty-mix case, since a service that
+     * cannot learn what to play cannot honor a startForeground() deadline either.
      */
     private fun loadStoredMixAndPlay() {
         serviceScope.launch {
-            val mix = mixSource.currentMix()
+            val mix = try {
+                mixSource.currentMix()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to read the stored mix; stopping", e)
+                stopSelf()
+                return@launch
+            }
             if (mix.isEmpty()) {
                 // Should not happen — the repository never yields an empty mix — but the
                 // bug this guards against was a service waiting forever for a
