@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
@@ -20,6 +21,13 @@ import androidx.media3.session.SessionResult
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Opted in wholesale rather than at each call site: MixPlayer, the SimpleBasePlayer
@@ -35,6 +43,11 @@ class AudioService : MediaSessionService() {
 
     private var mediaSession: MediaSession? = null
     private lateinit var player: MixPlayer
+
+    @Inject
+    lateinit var mixSource: MixSource
+
+    private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     /**
      * Pauses the whole mix when the audio output stops being a private one — headphones
@@ -57,10 +70,28 @@ class AudioService : MediaSessionService() {
         }
     }
 
+    private fun broadcastPlayback(isPlaying: Boolean) {
+        sendBroadcast(
+            Intent(ACTION_PLAYBACK_CHANGED)
+                .setPackage(packageName)
+                .putExtra(EXTRA_IS_PLAYING, isPlaying)
+        )
+    }
+
+    private val playbackBroadcaster = object : Player.Listener {
+        override fun onIsPlayingChanged(isPlaying: Boolean) = broadcastPlayback(isPlaying)
+    }
+
     override fun onCreate() {
         super.onCreate()
 
-        player = MixPlayer(mainLooper, { ExoPlayerSoundTrack(this) }, AndroidAudioFocus(this))
+        player = MixPlayer(
+            mainLooper,
+            { ExoPlayerSoundTrack(this) },
+            AndroidAudioFocus(this),
+            ::loadStoredMixAndPlay
+        )
+        player.addListener(playbackBroadcaster)
 
         // NOT_EXPORTED: ACTION_AUDIO_BECOMING_NOISY is a protected broadcast, so only the
         // system can ever send it — and protected system broadcasts still reach a
@@ -91,6 +122,52 @@ class AudioService : MediaSessionService() {
             .build()
     }
 
+    /**
+     * Called when something asks this service to play while it holds no sounds — the
+     * Quick Settings tile with the app closed, in practice.
+     *
+     * Starting the service is not enough on its own: it comes up empty, and an empty
+     * player publishes an empty timeline, so Media3 shows no notification, so
+     * startForeground() is never called, so the system kills the process with
+     * ForegroundServiceDidNotStartInTimeException. Loading the mix is what closes that
+     * chain.
+     *
+     * mixSource.currentMix() reads a DataStore-backed preferences file; a corrupted
+     * file or a disk error surfaces as an exception there, not as an empty list. Left
+     * uncaught, that would propagate out of this coroutine (a bare SupervisorJob, no
+     * CoroutineExceptionHandler) and crash the process — the same class of failure
+     * this method exists to close, just triggered by I/O instead of a cold start.
+     * stopSelf() is the same fallback as the empty-mix case, since a service that
+     * cannot learn what to play cannot honor a startForeground() deadline either.
+     */
+    private fun loadStoredMixAndPlay() {
+        serviceScope.launch {
+            val mix = try {
+                mixSource.currentMix()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to read the stored mix; stopping", e)
+                stopSelf()
+                return@launch
+            }
+            if (mix.isEmpty()) {
+                // Should not happen — the repository never yields an empty mix — but the
+                // bug this guards against was a service waiting forever for a
+                // startForeground that could not come. Stopping is the difference between
+                // a no-op and a system-level crash.
+                stopSelf()
+                return@launch
+            }
+            // Empty title, deliberately: media cannot see sound names — they are string
+            // resources in core:data, which this module is not allowed to reach — and the
+            // notification's text is not what this fix is about. The app overwrites it with
+            // a real title the moment it next pushes a mix.
+            player.setMix(mix, "")
+            player.play()
+        }
+    }
+
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
     }
@@ -103,7 +180,11 @@ class AudioService : MediaSessionService() {
     }
 
     override fun onDestroy() {
+        // The last thing this service says. Without it the tile keeps showing Active
+        // over a service that no longer exists, and keeps showing it forever.
+        broadcastPlayback(false)
         unregisterReceiver(becomingNoisyReceiver)
+        serviceScope.cancel()
         mediaSession?.run {
             player.release()
             release()
@@ -152,7 +233,18 @@ class AudioService : MediaSessionService() {
         }
     }
 
-    private companion object {
-        const val TAG = "AudioService"
+    companion object {
+        private const val TAG = "AudioService"
+
+        /**
+         * Broadcast when playback starts or stops, and once more as the service dies.
+         *
+         * A broadcast rather than a direct call because media must not depend on any
+         * feature module: it declares no project dependencies at all today, and
+         * feature:tile already depends on this module for these constants — a direct
+         * call the other way would create a cycle.
+         */
+        const val ACTION_PLAYBACK_CHANGED = "com.jbgsoft.ambio.PLAYBACK_CHANGED"
+        const val EXTRA_IS_PLAYING = "is_playing"
     }
 }
