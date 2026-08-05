@@ -13,6 +13,11 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
 
+    // For AudioService.ACTION_PLAYBACK_CHANGED / EXTRA_IS_PLAYING. The dependency points
+    // this way — widget -> media — because media declares no project dependencies at all,
+    // and this module pulls core:domain. feature:home already depends on :media.
+    implementation(project(":media"))
+
     // Compose BOM, so androidx.compose.ui:ui-graphics (and everything else Compose)
     // resolves to the project's pinned versions on this module's own compile classpath,
     // instead of the much older versions Glance pins and pulls in transitively. Without
