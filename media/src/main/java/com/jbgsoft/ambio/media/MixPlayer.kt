@@ -193,6 +193,12 @@ class MixPlayer(
             // Do not play without focus; a denied request leaves the mix paused.
             if (!audioFocus.request()) return Futures.immediateVoidFuture()
             pausedByFocusLoss = false
+            // A granted request means we hold full focus, so nothing is ducking us any
+            // more. GAINED cannot be relied on to clear this: a permanent LOST abandons
+            // the focus, so no GAINED will ever arrive, and without this the mix would
+            // come back at 0.2x for good.
+            duckMultiplier = 1f
+            applyVolumes()
         } else {
             // A deliberate pause keeps the focus: abandoning and re-requesting on every
             // pause would let another app take our place while the user is deciding.
@@ -218,6 +224,9 @@ class MixPlayer(
         releaseAllTracks()
         playWhenReadyValue = false
         pausedByFocusLoss = false
+        // The duck belonged to a focus we no longer hold. Left set, the next setMix()
+        // would build its tracks at 0.2x (setSoundActive applies it at creation).
+        duckMultiplier = 1f
         audioFocus.abandon()
         return Futures.immediateVoidFuture()
     }

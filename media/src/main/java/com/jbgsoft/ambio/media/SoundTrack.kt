@@ -37,7 +37,10 @@ class ExoPlayerSoundTrack(private val context: Context) : SoundTrack {
             false
         )
         // Also false: five players each pausing on an unplugged headset is five
-        // uncoordinated decisions about one mix. MixPlayer's focus loss covers it.
+        // uncoordinated decisions about one mix. AudioService registers a single
+        // ACTION_AUDIO_BECOMING_NOISY receiver for the whole mix instead and pauses
+        // MixPlayer. Not MixPlayer's focus handling: unplugging a headset is a
+        // broadcast, and it never produces an audio-focus change.
         .setHandleAudioBecomingNoisy(false)
         .build()
         .apply { repeatMode = Player.REPEAT_MODE_ONE }
