@@ -34,6 +34,9 @@ data class FieldSource(
  * A per-type [ParticleSpec.ceiling] is applied last and what it frees is
  * deliberately **not** redistributed: handing it back to the same type would
  * defeat the ceiling, which exists to bound fill rate.
+ *
+ * The result is independent of [sources]' order only while each [ParticleType]
+ * appears at most once in it; a repeated type is not a case any caller produces.
  */
 fun allocate(
     sources: List<FieldSource>,
