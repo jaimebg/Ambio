@@ -71,15 +71,23 @@ fun AmbientEffectsOverlay(
         onDispose { savedIntensity = field.intensity }
     }
 
-    // When nothing is playing and the last particle has died there is nothing to
-    // simulate, so the loop ends rather than spinning at 60 Hz forever.
-    val running by remember { derivedStateOf { isPlaying || activeCount > 0 } }
-
     // The frame loop is keyed on the field and the lifecycle owner, so it must not
     // capture isPlaying or sources directly: a toggle would not restart it and the
     // loop would keep simulating the state the user just left.
+    //
+    // Declared before `running` because the derived state must read the tracked
+    // value, not the parameter — see below.
     val currentIsPlaying by rememberUpdatedState(isPlaying)
     val currentSources by rememberUpdatedState(sources)
+
+    // When nothing is playing and the last particle has died there is nothing to
+    // simulate, so the loop ends rather than spinning at 60 Hz forever.
+    //
+    // currentIsPlaying, not isPlaying: `remember` runs its lambda once, so a
+    // captured plain parameter would freeze at its first-composition value —
+    // false, since the overlay composes before playback starts — and the loop
+    // would never start at all.
+    val running by remember { derivedStateOf { currentIsPlaying || activeCount > 0 } }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     if (running) {
