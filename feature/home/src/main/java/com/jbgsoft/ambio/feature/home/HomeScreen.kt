@@ -34,6 +34,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,7 +44,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlin.math.min
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbgsoft.ambio.core.domain.model.AppMode
-import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
 import com.jbgsoft.ambio.feature.home.components.CurrentSoundBar
@@ -54,6 +54,7 @@ import com.jbgsoft.ambio.feature.home.components.TimerDisplay
 import com.jbgsoft.ambio.feature.home.components.TimerPresetSelector
 import com.jbgsoft.ambio.feature.home.components.VolumeSlider
 import com.jbgsoft.ambio.ui.effects.AmbientEffectsOverlay
+import com.jbgsoft.ambio.ui.effects.ParticleSource
 
 @Composable
 fun HomeScreen(
@@ -70,9 +71,12 @@ fun HomeScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             // Ambient effects BEHIND content
             if (uiState.effectsEnabled) {
+                val particleMix = remember(uiState.activeMix) {
+                    uiState.activeMix.map { ParticleSource(it.sound.theme, it.level) }
+                }
                 AmbientEffectsOverlay(
                     isPlaying = uiState.isPlaying,
-                    soundTheme = uiState.activeMix.firstOrNull()?.sound?.theme ?: SoundTheme.RAIN
+                    mix = particleMix
                 )
             }
 

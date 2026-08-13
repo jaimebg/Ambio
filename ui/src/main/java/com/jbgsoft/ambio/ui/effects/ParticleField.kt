@@ -93,6 +93,11 @@ class ParticleField(
         spawnAccumulator.fill(0f)
     }
 
+    /** Restores a ramp saved across navigation, so it does not restart from zero. */
+    fun restoreIntensity(value: Float) {
+        intensity = value.coerceIn(0f, 1f)
+    }
+
     private fun updateIntensity(deltaMs: Float, isPlaying: Boolean) {
         val target = if (isPlaying) 1f else 0f
         intensity = when {
