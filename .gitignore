@@ -72,6 +72,12 @@ fastlane/Appfile
 fastlane/Fastfile
 fastlane/*.json
 
+# Design specs and implementation plans — kept local, not published
+docs/
+
+# Brainstorming mockups
+.superpowers/
+
 # Ruby/Bundler
 /Gemfile
 vendor/bundle/
