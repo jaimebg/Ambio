@@ -48,6 +48,8 @@ compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-animation = { group = "androidx.compose.animation", name = "animation" }
 compose-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 # Lifecycle
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }

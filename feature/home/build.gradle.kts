@@ -6,6 +6,18 @@ plugins {
 
 android {
     namespace = "com.jbgsoft.ambio.feature.home"
+
+    sourceSets {
+        getByName("test") {
+            res.directories.add("src/test/res")
+        }
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -33,4 +45,7 @@ dependencies {
     testImplementation(libs.bundles.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
+    testImplementation(platform(libs.compose.bom))
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.compose.ui.test.manifest)
 }
