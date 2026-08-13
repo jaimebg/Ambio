@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
 import com.jbgsoft.ambio.core.domain.model.AmbioPalette
+import com.jbgsoft.ambio.core.domain.model.MixCodec
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.model.mixPalettes
 import com.jbgsoft.ambio.core.domain.model.toPalette
@@ -13,10 +14,10 @@ import kotlin.math.pow
 /**
  * WCAG AA: 3.0 for UI components, 4.5 for normal text.
  *
- * Because the mix ignores per-sound volume, the palette space is finite — the
- * 31 non-empty subsets of five sounds — so this test enumerates all of them
- * instead of sampling. A weighted mix would make the space continuous and only
- * sampling would be possible.
+ * Because the mix ignores per-sound volume, the palette space is finite, so this
+ * test enumerates it instead of sampling. With the ceiling at three sounds the
+ * reachable space is the 25 non-empty subsets of size <= 3 — a strict subset of
+ * the 31 this test covered before, so narrowing it cannot hide a regression.
  */
 class ThemeContrastTest {
 
@@ -36,18 +37,32 @@ class ThemeContrastTest {
         return (hi + 0.05) / (lo + 0.05)
     }
 
-    /** All 31 non-empty subsets of the five themes, each with a readable label. */
+    /** Every reachable mix: the non-empty subsets of at most MAX_ACTIVE_SOUNDS themes. */
     private fun allMixes(): List<Pair<String, AmbioPalette>> {
         val themes = SoundTheme.entries
-        return (1 until (1 shl themes.size)).map { bits ->
-            val subset = themes.filterIndexed { index, _ -> (bits shr index) and 1 == 1 }
-            subset.joinToString("+") { it.name } to mixPalettes(subset)
-        }
+        return (1 until (1 shl themes.size))
+            .map { bits -> themes.filterIndexed { index, _ -> (bits shr index) and 1 == 1 } }
+            .filter { it.size <= MixCodec.MAX_ACTIVE_SOUNDS }
+            .map { subset -> subset.joinToString("+") { it.name } to mixPalettes(subset) }
     }
 
     @Test
-    fun `there are exactly 31 mixes`() {
-        assertThat(allMixes()).hasSize(31)
+    fun `there are exactly 25 reachable mixes`() {
+        assertThat(allMixes()).hasSize(25)
+    }
+
+    @Test
+    fun `no reachable mix exceeds the ceiling`() {
+        val themes = SoundTheme.entries
+        val subsets = (1 until (1 shl themes.size))
+            .map { bits -> themes.filterIndexed { index, _ -> (bits shr index) and 1 == 1 } }
+            .filter { it.size <= MixCodec.MAX_ACTIVE_SOUNDS }
+
+        assertThat(subsets).isNotEmpty()
+        subsets.forEach { subset ->
+            assertWithMessage("%s", subset.joinToString("+") { it.name })
+                .that(subset.size).isAtMost(MixCodec.MAX_ACTIVE_SOUNDS)
+        }
     }
 
     @Test
@@ -99,7 +114,8 @@ class ThemeContrastTest {
     @Test
     fun `known mixes produce the tabulated colours`() {
         // Half-up rounding. These exact values are in the spec; if they change,
-        // the spec's table is wrong too.
+        // the spec's table is wrong too. Only pairs are tabulated here — the
+        // five-sound mix these once checked is no longer reachable.
         val rainFire = mixPalettes(listOf(SoundTheme.RAIN, SoundTheme.FIREPLACE))
         assertThat(rainFire.primary).isEqualTo(Color(0xFFA66F78))
         assertThat(rainFire.onPrimary).isEqualTo(Color.Black)
@@ -107,9 +123,5 @@ class ThemeContrastTest {
 
         val fireOcean = mixPalettes(listOf(SoundTheme.FIREPLACE, SoundTheme.OCEAN))
         assertThat(fireOcean.primary).isEqualTo(Color(0xFF77756D))
-
-        val everything = mixPalettes(SoundTheme.entries)
-        assertThat(everything.primary).isEqualTo(Color(0xFF6D8187))
-        assertThat(everything.background).isEqualTo(Color(0xFF1B1E22))
     }
 }
