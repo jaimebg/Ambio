@@ -34,20 +34,25 @@ fun SoundCard(
     isActive: Boolean,
     level: Float,
     canDeactivate: Boolean,
+    canActivate: Boolean,
     onToggle: () -> Unit,
     onLevelChange: (Float) -> Unit,
     onLevelChangeFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val toggleLabel = stringResource(
-        if (isActive) R.string.mix_remove_sound else R.string.mix_add_sound,
+        when {
+            isActive -> R.string.mix_remove_sound
+            canActivate -> R.string.mix_add_sound
+            else -> R.string.mix_limit_reached
+        },
         stringResource(sound.nameRes)
     )
     val levelLabel = stringResource(R.string.mix_level_for, stringResource(sound.nameRes))
 
     Card(
         onClick = onToggle,
-        enabled = !isActive || canDeactivate,
+        enabled = if (isActive) canDeactivate else canActivate,
         modifier = modifier
             .fillMaxWidth()
             .height(if (isActive) 160.dp else 120.dp)

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
+import com.jbgsoft.ambio.core.domain.model.MixCodec
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.feature.home.R
 
@@ -67,6 +68,7 @@ fun SoundBottomSheet(
                             isActive = active != null,
                             level = active?.level ?: 1f,
                             canDeactivate = activeMix.size > 1,
+                            canActivate = activeMix.size < MixCodec.MAX_ACTIVE_SOUNDS,
                             onToggle = { onToggleSound(sound) },
                             onLevelChange = { onLevelChange(sound.id, it) },
                             onLevelChangeFinished = { onLevelChangeFinished(sound.id) }

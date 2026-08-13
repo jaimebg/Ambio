@@ -42,6 +42,7 @@
     <string name="mix_level_for">Level for %1$s</string>
     <string name="mix_remove_sound">Remove %1$s from the mix</string>
     <string name="mix_add_sound">Add %1$s to the mix</string>
+    <string name="mix_limit_reached">Mix is full. Remove a sound before adding %1$s</string>
 
     <!-- Section labels -->
     <string name="label_focus_duration">Focus Duration</string>
