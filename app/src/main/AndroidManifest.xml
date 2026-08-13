@@ -5,6 +5,12 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
+    <!-- Without this, Android 13+ suppresses AudioService's foreground notification: the
+         mix still plays, but the transport controls the user reaches for on the lock
+         screen and in the shade are simply not there, and the only way to stop playback is
+         to find the app again. Requested at runtime by NotificationPermissionGate. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <!-- Required for haptic feedback -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -61,6 +67,23 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
+
+        <!-- Declared here, not in feature:tile, because a Quick Settings tile must carry
+             an icon and a label, and both of the right ones live in this module: the app
+             name, and the monochrome tile mark beside it in res/drawable. feature:tile
+             links its own resources on the release path and cannot see either, which broke
+             `assembleRelease`; see that module's manifest for the detail. The tile's own
+             PlaybackStateReceiver stays there — it references no resources. -->
+        <service
+            android:name="com.jbgsoft.ambio.feature.tile.PlaybackTile"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_playback"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
 
     </application>
 
