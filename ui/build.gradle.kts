@@ -20,6 +20,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
 
+    // Lifecycle — repeatOnLifecycle and LocalLifecycleOwner for the effects overlay
+    implementation(libs.bundles.lifecycle)
+
     // Testing
     testImplementation(libs.bundles.testing)
 }
