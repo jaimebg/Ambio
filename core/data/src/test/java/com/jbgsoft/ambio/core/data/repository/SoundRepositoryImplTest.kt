@@ -192,4 +192,47 @@ class SoundRepositoryImplTest {
         assertThat(repository.getActiveMix().first().map { it.sound.id })
             .containsExactly("rain")
     }
+
+    @Test
+    fun `activating a fourth sound does nothing`() = runTest {
+        val repository = repositoryStoring("rain,fireplace,forest")
+
+        repository.setSoundActive("ocean", active = true)
+
+        val mix = repository.getActiveMix().first()
+        assertThat(mix).hasSize(3)
+        assertThat(mix.map { it.sound.id }).containsExactly("rain", "fireplace", "forest").inOrder()
+    }
+
+    @Test
+    fun `a sound already in a full mix can still be deactivated`() = runTest {
+        val repository = repositoryStoring("rain,fireplace,forest")
+
+        repository.setSoundActive("forest", active = false)
+
+        assertThat(repository.getActiveMix().first().map { it.sound.id })
+            .containsExactly("rain", "fireplace").inOrder()
+    }
+
+    @Test
+    fun `setting the level of a sound in a full mix still works`() = runTest {
+        val repository = repositoryStoring("rain,fireplace,forest")
+
+        repository.setSoundLevel("fireplace", 0.4f)
+
+        assertThat(repository.getActiveMix().first().single { it.sound.id == "fireplace" }.level)
+            .isEqualTo(0.4f)
+    }
+
+    @Test
+    fun `swapping one sound for another works at the ceiling`() = runTest {
+        // The real flow once a card is disabled: remove, then add.
+        val repository = repositoryStoring("rain,fireplace,forest")
+
+        repository.setSoundActive("forest", active = false)
+        repository.setSoundActive("ocean", active = true)
+
+        assertThat(repository.getActiveMix().first().map { it.sound.id })
+            .containsExactly("rain", "fireplace", "ocean").inOrder()
+    }
 }

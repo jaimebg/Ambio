@@ -92,8 +92,10 @@ class SoundRepositoryImpl @Inject constructor(
         mutex.withLock {
             val current = currentMix()
             val updated = when {
-                active -> if (current.any { it.sound.id == soundId }) current
-                          else current + ActiveSound(getSoundById(soundId)!!, 1.0f)
+                active && current.any { it.sound.id == soundId } -> current
+                // The mix never holds more than MAX_ACTIVE_SOUNDS.
+                active && current.size >= MixCodec.MAX_ACTIVE_SOUNDS -> return
+                active -> current + ActiveSound(getSoundById(soundId)!!, 1.0f)
                 // The mix is never empty.
                 current.size == 1 -> return
                 else -> current.filterNot { it.sound.id == soundId }
