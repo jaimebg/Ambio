@@ -57,7 +57,9 @@ class ParticleFieldTest {
     fun `intensity falls to zero three seconds after stopping`() {
         val f = field()
         f.run(forMs = 8000)
-        f.run(forMs = 3000, isPlaying = false)
+        // 3200ms, not 3000: the harness steps in 16ms and (3000/16).toInt() is 187
+        // steps = 2992ms, which stops 8ms short of the fade and leaves a sliver.
+        f.run(forMs = 3200, isPlaying = false)
 
         assertThat(f.intensity).isEqualTo(0f)
     }

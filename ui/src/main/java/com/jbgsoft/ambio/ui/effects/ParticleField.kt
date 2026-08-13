@@ -85,14 +85,7 @@ class ParticleField(
         val target = if (isPlaying) 1f else 0f
         intensity = when {
             intensity < target -> min(target, intensity + deltaMs / INTENSITY_BUILDUP_DURATION_MS)
-            intensity > target -> {
-                val next = intensity - deltaMs / INTENSITY_FADEOUT_DURATION_MS
-                // Below the spawn gate the field is already indistinguishable from
-                // off — nothing spawns there — so decay snaps the rest of the way
-                // instead of stalling on a sliver a caller's own frame step can
-                // never quite divide out of the nominal duration.
-                if (next <= SPAWN_GATE) 0f else next
-            }
+            intensity > target -> (intensity - deltaMs / INTENSITY_FADEOUT_DURATION_MS).coerceAtLeast(0f)
             else -> intensity
         }
     }
