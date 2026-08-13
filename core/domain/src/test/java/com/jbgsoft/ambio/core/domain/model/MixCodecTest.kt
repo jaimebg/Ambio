@@ -116,4 +116,49 @@ class MixCodecTest {
 
         assertThat(mix.map { it.sound.id }).containsExactly("rain")
     }
+
+    @Test
+    fun `decode truncates a stored mix longer than the ceiling`() {
+        val mix = decode("rain,fireplace,forest,ocean,cave")
+
+        assertThat(mix).hasSize(3)
+        assertThat(mix.map { it.sound.id }).containsExactly("rain", "fireplace", "forest").inOrder()
+    }
+
+    @Test
+    fun `decode keeps the levels of the sounds it keeps`() {
+        val mix = decode("rain:0.50,fireplace:0.25,forest:1.00,ocean:0.10")
+
+        assertThat(mix.map { it.level }).containsExactly(0.5f, 0.25f, 1.0f).inOrder()
+    }
+
+    @Test
+    fun `decode does not reject an over-long mix by falling back to the first sound`() {
+        val mix = decode("fireplace,forest,ocean,cave")
+
+        assertThat(mix.map { it.sound.id }).containsExactly("fireplace", "forest", "ocean").inOrder()
+    }
+
+    @Test
+    fun `a truncated mix re-encodes to itself, so the ceiling is stable across saves`() {
+        val once = decode("rain,fireplace,forest,ocean,cave")
+        val twice = decode(MixCodec.encode(once, withLevels = true))
+
+        assertThat(twice.map { it.sound.id }).isEqualTo(once.map { it.sound.id })
+    }
+
+    @Test
+    fun `the ceiling is three`() {
+        assertThat(MixCodec.MAX_ACTIVE_SOUNDS).isEqualTo(3)
+    }
+
+    @Test
+    fun `truncation keeps catalog order, not the order the ids appear in`() {
+        val mix = decode("cave,ocean,forest,fireplace,rain")
+
+        // Catalog order truncated: rain, fireplace, forest.
+        // Segment order truncated would wrongly give: cave, ocean, forest.
+        assertThat(mix.map { it.sound.id })
+            .containsExactly("rain", "fireplace", "forest").inOrder()
+    }
 }

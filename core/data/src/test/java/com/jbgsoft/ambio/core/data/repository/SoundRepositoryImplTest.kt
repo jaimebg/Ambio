@@ -114,13 +114,16 @@ class SoundRepositoryImplTest {
     }
 
     @Test
-    fun `all five sounds can be active at once`() = runTest {
+    fun `at most three sounds can be active at once`() = runTest {
         val repository = repositoryStoring("rain")
 
         listOf("fireplace", "forest", "ocean", "cave")
             .forEach { repository.setSoundActive(it, active = true) }
 
-        assertThat(repository.getActiveMix().first()).hasSize(5)
+        val mix = repository.getActiveMix().first()
+        assertThat(mix).hasSize(3)
+        assertThat(mix.map { it.sound.id })
+            .containsExactly("rain", "fireplace", "forest").inOrder()
     }
 
     @Test

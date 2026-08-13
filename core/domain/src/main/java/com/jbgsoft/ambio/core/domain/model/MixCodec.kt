@@ -15,6 +15,13 @@ object MixCodec {
     private const val DEFAULT_LEVEL = 1.0f
 
     /**
+     * The mix holds at most three sounds. Stored mixes written before this ceiling
+     * existed can hold five, so [decode] truncates rather than rejecting: treating
+     * the long string as invalid would drop those users to the default mix.
+     */
+    const val MAX_ACTIVE_SOUNDS = 3
+
+    /**
      * Never returns an empty list: a string with no usable id falls back to the
      * first sound, which is what [List.first] did before the mixer.
      */
@@ -34,6 +41,7 @@ object MixCodec {
 
         val mix = allSounds
             .filter { levelsById.containsKey(it.id) }
+            .take(MAX_ACTIVE_SOUNDS)
             .map { ActiveSound(it, levelsById.getValue(it.id)) }
 
         return mix.ifEmpty { listOf(ActiveSound(allSounds.first(), DEFAULT_LEVEL)) }
