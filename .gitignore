@@ -63,11 +63,17 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
-fastlane/readme.md
+fastlane/README.md
 fastlane/.env*
-fastlane/fastlane-485709-140d1ae82e9a.json
+
+# fastlane deploy plumbing — kept local, not published
+# (fastlane/metadata/ stays tracked: it is the public store listing)
+fastlane/Appfile
+fastlane/Fastfile
+fastlane/*.json
 
 # Ruby/Bundler
+/Gemfile
 vendor/bundle/
 .bundle/
 Gemfile.lock

@@ -131,28 +131,6 @@ ui/            # Theme system, typography, shapes
 ./gradlew clean           # Clean build cache
 ```
 
-## Store Deployment (Fastlane)
-
-Ambio uses [Fastlane](https://fastlane.tools/) for automated Play Store deployments with localized metadata in 8 languages.
-
-**Supported languages:** English, Spanish, Portuguese (Brazil), German, French, Japanese, Simplified Chinese, Traditional Chinese
-
-```bash
-# Install dependencies
-bundle install
-
-# Deploy metadata only
-bundle exec fastlane deploy_metadata
-
-# Deploy to internal testing
-bundle exec fastlane deploy_internal
-
-# Deploy to production
-bundle exec fastlane deploy
-```
-
-Metadata files are in `fastlane/metadata/android/<locale>/`.
-
 ## Contributing
 
 1. Fork -> branch -> commit -> PR
