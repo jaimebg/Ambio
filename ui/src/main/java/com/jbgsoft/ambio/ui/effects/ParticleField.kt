@@ -46,6 +46,18 @@ class ParticleField(
      */
     private val spawnAccumulator = FloatArray(ParticleType.entries.size)
 
+    /**
+     * Quotas change only when [sources] itself changes, not every frame, but
+     * [spawn] runs at up to 60fps. Recomputing [allocate] unconditionally would
+     * mean six-odd collection allocations a frame for numbers that are almost
+     * always identical to last frame's; caching keyed on structural equality
+     * (`FieldSource` is a data class, so list `!=` is a real content
+     * comparison, not a reference check) makes that recomputation happen only
+     * on an actual mix change.
+     */
+    private var cachedSources: List<FieldSource> = emptyList()
+    private var cachedQuotas: IntArray = IntArray(0)
+
     fun update(
         deltaMs: Float,
         isPlaying: Boolean,
@@ -97,7 +109,7 @@ class ParticleField(
         heightPx: Float,
         density: Float
     ) {
-        val quotas = allocate(sources, budget, floorPerSource)
+        val quotas = quotasFor(sources)
         val deltaSeconds = deltaMs / 1000f
 
         sources.forEachIndexed { index, source ->
@@ -121,6 +133,14 @@ class ParticleField(
     }
 
     private fun countOf(type: ParticleType): Int = _particles.count { it.type == type }
+
+    private fun quotasFor(sources: List<FieldSource>): IntArray {
+        if (sources != cachedSources) {
+            cachedSources = sources
+            cachedQuotas = allocate(sources, budget, floorPerSource)
+        }
+        return cachedQuotas
+    }
 
     private fun newParticle(
         spec: ParticleSpec,

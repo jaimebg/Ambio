@@ -25,14 +25,30 @@ class ParticleFieldTest {
 
     @Test
     fun `a seeded field replays identically`() {
-        val a = field(seed = 42).apply { run(forMs = 4000) }
-        val b = field(seed = 42).apply { run(forMs = 4000) }
+        // DROPLET alone never exercises the sway offset (swayAmplitudeDp = 0)
+        // or the ember drift push, and x/y/ageMs alone never surface baseAlpha,
+        // seed or colorIndex at all -- those three are read only by the
+        // renderer, not by update(). LEAF and EMBER are included so every
+        // random draw a particle makes is on a path this test can observe.
+        val sources = listOf(
+            FieldSource(ParticleType.DROPLET, 1f),
+            FieldSource(ParticleType.LEAF, 1f),
+            FieldSource(ParticleType.EMBER, 1f)
+        )
+        val a = field(seed = 42).apply { run(forMs = 4000, sources = sources) }
+        val b = field(seed = 42).apply { run(forMs = 4000, sources = sources) }
 
         assertThat(a.particles.size).isEqualTo(b.particles.size)
         a.particles.zip(b.particles).forEach { (pa, pb) ->
             assertThat(pa.x).isEqualTo(pb.x)
             assertThat(pa.y).isEqualTo(pb.y)
             assertThat(pa.ageMs).isEqualTo(pb.ageMs)
+            assertThat(pa.radiusPx).isEqualTo(pb.radiusPx)
+            assertThat(pa.vx).isEqualTo(pb.vx)
+            assertThat(pa.vy).isEqualTo(pb.vy)
+            assertThat(pa.baseAlpha).isEqualTo(pb.baseAlpha)
+            assertThat(pa.seed).isEqualTo(pb.seed)
+            assertThat(pa.colorIndex).isEqualTo(pb.colorIndex)
         }
     }
 
@@ -57,10 +73,17 @@ class ParticleFieldTest {
     fun `intensity falls to zero three seconds after stopping`() {
         val f = field()
         f.run(forMs = 8000)
-        // 3200ms, not 3000: the harness steps in 16ms and (3000/16).toInt() is 187
-        // steps = 2992ms, which stops 8ms short of the fade and leaves a sliver.
-        f.run(forMs = 3200, isPlaying = false)
 
+        // Pinned from both sides, like the buildup's halfway check: a fade that
+        // is ten times too fast (already at/near zero here) or ten times too
+        // slow (barely moved) both land outside this window.
+        f.run(forMs = 1500, isPlaying = false)
+        assertThat(f.intensity).isWithin(0.05f).of(0.5f)
+
+        // 1700ms more (3200ms of fade total, not 3000): the harness steps in
+        // 16ms and (3000/16).toInt() is 187 steps = 2992ms, which stops 8ms
+        // short of the fade and leaves a sliver.
+        f.run(forMs = 1700, isPlaying = false)
         assertThat(f.intensity).isEqualTo(0f)
     }
 
@@ -120,7 +143,11 @@ class ParticleFieldTest {
         assertThat(whilePlaying).isGreaterThan(0)
 
         f.run(forMs = 500, isPlaying = false)
-        assertThat(f.particles.size).isAtMost(whilePlaying)
+        // A lower bound, not just an upper one: "nothing spawns while paused"
+        // already forbids growth, so an isAtMost check here can't fail even if
+        // every particle is cleared outright the moment the mix pauses. Roughly
+        // 26 of ~36 droplets survive a 500ms pause, so this has real margin.
+        assertThat(f.particles.size).isAtLeast(whilePlaying / 2)
 
         f.run(forMs = 12000, isPlaying = false)
         assertThat(f.particles).isEmpty()
@@ -145,20 +172,37 @@ class ParticleFieldTest {
 
     @Test
     fun `re-adding a source does not spawn a burst from a stale accumulator`() {
-        val f = field()
+        // The spawn loop always decrements the accumulator by 1.0 before
+        // checking the quota, even on the iteration that discovers the type is
+        // capped and breaks without spawning -- so a frame that reaches quota
+        // mid-step can leave a genuine fractional remainder behind rather than
+        // draining to zero. With a budget of 17 and DROPLET alone (rate ≈
+        // 17/1.8 ≈ 9.44/s, so ≈0.944 accumulated per 100ms step), reaching that
+        // quota lands mid-step for this seed and leaves the accumulator at
+        // ≈0.722 rather than 0 -- confirmed by instrumenting the accumulator
+        // directly against this exact seed/budget/step-count combination
+        // before writing this assertion. (36/100ms's own quota is a poor fit
+        // for this: population rarely sits exactly at that cap long enough for
+        // a death-free frame, so the leftover is almost always 0 -- verified
+        // empirically over 1000 simulated frames before landing on this
+        // smaller, more reliable budget instead.)
+        val f = ParticleField(random = Random(4), budget = 17)
         val rain = listOf(FieldSource(ParticleType.DROPLET, 1f))
-        val rainAndLeaves = rain + FieldSource(ParticleType.LEAF, 1f)
 
-        f.run(forMs = 8000, sources = rain)
-        f.run(forMs = 4000, sources = rainAndLeaves)
-        val afterFirst = f.particles.count { it.type == ParticleType.LEAF }
+        repeat(23) { f.update(100f, true, rain, width, height, density) }
+        assertThat(f.particles.size).isEqualTo(17)
 
-        f.run(forMs = 9000, sources = rain)
-        f.update(16f, true, rainAndLeaves, width, height, density)
-        val immediatelyAfterReadd = f.particles.count { it.type == ParticleType.LEAF }
+        // Remove the source and let every particle die out naturally (droplet's
+        // longest possible lifetime is 2200ms; 25 steps of 100ms is 2500ms).
+        repeat(25) { f.update(100f, true, emptyList(), width, height, density) }
+        assertThat(f.particles).isEmpty()
 
-        assertThat(immediatelyAfterReadd).isAtMost(afterFirst)
-        assertThat(immediatelyAfterReadd).isAtMost(1)
+        // Re-add with a step sized so a real backlog crosses the spawn
+        // threshold but a freshly-reset accumulator does not: at this budget's
+        // rate, 40ms alone contributes ≈0.378, comfortably under 1 by itself,
+        // but ≈0.722 (the stale backlog) + 0.378 clears 1.
+        f.update(40f, true, rain, width, height, density)
+        assertThat(f.particles).isEmpty()
     }
 
     @Test
