@@ -195,13 +195,17 @@ class SoundRepositoryImplTest {
 
     @Test
     fun `activating a fourth sound does nothing`() = runTest {
-        val repository = repositoryStoring("rain,fireplace,forest")
+        // rain is catalog-EARLIER than all three active sounds, so this fixture
+        // discriminates: without the repository guard, persist()'s truncation
+        // would admit rain and drop ocean, giving [rain, fireplace, forest].
+        val repository = repositoryStoring("fireplace,forest,ocean")
 
-        repository.setSoundActive("ocean", active = true)
+        repository.setSoundActive("rain", active = true)
 
         val mix = repository.getActiveMix().first()
         assertThat(mix).hasSize(3)
-        assertThat(mix.map { it.sound.id }).containsExactly("rain", "fireplace", "forest").inOrder()
+        assertThat(mix.map { it.sound.id })
+            .containsExactly("fireplace", "forest", "ocean").inOrder()
     }
 
     @Test
