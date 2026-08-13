@@ -64,11 +64,11 @@ fun SoundTheme.toParticleType(): ParticleType = when (this) {
  * one sprite per colour (4 today). At [SPRITE_PX] (64) that is 64×64×4 = 16 KB
  * per sprite, so 4×16 KB = 64 KB for a type using the default size. Wisps bake
  * at [LARGE_SPRITE_PX] (128) — four times the pixel count — so 128×128×4 = 64 KB
- * per sprite, 4×64 KB = 256 KB for the wisp type alone. At most three types are
- * active, so the worst case today is one wisp type plus two default-size types:
- * 256 KB + 64 KB + 64 KB ≈ 384 KB, not the ~200 KB a flat twelve-sprite estimate
- * suggests. Recompute this if the set of baked types widens (Task 9's caller
- * decides which types are active).
+ * per sprite, 4×64 KB = 256 KB for the wisp type alone. Task 9's overlay bakes
+ * every [ParticleType] unconditionally, not just the active ones (see its own
+ * comment for why), so the real total is fixed rather than a worst case: the
+ * four default-size types at 64 KB each plus wisp's 256 KB is 4×64 KB + 256 KB
+ * = 512 KB, baked once and never rebuilt.
  */
 @Composable
 fun rememberParticleSprites(types: Set<ParticleType>): Map<ParticleType, List<ImageBitmap>> =
