@@ -55,6 +55,7 @@ import com.jbgsoft.ambio.feature.home.components.TimerPresetSelector
 import com.jbgsoft.ambio.feature.home.components.VolumeSlider
 import com.jbgsoft.ambio.ui.effects.AmbientEffectsOverlay
 import com.jbgsoft.ambio.ui.effects.ParticleSource
+import com.jbgsoft.ambio.ui.effects.rememberAmbientEffectsAllowed
 
 @Composable
 fun HomeScreen(
@@ -70,7 +71,8 @@ fun HomeScreen(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             // Ambient effects BEHIND content
-            if (uiState.effectsEnabled) {
+            val effectsAllowed = rememberAmbientEffectsAllowed()
+            if (uiState.effectsEnabled && effectsAllowed) {
                 val particleMix = remember(uiState.activeMix) {
                     uiState.activeMix.map { ParticleSource(it.sound.theme, it.level) }
                 }
