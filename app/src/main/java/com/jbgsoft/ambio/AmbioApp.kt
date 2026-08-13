@@ -26,6 +26,10 @@ fun AmbioApp(viewModel: AmbioAppViewModel = hiltViewModel()) {
     // The theme wraps the whole graph, not just Home, so Settings and Stats
     // inherit the palette of the active mix.
     AmbioTheme(palette = palette) {
+        // Inside the theme, so the rationale dialog is themed like the app behind it
+        // rather than arriving in bare Material defaults.
+        NotificationPermissionGate()
+
         NavHost(navController = navController, startDestination = Routes.HOME) {
             composable(Routes.HOME) {
                 HomeScreen(

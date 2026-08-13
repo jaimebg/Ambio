@@ -5,6 +5,12 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
+    <!-- Without this, Android 13+ suppresses AudioService's foreground notification: the
+         mix still plays, but the transport controls the user reaches for on the lock
+         screen and in the shade are simply not there, and the only way to stop playback is
+         to find the app again. Requested at runtime by NotificationPermissionGate. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <!-- Required for haptic feedback -->
     <uses-permission android:name="android.permission.VIBRATE" />
 

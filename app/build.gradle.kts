@@ -36,6 +36,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    testOptions {
+        unitTests {
+            // AmbioManifestTest reads the merged manifest through PackageManager, which
+            // Robolectric only populates when the built resources are on the test runtime.
+            isIncludeAndroidResources = true
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -93,5 +101,8 @@ dependencies {
     // Media3
     implementation(libs.bundles.media3)
 
-    // Instrumented tests
+    // Testing
+    testImplementation(libs.bundles.testing)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }
