@@ -62,6 +62,23 @@
             </intent-filter>
         </receiver>
 
+        <!-- Declared here, not in feature:tile, because a Quick Settings tile must carry
+             an icon and a label and the right ones are this module's launcher icon and app
+             name. feature:tile links its own resources on the release path and cannot see
+             either, which broke `assembleRelease`; see that module's manifest for the
+             detail. The tile's own PlaybackStateReceiver stays there — it references no
+             resources. -->
+        <service
+            android:name="com.jbgsoft.ambio.feature.tile.PlaybackTile"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
