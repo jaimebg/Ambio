@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Quick Settings tile icon.
+
+    A tile icon is not a small launcher icon. The system draws it at 24dp, masks it to a
+    single colour and re-tints it as the tile flips between active and inactive, so it has
+    to be a monochrome vector: the adaptive @mipmap/ic_launcher this replaced arrived as a
+    full-colour raster with its own background layer, which the panel rendered as a muddy
+    blob that ignored the tile's state entirely.
+
+    The mark is the launcher icon's ripples reduced to what survives at 24dp — a centre and
+    two rings, cut away at the bottom right where the full icon's wave crosses them. The
+    colours are plain white on purpose; the system replaces them, and anything else here
+    would only show up if that tinting ever failed.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Source of the ripples. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,12 m-2,0 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 Z" />
+
+    <!-- Inner ring: 270 degrees, open towards the bottom right. -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M12,17.2 A5.2,5.2 0 1 1 17.2,12"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="1.8" />
+
+    <!-- Outer ring, same opening, held inside the 20dp live area a 24dp icon gets. -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M12,20.6 A8.6,8.6 0 1 1 20.6,12"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="1.8" />
+
+</vector>

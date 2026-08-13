@@ -64,4 +64,18 @@ class AmbioManifestTest {
         // It is exported, so without this any app on the device could bind to it.
         assertThat(tile.permission).isEqualTo("android.permission.BIND_QUICK_SETTINGS_TILE")
     }
+
+    @Test
+    fun `points the tile at the monochrome mark, not the launcher icon`() {
+        val tile = context.packageManager
+            .getPackageInfo(context.packageName, PackageManager.GET_SERVICES)
+            .services
+            .orEmpty()
+            .single { it.name == "com.jbgsoft.ambio.feature.tile.PlaybackTile" }
+
+        // Quick Settings masks the icon to one colour and re-tints it per state. Handing it
+        // the adaptive launcher icon — the easy mistake, and the one this replaced — puts a
+        // full-colour raster with its own background layer in a slot built for a glyph.
+        assertThat(tile.icon).isEqualTo(R.drawable.ic_tile_playback)
+    }
 }
