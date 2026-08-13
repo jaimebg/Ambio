@@ -47,6 +47,14 @@ class ParticleTest {
                 .that(spec.sizeDpRange.start).isGreaterThan(0f)
             assertWithMessage("%s lifetime", type.name)
                 .that(spec.lifetimeMsRange.first).isGreaterThan(0L)
+            // Unlike the float ranges (inRange computes start + r * (end -
+            // start), which is correct even descending), lifetimeMsRange is
+            // consumed directly as first + (random * (last - first)) in
+            // ParticleField.newParticle. A reversed LongRange would make
+            // (last - first) negative and silently produce lifetimes shorter
+            // than `first`, so ordering has to be checked explicitly here.
+            assertWithMessage("%s lifetime order", type.name)
+                .that(spec.lifetimeMsRange.last).isAtLeast(spec.lifetimeMsRange.first)
             assertWithMessage("%s ceiling", type.name)
                 .that(spec.ceiling).isGreaterThan(0)
             assertWithMessage("%s coreFraction", type.name)
@@ -86,14 +94,17 @@ class ParticleTest {
     }
 
     @Test
-    fun `every type has exactly four colours, because colorIndex is drawn from four`() {
-        // 4 here must match COLORS_PER_TYPE in ParticleField.kt, which is private
-        // to that file. ParticleField.newParticle does
-        // random.nextInt(COLORS_PER_TYPE) with no bounds check on the palette
-        // side, so a colorsFor branch with fewer than four entries is an
-        // out-of-range crash at runtime, not a compile error.
+    fun `every type has exactly COLORS_PER_TYPE colours, because colorIndex is drawn from that many`() {
+        // ParticleField.newParticle does random.nextInt(COLORS_PER_TYPE) with no
+        // bounds check on the palette side; ParticleRenderer.kt's drawPass reads
+        // it back as sprites[type]?.getOrNull(colorIndex) ?: continue, so a
+        // colorsFor branch with fewer entries than COLORS_PER_TYPE is not a
+        // crash -- it is a particle that silently never draws. Asserting
+        // against COLORS_PER_TYPE itself (now internal, not a pinned literal)
+        // closes the invariant from both sides: this test fails if colorsFor
+        // drifts from the constant in either direction.
         ParticleType.entries.forEach { type ->
-            assertWithMessage("%s", type.name).that(colorsFor(type)).hasSize(4)
+            assertWithMessage("%s", type.name).that(colorsFor(type)).hasSize(COLORS_PER_TYPE)
         }
     }
 }

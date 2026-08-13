@@ -19,7 +19,7 @@ private const val EMBER_DRIFT_DP = 26f
 private const val EMBER_DRIFT_DECAY = 0.9f
 private const val SPAWN_MARGIN_DP = 24f
 private const val CULL_MARGIN_DP = 32f
-private const val COLORS_PER_TYPE = 4
+internal const val COLORS_PER_TYPE = 4
 
 /**
  * The whole simulation, free of Compose and Android so it can be exercised on
@@ -85,12 +85,6 @@ class ParticleField(
         // than vanish, and particles of a removed source die naturally.
         integrate(clamped, density)
         cull(widthPx, heightPx, density)
-    }
-
-    fun reset() {
-        _particles.clear()
-        intensity = 0f
-        spawnAccumulator.fill(0f)
     }
 
     /** Restores a ramp saved across navigation, so it does not restart from zero. */

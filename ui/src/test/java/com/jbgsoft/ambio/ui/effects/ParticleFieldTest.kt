@@ -1,6 +1,7 @@
 package com.jbgsoft.ambio.ui.effects
 
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import org.junit.Test
 import kotlin.random.Random
 
@@ -259,6 +260,126 @@ class ParticleFieldTest {
     }
 
     @Test
+    fun `dropping one source out of several still resets its own accumulator`() {
+        // The per-type reset is `if (type !in activeTypes) spawnAccumulator[...] = 0f`
+        // for every type, evaluated regardless of whether the source list as a
+        // whole is empty. A mutation that instead reset only `if
+        // (sources.isEmpty())` would pass the existing stale-accumulator test,
+        // because that test always drops to an empty list. This one drops LEAF
+        // while DROPLET stays active, so `sources` is never empty and the
+        // mutation gets no chance to fire.
+        //
+        // Budget 17 (not the default 36) with equal-weight DROPLET/LEAF gives
+        // quotas of 9/8 (DROPLET wins the ordinal tie-break on the leftover
+        // unit -- see `allocate`'s own tests). LEAF's rate is then
+        // 8 / ((5000+8000)/2000) = 8/6.5 = 1.230769.../s, so each 100ms step
+        // contributes 0.1230769... -- not a round number, so accumulating it
+        // never lands on an exact integer.
+        //
+        // Running 8 such steps sums to 8 * 0.1230769 = 0.9846153..., which is
+        // still under 1 -- deliberately stopped one step short of a spawn, so
+        // zero LEAF particles exist yet and the accumulator alone carries the
+        // near-1 leftover.
+        val f = ParticleField(random = Random(4), budget = 17)
+        val rainAndLeaves = listOf(
+            FieldSource(ParticleType.DROPLET, 1f),
+            FieldSource(ParticleType.LEAF, 1f)
+        )
+        repeat(8) { f.update(100f, true, rainAndLeaves, width, height, density) }
+        assertThat(f.particles.none { it.type == ParticleType.LEAF }).isTrue()
+
+        // Drop LEAF but keep DROPLET active -- sources is [DROPLET], never
+        // empty. Correct code resets LEAF's accumulator to 0 on the very next
+        // call and it stays there; the isEmpty() mutation never resets it, so
+        // the 0.9846153 leftover survives untouched (LEAF isn't a current
+        // source, so nothing else touches its accumulator either way).
+        val rainOnly = listOf(FieldSource(ParticleType.DROPLET, 1f))
+        repeat(20) { f.update(100f, true, rainOnly, width, height, density) }
+
+        // Re-add LEAF and advance by exactly one 100ms step (rate unchanged,
+        // since the quotas for [DROPLET, LEAF] at this budget are the same
+        // 9/8 as before): that alone contributes 0.1230769, which cannot
+        // cross 1 from a freshly-reset 0 -- but comfortably crosses 1 on top
+        // of the stale 0.9846153 leftover (sum 1.1076923). A leaf particle
+        // appearing on this single step is therefore proof the accumulator
+        // was never reset.
+        f.update(100f, true, rainAndLeaves, width, height, density)
+        assertThat(f.particles.none { it.type == ParticleType.LEAF }).isTrue()
+    }
+
+    @Test
+    fun `spawn positions cover the intended region instead of a narrow band`() {
+        // Read directly off ParticleField.newParticle so these expected
+        // ranges track the implementation rather than a guess (margin =
+        // SPAWN_MARGIN_DP(24) * density = 66px at this test's density):
+        //   DROPLET x in [0, width)         y == -margin           (top edge, full width)
+        //   EMBER   x in [0.15w, 0.85w)     y == height + margin    (bottom edge, middle 70%)
+        //   LEAF    x in [-margin, 0.9w)    y in [-margin, 0.35h)   (top band, near-full width)
+        //   BUBBLE  x in [0, width)         y == height + margin    (bottom edge, full width)
+        //   WISP    x in [0, width)         y in [0, height)        (full canvas)
+        //
+        // The two mutations this must kill both regress LEAF and EMBER's x:
+        // leaves pinned to a constant x = -margin (span collapses to ~0, and
+        // the max never approaches 0.9w), and embers narrowed back to the
+        // middle 40% (x in [0.3w, 0.7w), which never approaches the 0.15w/
+        // 0.85w bounds below).
+        val margin = 24f * density
+        data class Expected(
+            val xRange: ClosedFloatingPointRange<Float>,
+            val yRange: ClosedFloatingPointRange<Float>
+        )
+        val expected = mapOf(
+            ParticleType.DROPLET to Expected(0f..width, -margin..-margin),
+            ParticleType.EMBER to Expected(width * 0.15f..width * 0.85f, (height + margin)..(height + margin)),
+            ParticleType.LEAF to Expected(-margin..(width * 0.9f), -margin..(height * 0.35f)),
+            ParticleType.BUBBLE to Expected(0f..width, (height + margin)..(height + margin)),
+            ParticleType.WISP to Expected(0f..width, 0f..height)
+        )
+
+        val stepMs = 16f
+        ParticleType.entries.forEach { type ->
+            val f = ParticleField(random = Random(99))
+            val source = listOf(FieldSource(type, 1f))
+            val xs = mutableListOf<Float>()
+            val ys = mutableListOf<Float>()
+
+            // Collect at least ~200 spawn positions. A particle whose ageMs
+            // equals exactly one step's worth was born on THIS call: spawn()
+            // adds it at age 0 and the same call's integrate() ages every
+            // particle by stepMs immediately after, so this is an unambiguous
+            // "just spawned" filter with no risk of matching an older
+            // particle (their ages are larger multiples of stepMs). One step
+            // of motion at these velocities is negligible next to the
+            // pixel-scale thresholds below, so this is effectively the raw
+            // spawn position. Capped at 20,000 steps (320s simulated) as a
+            // safety valve -- WISP's low ceiling (16) and ~5.5s mean
+            // lifetime make it the slowest to turn over roughly 200 births.
+            var steps = 0
+            while (xs.size < 200 && steps < 20_000) {
+                f.update(stepMs, true, source, width, height, density)
+                f.particles.asSequence()
+                    .filter { it.type == type && it.ageMs == stepMs.toLong() }
+                    .forEach { xs += it.x; ys += it.y }
+                steps++
+            }
+            assertWithMessage("${type.name} sample count").that(xs.size).isAtLeast(200)
+
+            val (xRange, yRange) = expected.getValue(type)
+            // Tolerance is 5% of the theoretical span, floored at 40px so a
+            // (near-)constant coordinate -- DROPLET/EMBER/BUBBLE's y -- still
+            // gets slack for the one step of motion described above, instead
+            // of demanding an exact float match against a zero-width span.
+            val xTol = maxOf((xRange.endInclusive - xRange.start) * 0.05f, 40f)
+            val yTol = maxOf((yRange.endInclusive - yRange.start) * 0.05f, 40f)
+
+            assertWithMessage("${type.name} x min").that(xs.min()).isLessThan(xRange.start + xTol)
+            assertWithMessage("${type.name} x max").that(xs.max()).isGreaterThan(xRange.endInclusive - xTol)
+            assertWithMessage("${type.name} y min").that(ys.min()).isLessThan(yRange.start + yTol)
+            assertWithMessage("${type.name} y max").that(ys.max()).isGreaterThan(yRange.endInclusive - yTol)
+        }
+    }
+
+    @Test
     fun `particles are culled once they leave the canvas`() {
         val f = field()
         f.run(forMs = 20000)
@@ -303,14 +424,66 @@ class ParticleFieldTest {
     }
 
     @Test
-    fun `ember drift stays bounded instead of compounding with age`() {
+    fun `ember drift decays monotonically back toward zero after an extreme kick`() {
+        // The old bounded-cap version of this test used
+        // velocityXDpRange.endInclusive * density * 3f = 12 * 2.75 * 3 = 99 px/s
+        // as its ceiling, but the random walk this simulation actually
+        // produces never gets close: sigma is roughly 5.8 px/s over a 5s
+        // lifetime on top of a spawn |vx| <= 33, so 99 was unreachable
+        // whether or not mean reversion existed, and removing the decay term
+        // entirely (or zeroing EMBER_DRIFT_DECAY) still passed. What "mean
+        // reversion" actually promises is that a large |vx| decays toward
+        // zero -- so test that property directly, by seeding vx far outside
+        // it and watching it shrink.
+        //
+        // Particle.vx is a public var, reachable from the field's own
+        // `particles` list without widening any visibility.
         val f = field()
-        f.run(forMs = 14000, sources = listOf(FieldSource(ParticleType.EMBER, 1f)))
-        val cap = specFor(ParticleType.EMBER).velocityXDpRange.endInclusive * density * 3f
+        val embers = listOf(FieldSource(ParticleType.EMBER, 1f))
+        f.run(forMs = 500, sources = embers)
+        val ember = f.particles.first { it.type == ParticleType.EMBER }
 
-        f.particles.filter { it.type == ParticleType.EMBER }.forEach {
-            assertThat(kotlin.math.abs(it.vx)).isLessThan(cap)
+        // Far outside the spec range (velocityXDpRange.endInclusive * density
+        // ~= 33 px/s), so any real decay is unmistakable. Age reset to 0 so
+        // the particle cannot expire mid-test: EMBER's minimum lifetime is
+        // 3000ms and this test runs for 1600ms.
+        ember.vx = 1000f
+        ember.ageMs = 0L
+
+        // A canvas far larger than any displacement this vx could cause
+        // keeps cull() from ever removing the particle for going off-screen,
+        // isolating the assertion to the velocity decay itself. (Displacement
+        // integrates to roughly vx0 / EMBER_DRIFT_DECAY over the run, on the
+        // order of 1e3 px here -- 1e7 leaves enormous headroom.)
+        val hugeCanvas = 10_000_000f
+
+        val samples = mutableListOf(ember.vx)
+        repeat(100) {
+            f.update(16f, true, embers, hugeCanvas, hugeCanvas, density)
+            assertThat(f.particles).contains(ember)
+            samples += ember.vx
         }
+
+        // Per integrate(): vx_new = vx + (push - vx * EMBER_DRIFT_DECAY) *
+        // deltaSeconds, i.e. vx_new = vx * (1 - 0.9 * 0.016) + push * 0.016
+        // = 0.9856 * vx + push * 0.016, with push bounded by
+        // +-(EMBER_DRIFT_DP/2) * density = +-35.75 px/s. Whenever
+        // vx * 0.0144 (the decay term's magnitude) exceeds 35.75 * 0.016 =
+        // 0.572 (the noise term's max magnitude) -- i.e. whenever |vx| > ~40
+        // -- the decrease is deterministic regardless of the random draw's
+        // sign, so |vx_new| < |vx| unconditionally. Starting at 1000 and
+        // decaying with time constant 1/0.9 ~= 1.11s, |vx| after 1600ms is
+        // ~1000 * exp(-1.6/1.11) ~= 235 even under worst-case adversarial
+        // noise (bounded contribution ~30 px/s) -- comfortably above the ~40
+        // threshold for the entire 100-step run, so this assertion is not
+        // seed-dependent.
+        for (i in 1 until samples.size) {
+            assertWithMessage("step %s: |vx|=%s should be less than the previous |vx|=%s", i, samples[i], samples[i - 1])
+                .that(kotlin.math.abs(samples[i])).isLessThan(kotlin.math.abs(samples[i - 1]))
+        }
+        // Confirms real decay happened, not merely a slow crawl: well under
+        // half the seeded value.
+        assertThat(kotlin.math.abs(samples.last())).isLessThan(500f)
     }
 
     @Test
@@ -354,6 +527,14 @@ class ParticleFieldTest {
     fun `the spec holds dp, so nothing in it is already a pixel value`() {
         // A radius of 30-60 was the old px range for wisps. In dp it must be smaller.
         assertThat(specFor(ParticleType.WISP).sizeDpRange.endInclusive).isLessThan(30f)
+    }
+
+    @Test
+    fun `restoreIntensity restores a saved ramp instead of resetting it`() {
+        val f = field()
+
+        f.restoreIntensity(0.42f)
+        assertThat(f.intensity).isEqualTo(0.42f)
     }
 
     @Test
