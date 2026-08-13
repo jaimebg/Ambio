@@ -112,6 +112,36 @@ class ParticleFieldTest {
     }
 
     @Test
+    fun `changing a source's weight without changing arity still changes the quotas`() {
+        // Quotas are cached and only recomputed when the source list changes,
+        // which is fine as long as "changes" means real content equality and
+        // not something weaker like a size comparison -- moving a volume
+        // slider or swapping one sound for another at the same source count is
+        // the common runtime case, and a size-only invalidation check would
+        // silently keep serving the old split forever.
+        val f = ParticleField(random = Random(1))
+        val dropletHeavy = listOf(
+            FieldSource(ParticleType.DROPLET, 0.9f),
+            FieldSource(ParticleType.LEAF, 0.1f)
+        )
+        repeat(200) { f.update(100f, true, dropletHeavy, width, height, density) }
+        assertThat(f.particles.count { it.type == ParticleType.DROPLET })
+            .isGreaterThan(f.particles.count { it.type == ParticleType.LEAF })
+
+        // Same two types, same list size -- only the weights swap. Long enough
+        // for droplets (max lifetime 2200ms) to fully turn over under the new,
+        // smaller quota and for leaves (max lifetime 8000ms) to build up under
+        // the new, larger one.
+        val leafHeavy = listOf(
+            FieldSource(ParticleType.DROPLET, 0.1f),
+            FieldSource(ParticleType.LEAF, 0.9f)
+        )
+        repeat(200) { f.update(100f, true, leafHeavy, width, height, density) }
+        assertThat(f.particles.count { it.type == ParticleType.LEAF })
+            .isGreaterThan(f.particles.count { it.type == ParticleType.DROPLET })
+    }
+
+    @Test
     fun `a wisp-only field is held at its ceiling, not at the budget`() {
         val f = field()
         f.run(forMs = 14000, sources = listOf(FieldSource(ParticleType.WISP, 1f)))
@@ -143,10 +173,16 @@ class ParticleFieldTest {
         assertThat(whilePlaying).isGreaterThan(0)
 
         f.run(forMs = 500, isPlaying = false)
-        // A lower bound, not just an upper one: "nothing spawns while paused"
-        // already forbids growth, so an isAtMost check here can't fail even if
-        // every particle is cleared outright the moment the mix pauses. Roughly
-        // 26 of ~36 droplets survive a 500ms pause, so this has real margin.
+        // Both bounds, because they catch opposite mutations. isAtMost catches
+        // a spawn gate that ignores isPlaying and keeps growing the population
+        // while paused; isAtLeast catches a pause handler that clears the
+        // population outright instead of letting it drain. "nothing spawns
+        // while paused" cannot substitute for the isAtMost half here: that test
+        // never plays, so intensity never leaves 0 and the spawn gate blocks on
+        // intensity regardless of isPlaying -- it can't catch a dropped
+        // isPlaying check. 24 of ~31 droplets survive a 500ms pause, so
+        // isAtLeast(whilePlaying / 2) has real margin.
+        assertThat(f.particles.size).isAtMost(whilePlaying)
         assertThat(f.particles.size).isAtLeast(whilePlaying / 2)
 
         f.run(forMs = 12000, isPlaying = false)
@@ -172,20 +208,37 @@ class ParticleFieldTest {
 
     @Test
     fun `re-adding a source does not spawn a burst from a stale accumulator`() {
-        // The spawn loop always decrements the accumulator by 1.0 before
-        // checking the quota, even on the iteration that discovers the type is
-        // capped and breaks without spawning -- so a frame that reaches quota
-        // mid-step can leave a genuine fractional remainder behind rather than
-        // draining to zero. With a budget of 17 and DROPLET alone (rate ≈
-        // 17/1.8 ≈ 9.44/s, so ≈0.944 accumulated per 100ms step), reaching that
-        // quota lands mid-step for this seed and leaves the accumulator at
-        // ≈0.722 rather than 0 -- confirmed by instrumenting the accumulator
-        // directly against this exact seed/budget/step-count combination
-        // before writing this assertion. (36/100ms's own quota is a poor fit
-        // for this: population rarely sits exactly at that cap long enough for
-        // a death-free frame, so the leftover is almost always 0 -- verified
-        // empirically over 1000 simulated frames before landing on this
-        // smaller, more reliable budget instead.)
+        // A budget of 17 (not the default 36) makes the leftover a guaranteed
+        // arithmetic fact, not a lucky draw. At this budget, DROPLET's rate is
+        // 17/1.8 ≈ 9.444/s, so each 100ms step contributes ≈0.9444 -- under 1.
+        // An increment under 1 can cross an integer threshold at most once per
+        // step, so after N steps the spawn loop has decremented the
+        // accumulator exactly floor(N × 0.9444) times, full stop -- that count
+        // does not depend on whether any of those decrements happened to be
+        // "wasted" by the quota check (a wasted decrement still consumes 1.0,
+        // same as a productive one), so it does not depend on population,
+        // deaths, or the RNG seed. After 23 steps: floor(23 × 0.9444) =
+        // floor(21.722) = 21, leaving the accumulator at 21.722 − 21 ≈ 0.722,
+        // unconditionally. The quota's cap check never even has to fire for
+        // this leftover to exist; it is just the ordinary "still mid-cycle"
+        // remainder that any non-integer rate leaves behind, which is exactly
+        // why the reset has to clear it regardless of how it arose.
+        //
+        // The default budget of 36 does not work for this because its rate
+        // (36/1.8 = 20/s) makes the per-step increment exactly 2.0 -- a whole
+        // number. Whenever the population has room for both units (true most
+        // of the time, since mean population settles well under 36), the loop
+        // either spawns twice or spawns once and wastes the second decrement
+        // on a check that still consumes it, and either way the accumulator
+        // still lands on exactly 0.0. A nonzero remainder is possible there
+        // too, but only in the narrow case where the population is *already*
+        // at the full cap when a step begins, so the entire 2.0 gets only one
+        // decrement before the loop breaks -- confirmed to happen (accumulator
+        // = 1.0, population already 36 going in) but only 3 times in 1000
+        // simulated 100ms steps for this seed, which is too rare and too
+        // seed-dependent to build a deterministic test on. The smaller budget
+        // sidesteps that rarity entirely by making the leftover a property of
+        // the arithmetic instead of of population timing.
         val f = ParticleField(random = Random(4), budget = 17)
         val rain = listOf(FieldSource(ParticleType.DROPLET, 1f))
 

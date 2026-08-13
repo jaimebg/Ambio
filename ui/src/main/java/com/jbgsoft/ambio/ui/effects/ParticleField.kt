@@ -136,7 +136,10 @@ class ParticleField(
 
     private fun quotasFor(sources: List<FieldSource>): IntArray {
         if (sources != cachedSources) {
-            cachedSources = sources
+            // A defensive copy: List.equals short-circuits on identity, so
+            // holding the caller's own instance would let a caller that
+            // mutates a MutableList in place keep these quotas stale forever.
+            cachedSources = sources.toList()
             cachedQuotas = allocate(sources, budget, floorPerSource)
         }
         return cachedQuotas
