@@ -60,11 +60,16 @@ fun allocate(
 
     val counts = IntArray(n) { floor(exact[it]).toInt() }
 
-    // Largest remainder, so the counts sum to the budget exactly. Ties go to the
-    // lower index, which keeps the result a pure function of the input.
+    // Largest remainder, so the counts sum to the budget exactly. Ties are
+    // broken by ParticleType.ordinal rather than list index: the winner must
+    // be determined by what the source *is*, not by where it happens to sit
+    // in the list. An index-keyed tie-break would make the result depend on
+    // input order — e.g. DROPLET 0.25 / LEAF 0.75 both land on a tied .5
+    // fraction, and swapping their list position would swap which one wins.
     var leftover = budget - counts.sum()
     val byFraction = (0 until n).sortedWith(
-        compareByDescending<Int> { exact[it] - counts[it] }.thenBy { it }
+        compareByDescending<Int> { exact[it] - counts[it] }
+            .thenBy { sources[it].type.ordinal }
     )
     var i = 0
     while (leftover > 0 && n > 0) {

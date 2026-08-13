@@ -113,5 +113,20 @@ class BudgetAllocationTest {
         )
 
         assertThat(forwards.toList()).containsExactly(*backwards.reversed().toTypedArray())
+
+        // DROPLET 0.25 / LEAF 0.75 land on a tied largest-remainder fraction
+        // (both exact shares end in .5), so this pair specifically exercises
+        // the tie-break. An index-keyed tie-break would pick a different
+        // winner depending on which side of the list each source sits on; a
+        // source-keyed one (ParticleType.ordinal) picks the same winner
+        // either way, so reversing the input still reverses the output.
+        val tiedForwards = allocate(
+            sources(ParticleType.DROPLET to 0.25f, ParticleType.LEAF to 0.75f)
+        )
+        val tiedBackwards = allocate(
+            sources(ParticleType.LEAF to 0.75f, ParticleType.DROPLET to 0.25f)
+        )
+
+        assertThat(tiedForwards.toList()).containsExactly(*tiedBackwards.reversed().toTypedArray())
     }
 }
