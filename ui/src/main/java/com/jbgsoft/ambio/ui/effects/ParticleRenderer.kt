@@ -57,9 +57,18 @@ fun SoundTheme.toParticleType(): ParticleType = when (this) {
 }
 
 /**
- * One bitmap per (type, colour), baked once. At most three types are active and
- * each has four colours, so this is at most twelve sprites — under 200 KB — and
- * it keeps the draw loop free of per-particle shader allocation.
+ * One bitmap per (type, colour), baked once, keeping the draw loop free of
+ * per-particle shader allocation.
+ *
+ * Memory per sprite is size × size × 4 bytes (ARGB_8888), and each type bakes
+ * one sprite per colour (4 today). At [SPRITE_PX] (64) that is 64×64×4 = 16 KB
+ * per sprite, so 4×16 KB = 64 KB for a type using the default size. Wisps bake
+ * at [LARGE_SPRITE_PX] (128) — four times the pixel count — so 128×128×4 = 64 KB
+ * per sprite, 4×64 KB = 256 KB for the wisp type alone. At most three types are
+ * active, so the worst case today is one wisp type plus two default-size types:
+ * 256 KB + 64 KB + 64 KB ≈ 384 KB, not the ~200 KB a flat twelve-sprite estimate
+ * suggests. Recompute this if the set of baked types widens (Task 9's caller
+ * decides which types are active).
  */
 @Composable
 fun rememberParticleSprites(types: Set<ParticleType>): Map<ParticleType, List<ImageBitmap>> =

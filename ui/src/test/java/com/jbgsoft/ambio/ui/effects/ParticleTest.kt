@@ -84,4 +84,16 @@ class ParticleTest {
             assertThat(specFor(type)).isSameInstanceAs(specFor(type))
         }
     }
+
+    @Test
+    fun `every type has exactly four colours, because colorIndex is drawn from four`() {
+        // 4 here must match COLORS_PER_TYPE in ParticleField.kt, which is private
+        // to that file. ParticleField.newParticle does
+        // random.nextInt(COLORS_PER_TYPE) with no bounds check on the palette
+        // side, so a colorsFor branch with fewer than four entries is an
+        // out-of-range crash at runtime, not a compile error.
+        ParticleType.entries.forEach { type ->
+            assertWithMessage("%s", type.name).that(colorsFor(type)).hasSize(4)
+        }
+    }
 }
