@@ -53,15 +53,9 @@ class ThemeContrastTest {
 
     @Test
     fun `no reachable mix exceeds the ceiling`() {
-        val themes = SoundTheme.entries
-        val subsets = (1 until (1 shl themes.size))
-            .map { bits -> themes.filterIndexed { index, _ -> (bits shr index) and 1 == 1 } }
-            .filter { it.size <= MixCodec.MAX_ACTIVE_SOUNDS }
-
-        assertThat(subsets).isNotEmpty()
-        subsets.forEach { subset ->
-            assertWithMessage("%s", subset.joinToString("+") { it.name })
-                .that(subset.size).isAtMost(MixCodec.MAX_ACTIVE_SOUNDS)
+        allMixes().forEach { (label, _) ->
+            assertWithMessage(label)
+                .that(label.split("+").size).isAtMost(MixCodec.MAX_ACTIVE_SOUNDS)
         }
     }
 
