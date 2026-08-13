@@ -77,4 +77,11 @@ class ParticleTest {
         assertThat(ParticleType.entries.filter { specFor(it).additive })
             .containsExactly(ParticleType.EMBER, ParticleType.WISP)
     }
+
+    @Test
+    fun `specFor returns a prebuilt instance rather than allocating per call`() {
+        ParticleType.entries.forEach { type ->
+            assertThat(specFor(type)).isSameInstanceAs(specFor(type))
+        }
+    }
 }

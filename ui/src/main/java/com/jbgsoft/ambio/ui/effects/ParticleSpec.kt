@@ -29,7 +29,17 @@ data class ParticleSpec(
     val coreFraction: Float
 )
 
-fun specFor(type: ParticleType): ParticleSpec = when (type) {
+/**
+ * Built once per type rather than on every call: [specFor] runs inside the
+ * per-particle simulation and draw loops, and a `when` that constructed a
+ * fresh [ParticleSpec] — five ranges and a LongRange — on every call would
+ * turn those hot loops into a steady source of short-lived allocations.
+ */
+private val SPECS: List<ParticleSpec> = ParticleType.entries.map(::buildSpec)
+
+fun specFor(type: ParticleType): ParticleSpec = SPECS[type.ordinal]
+
+private fun buildSpec(type: ParticleType): ParticleSpec = when (type) {
     ParticleType.DROPLET -> ParticleSpec(
         type = ParticleType.DROPLET,
         sizeDpRange = 2.0f..4.5f,
