@@ -57,26 +57,44 @@ fun SoundTheme.toParticleType(): ParticleType = when (this) {
 }
 
 /**
- * One bitmap per (type, colour), baked once, keeping the draw loop free of
- * per-particle shader allocation.
+ * One bitmap per (type, colour), baked once per **process**, keeping the draw
+ * loop free of per-particle shader allocation.
  *
  * Memory per sprite is size × size × 4 bytes (ARGB_8888), and each type bakes
  * one sprite per colour (4 today). At [SPRITE_PX] (64) that is 64×64×4 = 16 KB
  * per sprite, so 4×16 KB = 64 KB for a type using the default size. Wisps bake
  * at [LARGE_SPRITE_PX] (128) — four times the pixel count — so 128×128×4 = 64 KB
- * per sprite, 4×64 KB = 256 KB for the wisp type alone. Task 9's overlay bakes
- * every [ParticleType] unconditionally, not just the active ones (see its own
- * comment for why), so the real total is fixed rather than a worst case: the
- * four default-size types at 64 KB each plus wisp's 256 KB is 4×64 KB + 256 KB
- * = 512 KB, baked once and never rebuilt.
+ * per sprite, 4×64 KB = 256 KB for the wisp type alone. All five [ParticleType]s
+ * are baked unconditionally (see [AmbientEffectsOverlay]'s comment for why), so
+ * the real total is fixed rather than a worst case: the four default-size types
+ * at 64 KB each plus wisp's 256 KB is 4×64 KB + 256 KB = 512 KB.
+ *
+ * That 512 KB is spent exactly once per process, not once per composition:
+ * [particleSprites] is a top-level `by lazy`, not a `remember` scoped to the
+ * overlay's composition. Sprites depend on nothing composition-scoped (no
+ * density, theme, or screen size feeds into the RGBA baking), so re-baking on
+ * every re-entry into composition — as `remember` alone would do on every
+ * navigation back to the screen hosting the overlay — bought nothing but 20
+ * fresh [ImageBitmap] allocations and 20 synchronous radial-gradient fills on
+ * the main thread each time. It stays `lazy`, not eager, on purpose: this must
+ * not bake at class-load time before the app has drawn a single ambient effect.
+ */
+private val particleSprites: Map<ParticleType, List<ImageBitmap>> by lazy {
+    ParticleType.entries.associateWith { type ->
+        colorsFor(type).map { color -> bakeSprite(color, specFor(type).coreFraction, type) }
+    }
+}
+
+/**
+ * Call-site-compatible wrapper around the process-scoped [particleSprites]
+ * cache. [types] is filtered from the shared cache rather than driving what
+ * gets baked, so a caller (today, always all five types) never triggers a
+ * fresh bake — only [particleSprites]'s first access anywhere in the process
+ * does that.
  */
 @Composable
 fun rememberParticleSprites(types: Set<ParticleType>): Map<ParticleType, List<ImageBitmap>> =
-    remember(types) {
-        types.associateWith { type ->
-            colorsFor(type).map { color -> bakeSprite(color, specFor(type).coreFraction, type) }
-        }
-    }
+    remember(types) { particleSprites.filterKeys { it in types } }
 
 private fun bakeSprite(color: Color, coreFraction: Float, type: ParticleType): ImageBitmap {
     val size = if (type == ParticleType.WISP) LARGE_SPRITE_PX else SPRITE_PX

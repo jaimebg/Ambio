@@ -48,8 +48,10 @@ fun AmbientEffectsOverlay(
     // Keying the cache on the active types would therefore evict a draining sound's
     // sprites and make its particles vanish on the frame it was switched off, which is
     // the exact discontinuity this design exists to avoid. Baking all five is stable, so
-    // this never rebuilds: 4 types x 4 colours at 64px (16 KB each) plus wisp's 4 at
-    // 128px (64 KB each) is about 512 KB, once.
+    // this call never triggers a fresh bake: rememberParticleSprites now filters a
+    // process-scoped `by lazy` cache (see ParticleRenderer.kt), so the ~512 KB (4 types
+    // x 4 colours at 64px, 16 KB each, plus wisp's 4 at 128px, 64 KB each) is spent once
+    // per process, not once per entry into this composition.
     val sprites = rememberParticleSprites(remember { ParticleType.entries.toSet() })
 
     var canvasSize by remember { mutableStateOf(IntSize.Zero) }
