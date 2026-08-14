@@ -98,7 +98,10 @@ class SoundRepositoryImplTest {
     fun `activating an unknown sound does nothing`() = runTest {
         val repository = repositoryStoring("rain")
 
-        repository.setSoundActive("thunder", active = true)
+        // Deliberately not a plausible future sound name: "thunder" used to stand
+        // in for "unknown" here and silently stopped testing anything the day it
+        // joined the catalogue.
+        repository.setSoundActive("not_a_sound", active = true)
 
         assertThat(repository.getActiveMix().first().map { it.sound.id })
             .containsExactly("rain")

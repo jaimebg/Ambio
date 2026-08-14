@@ -4,9 +4,23 @@
 
     <string name="sound_fireplace">Fireplace</string>
 
+    <string name="sound_cafe">Café</string>
+
     <string name="sound_forest">Forest</string>
+
+    <string name="sound_birds">Birds</string>
+
+    <string name="sound_crickets">Crickets</string>
 
     <string name="sound_ocean">Ocean</string>
 
+    <string name="sound_stream">Stream</string>
+
     <string name="sound_cave">Cave</string>
+
+    <string name="sound_wind">Wind</string>
+
+    <string name="sound_white_noise">White Noise</string>
+
+    <string name="sound_brown_noise">Brown Noise</string>
 </resources>

@@ -7,7 +7,10 @@ import org.junit.Test
 
 class MixCodecTest {
 
-    // Ids and order mirror SoundRepositoryImpl; the resource ids are irrelevant here.
+    // A representative subset of SoundRepositoryImpl in its real order -- MixCodec
+    // only cares about order and membership, not how long the catalogue is. Ids
+    // used to stand for "unknown" below must stay implausible as future sounds:
+    // this test asked about "wind" back when no wind sound existed.
     private val sounds = listOf("rain", "fireplace", "forest", "ocean", "cave")
         .mapIndexed { index, id ->
             Sound(
@@ -15,7 +18,6 @@ class MixCodecTest {
                 nameRes = index,
                 icon = Icons.Default.WaterDrop,
                 audioRes = index,
-                illustrationRes = index,
                 theme = SoundTheme.entries[index]
             )
         }
@@ -61,7 +63,7 @@ class MixCodecTest {
 
     @Test
     fun `a string with no usable id falls back to the first sound`() {
-        val mix = decode("wind,thunder")
+        val mix = decode("not_a_sound,also_not_a_sound")
 
         assertThat(mix.map { it.sound.id }).containsExactly("rain")
         assertThat(mix.single().level).isEqualTo(1.0f)

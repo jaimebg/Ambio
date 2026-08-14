@@ -39,7 +39,6 @@ class StatsViewModelTest {
         nameRes = 101,
         icon = Icons.Default.WaterDrop,
         audioRes = 1,
-        illustrationRes = 2,
         theme = SoundTheme.RAIN
     )
 
@@ -48,7 +47,6 @@ class StatsViewModelTest {
         nameRes = 102,
         icon = Icons.Default.WaterDrop,
         audioRes = 3,
-        illustrationRes = 4,
         theme = SoundTheme.FIREPLACE
     )
 

@@ -104,4 +104,22 @@ private fun buildSpec(type: ParticleType): ParticleSpec = when (type) {
         additive = true,
         coreFraction = 0f
     )
+
+    // White and brown noise have no imagery to draw on -- there is no object that
+    // makes the sound. So this is the most abstract type in the table: small,
+    // slow, barely-there dust with no direction, which reads as texture rather
+    // than as any depicted thing. The low alpha ceiling matters more here than
+    // elsewhere, because noise is what people fall asleep to.
+    ParticleType.MOTE -> ParticleSpec(
+        type = ParticleType.MOTE,
+        sizeDpRange = 1.5f..3.0f,
+        velocityXDpRange = -6f..6f,
+        velocityYDpRange = -10f..10f,
+        alphaRange = 0.10f..0.24f,
+        lifetimeMsRange = 5000L..9000L,
+        swayAmplitudeDp = 8f,
+        ceiling = 24,
+        additive = true,
+        coreFraction = 0.10f
+    )
 }

@@ -33,7 +33,6 @@ class SoundCardTest {
         nameRes = TestR.string.test_sound_name,
         icon = Icons.Default.WaterDrop,
         audioRes = 0,
-        illustrationRes = 0,
         theme = SoundTheme.RAIN
     )
 

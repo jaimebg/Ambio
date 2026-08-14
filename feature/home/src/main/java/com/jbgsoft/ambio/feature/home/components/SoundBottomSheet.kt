@@ -54,10 +54,13 @@ fun SoundBottomSheet(
                 )
 
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    // Three columns for a thirteen-sound catalogue: at two, only
+                    // four tiles were visible and most of the options were below
+                    // the fold.
+                    columns = GridCells.Fixed(3),
+                    contentPadding = PaddingValues(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     // The sheet deliberately stays open on tap: building a mix takes
                     // several taps, so the user dismisses it when they are done.
@@ -73,9 +76,6 @@ fun SoundBottomSheet(
                             onLevelChange = { onLevelChange(sound.id, it) },
                             onLevelChangeFinished = { onLevelChangeFinished(sound.id) }
                         )
-                    }
-                    item {
-                        ComingSoonCard()
                     }
                 }
             }

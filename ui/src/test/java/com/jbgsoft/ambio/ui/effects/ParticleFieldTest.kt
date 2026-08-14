@@ -317,6 +317,7 @@ class ParticleFieldTest {
         //   LEAF    x in [-margin, 0.9w)    y in [-margin, 0.35h)   (top band, near-full width)
         //   BUBBLE  x in [0, width)         y == height + margin    (bottom edge, full width)
         //   WISP    x in [0, width)         y in [0, height)        (full canvas)
+        //   MOTE    x in [0, width)         y in [0, height)        (full canvas)
         //
         // The two mutations this must kill both regress LEAF and EMBER's x:
         // leaves pinned to a constant x = -margin (span collapses to ~0, and
@@ -333,7 +334,8 @@ class ParticleFieldTest {
             ParticleType.EMBER to Expected(width * 0.15f..width * 0.85f, (height + margin)..(height + margin)),
             ParticleType.LEAF to Expected(-margin..(width * 0.9f), -margin..(height * 0.35f)),
             ParticleType.BUBBLE to Expected(0f..width, (height + margin)..(height + margin)),
-            ParticleType.WISP to Expected(0f..width, 0f..height)
+            ParticleType.WISP to Expected(0f..width, 0f..height),
+            ParticleType.MOTE to Expected(0f..width, 0f..height)
         )
 
         val stepMs = 16f

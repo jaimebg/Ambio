@@ -46,6 +46,9 @@ fun colorsFor(type: ParticleType): List<Color> = when (type) {
     ParticleType.WISP -> listOf(
         Color(0xFF6B5B4F), Color(0xFF9C8A7C), Color(0xFF857567), Color(0xFFB0A090)
     )
+    ParticleType.MOTE -> listOf(
+        Color(0xFF8E9AAC), Color(0xFFA3B0C4), Color(0xFFBAC5D2), Color(0xFF9AA8BC)
+    )
 }
 
 fun SoundTheme.toParticleType(): ParticleType = when (this) {
@@ -54,6 +57,7 @@ fun SoundTheme.toParticleType(): ParticleType = when (this) {
     SoundTheme.FOREST -> ParticleType.LEAF
     SoundTheme.OCEAN -> ParticleType.BUBBLE
     SoundTheme.CAVE -> ParticleType.WISP
+    SoundTheme.NOISE -> ParticleType.MOTE
 }
 
 /**

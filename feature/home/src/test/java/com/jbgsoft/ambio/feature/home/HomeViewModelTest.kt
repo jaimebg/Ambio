@@ -89,7 +89,6 @@ class HomeViewModelTest {
         nameRes = 5,
         icon = Icons.Default.WaterDrop,
         audioRes = 1,
-        illustrationRes = 2,
         theme = SoundTheme.RAIN
     )
 
@@ -98,7 +97,6 @@ class HomeViewModelTest {
         nameRes = 6,
         icon = Icons.Default.WaterDrop,
         audioRes = 3,
-        illustrationRes = 4,
         theme = SoundTheme.FOREST
     )
 

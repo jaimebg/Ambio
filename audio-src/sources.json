@@ -1,0 +1,112 @@
+{
+  "_comment": [
+    "Provenance for the ambience loops that are NOT committed as audio in this",
+    "directory. tools/fetch-sources.sh reads this file, downloads each original",
+    "from Freesound, checks it against sha256, and cuts the window named in",
+    "'trim' -- which is what tools/process-audio.sh then consumes.",
+    "",
+    "Committing the manifest rather than the audio keeps ~26MB of FLAC out of",
+    "the repository. The cost is that reproducing the sources needs network",
+    "access AND Freesound OAuth2 credentials, because Freesound serves original",
+    "files only to authenticated clients. See audio-src/README.md.",
+    "",
+    "The five pre-existing loops (rain, fireplace, forest, ocean, cave) and",
+    "timer_chime are committed as .ogg in this directory instead; they predate",
+    "this manifest and their originals are no longer retrievable.",
+    "",
+    "'trim.start' was chosen by tools/select-window.py, not by hand: it picks",
+    "the least-varying window that also begins and ends quietly, because the",
+    "pipeline crossfades the tail over the head."
+  ],
+  "sounds": [
+    {
+      "name": "stream_loop",
+      "freesound_id": 220528,
+      "title": "Stream Wyre forest 8.1.14.flac",
+      "uploader": "turbostream",
+      "url": "https://freesound.org/people/turbostream/sounds/220528/",
+      "license": "CC0 1.0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "4ee25bc2e429515895e2c8240448c8806dcca480380952a071623bb94b498c6a",
+      "trim": {
+        "start": 291.5,
+        "duration": 49.0
+      },
+      "note": "Chosen window wanders only 0.64dB with -28.1dB rumble."
+    },
+    {
+      "name": "crickets_loop",
+      "freesound_id": 425425,
+      "title": "AMB_Rural_Summer_Night.wav",
+      "uploader": "AnthonyRamirez",
+      "url": "https://freesound.org/people/AnthonyRamirez/sounds/425425/",
+      "license": "CC0 1.0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "f8aa117732650fcda7d0d326b7667b297d7452a37a2a1200972d345a163bd707",
+      "trim": {
+        "start": 54.5,
+        "duration": 49.0
+      },
+      "note": "Steadiest of the whole shortlist: 0.61dB wander, -31.5dB rumble."
+    },
+    {
+      "name": "wind_loop",
+      "freesound_id": 521736,
+      "title": "Howling Wind",
+      "uploader": "Fission9",
+      "url": "https://freesound.org/people/Fission9/sounds/521736/",
+      "license": "CC0 1.0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "6a9b4f00b3ddbef16caa710da4e4c0f9535c3d285ccaa6fbae2a083772a7d9cd",
+      "trim": {
+        "start": 4.5,
+        "duration": 49.0
+      },
+      "note": "Source is only 60s, so there is barely a window to choose. -23.6dB rumble is real wind energy rather than mic handling, so it is left in."
+    },
+    {
+      "name": "birds_loop",
+      "freesound_id": 234315,
+      "title": "Bird Park Ambience",
+      "uploader": "nick121087",
+      "url": "https://freesound.org/people/nick121087/sounds/234315/",
+      "license": "CC0 1.0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "b526d3367e475b70f5bf66b8bb31f5aaf3a4f7e639cbf212fa1f68ee155c20b3",
+      "trim": {
+        "start": 4.5,
+        "duration": 49.0
+      },
+      "note": "The only new source needing a high-pass. Its sub-80Hz share is -10.0dB, an order of magnitude above every other new source -- and birds do not produce bass, so that is mic wind or distant traffic. Same defect and same 80Hz fix as forest_loop."
+    },
+    {
+      "name": "cafe_loop",
+      "freesound_id": 625112,
+      "title": "Crowd at Cafeteria",
+      "uploader": "sonically_sound",
+      "url": "https://freesound.org/people/sonically_sound/sounds/625112/",
+      "license": "CC0 1.0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "349161fab81724e31a8ef3bd1388316e173bd52405d8953f2872a59764f9ddab",
+      "trim": {
+        "start": 18.0,
+        "duration": 49.0
+      },
+      "note": "Chosen over higher-rated cafe recordings because those carried 13.7dB spikes from a milk frother, which would punch through on every pass of the loop."
+    }
+  ],
+  "synthesised": [
+    {
+      "name": "white_noise_loop",
+      "generator": "tools/synth-noise.sh",
+      "license": "public domain (generated, not recorded)",
+      "note": "96k rather than 128k: measured bandwidth is 20.3kHz at both, and coding artefacts on noise are themselves noise. Saves 113KB."
+    },
+    {
+      "name": "brown_noise_loop",
+      "generator": "tools/synth-noise.sh",
+      "license": "public domain (generated, not recorded)",
+      "note": "As white_noise_loop."
+    }
+  ]
+}

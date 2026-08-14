@@ -176,6 +176,13 @@ class ParticleField(
                 x = random.nextFloat() * widthPx
                 y = random.nextFloat() * heightPx
             }
+            // Anywhere on screen, like wisps: dust has no source edge to enter
+            // from, and spawning it at a border would give it a direction it
+            // should not have.
+            ParticleType.MOTE -> {
+                x = random.nextFloat() * widthPx
+                y = random.nextFloat() * heightPx
+            }
         }
 
         return Particle(

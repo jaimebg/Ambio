@@ -35,7 +35,6 @@
     <!-- Sound picker -->
     <string name="sound_picker_title">Select Sound</string>
     <string name="sound_none_selected">No sound selected</string>
-    <string name="sound_more_coming">More coming soon</string>
 
     <!-- Sound mixer -->
     <string name="mix_sound_count">%1$d sounds</string>

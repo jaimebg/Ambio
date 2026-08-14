@@ -34,7 +34,6 @@ class RepositoryMixSourceTest {
         nameRes = 1,
         icon = Icons.Default.WaterDrop,
         audioRes = 101,
-        illustrationRes = 2,
         theme = SoundTheme.RAIN
     )
 
@@ -43,7 +42,6 @@ class RepositoryMixSourceTest {
         nameRes = 3,
         icon = Icons.Default.WaterDrop,
         audioRes = 102,
-        illustrationRes = 4,
         theme = SoundTheme.FOREST
     )
 

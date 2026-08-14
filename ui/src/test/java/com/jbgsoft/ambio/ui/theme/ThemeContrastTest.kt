@@ -15,9 +15,12 @@ import kotlin.math.pow
  * WCAG AA: 3.0 for UI components, 4.5 for normal text.
  *
  * Because the mix ignores per-sound volume, the palette space is finite, so this
- * test enumerates it instead of sampling. With the ceiling at three sounds the
- * reachable space is the 25 non-empty subsets of size <= 3 — a strict subset of
- * the 31 this test covered before, so narrowing it cannot hide a regression.
+ * test enumerates it instead of sampling. With the ceiling at three sounds and
+ * six themes the reachable space is the 41 non-empty subsets of size <= 3.
+ *
+ * Thirteen sounds share those six themes, so adding a sound only widens this
+ * space when it also brings a new palette — which is why most of the catalogue
+ * reuses one.
  */
 class ThemeContrastTest {
 
@@ -47,8 +50,8 @@ class ThemeContrastTest {
     }
 
     @Test
-    fun `there are exactly 25 reachable mixes`() {
-        assertThat(allMixes()).hasSize(25)
+    fun `there are exactly 41 reachable mixes`() {
+        assertThat(allMixes()).hasSize(41)
     }
 
     @Test

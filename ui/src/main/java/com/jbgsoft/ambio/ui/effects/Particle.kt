@@ -5,7 +5,9 @@ enum class ParticleType {
     EMBER,
     LEAF,
     BUBBLE,
-    WISP
+    WISP,
+    /** Slow neutral dust for the noise beds, which have no imagery of their own. */
+    MOTE
 }
 
 private const val FADE_IN_DURATION = 0.15f  // First 15% of life: fade in

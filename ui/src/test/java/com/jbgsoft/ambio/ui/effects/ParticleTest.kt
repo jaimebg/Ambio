@@ -81,9 +81,14 @@ class ParticleTest {
     }
 
     @Test
-    fun `only fire and cave add light`() {
+    fun `only fire, cave and noise add light`() {
+        // MOTE joins the additive set deliberately. Dust at alpha 0.10-0.24 over a
+        // near-black background reads as flat grey specks under normal blending;
+        // additive is what makes it look like motes catching light. The blowout
+        // risk that keeps the other types off this list does not apply -- MOTE is
+        // 1.5-3dp with a ceiling of 24, so overlaps are rare and faint.
         assertThat(ParticleType.entries.filter { specFor(it).additive })
-            .containsExactly(ParticleType.EMBER, ParticleType.WISP)
+            .containsExactly(ParticleType.EMBER, ParticleType.WISP, ParticleType.MOTE)
     }
 
     @Test

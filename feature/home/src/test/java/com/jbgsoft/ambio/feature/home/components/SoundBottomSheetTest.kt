@@ -44,7 +44,6 @@ class SoundBottomSheetTest {
         nameRes = nameRes,
         icon = icon,
         audioRes = 0,
-        illustrationRes = 0,
         theme = theme
     )
 

@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -19,14 +17,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.feature.home.R
+
+/**
+ * Sized for a three-column grid. The catalogue is thirteen sounds, so at the
+ * previous two columns and 120dp only four tiles were on screen at once and
+ * building a mix meant scrolling past most of the options.
+ *
+ * The level slider stays inside the active tile, which at three columns leaves
+ * it roughly 86dp of track. That is a real cost -- it is coarse for fine
+ * adjustment -- and is the accepted trade for seeing nine tiles instead of four.
+ */
+private val IDLE_HEIGHT = 96.dp
+private val ACTIVE_HEIGHT = 132.dp
+private val ICON_SIZE = 28.dp
+private val CARD_PADDING = 10.dp
 
 @Composable
 fun SoundCard(
@@ -55,7 +67,7 @@ fun SoundCard(
         enabled = if (isActive) canDeactivate else canActivate,
         modifier = modifier
             .fillMaxWidth()
-            .height(if (isActive) 160.dp else 120.dp)
+            .height(if (isActive) ACTIVE_HEIGHT else IDLE_HEIGHT)
             .semantics { contentDescription = toggleLabel },
         colors = CardDefaults.cardColors(
             containerColor = if (isActive) {
@@ -69,7 +81,7 @@ fun SoundCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(CARD_PADDING),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -78,23 +90,28 @@ fun SoundCard(
             Icon(
                 imageVector = sound.icon,
                 contentDescription = null,
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(ICON_SIZE),
                 tint = if (isActive) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = stringResource(sound.nameRes),
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = if (isActive) {
                     MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                // Two lines so "Brown Noise" and "Fireplace" wrap rather than
+                // truncate in a ~106dp column; ellipsis only as a last resort at
+                // large font scales.
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
             if (isActive) {
                 // onValueChangeFinished is what keeps the drag off the disk: every
@@ -111,42 +128,3 @@ fun SoundCard(
     }
 }
 
-@Composable
-fun ComingSoonCard(
-    modifier: Modifier = Modifier
-) {
-    Card(
-        onClick = { },
-        enabled = false,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .alpha(0.5f),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.MoreHoriz,
-                contentDescription = null,
-                modifier = Modifier.size(36.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.sound_more_coming),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
