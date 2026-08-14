@@ -3,9 +3,11 @@ package com.jbgsoft.ambio.media
 import android.os.Looper
 import androidx.media3.common.Player
 import com.google.common.truth.Truth.assertThat
+import java.time.Duration
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 /**
@@ -55,6 +57,16 @@ class MixPlayerTest {
             focus,
             { emptyPlayRequests++ }
         )
+
+    /**
+     * Robolectric's looper is PAUSED by default, so posted work only runs when the
+     * looper is idled. This is what lets the ramps be tested without real time.
+     */
+    private fun advance(ms: Long) =
+        shadowOf(Looper.getMainLooper()).idleFor(Duration.ofMillis(ms))
+
+    /** Long enough for any ramp to reach its target, with a tick to spare. */
+    private fun settle() = advance(MixPlayer.FADE_IN_MS + MixPlayer.TICK_MS)
 
     @Test
     fun `activating a sound starts a track for it`() {
@@ -414,8 +426,9 @@ class MixPlayerTest {
         focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
 
         mix.setSoundActive("ocean", audioRes = 2, active = true)
+        settle()
 
-        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(0.2f)
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.2f)
     }
 
     @Test
@@ -524,5 +537,67 @@ class MixPlayerTest {
         mix.pause()
 
         assertThat(emptyPlayRequests).isEqualTo(0)
+    }
+
+    // --- per-sound fades ---
+
+    @Test
+    fun `a sound added while playing fades in instead of cutting to full volume`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        assertThat(tracks["ocean"]!!.appliedVolume).isEqualTo(0f)
+        advance(MixPlayer.FADE_IN_MS / 2)
+        val half = tracks["ocean"]!!.appliedVolume
+        assertThat(half).isGreaterThan(0.3f)
+        assertThat(half).isLessThan(0.7f)
+        settle()
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(1f)
+    }
+
+    @Test
+    fun `a sound added while paused is at its full level the moment play starts`() {
+        // Choosing sounds before pressing play must not cost a fade each: the master
+        // fade in AudioServiceConnection already covers the start of playback.
+        val mix = player()
+
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(1f)
+    }
+
+    @Test
+    fun `no ramp runs while the mix is paused`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        mix.pause()
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        // Settled immediately, not over 1500ms, because nothing is audible anyway.
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(1f)
+    }
+
+    @Test
+    fun `ducking during a fade-in composes with the ramp rather than replacing it`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        advance(MixPlayer.FADE_IN_MS / 2)
+
+        focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
+        val ducked = tracks["ocean"]!!.appliedVolume
+
+        // Partway through the ramp AND ducked: the product of both, not either alone.
+        assertThat(ducked).isGreaterThan(0f)
+        assertThat(ducked).isLessThan(0.2f)
+        settle()
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.2f)
     }
 }

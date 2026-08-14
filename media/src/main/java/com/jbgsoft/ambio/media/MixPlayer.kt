@@ -1,5 +1,6 @@
 package com.jbgsoft.ambio.media
 
+import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RawRes
 import androidx.media3.common.MediaItem
@@ -25,13 +26,17 @@ import com.google.common.util.concurrent.ListenableFuture
  */
 @UnstableApi
 class MixPlayer(
-    looper: Looper,
+    private val looper: Looper,
     private val createTrack: (soundId: String) -> SoundTrack,
     private val audioFocus: AudioFocus,
     private val onPlayRequestedWithEmptyMix: () -> Unit
 ) : SimpleBasePlayer(looper) {
 
-    private class Entry(val track: SoundTrack, var level: Float)
+    // ramp is the fade multiplier, 0..1. Membership decides its direction: an entry in
+    // `entries` is heading for 1, so no per-entry target field is needed.
+    private class Entry(val track: SoundTrack, var level: Float) {
+        var ramp: Float = 0f
+    }
 
     private val entries = LinkedHashMap<String, Entry>()
     private var playWhenReadyValue = false
@@ -40,6 +45,9 @@ class MixPlayer(
 
     // Ducking must not overwrite masterVolume, or there is nothing exact to restore.
     private var duckMultiplier = 1f
+
+    private val ticker = Handler(looper)
+    private var ticking = false
 
     // A pause the system caused is not a pause the user asked for. Only the first resumes
     // when focus comes back; conflating them makes hanging up a call restart audio the
@@ -77,11 +85,60 @@ class MixPlayer(
     private fun pauseForFocusLoss() {
         pausedByFocusLoss = true
         playWhenReadyValue = false
+        settleRamps()
         entries.values.forEach { it.track.pause() }
     }
 
     private fun applyVolumes() {
-        entries.values.forEach { it.track.setVolume(it.level * masterVolume * duckMultiplier) }
+        entries.values.forEach { it.applyVolume() }
+    }
+
+    private fun Entry.applyVolume() {
+        track.setVolume(level * ramp * masterVolume * duckMultiplier)
+    }
+
+    /**
+     * Advances every live ramp and stops rescheduling itself once they have all
+     * settled, so an idle mix costs nothing.
+     */
+    private val tick = object : Runnable {
+        override fun run() {
+            var stillMoving = false
+            entries.values.forEach {
+                if (it.ramp < 1f) {
+                    it.ramp = stepToward(it.ramp, 1f, FADE_IN_MS)
+                    if (it.ramp < 1f) stillMoving = true
+                }
+            }
+            applyVolumes()
+            ticking = stillMoving
+            if (stillMoving) ticker.postDelayed(this, TICK_MS)
+        }
+    }
+
+    private fun startTicking() {
+        if (ticking) return
+        ticking = true
+        ticker.postDelayed(tick, TICK_MS)
+    }
+
+    /**
+     * Jumps every ramp to where it was heading and stops the ticker. Used whenever the
+     * mix is not audible: a ramp nobody can hear is just a delayed volume change.
+     */
+    private fun settleRamps() {
+        entries.values.forEach { it.ramp = 1f }
+        ticker.removeCallbacks(tick)
+        ticking = false
+        applyVolumes()
+    }
+
+    // The step is derived from a full 0->1 duration, so an interrupted ramp keeps the
+    // same slew rate and simply has less distance left to cover.
+    private fun stepToward(current: Float, target: Float, durationMs: Long): Float {
+        val delta = TICK_MS.toFloat() / durationMs
+        return if (target > current) (current + delta).coerceAtMost(target)
+        else (current - delta).coerceAtLeast(target)
     }
 
     // SimpleBasePlayer's own `released` flag is private, so the standard Player
@@ -140,9 +197,15 @@ class MixPlayer(
             if (entries.containsKey(soundId)) return
             val track = createTrack(soundId)
             track.start(audioRes)
+            // ramp starts at 0, so applyVolume() below silences it before it is heard.
             entries[soundId] = Entry(track, level = 1f)
-            track.setVolume(masterVolume * duckMultiplier)
-            if (!playWhenReadyValue) track.pause()
+            if (playWhenReadyValue) {
+                applyVolumes()
+                startTicking()
+            } else {
+                track.pause()
+                settleRamps()
+            }
         } else {
             entries.remove(soundId)?.track?.release()
         }
@@ -209,13 +272,16 @@ class MixPlayer(
             // the focus, so no GAINED will ever arrive, and without this the mix would
             // come back at 0.2x for good.
             duckMultiplier = 1f
-            applyVolumes()
+            // Set before settling: settleRamps() and applyVolumes() both read this.
+            playWhenReadyValue = true
+            settleRamps()
         } else {
             // A deliberate pause keeps the focus: abandoning and re-requesting on every
             // pause would let another app take our place while the user is deciding.
             pausedByFocusLoss = false
+            playWhenReadyValue = false
+            settleRamps()
         }
-        playWhenReadyValue = playWhenReady
         entries.values.forEach { if (playWhenReady) it.track.resume() else it.track.pause() }
         return Futures.immediateVoidFuture()
     }
@@ -250,12 +316,16 @@ class MixPlayer(
     }
 
     private fun releaseAllTracks() {
+        ticker.removeCallbacks(tick)
+        ticking = false
         entries.values.forEach { it.track.release() }
         entries.clear()
     }
 
-    private companion object {
+    internal companion object {
         const val MIX_ITEM_ID = "ambio_mix"
         const val DUCK_MULTIPLIER = 0.2f
+        const val FADE_IN_MS = 1500L
+        const val TICK_MS = 50L
     }
 }
