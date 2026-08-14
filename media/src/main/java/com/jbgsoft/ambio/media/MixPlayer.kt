@@ -216,7 +216,7 @@ class MixPlayer(
         if (released) return
         val entry = entries[soundId] ?: return
         entry.level = level.coerceIn(0f, 1f)
-        entry.track.setVolume(entry.level * masterVolume * duckMultiplier)
+        entry.applyVolume()
         invalidateState()
     }
 

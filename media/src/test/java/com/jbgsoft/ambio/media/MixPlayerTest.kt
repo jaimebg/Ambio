@@ -600,4 +600,20 @@ class MixPlayerTest {
         settle()
         assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.2f)
     }
+
+    @Test
+    fun `changing a level mid-fade does not jump the sound to its new level`() {
+        // The volume product has one definition. A caller that recomputes it by hand
+        // skips the ramp, which is the cut this fade exists to remove.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        mix.setSoundLevel("ocean", 1f)
+
+        assertThat(tracks["ocean"]!!.appliedVolume).isLessThan(0.1f)
+        settle()
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(1f)
+    }
 }
