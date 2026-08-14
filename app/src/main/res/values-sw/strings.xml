@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Vidhibiti unapozingatia</string>
+    <string name="notification_rationale_body">Ambio huweka vitufe vya kucheza na kusimamisha kwenye paneli ya arifa na kwenye skrini iliyofungwa wakati mchanganyiko unacheza. Bila arifa, kusimamisha mchanganyiko kunahitaji kufungua programu tena.\n\nUnaweza kubadilisha hili baadaye katika Mipangilio.</string>
+    <string name="notification_rationale_confirm">Endelea</string>
+    <string name="notification_rationale_dismiss">Si sasa</string>
+</resources>

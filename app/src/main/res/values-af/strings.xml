@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Beheer terwyl jy fokus</string>
+    <string name="notification_rationale_body">Ambio plaas speel- en stopknoppies in jou kennisgewingpaneel en op jou sluitskerm terwyl \'n mengsel speel. Sonder kennisgewings moet jy die program weer oopmaak om \'n mengsel te stop.\n\nJy kan dit later in Instellings verander.</string>
+    <string name="notification_rationale_confirm">Gaan voort</string>
+    <string name="notification_rationale_dismiss">Nie nou nie</string>
+</resources>

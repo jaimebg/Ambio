@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Kawalan semasa anda fokus</string>
+    <string name="notification_rationale_body">Ambio meletakkan butang main dan henti dalam panel pemberitahuan dan pada skrin kunci semasa campuran sedang dimainkan. Tanpa pemberitahuan, anda perlu membuka aplikasi semula untuk menghentikan campuran.\n\nAnda boleh mengubahnya kemudian dalam Tetapan.</string>
+    <string name="notification_rationale_confirm">Teruskan</string>
+    <string name="notification_rationale_dismiss">Bukan sekarang</string>
+</resources>

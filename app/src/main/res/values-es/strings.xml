@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Controles mientras te concentras</string>
+    <string name="notification_rationale_body">Ambio coloca los controles de reproducción y parada en el panel de notificaciones y en la pantalla de bloqueo mientras suena una mezcla. Sin notificaciones, para detener una mezcla tendrás que volver a abrir la aplicación.\n\nPuedes cambiarlo más adelante en Ajustes.</string>
+    <string name="notification_rationale_confirm">Continuar</string>
+    <string name="notification_rationale_dismiss">Ahora no</string>
+</resources>

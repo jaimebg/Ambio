@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Upravljanje, medtem ko se osredotočate</string>
+    <string name="notification_rationale_body">Med predvajanjem mešanice Ambio prikaže gumba za predvajanje in ustavitev v oknu z obvestili in na zaklenjenem zaslonu. Brez obvestil je treba za ustavitev mešanice znova odpreti aplikacijo.\n\nTo lahko pozneje spremenite v nastavitvah.</string>
+    <string name="notification_rationale_confirm">Nadaljuj</string>
+    <string name="notification_rationale_dismiss">Ne zdaj</string>
+</resources>

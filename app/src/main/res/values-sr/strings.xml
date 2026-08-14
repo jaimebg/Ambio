@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Контроле док сте усредсређени</string>
+    <string name="notification_rationale_body">Док се микс репродукује, Ambio приказује дугмад за пуштање и заустављање у панелу обавештења и на закључаном екрану. Без обавештења, заустављање микса значи поновно отварање апликације.\n\nОво можете касније променити у подешавањима.</string>
+    <string name="notification_rationale_confirm">Настави</string>
+    <string name="notification_rationale_dismiss">Не сада</string>
+</resources>

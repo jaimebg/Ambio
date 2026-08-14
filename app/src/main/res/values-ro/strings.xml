@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Comenzi în timp ce te concentrezi</string>
+    <string name="notification_rationale_body">Cât timp rulează un mix, Ambio afișează butoanele de redare și oprire în panoul de notificări și pe ecranul de blocare. Fără notificări, oprirea unui mix înseamnă să deschizi din nou aplicația.\n\nPoți schimba asta mai târziu în Setări.</string>
+    <string name="notification_rationale_confirm">Continuă</string>
+    <string name="notification_rationale_dismiss">Nu acum</string>
+</resources>

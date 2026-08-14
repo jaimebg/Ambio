@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Vadīklas, kamēr koncentrējaties</string>
+    <string name="notification_rationale_body">Kamēr tiek atskaņots mikss, Ambio rāda atskaņošanas un apturēšanas pogas paziņojumu panelī un bloķēšanas ekrānā. Bez paziņojumiem miksa apturēšanai būs vēlreiz jāatver lietotne.\n\nTo varēsiet vēlāk mainīt iestatījumos.</string>
+    <string name="notification_rationale_confirm">Turpināt</string>
+    <string name="notification_rationale_dismiss">Ne tagad</string>
+</resources>

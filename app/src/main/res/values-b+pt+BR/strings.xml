@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Controles enquanto você se concentra</string>
+    <string name="notification_rationale_body">O Ambio coloca os controles de tocar e parar na sua central de notificações e na tela de bloqueio enquanto uma mixagem está tocando. Sem notificações, parar uma mixagem exige abrir o app de novo.\n\nVocê pode mudar isso depois nas Configurações.</string>
+    <string name="notification_rationale_confirm">Continuar</string>
+    <string name="notification_rationale_dismiss">Agora não</string>
+</resources>

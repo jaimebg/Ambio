@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Điều khiển ngay cả khi bạn tập trung</string>
+    <string name="notification_rationale_body">Khi một bản phối đang phát, Ambio đặt nút phát và dừng trong ngăn thông báo và trên màn hình khóa của bạn. Nếu không có thông báo, bạn phải mở lại ứng dụng để dừng bản phối.\n\nBạn có thể thay đổi điều này sau trong phần Cài đặt.</string>
+    <string name="notification_rationale_confirm">Tiếp tục</string>
+    <string name="notification_rationale_dismiss">Để sau</string>
+</resources>

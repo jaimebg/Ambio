@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">फ़ोकस के दौरान भी कंट्रोल</string>
+    <string name="notification_rationale_body">जब कोई मिक्स चल रहा हो, Ambio आपके नोटिफ़िकेशन पैनल और लॉक स्क्रीन पर चलाने और रोकने के बटन दिखाता है। नोटिफ़िकेशन के बिना, मिक्स रोकने के लिए ऐप्लिकेशन दोबारा खोलना पड़ेगा।\n\nआप इसे बाद में सेटिंग में बदल सकते हैं।</string>
+    <string name="notification_rationale_confirm">जारी रखें</string>
+    <string name="notification_rationale_dismiss">अभी नहीं</string>
+</resources>

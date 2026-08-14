@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Juhtnupud ajal, mil keskendud</string>
+    <string name="notification_rationale_body">Miksi esitamise ajal kuvab Ambio esitamise ja peatamise nupud teavituspaneelil ja lukustuskuval. Ilma teavitusteta tuleb miksi peatamiseks rakendus uuesti avada.\n\nSaad seda hiljem seadetes muuta.</string>
+    <string name="notification_rationale_confirm">Jätka</string>
+    <string name="notification_rationale_dismiss">Mitte praegu</string>
+</resources>

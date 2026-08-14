@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">שליטה בזמן שאתם מתרכזים</string>
+    <string name="notification_rationale_body">בזמן שמיקס מתנגן, Ambio מציגה לחצני הפעלה ועצירה בלוח ההתראות ובמסך הנעילה. בלי התראות, כדי לעצור מיקס צריך לפתוח שוב את האפליקציה.\n\nאפשר לשנות את זה מאוחר יותר בהגדרות.</string>
+    <string name="notification_rationale_confirm">המשך</string>
+    <string name="notification_rationale_dismiss">לא עכשיו</string>
+</resources>

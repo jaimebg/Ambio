@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Kontroller medan du fokuserar</string>
+    <string name="notification_rationale_body">Ambio lägger uppspelnings- och stoppknappar i din aviseringspanel och på låsskärmen medan en mix spelas. Utan aviseringar måste du öppna appen igen för att stoppa en mix.\n\nDu kan ändra det här senare i Inställningar.</string>
+    <string name="notification_rationale_confirm">Fortsätt</string>
+    <string name="notification_rationale_dismiss">Inte nu</string>
+</resources>

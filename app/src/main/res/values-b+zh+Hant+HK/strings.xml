@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">專注時也能控制播放</string>
+    <string name="notification_rationale_body">混音播放時，Ambio 會在通知欄和鎖定畫面上放置播放和停止控制項。如果沒有通知，要停止混音就要重新開啟應用程式。\n\n你之後可以在設定中更改。</string>
+    <string name="notification_rationale_confirm">繼續</string>
+    <string name="notification_rationale_dismiss">稍後再說</string>
+</resources>

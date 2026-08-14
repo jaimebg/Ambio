@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">집중하는 동안에도 제어</string>
+    <string name="notification_rationale_body">믹스가 재생되는 동안 Ambio는 알림 패널과 잠금 화면에 재생 및 정지 버튼을 표시합니다. 알림이 없으면 믹스를 정지하기 위해 앱을 다시 열어야 합니다.\n\n나중에 설정에서 변경할 수 있습니다.</string>
+    <string name="notification_rationale_confirm">계속</string>
+    <string name="notification_rationale_dismiss">나중에</string>
+</resources>

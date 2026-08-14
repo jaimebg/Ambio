@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Управление, докато сте съсредоточени</string>
+    <string name="notification_rationale_body">Докато се възпроизвежда микс, Ambio показва бутони за пускане и спиране в панела с известия и на заключения екран. Без известия спирането на микс изисква да отворите приложението отново.\n\nМожете да промените това по-късно в Настройки.</string>
+    <string name="notification_rationale_confirm">Продължаване</string>
+    <string name="notification_rationale_dismiss">Не сега</string>
+</resources>

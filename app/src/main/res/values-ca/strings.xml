@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Controls mentre et concentres</string>
+    <string name="notification_rationale_body">L\'Ambio posa els controls de reproducció i aturada al plafó de notificacions i a la pantalla de bloqueig mentre sona una mescla. Sense notificacions, per aturar una mescla has de tornar a obrir l\'aplicació.\n\nHo pots canviar més endavant a Configuració.</string>
+    <string name="notification_rationale_confirm">Continua</string>
+    <string name="notification_rationale_dismiss">Ara no</string>
+</resources>

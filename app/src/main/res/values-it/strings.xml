@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Comandi mentre ti concentri</string>
+    <string name="notification_rationale_body">Mentre un mix è in riproduzione, Ambio mostra i comandi di riproduzione e arresto nel pannello delle notifiche e sulla schermata di blocco. Senza notifiche, per fermare un mix devi riaprire l\'app.\n\nPuoi cambiare questa scelta più tardi in Impostazioni.</string>
+    <string name="notification_rationale_confirm">Continua</string>
+    <string name="notification_rationale_dismiss">Non ora</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Kontrol saat Anda fokus</string>
+    <string name="notification_rationale_body">Ambio menempatkan tombol putar dan hentikan di panel notifikasi dan di layar kunci saat mix sedang diputar. Tanpa notifikasi, menghentikan mix berarti membuka aplikasi lagi.\n\nAnda dapat mengubahnya nanti di Setelan.</string>
+    <string name="notification_rationale_confirm">Lanjutkan</string>
+    <string name="notification_rationale_dismiss">Nanti saja</string>
+</resources>

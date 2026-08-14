@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Steuerung, während du dich konzentrierst</string>
+    <string name="notification_rationale_body">Ambio zeigt Wiedergabe- und Stopptasten in deiner Benachrichtigungsleiste und auf dem Sperrbildschirm an, während ein Mix läuft. Ohne Benachrichtigungen musst du die App erneut öffnen, um einen Mix zu stoppen.\n\nDu kannst das später in den Einstellungen ändern.</string>
+    <string name="notification_rationale_confirm">Weiter</string>
+    <string name="notification_rationale_dismiss">Jetzt nicht</string>
+</resources>

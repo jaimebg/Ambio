@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Sterowanie, gdy się skupiasz</string>
+    <string name="notification_rationale_body">Gdy odtwarzany jest miks, Ambio umieszcza przyciski odtwarzania i zatrzymania w panelu powiadomień oraz na ekranie blokady. Bez powiadomień zatrzymanie miksu wymaga ponownego otwarcia aplikacji.\n\nMożesz to zmienić później w Ustawieniach.</string>
+    <string name="notification_rationale_confirm">Kontynuuj</string>
+    <string name="notification_rationale_dismiss">Nie teraz</string>
+</resources>

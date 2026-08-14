@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Bediening terwijl je je concentreert</string>
+    <string name="notification_rationale_body">Ambio zet afspeel- en stopknoppen in je meldingenpaneel en op je vergrendelscherm terwijl een mix speelt. Zonder meldingen moet je de app opnieuw openen om een mix te stoppen.\n\nJe kunt dit later wijzigen in Instellingen.</string>
+    <string name="notification_rationale_confirm">Doorgaan</string>
+    <string name="notification_rationale_dismiss">Niet nu</string>
+</resources>

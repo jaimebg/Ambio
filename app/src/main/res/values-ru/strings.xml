@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Управление, пока вы сосредоточены</string>
+    <string name="notification_rationale_body">Пока играет микс, Ambio показывает кнопки воспроизведения и остановки на панели уведомлений и на экране блокировки. Без уведомлений, чтобы остановить микс, придётся снова открывать приложение.\n\nЭто можно изменить позже в настройках.</string>
+    <string name="notification_rationale_confirm">Продолжить</string>
+    <string name="notification_rationale_dismiss">Не сейчас</string>
+</resources>

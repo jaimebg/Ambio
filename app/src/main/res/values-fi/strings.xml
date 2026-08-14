@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Hallinta keskittymisen aikana</string>
+    <string name="notification_rationale_body">Ambio näyttää toisto- ja pysäytyspainikkeet ilmoituspaneelissa ja lukitusnäytöllä, kun miksaus soi. Ilman ilmoituksia miksauksen pysäyttäminen vaatii sovelluksen avaamista uudelleen.\n\nVoit muuttaa tätä myöhemmin asetuksissa.</string>
+    <string name="notification_rationale_confirm">Jatka</string>
+    <string name="notification_rationale_dismiss">Ei nyt</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Odaklanırken kontrol sizde</string>
+    <string name="notification_rationale_body">Bir miks çalarken Ambio, oynatma ve durdurma denetimlerini bildirim panelinize ve kilit ekranınıza yerleştirir. Bildirimler olmadan bir miksi durdurmak için uygulamayı yeniden açmanız gerekir.\n\nBunu daha sonra Ayarlar\'dan değiştirebilirsiniz.</string>
+    <string name="notification_rationale_confirm">Devam et</string>
+    <string name="notification_rationale_dismiss">Şimdi değil</string>
+</resources>

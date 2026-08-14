@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">মনোযোগ ধরে রেখেই নিয়ন্ত্রণ</string>
+    <string name="notification_rationale_body">মিক্স চলার সময় Ambio আপনার নোটিফিকেশন প্যানেলে ও লক স্ক্রিনে চালু এবং বন্ধ করার বোতাম রাখে। নোটিফিকেশন ছাড়া মিক্স বন্ধ করতে হলে আবার অ্যাপটি খুলতে হবে।\n\nআপনি পরে সেটিংস থেকে এটি পরিবর্তন করতে পারবেন।</string>
+    <string name="notification_rationale_confirm">চালিয়ে যান</string>
+    <string name="notification_rationale_dismiss">এখন নয়</string>
+</resources>

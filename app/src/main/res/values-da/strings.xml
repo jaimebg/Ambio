@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Betjening, mens du fokuserer</string>
+    <string name="notification_rationale_body">Ambio placerer knapper til afspilning og stop i din notifikationsskuffe og på din låseskærm, mens et miks spiller. Uden notifikationer skal du åbne appen igen for at stoppe et miks.\n\nDu kan ændre det senere under Indstillinger.</string>
+    <string name="notification_rationale_confirm">Fortsæt</string>
+    <string name="notification_rationale_dismiss">Ikke nu</string>
+</resources>

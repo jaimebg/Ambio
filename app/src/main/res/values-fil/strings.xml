@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Mga kontrol habang nakapokus ka</string>
+    <string name="notification_rationale_body">Naglalagay ang Ambio ng mga kontrol sa pag-play at pag-stop sa iyong notification shade at sa lock screen habang may tumutugtog na mix. Kung walang notification, kailangan mong buksan ulit ang app para ihinto ang isang mix.\n\nMababago mo ito mamaya sa Mga Setting.</string>
+    <string name="notification_rationale_confirm">Magpatuloy</string>
+    <string name="notification_rationale_dismiss">Hindi ngayon</string>
+</resources>

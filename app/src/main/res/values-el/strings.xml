@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Έλεγχος όσο συγκεντρώνεσαι</string>
+    <string name="notification_rationale_body">Όσο παίζει ένα μείγμα, το Ambio εμφανίζει κουμπιά αναπαραγωγής και διακοπής στον πίνακα ειδοποιήσεων και στην οθόνη κλειδώματος. Χωρίς ειδοποιήσεις, για να σταματήσεις ένα μείγμα πρέπει να ανοίξεις ξανά την εφαρμογή.\n\nΜπορείς να το αλλάξεις αργότερα στις Ρυθμίσεις.</string>
+    <string name="notification_rationale_confirm">Συνέχεια</string>
+    <string name="notification_rationale_dismiss">Όχι τώρα</string>
+</resources>

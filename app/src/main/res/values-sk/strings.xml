@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Ovládanie, kým sa sústredíte</string>
+    <string name="notification_rationale_body">Kým hrá mix, Ambio umiestni tlačidlá prehrávania a zastavenia do panela upozornení a na uzamknutú obrazovku. Bez upozornení znamená zastavenie mixu opätovné otvorenie aplikácie.\n\nNeskôr to môžete zmeniť v Nastaveniach.</string>
+    <string name="notification_rationale_confirm">Pokračovať</string>
+    <string name="notification_rationale_dismiss">Teraz nie</string>
+</resources>

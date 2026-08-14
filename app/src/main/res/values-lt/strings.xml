@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Valdikliai, kol susitelkiate</string>
+    <string name="notification_rationale_body">Kol groja miksas, „Ambio“ rodo paleidimo ir sustabdymo mygtukus pranešimų skydelyje ir užrakto ekrane. Be pranešimų miksą sustabdyti galėsite tik vėl atidarę programą.\n\nTai vėliau galėsite pakeisti nustatymuose.</string>
+    <string name="notification_rationale_confirm">Tęsti</string>
+    <string name="notification_rationale_dismiss">Ne dabar</string>
+</resources>

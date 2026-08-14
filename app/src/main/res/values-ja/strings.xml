@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">集中したまま操作できます</string>
+    <string name="notification_rationale_body">ミックスの再生中、Ambio は通知パネルとロック画面に再生と停止の操作を表示します。通知がないと、ミックスを停止するにはアプリを開き直す必要があります。\n\nこの設定は後から設定画面で変更できます。</string>
+    <string name="notification_rationale_confirm">続行</string>
+    <string name="notification_rationale_dismiss">今はしない</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown before the system notification prompt, so the prompt is not the first thing
+         a new user sees with no explanation. -->
+    <string name="notification_rationale_title">Kontrole dok se fokusirate</string>
+    <string name="notification_rationale_body">Dok svira miks, Ambio prikazuje gumbe za pokretanje i zaustavljanje na ploči s obavijestima i na zaključanom zaslonu. Bez obavijesti za zaustavljanje miksa morate ponovno otvoriti aplikaciju.\n\nTo možete promijeniti kasnije u Postavkama.</string>
+    <string name="notification_rationale_confirm">Nastavi</string>
+    <string name="notification_rationale_dismiss">Ne sada</string>
+</resources>
