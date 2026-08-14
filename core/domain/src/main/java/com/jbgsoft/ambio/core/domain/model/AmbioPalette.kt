@@ -41,8 +41,8 @@ private fun contrast(a: Color, b: Color): Double {
     return (maxOf(la, lb) + 0.05) / (minOf(la, lb) + 0.05)
 }
 
-/** Per-channel arithmetic mean, half-up, in 8-bit space. */
-private fun averageOf(colors: List<Color>): Color {
+/** Per-channel arithmetic mean, half-up, in 8-bit space. Shared with [gradientOf]. */
+internal fun averageOf(colors: List<Color>): Color {
     fun mean(channel: (Color) -> Float): Int =
         (colors.sumOf { (channel(it) * 255f).roundToInt() }.toFloat() / colors.size).roundToInt()
     return Color(mean { it.red }, mean { it.green }, mean { it.blue })
