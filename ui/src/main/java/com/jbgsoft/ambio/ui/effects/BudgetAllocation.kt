@@ -4,10 +4,10 @@ import kotlin.math.floor
 import kotlin.math.min
 
 /**
- * A starting value, not a result. Confirmed or adjusted by measuring frame
- * timing on real hardware — see the spec's termination criterion 8.
+ * Measured on a Xiaomi MI 5 (2016, Snapdragon 820, 60 Hz) and raised from 36
+ * on that basis — see the spec's termination criterion 8.
  */
-const val PARTICLE_BUDGET = 36
+const val PARTICLE_BUDGET = 60
 
 /**
  * The smallest share an active source may get. A sound at 5% still has its card

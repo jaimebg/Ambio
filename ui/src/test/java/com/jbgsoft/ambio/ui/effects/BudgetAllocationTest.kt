@@ -10,7 +10,7 @@ class BudgetAllocationTest {
 
     @Test
     fun `one source takes the whole budget`() {
-        val counts = allocate(sources(ParticleType.DROPLET to 1f))
+        val counts = allocate(sources(ParticleType.DROPLET to 1f), budget = 36)
 
         assertThat(counts.toList()).containsExactly(36)
     }
@@ -22,7 +22,8 @@ class BudgetAllocationTest {
                 ParticleType.DROPLET to 1.0f,
                 ParticleType.LEAF to 0.7f,
                 ParticleType.BUBBLE to 0.4f
-            )
+            ),
+            budget = 36
         )
 
         assertThat(counts.sum()).isEqualTo(36)
@@ -38,7 +39,8 @@ class BudgetAllocationTest {
                 ParticleType.DROPLET to 1.0f,
                 ParticleType.LEAF to 0.05f,
                 ParticleType.BUBBLE to 0.05f
-            )
+            ),
+            budget = 36
         )
 
         assertThat(counts.sum()).isEqualTo(36)
@@ -48,7 +50,8 @@ class BudgetAllocationTest {
     @Test
     fun `a silent source still gets its floor`() {
         val counts = allocate(
-            sources(ParticleType.DROPLET to 1.0f, ParticleType.LEAF to 0f)
+            sources(ParticleType.DROPLET to 1.0f, ParticleType.LEAF to 0f),
+            budget = 36
         )
 
         assertThat(counts[1]).isEqualTo(FLOOR_PER_SOURCE)
@@ -58,7 +61,8 @@ class BudgetAllocationTest {
     @Test
     fun `all-silent sources split the budget evenly`() {
         val counts = allocate(
-            sources(ParticleType.DROPLET to 0f, ParticleType.LEAF to 0f)
+            sources(ParticleType.DROPLET to 0f, ParticleType.LEAF to 0f),
+            budget = 36
         )
 
         assertThat(counts.sum()).isEqualTo(36)
@@ -67,7 +71,7 @@ class BudgetAllocationTest {
 
     @Test
     fun `the wisp ceiling caps the total below the budget and is not redistributed`() {
-        val counts = allocate(sources(ParticleType.WISP to 1f))
+        val counts = allocate(sources(ParticleType.WISP to 1f), budget = 36)
 
         assertThat(counts.toList()).containsExactly(16)
         assertThat(counts.sum()).isLessThan(36)
@@ -76,7 +80,8 @@ class BudgetAllocationTest {
     @Test
     fun `what a ceiling frees does not leak to the other sources`() {
         val counts = allocate(
-            sources(ParticleType.WISP to 1f, ParticleType.DROPLET to 1f)
+            sources(ParticleType.WISP to 1f, ParticleType.DROPLET to 1f),
+            budget = 36
         )
 
         // Both would get 18; the wisp is capped at 16 and the droplet keeps 18.
