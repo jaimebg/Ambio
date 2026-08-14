@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Własny</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Minutnik</string>
+    <string name="mode_ambient">Otoczenie</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Tryb otoczenia</string>
+    <string name="state_break_time">Przerwa</string>
+    <string name="state_focus">Skupienie</string>
+    <string name="state_paused">Wstrzymano</string>
+    <string name="state_break_over">Koniec przerwy!</string>
+    <string name="state_completed">Ukończono!</string>
+    <string name="state_ready">Gotowe</string>
+
+    <!-- Controls -->
+    <string name="action_play">Odtwórz</string>
+    <string name="action_pause">Wstrzymaj</string>
+    <string name="action_reset">Zresetuj minutnik</string>
+    <string name="action_change_sound">Zmień</string>
+    <string name="action_open_settings">Ustawienia</string>
+    <string name="action_open_stats">Statystyki</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Wybierz dźwięk</string>
+    <string name="sound_none_selected">Nie wybrano dźwięku</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d dźwięk</item>
+        <item quantity="few">%1$d dźwięki</item>
+        <item quantity="many">%1$d dźwięków</item>
+        <item quantity="other">%1$d dźwięku</item>
+    </plurals>
+    <string name="mix_level_for">Poziom dźwięku %1$s</string>
+    <string name="mix_remove_sound">Usuń %1$s z miksu</string>
+    <string name="mix_add_sound">Dodaj %1$s do miksu</string>
+    <string name="mix_limit_reached">Miks jest pełny. Usuń dźwięk, zanim dodasz %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Czas skupienia</string>
+    <string name="label_break_duration">Czas przerwy</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Skróć czas skupienia</string>
+    <string name="a11y_increase_focus">Wydłuż czas skupienia</string>
+    <string name="a11y_volume_slider">Głośność</string>
+</resources>

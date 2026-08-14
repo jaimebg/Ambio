@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min.</string>
+    <string name="preset_50_min">50 min.</string>
+    <string name="preset_custom">Pasgemaak</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min.</item>
+        <item quantity="other">%1$d min.</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Tydhouer</string>
+    <string name="mode_ambient">Omgewing</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Omgewingsmodus</string>
+    <string name="state_break_time">Rustyd</string>
+    <string name="state_focus">Fokus</string>
+    <string name="state_paused">Gepouseer</string>
+    <string name="state_break_over">Rustyd verby!</string>
+    <string name="state_completed">Voltooi!</string>
+    <string name="state_ready">Gereed</string>
+
+    <!-- Controls -->
+    <string name="action_play">Speel</string>
+    <string name="action_pause">Pouseer</string>
+    <string name="action_reset">Herstel tydhouer</string>
+    <string name="action_change_sound">Verander</string>
+    <string name="action_open_settings">Instellings</string>
+    <string name="action_open_stats">Statistieke</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Kies klank</string>
+    <string name="sound_none_selected">Geen klank gekies nie</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d klank</item>
+        <item quantity="other">%1$d klanke</item>
+    </plurals>
+    <string name="mix_level_for">Vlak vir %1$s</string>
+    <string name="mix_remove_sound">Verwyder %1$s uit die mengsel</string>
+    <string name="mix_add_sound">Voeg %1$s by die mengsel</string>
+    <string name="mix_limit_reached">Die mengsel is vol. Verwyder \'n klank voordat jy %1$s byvoeg</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Fokusduur</string>
+    <string name="label_break_duration">Rusduur</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Verminder fokusduur</string>
+    <string name="a11y_increase_focus">Vermeerder fokusduur</string>
+    <string name="a11y_volume_slider">Volume</string>
+</resources>

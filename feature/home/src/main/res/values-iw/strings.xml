@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 דקות</string>
+    <string name="preset_50_min">50 דקות</string>
+    <string name="preset_custom">מותאם</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d דקה</item>
+        <item quantity="two">%1$d דקות</item>
+        <item quantity="other">%1$d דקות</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">טיימר</string>
+    <string name="mode_ambient">אווירה</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">מצב אווירה</string>
+    <string name="state_break_time">זמן הפסקה</string>
+    <string name="state_focus">מיקוד</string>
+    <string name="state_paused">מושהה</string>
+    <string name="state_break_over">ההפסקה הסתיימה!</string>
+    <string name="state_completed">הושלם!</string>
+    <string name="state_ready">מוכן</string>
+
+    <!-- Controls -->
+    <string name="action_play">הפעלה</string>
+    <string name="action_pause">השהיה</string>
+    <string name="action_reset">איפוס הטיימר</string>
+    <string name="action_change_sound">החלפה</string>
+    <string name="action_open_settings">הגדרות</string>
+    <string name="action_open_stats">סטטיסטיקה</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">בחירת צליל</string>
+    <string name="sound_none_selected">לא נבחר צליל</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d צליל</item>
+        <item quantity="two">%1$d צלילים</item>
+        <item quantity="other">%1$d צלילים</item>
+    </plurals>
+    <string name="mix_level_for">עוצמה של %1$s</string>
+    <string name="mix_remove_sound">הסרת %1$s מהמיקס</string>
+    <string name="mix_add_sound">הוספת %1$s למיקס</string>
+    <string name="mix_limit_reached">המיקס מלא. יש להסיר צליל לפני הוספת %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">משך המיקוד</string>
+    <string name="label_break_duration">משך ההפסקה</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">קיצור משך המיקוד</string>
+    <string name="a11y_increase_focus">הארכת משך המיקוד</string>
+    <string name="a11y_volume_slider">עוצמת קול</string>
+</resources>

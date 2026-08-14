@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 λεπτά</string>
+    <string name="preset_50_min">50 λεπτά</string>
+    <string name="preset_custom">Προσαρμογή</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d λεπτό</item>
+        <item quantity="other">%1$d λεπτά</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Χρονόμετρο</string>
+    <string name="mode_ambient">Ατμόσφαιρα</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Λειτουργία ατμόσφαιρας</string>
+    <string name="state_break_time">Διάλειμμα</string>
+    <string name="state_focus">Εστίαση</string>
+    <string name="state_paused">Σε παύση</string>
+    <string name="state_break_over">Το διάλειμμα τελείωσε!</string>
+    <string name="state_completed">Ολοκληρώθηκε!</string>
+    <string name="state_ready">Έτοιμο</string>
+
+    <!-- Controls -->
+    <string name="action_play">Αναπαραγωγή</string>
+    <string name="action_pause">Παύση</string>
+    <string name="action_reset">Επαναφορά χρονομέτρου</string>
+    <string name="action_change_sound">Αλλαγή</string>
+    <string name="action_open_settings">Ρυθμίσεις</string>
+    <string name="action_open_stats">Στατιστικά</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Επιλογή ήχου</string>
+    <string name="sound_none_selected">Δεν έχει επιλεγεί ήχος</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d ήχος</item>
+        <item quantity="other">%1$d ήχοι</item>
+    </plurals>
+    <string name="mix_level_for">Ένταση για %1$s</string>
+    <string name="mix_remove_sound">Αφαίρεση του %1$s από το μείγμα</string>
+    <string name="mix_add_sound">Προσθήκη του %1$s στο μείγμα</string>
+    <string name="mix_limit_reached">Το μείγμα είναι πλήρες. Αφαιρέστε έναν ήχο πριν προσθέσετε %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Διάρκεια εστίασης</string>
+    <string name="label_break_duration">Διάρκεια διαλείμματος</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Μείωση διάρκειας εστίασης</string>
+    <string name="a11y_increase_focus">Αύξηση διάρκειας εστίασης</string>
+    <string name="a11y_volume_slider">Ένταση</string>
+</resources>

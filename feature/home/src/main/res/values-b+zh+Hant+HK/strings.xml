@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 分鐘</string>
+    <string name="preset_50_min">50 分鐘</string>
+    <string name="preset_custom">自訂</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="other">%1$d 分鐘</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">計時器</string>
+    <string name="mode_ambient">環境音</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">環境音模式</string>
+    <string name="state_break_time">休息時間</string>
+    <string name="state_focus">專注中</string>
+    <string name="state_paused">已暫停</string>
+    <string name="state_break_over">休息結束！</string>
+    <string name="state_completed">已完成！</string>
+    <string name="state_ready">準備就緒</string>
+
+    <!-- Controls -->
+    <string name="action_play">播放</string>
+    <string name="action_pause">暫停</string>
+    <string name="action_reset">重設計時器</string>
+    <string name="action_change_sound">更改</string>
+    <string name="action_open_settings">設定</string>
+    <string name="action_open_stats">統計</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">選擇聲音</string>
+    <string name="sound_none_selected">未選擇聲音</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="other">%1$d 個聲音</item>
+    </plurals>
+    <string name="mix_level_for">%1$s的音量</string>
+    <string name="mix_remove_sound">從混音中移除%1$s</string>
+    <string name="mix_add_sound">將%1$s加入混音</string>
+    <string name="mix_limit_reached">混音已滿。請先移除一個聲音，再加入%1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">專注時長</string>
+    <string name="label_break_duration">休息時長</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">縮短專注時長</string>
+    <string name="a11y_increase_focus">延長專注時長</string>
+    <string name="a11y_volume_slider">音量</string>
+</resources>

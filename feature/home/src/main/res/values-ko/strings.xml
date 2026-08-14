@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25분</string>
+    <string name="preset_50_min">50분</string>
+    <string name="preset_custom">직접 설정</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="other">%1$d분</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">타이머</string>
+    <string name="mode_ambient">앰비언트</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">앰비언트 모드</string>
+    <string name="state_break_time">휴식 시간</string>
+    <string name="state_focus">집중</string>
+    <string name="state_paused">일시중지됨</string>
+    <string name="state_break_over">휴식 종료!</string>
+    <string name="state_completed">완료!</string>
+    <string name="state_ready">준비 완료</string>
+
+    <!-- Controls -->
+    <string name="action_play">재생</string>
+    <string name="action_pause">일시중지</string>
+    <string name="action_reset">타이머 재설정</string>
+    <string name="action_change_sound">변경</string>
+    <string name="action_open_settings">설정</string>
+    <string name="action_open_stats">통계</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">사운드 선택</string>
+    <string name="sound_none_selected">선택된 사운드 없음</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="other">사운드 %1$d개</item>
+    </plurals>
+    <string name="mix_level_for">%1$s 음량</string>
+    <string name="mix_remove_sound">믹스에서 %1$s 삭제</string>
+    <string name="mix_add_sound">믹스에 %1$s 추가</string>
+    <string name="mix_limit_reached">믹스가 가득 찼습니다. %1$s을(를) 추가하려면 사운드를 삭제하세요</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">집중 시간</string>
+    <string name="label_break_duration">휴식 시간</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">집중 시간 줄이기</string>
+    <string name="a11y_increase_focus">집중 시간 늘리기</string>
+    <string name="a11y_volume_slider">음량</string>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 分</string>
+    <string name="preset_50_min">50 分</string>
+    <string name="preset_custom">カスタム</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="other">%1$d 分</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">タイマー</string>
+    <string name="mode_ambient">アンビエント</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">アンビエントモード</string>
+    <string name="state_break_time">休憩中</string>
+    <string name="state_focus">集中中</string>
+    <string name="state_paused">一時停止中</string>
+    <string name="state_break_over">休憩終了！</string>
+    <string name="state_completed">完了！</string>
+    <string name="state_ready">準備完了</string>
+
+    <!-- Controls -->
+    <string name="action_play">再生</string>
+    <string name="action_pause">一時停止</string>
+    <string name="action_reset">タイマーをリセット</string>
+    <string name="action_change_sound">変更</string>
+    <string name="action_open_settings">設定</string>
+    <string name="action_open_stats">統計</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">サウンドを選択</string>
+    <string name="sound_none_selected">サウンドが選択されていません</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="other">サウンド%1$d個</item>
+    </plurals>
+    <string name="mix_level_for">%1$s の音量</string>
+    <string name="mix_remove_sound">%1$s をミックスから削除</string>
+    <string name="mix_add_sound">%1$s をミックスに追加</string>
+    <string name="mix_limit_reached">ミックスがいっぱいです。%1$s を追加する前にサウンドを削除してください</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">集中時間</string>
+    <string name="label_break_duration">休憩時間</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">集中時間を減らす</string>
+    <string name="a11y_increase_focus">集中時間を増やす</string>
+    <string name="a11y_volume_slider">音量</string>
+</resources>

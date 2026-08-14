@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 मिनट</string>
+    <string name="preset_50_min">50 मिनट</string>
+    <string name="preset_custom">कस्टम</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d मिनट</item>
+        <item quantity="other">%1$d मिनट</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">टाइमर</string>
+    <string name="mode_ambient">एंबियंट</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">एंबियंट मोड</string>
+    <string name="state_break_time">ब्रेक का समय</string>
+    <string name="state_focus">फ़ोकस</string>
+    <string name="state_paused">रुका हुआ</string>
+    <string name="state_break_over">ब्रेक खत्म!</string>
+    <string name="state_completed">पूरा हुआ!</string>
+    <string name="state_ready">तैयार</string>
+
+    <!-- Controls -->
+    <string name="action_play">चलाएं</string>
+    <string name="action_pause">रोकें</string>
+    <string name="action_reset">टाइमर रीसेट करें</string>
+    <string name="action_change_sound">बदलें</string>
+    <string name="action_open_settings">सेटिंग</string>
+    <string name="action_open_stats">आंकड़े</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">आवाज़ चुनें</string>
+    <string name="sound_none_selected">कोई आवाज़ नहीं चुनी गई</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d आवाज़</item>
+        <item quantity="other">%1$d आवाज़ें</item>
+    </plurals>
+    <string name="mix_level_for">%1$s का लेवल</string>
+    <string name="mix_remove_sound">%1$s को मिक्स से हटाएं</string>
+    <string name="mix_add_sound">%1$s को मिक्स में जोड़ें</string>
+    <string name="mix_limit_reached">मिक्स भर गया है. %1$s जोड़ने से पहले कोई आवाज़ हटाएं</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">फ़ोकस की अवधि</string>
+    <string name="label_break_duration">ब्रेक की अवधि</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">फ़ोकस की अवधि घटाएं</string>
+    <string name="a11y_increase_focus">फ़ोकस की अवधि बढ़ाएं</string>
+    <string name="a11y_volume_slider">वॉल्यूम</string>
+</resources>

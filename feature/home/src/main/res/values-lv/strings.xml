@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Pielāgots</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="zero">%1$d min</item>
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Taimeris</string>
+    <string name="mode_ambient">Vide</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Vides režīms</string>
+    <string name="state_break_time">Pārtraukums</string>
+    <string name="state_focus">Koncentrēšanās</string>
+    <string name="state_paused">Pauzēts</string>
+    <string name="state_break_over">Pārtraukums beidzies!</string>
+    <string name="state_completed">Pabeigts!</string>
+    <string name="state_ready">Gatavs</string>
+
+    <!-- Controls -->
+    <string name="action_play">Atskaņot</string>
+    <string name="action_pause">Pauzēt</string>
+    <string name="action_reset">Atiestatīt taimeri</string>
+    <string name="action_change_sound">Mainīt</string>
+    <string name="action_open_settings">Iestatījumi</string>
+    <string name="action_open_stats">Statistika</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Izvēlieties skaņu</string>
+    <string name="sound_none_selected">Nav izvēlēta neviena skaņa</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="zero">%1$d skaņu</item>
+        <item quantity="one">%1$d skaņa</item>
+        <item quantity="other">%1$d skaņas</item>
+    </plurals>
+    <string name="mix_level_for">Skaņas %1$s līmenis</string>
+    <string name="mix_remove_sound">Noņemt %1$s no miksa</string>
+    <string name="mix_add_sound">Pievienot %1$s miksam</string>
+    <string name="mix_limit_reached">Mikss ir pilns. Noņemiet skaņu, pirms pievienojat skaņu %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Koncentrēšanās ilgums</string>
+    <string name="label_break_duration">Pārtraukuma ilgums</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Samazināt koncentrēšanās ilgumu</string>
+    <string name="a11y_increase_focus">Palielināt koncentrēšanās ilgumu</string>
+    <string name="a11y_volume_slider">Skaļums</string>
+</resources>

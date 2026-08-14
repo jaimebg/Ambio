@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min.</string>
+    <string name="preset_50_min">50 min.</string>
+    <string name="preset_custom">Tilpasset</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min.</item>
+        <item quantity="other">%1$d min.</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Timer</string>
+    <string name="mode_ambient">Stemning</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Stemningstilstand</string>
+    <string name="state_break_time">Pausetid</string>
+    <string name="state_focus">Fokus</string>
+    <string name="state_paused">Sat på pause</string>
+    <string name="state_break_over">Pausen er slut!</string>
+    <string name="state_completed">Fuldført!</string>
+    <string name="state_ready">Klar</string>
+
+    <!-- Controls -->
+    <string name="action_play">Afspil</string>
+    <string name="action_pause">Sæt på pause</string>
+    <string name="action_reset">Nulstil timeren</string>
+    <string name="action_change_sound">Skift</string>
+    <string name="action_open_settings">Indstillinger</string>
+    <string name="action_open_stats">Statistik</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Vælg lyd</string>
+    <string name="sound_none_selected">Ingen lyd valgt</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d lyd</item>
+        <item quantity="other">%1$d lyde</item>
+    </plurals>
+    <string name="mix_level_for">Niveau for %1$s</string>
+    <string name="mix_remove_sound">Fjern %1$s fra mikset</string>
+    <string name="mix_add_sound">Føj %1$s til mikset</string>
+    <string name="mix_limit_reached">Mikset er fuldt. Fjern en lyd, før du tilføjer %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Fokusvarighed</string>
+    <string name="label_break_duration">Pausevarighed</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Reducer fokusvarigheden</string>
+    <string name="a11y_increase_focus">Forøg fokusvarigheden</string>
+    <string name="a11y_volume_slider">Lydstyrke</string>
+</resources>

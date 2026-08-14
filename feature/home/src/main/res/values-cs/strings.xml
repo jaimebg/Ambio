@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Vlastní</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Časovač</string>
+    <string name="mode_ambient">Atmosféra</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Režim atmosféry</string>
+    <string name="state_break_time">Přestávka</string>
+    <string name="state_focus">Soustředění</string>
+    <string name="state_paused">Pozastaveno</string>
+    <string name="state_break_over">Přestávka skončila!</string>
+    <string name="state_completed">Hotovo!</string>
+    <string name="state_ready">Připraveno</string>
+
+    <!-- Controls -->
+    <string name="action_play">Přehrát</string>
+    <string name="action_pause">Pozastavit</string>
+    <string name="action_reset">Resetovat časovač</string>
+    <string name="action_change_sound">Změnit</string>
+    <string name="action_open_settings">Nastavení</string>
+    <string name="action_open_stats">Statistiky</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Vyberte zvuk</string>
+    <string name="sound_none_selected">Není vybrán žádný zvuk</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d zvuk</item>
+        <item quantity="few">%1$d zvuky</item>
+        <item quantity="many">%1$d zvuku</item>
+        <item quantity="other">%1$d zvuků</item>
+    </plurals>
+    <string name="mix_level_for">Úroveň zvuku %1$s</string>
+    <string name="mix_remove_sound">Odebrat %1$s z mixu</string>
+    <string name="mix_add_sound">Přidat %1$s do mixu</string>
+    <string name="mix_limit_reached">Mix je plný. Než přidáte %1$s, odeberte jiný zvuk</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Délka soustředění</string>
+    <string name="label_break_duration">Délka přestávky</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Zkrátit délku soustředění</string>
+    <string name="a11y_increase_focus">Prodloužit délku soustředění</string>
+    <string name="a11y_volume_slider">Hlasitost</string>
+</resources>

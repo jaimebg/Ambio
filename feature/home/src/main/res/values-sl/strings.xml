@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Po meri</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="two">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Časovnik</string>
+    <string name="mode_ambient">Vzdušje</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Način vzdušja</string>
+    <string name="state_break_time">Odmor</string>
+    <string name="state_focus">Zbranost</string>
+    <string name="state_paused">Zaustavljeno</string>
+    <string name="state_break_over">Odmor je končan!</string>
+    <string name="state_completed">Končano!</string>
+    <string name="state_ready">Pripravljeno</string>
+
+    <!-- Controls -->
+    <string name="action_play">Predvajaj</string>
+    <string name="action_pause">Zaustavi</string>
+    <string name="action_reset">Ponastavi časovnik</string>
+    <string name="action_change_sound">Zamenjaj</string>
+    <string name="action_open_settings">Nastavitve</string>
+    <string name="action_open_stats">Statistika</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Izberite zvok</string>
+    <string name="sound_none_selected">Noben zvok ni izbran</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d zvok</item>
+        <item quantity="two">%1$d zvoka</item>
+        <item quantity="few">%1$d zvoki</item>
+        <item quantity="other">%1$d zvokov</item>
+    </plurals>
+    <string name="mix_level_for">Raven zvoka %1$s</string>
+    <string name="mix_remove_sound">Odstrani %1$s iz mešanice</string>
+    <string name="mix_add_sound">Dodaj %1$s v mešanico</string>
+    <string name="mix_limit_reached">Mešanica je polna. Odstranite zvok, preden dodate zvok %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Trajanje zbranosti</string>
+    <string name="label_break_duration">Trajanje odmora</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Skrajšaj trajanje zbranosti</string>
+    <string name="a11y_increase_focus">Podaljšaj trajanje zbranosti</string>
+    <string name="a11y_volume_slider">Glasnost</string>
+</resources>

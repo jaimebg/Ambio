@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Muu</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Taimer</string>
+    <string name="mode_ambient">Ümbrus</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Ümbruse režiim</string>
+    <string name="state_break_time">Paus</string>
+    <string name="state_focus">Keskendumine</string>
+    <string name="state_paused">Peatatud</string>
+    <string name="state_break_over">Paus on läbi!</string>
+    <string name="state_completed">Lõpetatud!</string>
+    <string name="state_ready">Valmis</string>
+
+    <!-- Controls -->
+    <string name="action_play">Esita</string>
+    <string name="action_pause">Peata</string>
+    <string name="action_reset">Lähtesta taimer</string>
+    <string name="action_change_sound">Muuda</string>
+    <string name="action_open_settings">Seaded</string>
+    <string name="action_open_stats">Statistika</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Valige heli</string>
+    <string name="sound_none_selected">Ühtegi heli pole valitud</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d heli</item>
+        <item quantity="other">%1$d heli</item>
+    </plurals>
+    <string name="mix_level_for">Heli %1$s tase</string>
+    <string name="mix_remove_sound">Eemalda %1$s miksist</string>
+    <string name="mix_add_sound">Lisa %1$s miksi</string>
+    <string name="mix_limit_reached">Miks on täis. Eemaldage heli, enne kui lisate heli %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Keskendumise kestus</string>
+    <string name="label_break_duration">Pausi kestus</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Vähenda keskendumise kestust</string>
+    <string name="a11y_increase_focus">Suurenda keskendumise kestust</string>
+    <string name="a11y_volume_slider">Helitugevus</string>
+</resources>

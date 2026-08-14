@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Prilagođeno</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Mjerač vremena</string>
+    <string name="mode_ambient">Ambijent</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Ambijentalni način</string>
+    <string name="state_break_time">Pauza</string>
+    <string name="state_focus">Fokusiranje</string>
+    <string name="state_paused">Pauzirano</string>
+    <string name="state_break_over">Pauza je gotova!</string>
+    <string name="state_completed">Završeno!</string>
+    <string name="state_ready">Spremno</string>
+
+    <!-- Controls -->
+    <string name="action_play">Reproduciraj</string>
+    <string name="action_pause">Pauziraj</string>
+    <string name="action_reset">Poništi mjerač vremena</string>
+    <string name="action_change_sound">Promijeni</string>
+    <string name="action_open_settings">Postavke</string>
+    <string name="action_open_stats">Statistika</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Odaberite zvuk</string>
+    <string name="sound_none_selected">Nije odabran nijedan zvuk</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d zvuk</item>
+        <item quantity="few">%1$d zvuka</item>
+        <item quantity="other">%1$d zvukova</item>
+    </plurals>
+    <string name="mix_level_for">Razina zvuka %1$s</string>
+    <string name="mix_remove_sound">Ukloni %1$s iz miksa</string>
+    <string name="mix_add_sound">Dodaj %1$s u miks</string>
+    <string name="mix_limit_reached">Miks je pun. Uklonite zvuk prije dodavanja zvuka %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Trajanje fokusiranja</string>
+    <string name="label_break_duration">Trajanje pauze</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Smanji trajanje fokusiranja</string>
+    <string name="a11y_increase_focus">Povećaj trajanje fokusiranja</string>
+    <string name="a11y_volume_slider">Glasnoća</string>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 mins</string>
+    <string name="preset_50_min">50 mins</string>
+    <string name="preset_custom">Custom</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d mins</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Timer</string>
+    <string name="mode_ambient">Ambient</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Ambient Mode</string>
+    <string name="state_break_time">Break Time</string>
+    <string name="state_focus">Focus</string>
+    <string name="state_paused">Paused</string>
+    <string name="state_break_over">Break Over!</string>
+    <string name="state_completed">Completed!</string>
+    <string name="state_ready">Ready</string>
+
+    <!-- Controls -->
+    <string name="action_play">Play</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_reset">Reset timer</string>
+    <string name="action_change_sound">Change</string>
+    <string name="action_open_settings">Settings</string>
+    <string name="action_open_stats">Statistics</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Select Sound</string>
+    <string name="sound_none_selected">No sound selected</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d sound</item>
+        <item quantity="other">%1$d sounds</item>
+    </plurals>
+    <string name="mix_level_for">Level for %1$s</string>
+    <string name="mix_remove_sound">Remove %1$s from the mix</string>
+    <string name="mix_add_sound">Add %1$s to the mix</string>
+    <string name="mix_limit_reached">Mix is full. Remove a sound before adding %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Focus Duration</string>
+    <string name="label_break_duration">Break Duration</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Decrease focus duration</string>
+    <string name="a11y_increase_focus">Increase focus duration</string>
+    <string name="a11y_volume_slider">Volume</string>
+</resources>

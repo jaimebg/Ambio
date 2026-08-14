@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Su misura</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Timer</string>
+    <string name="mode_ambient">Ambiente</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Modalità ambiente</string>
+    <string name="state_break_time">Tempo di pausa</string>
+    <string name="state_focus">Concentrazione</string>
+    <string name="state_paused">In pausa</string>
+    <string name="state_break_over">Pausa finita!</string>
+    <string name="state_completed">Completato!</string>
+    <string name="state_ready">Pronto</string>
+
+    <!-- Controls -->
+    <string name="action_play">Riproduci</string>
+    <string name="action_pause">Metti in pausa</string>
+    <string name="action_reset">Reimposta il timer</string>
+    <string name="action_change_sound">Cambia</string>
+    <string name="action_open_settings">Impostazioni</string>
+    <string name="action_open_stats">Statistiche</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Scegli un suono</string>
+    <string name="sound_none_selected">Nessun suono selezionato</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d suono</item>
+        <item quantity="many">%1$d suoni</item>
+        <item quantity="other">%1$d suoni</item>
+    </plurals>
+    <string name="mix_level_for">Livello di %1$s</string>
+    <string name="mix_remove_sound">Rimuovi %1$s dal mix</string>
+    <string name="mix_add_sound">Aggiungi %1$s al mix</string>
+    <string name="mix_limit_reached">Il mix è pieno. Rimuovi un suono prima di aggiungere %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Durata della concentrazione</string>
+    <string name="label_break_duration">Durata della pausa</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Riduci la durata della concentrazione</string>
+    <string name="a11y_increase_focus">Aumenta la durata della concentrazione</string>
+    <string name="a11y_volume_slider">Volume</string>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 dk.</string>
+    <string name="preset_50_min">50 dk.</string>
+    <string name="preset_custom">Özel</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d dk.</item>
+        <item quantity="other">%1$d dk.</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Zamanlayıcı</string>
+    <string name="mode_ambient">Ortam</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Ortam modu</string>
+    <string name="state_break_time">Mola</string>
+    <string name="state_focus">Odaklanma</string>
+    <string name="state_paused">Duraklatıldı</string>
+    <string name="state_break_over">Mola bitti!</string>
+    <string name="state_completed">Tamamlandı!</string>
+    <string name="state_ready">Hazır</string>
+
+    <!-- Controls -->
+    <string name="action_play">Oynat</string>
+    <string name="action_pause">Duraklat</string>
+    <string name="action_reset">Zamanlayıcıyı sıfırla</string>
+    <string name="action_change_sound">Değiştir</string>
+    <string name="action_open_settings">Ayarlar</string>
+    <string name="action_open_stats">İstatistikler</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Ses seç</string>
+    <string name="sound_none_selected">Ses seçilmedi</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d ses</item>
+        <item quantity="other">%1$d ses</item>
+    </plurals>
+    <string name="mix_level_for">%1$s için seviye</string>
+    <string name="mix_remove_sound">%1$s sesini miksten kaldır</string>
+    <string name="mix_add_sound">%1$s sesini mikse ekle</string>
+    <string name="mix_limit_reached">Miks dolu. %1$s eklemeden önce bir ses kaldırın</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Odaklanma süresi</string>
+    <string name="label_break_duration">Mola süresi</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Odaklanma süresini azalt</string>
+    <string name="a11y_increase_focus">Odaklanma süresini artır</string>
+    <string name="a11y_volume_slider">Ses düzeyi</string>
+</resources>

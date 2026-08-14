@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min</string>
+    <string name="preset_50_min">50 min</string>
+    <string name="preset_custom">Lain</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Pemasa</string>
+    <string name="mode_ambient">Suasana</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Mod suasana</string>
+    <string name="state_break_time">Masa rehat</string>
+    <string name="state_focus">Fokus</string>
+    <string name="state_paused">Dijeda</string>
+    <string name="state_break_over">Rehat tamat!</string>
+    <string name="state_completed">Selesai!</string>
+    <string name="state_ready">Sedia</string>
+
+    <!-- Controls -->
+    <string name="action_play">Main</string>
+    <string name="action_pause">Jeda</string>
+    <string name="action_reset">Tetapkan semula pemasa</string>
+    <string name="action_change_sound">Tukar</string>
+    <string name="action_open_settings">Tetapan</string>
+    <string name="action_open_stats">Statistik</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Pilih bunyi</string>
+    <string name="sound_none_selected">Tiada bunyi dipilih</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="other">%1$d bunyi</item>
+    </plurals>
+    <string name="mix_level_for">Aras untuk %1$s</string>
+    <string name="mix_remove_sound">Alih keluar %1$s daripada campuran</string>
+    <string name="mix_add_sound">Tambah %1$s pada campuran</string>
+    <string name="mix_limit_reached">Campuran sudah penuh. Alih keluar satu bunyi sebelum menambah %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Tempoh fokus</string>
+    <string name="label_break_duration">Tempoh rehat</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Kurangkan tempoh fokus</string>
+    <string name="a11y_increase_focus">Tambahkan tempoh fokus</string>
+    <string name="a11y_volume_slider">Kelantangan</string>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 phút</string>
+    <string name="preset_50_min">50 phút</string>
+    <string name="preset_custom">Tùy chỉnh</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="other">%1$d phút</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Bộ hẹn giờ</string>
+    <string name="mode_ambient">Nền</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Chế độ nền</string>
+    <string name="state_break_time">Giờ nghỉ</string>
+    <string name="state_focus">Tập trung</string>
+    <string name="state_paused">Đã tạm dừng</string>
+    <string name="state_break_over">Hết giờ nghỉ!</string>
+    <string name="state_completed">Đã hoàn thành!</string>
+    <string name="state_ready">Sẵn sàng</string>
+
+    <!-- Controls -->
+    <string name="action_play">Phát</string>
+    <string name="action_pause">Tạm dừng</string>
+    <string name="action_reset">Đặt lại bộ hẹn giờ</string>
+    <string name="action_change_sound">Đổi</string>
+    <string name="action_open_settings">Cài đặt</string>
+    <string name="action_open_stats">Thống kê</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Chọn âm thanh</string>
+    <string name="sound_none_selected">Chưa chọn âm thanh</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="other">%1$d âm thanh</item>
+    </plurals>
+    <string name="mix_level_for">Mức âm lượng của %1$s</string>
+    <string name="mix_remove_sound">Xóa %1$s khỏi bản phối</string>
+    <string name="mix_add_sound">Thêm %1$s vào bản phối</string>
+    <string name="mix_limit_reached">Bản phối đã đầy. Hãy xóa một âm thanh trước khi thêm %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Thời lượng tập trung</string>
+    <string name="label_break_duration">Thời lượng nghỉ</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Giảm thời lượng tập trung</string>
+    <string name="a11y_increase_focus">Tăng thời lượng tập trung</string>
+    <string name="a11y_volume_slider">Âm lượng</string>
+</resources>

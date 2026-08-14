@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 мин</string>
+    <string name="preset_50_min">50 мин</string>
+    <string name="preset_custom">Друго</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d мин</item>
+        <item quantity="other">%1$d мин</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Таймер</string>
+    <string name="mode_ambient">Фон</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Фонов режим</string>
+    <string name="state_break_time">Почивка</string>
+    <string name="state_focus">Фокус</string>
+    <string name="state_paused">На пауза</string>
+    <string name="state_break_over">Почивката приключи!</string>
+    <string name="state_completed">Завършено!</string>
+    <string name="state_ready">Готово</string>
+
+    <!-- Controls -->
+    <string name="action_play">Възпроизвеждане</string>
+    <string name="action_pause">Пауза</string>
+    <string name="action_reset">Нулиране на таймера</string>
+    <string name="action_change_sound">Промяна</string>
+    <string name="action_open_settings">Настройки</string>
+    <string name="action_open_stats">Статистика</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Изберете звук</string>
+    <string name="sound_none_selected">Няма избран звук</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d звук</item>
+        <item quantity="other">%1$d звука</item>
+    </plurals>
+    <string name="mix_level_for">Ниво на %1$s</string>
+    <string name="mix_remove_sound">Премахване на %1$s от микса</string>
+    <string name="mix_add_sound">Добавяне на %1$s към микса</string>
+    <string name="mix_limit_reached">Миксът е пълен. Премахнете звук, преди да добавите %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Продължителност на фокуса</string>
+    <string name="label_break_duration">Продължителност на почивката</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Намаляване на продължителността на фокуса</string>
+    <string name="a11y_increase_focus">Увеличаване на продължителността на фокуса</string>
+    <string name="a11y_volume_slider">Сила на звука</string>
+</resources>

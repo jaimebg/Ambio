@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 хв</string>
+    <string name="preset_50_min">50 хв</string>
+    <string name="preset_custom">Власний</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d хв</item>
+        <item quantity="few">%1$d хв</item>
+        <item quantity="many">%1$d хв</item>
+        <item quantity="other">%1$d хв</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Таймер</string>
+    <string name="mode_ambient">Фон</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Фоновий режим</string>
+    <string name="state_break_time">Перерва</string>
+    <string name="state_focus">Зосередження</string>
+    <string name="state_paused">На паузі</string>
+    <string name="state_break_over">Перерву завершено!</string>
+    <string name="state_completed">Завершено!</string>
+    <string name="state_ready">Готово</string>
+
+    <!-- Controls -->
+    <string name="action_play">Відтворити</string>
+    <string name="action_pause">Пауза</string>
+    <string name="action_reset">Скинути таймер</string>
+    <string name="action_change_sound">Змінити</string>
+    <string name="action_open_settings">Налаштування</string>
+    <string name="action_open_stats">Статистика</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Виберіть звук</string>
+    <string name="sound_none_selected">Звук не вибрано</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d звук</item>
+        <item quantity="few">%1$d звуки</item>
+        <item quantity="many">%1$d звуків</item>
+        <item quantity="other">%1$d звука</item>
+    </plurals>
+    <string name="mix_level_for">Рівень звуку %1$s</string>
+    <string name="mix_remove_sound">Прибрати %1$s з міксу</string>
+    <string name="mix_add_sound">Додати %1$s до міксу</string>
+    <string name="mix_limit_reached">Мікс заповнений. Приберіть звук, щоб додати %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Тривалість зосередження</string>
+    <string name="label_break_duration">Тривалість перерви</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Зменшити тривалість зосередження</string>
+    <string name="a11y_increase_focus">Збільшити тривалість зосередження</string>
+    <string name="a11y_volume_slider">Гучність</string>
+</resources>

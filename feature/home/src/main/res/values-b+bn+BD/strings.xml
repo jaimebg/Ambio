@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 মিনিট</string>
+    <string name="preset_50_min">50 মিনিট</string>
+    <string name="preset_custom">কাস্টম</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d মিনিট</item>
+        <item quantity="other">%1$d মিনিট</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">টাইমার</string>
+    <string name="mode_ambient">অ্যাম্বিয়েন্ট</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">অ্যাম্বিয়েন্ট মোড</string>
+    <string name="state_break_time">বিরতির সময়</string>
+    <string name="state_focus">ফোকাস</string>
+    <string name="state_paused">থামানো হয়েছে</string>
+    <string name="state_break_over">বিরতি শেষ!</string>
+    <string name="state_completed">সম্পন্ন!</string>
+    <string name="state_ready">প্রস্তুত</string>
+
+    <!-- Controls -->
+    <string name="action_play">চালান</string>
+    <string name="action_pause">থামান</string>
+    <string name="action_reset">টাইমার রিসেট করুন</string>
+    <string name="action_change_sound">বদলান</string>
+    <string name="action_open_settings">সেটিংস</string>
+    <string name="action_open_stats">পরিসংখ্যান</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">শব্দ বেছে নিন</string>
+    <string name="sound_none_selected">কোনও শব্দ বাছা হয়নি</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$dটি শব্দ</item>
+        <item quantity="other">%1$dটি শব্দ</item>
+    </plurals>
+    <string name="mix_level_for">%1$s এর লেভেল</string>
+    <string name="mix_remove_sound">%1$s মিক্স থেকে সরান</string>
+    <string name="mix_add_sound">%1$s মিক্সে যোগ করুন</string>
+    <string name="mix_limit_reached">মিক্স পূর্ণ। %1$s যোগ করার আগে একটি শব্দ সরান</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">ফোকাসের সময়কাল</string>
+    <string name="label_break_duration">বিরতির সময়কাল</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">ফোকাসের সময়কাল কমান</string>
+    <string name="a11y_increase_focus">ফোকাসের সময়কাল বাড়ান</string>
+    <string name="a11y_volume_slider">ভলিউম</string>
+</resources>

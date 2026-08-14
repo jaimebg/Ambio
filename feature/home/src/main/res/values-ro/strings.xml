@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 min.</string>
+    <string name="preset_50_min">50 min.</string>
+    <string name="preset_custom">Personalizat</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min.</item>
+        <item quantity="few">%1$d min.</item>
+        <item quantity="other">%1$d min.</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Temporizator</string>
+    <string name="mode_ambient">Ambiental</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Mod ambiental</string>
+    <string name="state_break_time">Pauză</string>
+    <string name="state_focus">Concentrare</string>
+    <string name="state_paused">Întrerupt</string>
+    <string name="state_break_over">Pauza s-a încheiat!</string>
+    <string name="state_completed">Finalizat!</string>
+    <string name="state_ready">Gata</string>
+
+    <!-- Controls -->
+    <string name="action_play">Redare</string>
+    <string name="action_pause">Întrerupe</string>
+    <string name="action_reset">Resetează temporizatorul</string>
+    <string name="action_change_sound">Schimbă</string>
+    <string name="action_open_settings">Setări</string>
+    <string name="action_open_stats">Statistici</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Alege un sunet</string>
+    <string name="sound_none_selected">Niciun sunet selectat</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d sunet</item>
+        <item quantity="few">%1$d sunete</item>
+        <item quantity="other">%1$d de sunete</item>
+    </plurals>
+    <string name="mix_level_for">Nivel pentru %1$s</string>
+    <string name="mix_remove_sound">Elimină %1$s din mix</string>
+    <string name="mix_add_sound">Adaugă %1$s în mix</string>
+    <string name="mix_limit_reached">Mixul este plin. Elimină un sunet înainte de a adăuga %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Durata concentrării</string>
+    <string name="label_break_duration">Durata pauzei</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Redu durata concentrării</string>
+    <string name="a11y_increase_focus">Mărește durata concentrării</string>
+    <string name="a11y_volume_slider">Volum</string>
+</resources>

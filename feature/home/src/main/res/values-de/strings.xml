@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 Min.</string>
+    <string name="preset_50_min">50 Min.</string>
+    <string name="preset_custom">Eigene</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d Min.</item>
+        <item quantity="other">%1$d Min.</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">Timer</string>
+    <string name="mode_ambient">Ambiente</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">Ambiente-Modus</string>
+    <string name="state_break_time">Pausenzeit</string>
+    <string name="state_focus">Fokus</string>
+    <string name="state_paused">Pausiert</string>
+    <string name="state_break_over">Pause vorbei!</string>
+    <string name="state_completed">Fertig!</string>
+    <string name="state_ready">Bereit</string>
+
+    <!-- Controls -->
+    <string name="action_play">Wiedergabe</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_reset">Timer zurücksetzen</string>
+    <string name="action_change_sound">Ändern</string>
+    <string name="action_open_settings">Einstellungen</string>
+    <string name="action_open_stats">Statistik</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">Sound auswählen</string>
+    <string name="sound_none_selected">Kein Sound ausgewählt</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d Sound</item>
+        <item quantity="other">%1$d Sounds</item>
+    </plurals>
+    <string name="mix_level_for">Pegel für %1$s</string>
+    <string name="mix_remove_sound">%1$s aus dem Mix entfernen</string>
+    <string name="mix_add_sound">%1$s zum Mix hinzufügen</string>
+    <string name="mix_limit_reached">Der Mix ist voll. Entferne einen Sound, bevor du %1$s hinzufügst</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">Fokusdauer</string>
+    <string name="label_break_duration">Pausendauer</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">Fokusdauer verringern</string>
+    <string name="a11y_increase_focus">Fokusdauer erhöhen</string>
+    <string name="a11y_volume_slider">Lautstärke</string>
+</resources>

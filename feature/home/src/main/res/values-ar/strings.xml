@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Timer presets -->
+    <string name="preset_25_min">25 دقيقة</string>
+    <string name="preset_50_min">50 دقيقة</string>
+    <string name="preset_custom">مخصص</string>
+
+    <!-- Duration stepper -->
+    <plurals name="duration_minutes">
+        <item quantity="zero">%1$d دقيقة</item>
+        <item quantity="one">%1$d دقيقة</item>
+        <item quantity="two">%1$d دقيقة</item>
+        <item quantity="few">%1$d دقائق</item>
+        <item quantity="many">%1$d دقيقة</item>
+        <item quantity="other">%1$d دقيقة</item>
+    </plurals>
+
+    <!-- Modes -->
+    <string name="mode_timer">المؤقت</string>
+    <string name="mode_ambient">الأجواء</string>
+
+    <!-- Timer states -->
+    <string name="state_ambient_mode">وضع الأجواء</string>
+    <string name="state_break_time">وقت الاستراحة</string>
+    <string name="state_focus">تركيز</string>
+    <string name="state_paused">متوقف مؤقتًا</string>
+    <string name="state_break_over">انتهت الاستراحة!</string>
+    <string name="state_completed">اكتمل!</string>
+    <string name="state_ready">جاهز</string>
+
+    <!-- Controls -->
+    <string name="action_play">تشغيل</string>
+    <string name="action_pause">إيقاف مؤقت</string>
+    <string name="action_reset">إعادة ضبط المؤقت</string>
+    <string name="action_change_sound">تغيير</string>
+    <string name="action_open_settings">الإعدادات</string>
+    <string name="action_open_stats">الإحصائيات</string>
+
+    <!-- Sound picker -->
+    <string name="sound_picker_title">اختيار صوت</string>
+    <string name="sound_none_selected">لم يتم اختيار أي صوت</string>
+
+    <!-- Sound mixer -->
+    <plurals name="mix_sound_count">
+        <item quantity="zero">%1$d صوت</item>
+        <item quantity="one">%1$d صوت</item>
+        <item quantity="two">%1$d صوت</item>
+        <item quantity="few">%1$d أصوات</item>
+        <item quantity="many">%1$d صوت</item>
+        <item quantity="other">%1$d صوت</item>
+    </plurals>
+    <string name="mix_level_for">مستوى %1$s</string>
+    <string name="mix_remove_sound">إزالة %1$s من المزيج</string>
+    <string name="mix_add_sound">إضافة %1$s إلى المزيج</string>
+    <string name="mix_limit_reached">المزيج ممتلئ. أزل صوتًا قبل إضافة %1$s</string>
+
+    <!-- Section labels -->
+    <string name="label_focus_duration">مدة التركيز</string>
+    <string name="label_break_duration">مدة الاستراحة</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_decrease_focus">تقليل مدة التركيز</string>
+    <string name="a11y_increase_focus">زيادة مدة التركيز</string>
+    <string name="a11y_volume_slider">مستوى الصوت</string>
+</resources>
