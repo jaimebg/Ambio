@@ -16,7 +16,7 @@ import com.jbgsoft.ambio.core.domain.model.AmbioPalette
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.model.toPalette
 
-private const val THEME_ANIMATION_DURATION = 400
+internal const val THEME_ANIMATION_DURATION = 400
 
 @Composable
 fun AmbioTheme(
