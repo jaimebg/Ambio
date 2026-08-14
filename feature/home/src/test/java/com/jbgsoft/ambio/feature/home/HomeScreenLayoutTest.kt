@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
@@ -86,5 +88,66 @@ class HomeScreenLayoutTest {
         ).performClick()
 
         assertThat(navigated).isTrue()
+    }
+
+    // Modifier.size cannot grow past the constraints it is handed, and the default
+    // Robolectric device is 320x470dp, so a tablet-sized window has to come from the
+    // device qualifiers. Without this the box below would be clamped back to 320dp
+    // and the test would silently measure the compact layout instead.
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp")
+    fun `at expanded width the picker is visible without opening the sheet`() {
+        compose.setContent {
+            Box(Modifier.size(1280.dp, 800.dp)) {
+                HomeScreen(
+                    // showSoundPicker stays false: the pane must not depend on it.
+                    uiState = state.copy(showSoundPicker = false),
+                    onEvent = {},
+                    onNavigateToSettings = {},
+                    onNavigateToStats = {}
+                )
+            }
+        }
+
+        compose.onNodeWithText(
+            context.getString(R.string.sound_picker_title)
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    fun `at compact width the picker stays hidden until the sheet is asked for`() {
+        compose.setContent {
+            Box(Modifier.size(411.dp, 891.dp)) {
+                HomeScreen(
+                    uiState = state.copy(showSoundPicker = false),
+                    onEvent = {},
+                    onNavigateToSettings = {},
+                    onNavigateToStats = {}
+                )
+            }
+        }
+
+        compose.onNodeWithText(
+            context.getString(R.string.sound_picker_title)
+        ).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp")
+    fun `at expanded width the change button is gone because the picker is already open`() {
+        compose.setContent {
+            Box(Modifier.size(1280.dp, 800.dp)) {
+                HomeScreen(
+                    uiState = state,
+                    onEvent = {},
+                    onNavigateToSettings = {},
+                    onNavigateToStats = {}
+                )
+            }
+        }
+
+        compose.onNodeWithText(
+            context.getString(R.string.action_change_sound)
+        ).assertDoesNotExist()
     }
 }

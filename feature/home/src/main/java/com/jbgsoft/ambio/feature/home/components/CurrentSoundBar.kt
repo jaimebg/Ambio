@@ -19,10 +19,17 @@ import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.feature.home.R
 
+/**
+ * The always-visible summary of what is playing.
+ *
+ * [showChangeButton] exists for the two-pane layout: when the picker is already
+ * on screen beside the timer, a button that opens it would be a no-op.
+ */
 @Composable
 fun CurrentSoundBar(
     activeMix: List<ActiveSound>,
     onChangeClick: () -> Unit,
+    showChangeButton: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -67,8 +74,10 @@ fun CurrentSoundBar(
             }
         }
 
-        FilledTonalButton(onClick = onChangeClick) {
-            Text(stringResource(R.string.action_change_sound))
+        if (showChangeButton) {
+            FilledTonalButton(onClick = onChangeClick) {
+                Text(stringResource(R.string.action_change_sound))
+            }
         }
     }
 }
