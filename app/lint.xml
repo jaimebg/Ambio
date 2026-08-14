@@ -9,6 +9,7 @@
     - ExportedService: MediaSessionService must be exported for system media controls.
     - MonochromeLauncherIcon: App icon designed without monochrome variant (design choice).
     - UnusedAttribute: enableOnBackInvokedCallback only used on Android 13+, but declared for forward compatibility.
+    - UnusedTranslation: False positive on Indonesian, which is spelled two different ways by design.
 -->
 <lint>
     <!-- Suppress ObsoleteSdkInt - standard adaptive icon structure requires v26 qualifier -->
@@ -29,4 +30,16 @@
 
     <!-- enableOnBackInvokedCallback is for forward compatibility with Android 13+ -->
     <issue id="UnusedAttribute" severity="informational" />
+
+    <!--
+        Reports Indonesian as an undeclared translation, comparing the raw folder code
+        against the raw locale-config tag without normalising the legacy alias.
+
+        Indonesian is deliberately spelled two ways. locales_config.xml declares `id`,
+        the canonical BCP-47 tag that locale-config XML requires; the resource directory
+        is values-in, because Android's resource resolver keys Indonesian on the legacy
+        code `in`. Both are correct for their own file, and translations do resolve --
+        values-in is what the resolver reads for a request tagged `id`.
+    -->
+    <issue id="UnusedTranslation" severity="informational" />
 </lint>
