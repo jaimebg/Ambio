@@ -98,7 +98,7 @@ class MixPlayerTest {
     }
 
     @Test
-    fun `a track's volume is its own level times the master`() {
+    fun `a track's volume is its level times the master times the bus`() {
         val mix = player()
         mix.setSoundActive("rain", audioRes = 1, active = true)
         mix.setSoundActive("ocean", audioRes = 2, active = true)
@@ -106,8 +106,9 @@ class MixPlayerTest {
         mix.setSoundLevel("ocean", 0.5f)
         mix.volume = 0.4f
 
-        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.4f)
-        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(0.2f)
+        // 1.0 * 0.4 * 0.70710678, and 0.5 * 0.4 * 0.70710678
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.28284273f)
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(0.14142136f)
     }
 
     @Test
@@ -229,8 +230,9 @@ class MixPlayerTest {
         )
 
         assertThat(tracks["forest"]!!.startedWith).isEqualTo(7)
-        assertThat(tracks["forest"]!!.appliedVolume).isWithin(0.001f).of(0.25f)
-        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.5f)
+        // 0.25 * 0.70710678, and 0.5 * 0.70710678
+        assertThat(tracks["forest"]!!.appliedVolume).isWithin(0.001f).of(0.17677669f)
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.35355339f)
     }
 
     @Test
@@ -428,7 +430,8 @@ class MixPlayerTest {
         mix.setSoundActive("ocean", audioRes = 2, active = true)
         settle()
 
-        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.2f)
+        // 1.0 * 0.70710678 * 0.2
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(0.14142136f)
     }
 
     @Test
@@ -555,7 +558,7 @@ class MixPlayerTest {
         assertThat(half).isGreaterThan(0.3f)
         assertThat(half).isLessThan(0.7f)
         settle()
-        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(1f)
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.70710678f)
     }
 
     @Test
@@ -580,7 +583,9 @@ class MixPlayerTest {
         mix.setSoundActive("ocean", audioRes = 2, active = true)
 
         // Settled immediately, not over 1500ms, because nothing is audible anyway.
-        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(1f)
+        // 1.0 * 0.70710678, the two-sound bus -- the point is that it is settled, not
+        // that it is 1.0.
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(0.70710678f)
     }
 
     @Test
@@ -598,7 +603,7 @@ class MixPlayerTest {
         assertThat(ducked).isGreaterThan(0f)
         assertThat(ducked).isLessThan(0.2f)
         settle()
-        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.2f)
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.14142136f)
     }
 
     @Test
@@ -614,7 +619,8 @@ class MixPlayerTest {
 
         assertThat(tracks["ocean"]!!.appliedVolume).isLessThan(0.1f)
         settle()
-        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(1f)
+        // 1.0 * 0.70710678, the two-sound bus.
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(0.70710678f)
     }
 
     // --- fade-out on removal ---
@@ -722,5 +728,75 @@ class MixPlayerTest {
         assertThat(tracks["ocean"]!!.released).isFalse()
         advance(MixPlayer.FADE_OUT_MS + MixPlayer.TICK_MS)
         assertThat(tracks["ocean"]!!.released).isTrue()
+    }
+
+    // --- the mix bus ---
+
+    @Test
+    fun `the bus holds the mix level as sounds are added`() {
+        // Uncorrelated ambience sums by power, so 1/sqrt(N) keeps total loudness
+        // constant: adding a sound changes the texture, not the volume.
+        val mix = player()
+
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(1f)
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.70710678f)
+
+        mix.setSoundActive("forest", audioRes = 3, active = true)
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.57735026f)
+    }
+
+    @Test
+    fun `the bus rises again when a sound leaves`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        mix.setSoundActive("ocean", audioRes = 2, active = false)
+
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(1f)
+    }
+
+    @Test
+    fun `a bus change is ramped, not stepped`() {
+        // Without this the normalisation introduces exactly the click the fades
+        // were added to remove.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        // Still near 1.0 immediately after, not already down at 0.707.
+        assertThat(tracks["rain"]!!.appliedVolume).isGreaterThan(0.95f)
+        settle()
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.70710678f)
+    }
+
+    @Test
+    fun `an emptied mix leaves the bus at unity for the next sound`() {
+        // 1/sqrt(0) is infinity; the next sound to arrive must not inherit it.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("rain", audioRes = 1, active = false)
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+
+        assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.001f).of(1f)
+    }
+
+    @Test
+    fun `stopping resets the bus so a rebuilt mix is not attenuated`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+
+        mix.stop()
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+
+        assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(1f)
     }
 }

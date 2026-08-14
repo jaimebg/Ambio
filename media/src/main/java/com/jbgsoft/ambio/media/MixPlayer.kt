@@ -10,6 +10,7 @@ import androidx.media3.common.SimpleBasePlayer
 import androidx.media3.common.util.UnstableApi
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import kotlin.math.sqrt
 
 /**
  * Presents N simultaneously playing sounds to the MediaSession as one logical
@@ -52,6 +53,12 @@ class MixPlayer(
 
     private val ticker = Handler(looper)
     private var ticking = false
+
+    // Equal-power attenuation over the live entries: 1.000, 0.707, 0.577 for one,
+    // two and three sounds. Ramped like everything else -- see retargetBus.
+    private var busGain = 1f
+    private var busTarget = 1f
+    private var busDurationMs = FADE_IN_MS
 
     // A pause the system caused is not a pause the user asked for. Only the first resumes
     // when focus comes back; conflating them makes hanging up a call restart audio the
@@ -99,7 +106,17 @@ class MixPlayer(
     }
 
     private fun Entry.applyVolume() {
-        track.setVolume(level * ramp * masterVolume * duckMultiplier)
+        track.setVolume(level * ramp * busGain * masterVolume * duckMultiplier)
+    }
+
+    /**
+     * Recomputes the bus for the current live count, ramping over the duration of
+     * whatever change caused it: 1500ms when a sound arrives, 600ms when one leaves.
+     */
+    private fun retargetBus(durationMs: Long) {
+        busTarget = if (entries.isEmpty()) 1f
+        else (1.0 / sqrt(entries.size.toDouble())).toFloat()
+        busDurationMs = durationMs
     }
 
     /**
@@ -109,6 +126,10 @@ class MixPlayer(
     private val tick = object : Runnable {
         override fun run() {
             var stillMoving = false
+            if (busGain != busTarget) {
+                busGain = stepToward(busGain, busTarget, busDurationMs)
+                if (busGain != busTarget) stillMoving = true
+            }
             entries.values.forEach {
                 if (it.ramp < 1f) {
                     it.ramp = stepToward(it.ramp, 1f, FADE_IN_MS)
@@ -143,6 +164,7 @@ class MixPlayer(
      * mix is not audible: a ramp nobody can hear is just a delayed volume change.
      */
     private fun settleRamps() {
+        busGain = busTarget
         entries.values.forEach { it.ramp = 1f }
         retiring.values.forEach { it.track.release() }
         retiring.clear()
@@ -220,6 +242,7 @@ class MixPlayer(
                 createTrack(soundId).also { it.start(audioRes) },
                 level = 1f
             )
+            retargetBus(FADE_IN_MS)
             if (playWhenReadyValue) {
                 applyVolumes()
                 startTicking()
@@ -235,6 +258,7 @@ class MixPlayer(
 
     private fun deactivate(soundId: String) {
         val entry = entries.remove(soundId) ?: return
+        retargetBus(FADE_OUT_MS)
         if (playWhenReadyValue) {
             retiring[soundId] = entry
             startTicking()
@@ -359,6 +383,8 @@ class MixPlayer(
         entries.clear()
         retiring.values.forEach { it.track.release() }
         retiring.clear()
+        busGain = 1f
+        busTarget = 1f
     }
 
     internal companion object {
