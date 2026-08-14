@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ambio</string>
+    <string name="app_name" translatable="false">Ambio</string>
 
     <!-- Shown before the system notification prompt, so the prompt is not the first thing
          a new user sees with no explanation. -->
