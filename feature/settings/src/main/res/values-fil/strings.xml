@@ -4,7 +4,7 @@
     <string name="settings_back">Bumalik</string>
 
     <!-- Toggles -->
-    <string name="settings_haptics">Haptic feedback</string>
+    <string name="settings_haptics">Haptic na feedback</string>
     <string name="settings_haptics_summary">Nagva-vibrate sa pag-tap at sa mga timer event</string>
     <string name="settings_chime">Tunog kapag tapos</string>
     <string name="settings_chime_summary">Nagpe-play ng tunog kapag natapos ang isang focus session</string>
