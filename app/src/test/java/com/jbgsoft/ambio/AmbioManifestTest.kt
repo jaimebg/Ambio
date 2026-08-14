@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.pm.PackageManager
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
+import java.io.File
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -77,5 +78,19 @@ class AmbioManifestTest {
         // the adaptive launcher icon — the easy mistake, and the one this replaced — puts a
         // full-colour raster with its own background layer in a slot built for a glyph.
         assertThat(tile.icon).isEqualTo(R.drawable.ic_tile_playback)
+    }
+
+    @Test
+    fun `wires the manifest's localeConfig to the locales_config resource`() {
+        // LocalesConfigTest pins the contents of locales_config.xml but never reads the
+        // manifest, so deleting android:localeConfig would leave that test green while
+        // silently taking the per-app language picker down with it.
+        //
+        // Robolectric's manifest parser does not surface this particular attribute through
+        // ApplicationInfo or PackageManager the way it does permissions and services above,
+        // so this reads the manifest source directly instead.
+        val manifest = File("src/main/AndroidManifest.xml").readText()
+
+        assertThat(manifest).contains("""android:localeConfig="@xml/locales_config"""")
     }
 }
