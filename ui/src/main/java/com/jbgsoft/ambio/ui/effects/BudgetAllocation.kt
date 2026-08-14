@@ -4,8 +4,26 @@ import kotlin.math.floor
 import kotlin.math.min
 
 /**
- * Measured on a Xiaomi MI 5 (2016, Snapdragon 820, 60 Hz) and raised from 36
- * on that basis — see the spec's termination criterion 8.
+ * Raised from 36 after measuring on a Xiaomi MI 5 (2016, Snapdragon 820, 60 Hz,
+ * Android 15) — the spec's termination criterion 8.
+ *
+ * At 60, a Rain + Forest + Cave mix over 60 s of untouched steady state gave
+ * 0.28% janky frames (11 of 3866), 95th percentile 32 ms, GPU 99th percentile
+ * 9 ms. The bar was 1%. The mix deliberately included Cave, whose wisps are the
+ * expensive type — large and drawn additively — so this is not the cheapest
+ * three-sound case.
+ *
+ * Note the per-type ceilings bind at this budget for a *single* active sound:
+ * a solo mix gets min(60, ceiling), so rain caps at 40 and cave at 16. Raising
+ * this number therefore mostly enriches two- and three-sound mixes.
+ *
+ * Two things that measurement does not cover. The device was 60 Hz, so the
+ * simulation ran 60 times a second; a 120 Hz panel doubles that, and no
+ * measurement here touches it. And the field is simulated on the UI thread, so
+ * particle count scales UI-thread work rather than GPU work — GPU had ample
+ * headroom at 9 ms, the UI thread is the constraint. If more visual density is
+ * ever wanted, larger particles cost the resource with room to spare; more
+ * particles cost the one without.
  */
 const val PARTICLE_BUDGET = 60
 
