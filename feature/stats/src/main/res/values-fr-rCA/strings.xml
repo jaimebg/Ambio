@@ -7,9 +7,9 @@
     <string name="stats_total_focus">Temps de concentration total</string>
     <string name="stats_sessions_completed">Sessions terminées</string>
     <plurals name="stats_minutes">
-        <item quantity="one">%1$d min</item>
-        <item quantity="many">%1$d min</item>
-        <item quantity="other">%1$d min</item>
+        <item quantity="one">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
     </plurals>
 
     <!-- History -->
