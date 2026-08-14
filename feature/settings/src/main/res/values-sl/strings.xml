@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Nastavitve</string>
+    <string name="settings_back">Nazaj</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptični odziv</string>
+    <string name="settings_haptics_summary">Vibrira ob dotikih in dogodkih časovnika</string>
+    <string name="settings_chime">Zvok ob zaključku</string>
+    <string name="settings_chime_summary">Predvaja zvok, ko se seja zbranosti konča</string>
+    <string name="settings_effects">Učinki vzdušja</string>
+    <string name="settings_effects_summary">Animirani delci za časovnikom</string>
+</resources>

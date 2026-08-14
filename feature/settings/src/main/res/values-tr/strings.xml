@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Ayarlar</string>
+    <string name="settings_back">Geri</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Dokunsal geri bildirim</string>
+    <string name="settings_haptics_summary">Dokunuşlarda ve zamanlayıcı olaylarında titreşir</string>
+    <string name="settings_chime">Bitiş sesi</string>
+    <string name="settings_chime_summary">Odaklanma oturumu bittiğinde ses çalar</string>
+    <string name="settings_effects">Ortam efektleri</string>
+    <string name="settings_effects_summary">Zamanlayıcının arkasında hareketli parçacıklar</string>
+</resources>

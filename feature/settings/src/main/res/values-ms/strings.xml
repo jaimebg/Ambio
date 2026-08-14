@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Tetapan</string>
+    <string name="settings_back">Kembali</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Maklum balas haptik</string>
+    <string name="settings_haptics_summary">Bergetar apabila diketik dan pada acara pemasa</string>
+    <string name="settings_chime">Bunyi tamat</string>
+    <string name="settings_chime_summary">Memainkan bunyi apabila sesi fokus tamat</string>
+    <string name="settings_effects">Kesan suasana</string>
+    <string name="settings_effects_summary">Zarah beranimasi di belakang pemasa</string>
+</resources>

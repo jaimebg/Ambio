@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Nastavenia</string>
+    <string name="settings_back">Späť</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptická odozva</string>
+    <string name="settings_haptics_summary">Vibrácie pri klepnutí a udalostiach časovača</string>
+    <string name="settings_chime">Zvuk po dokončení</string>
+    <string name="settings_chime_summary">Prehrá zvuk na konci sústredenia</string>
+    <string name="settings_effects">Atmosférické efekty</string>
+    <string name="settings_effects_summary">Animované častice za časovačom</string>
+</resources>

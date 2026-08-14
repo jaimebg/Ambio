@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Налаштування</string>
+    <string name="settings_back">Назад</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Тактильний відгук</string>
+    <string name="settings_haptics_summary">Вібрація під час натискань і подій таймера</string>
+    <string name="settings_chime">Сигнал завершення</string>
+    <string name="settings_chime_summary">Відтворює звук у кінці сеансу зосередження</string>
+    <string name="settings_effects">Фонові ефекти</string>
+    <string name="settings_effects_summary">Анімовані частинки за таймером</string>
+</resources>

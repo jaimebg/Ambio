@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">การตั้งค่า</string>
+    <string name="settings_back">ย้อนกลับ</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">การตอบสนองแบบสัมผัส</string>
+    <string name="settings_haptics_summary">สั่นเมื่อแตะและเมื่อตัวจับเวลาทำงาน</string>
+    <string name="settings_chime">เสียงเมื่อจบ</string>
+    <string name="settings_chime_summary">เล่นเสียงเมื่อเซสชันโฟกัสสิ้นสุด</string>
+    <string name="settings_effects">เอฟเฟกต์บรรยากาศ</string>
+    <string name="settings_effects_summary">อนุภาคเคลื่อนไหวด้านหลังตัวจับเวลา</string>
+</resources>

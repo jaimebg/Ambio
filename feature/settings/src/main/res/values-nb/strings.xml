@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Innstillinger</string>
+    <string name="settings_back">Tilbake</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptisk tilbakemelding</string>
+    <string name="settings_haptics_summary">Vibrerer ved trykk og tidtakerhendelser</string>
+    <string name="settings_chime">Lyd ved fullført</string>
+    <string name="settings_chime_summary">Spiller en lyd når en fokusøkt er ferdig</string>
+    <string name="settings_effects">Stemningseffekter</string>
+    <string name="settings_effects_summary">Animerte partikler bak tidtakeren</string>
+</resources>

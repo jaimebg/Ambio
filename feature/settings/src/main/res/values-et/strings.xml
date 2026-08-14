@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Seaded</string>
+    <string name="settings_back">Tagasi</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptiline tagasiside</string>
+    <string name="settings_haptics_summary">Vibreerib puudutustel ja taimeri sündmustel</string>
+    <string name="settings_chime">Lõpetamisheli</string>
+    <string name="settings_chime_summary">Esitab heli, kui keskendumisseanss lõpeb</string>
+    <string name="settings_effects">Atmosfääriefektid</string>
+    <string name="settings_effects_summary">Animeeritud osakesed taimeri taga</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Instellingen</string>
+    <string name="settings_back">Terug</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptische feedback</string>
+    <string name="settings_haptics_summary">Trilt bij tikken en timergebeurtenissen</string>
+    <string name="settings_chime">Geluid bij voltooiing</string>
+    <string name="settings_chime_summary">Speelt een geluid af als een focussessie eindigt</string>
+    <string name="settings_effects">Sfeereffecten</string>
+    <string name="settings_effects_summary">Geanimeerde deeltjes achter de timer</string>
+</resources>

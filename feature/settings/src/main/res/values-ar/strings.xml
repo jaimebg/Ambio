@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_back">رجوع</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">الاستجابة اللمسية</string>
+    <string name="settings_haptics_summary">اهتزاز عند اللمس وعند أحداث المؤقت</string>
+    <string name="settings_chime">نغمة الانتهاء</string>
+    <string name="settings_chime_summary">تشغيل صوت عند انتهاء جلسة تركيز</string>
+    <string name="settings_effects">التأثيرات المحيطة</string>
+    <string name="settings_effects_summary">جسيمات متحركة خلف المؤقت</string>
+</resources>

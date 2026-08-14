@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">সেটিংস</string>
+    <string name="settings_back">ফিরে যান</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">হ্যাপটিক ফিডব্যাক</string>
+    <string name="settings_haptics_summary">ট্যাপ ও টাইমারের ইভেন্টে ভাইব্রেট করে</string>
+    <string name="settings_chime">সমাপ্তির ধ্বনি</string>
+    <string name="settings_chime_summary">ফোকাস সেশন শেষ হলে একটি শব্দ বাজায়</string>
+    <string name="settings_effects">অ্যাম্বিয়েন্ট ইফেক্ট</string>
+    <string name="settings_effects_summary">টাইমারের পিছনে অ্যানিমেটেড কণা</string>
+</resources>

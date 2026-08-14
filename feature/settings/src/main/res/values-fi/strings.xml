@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Asetukset</string>
+    <string name="settings_back">Takaisin</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptinen palaute</string>
+    <string name="settings_haptics_summary">Värisee napautuksista ja ajastimen tapahtumista</string>
+    <string name="settings_chime">Päättymisääni</string>
+    <string name="settings_chime_summary">Toistaa äänen, kun keskittymisjakso päättyy</string>
+    <string name="settings_effects">Tunnelmatehosteet</string>
+    <string name="settings_effects_summary">Animoituja hiukkasia ajastimen takana</string>
+</resources>

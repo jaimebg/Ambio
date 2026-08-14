@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">सेटिंग</string>
+    <string name="settings_back">वापस जाएं</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">हैप्टिक फ़ीडबैक</string>
+    <string name="settings_haptics_summary">टैप करने और टाइमर इवेंट पर वाइब्रेट करता है</string>
+    <string name="settings_chime">पूरा होने पर आवाज़</string>
+    <string name="settings_chime_summary">फ़ोकस सेशन खत्म होने पर आवाज़ चलाता है</string>
+    <string name="settings_effects">एंबियंट इफ़ेक्ट</string>
+    <string name="settings_effects_summary">टाइमर के पीछे एनिमेटेड कण</string>
+</resources>

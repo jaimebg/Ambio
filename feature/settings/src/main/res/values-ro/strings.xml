@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Setări</string>
+    <string name="settings_back">Înapoi</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Feedback haptic</string>
+    <string name="settings_haptics_summary">Vibrează la atingere și la evenimentele temporizatorului</string>
+    <string name="settings_chime">Sunet la finalizare</string>
+    <string name="settings_chime_summary">Redă un sunet când se încheie o sesiune de concentrare</string>
+    <string name="settings_effects">Efecte de ambianță</string>
+    <string name="settings_effects_summary">Particule animate în spatele temporizatorului</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Instellings</string>
+    <string name="settings_back">Terug</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptiese terugvoer</string>
+    <string name="settings_haptics_summary">Vibreer by tikke en tydhouergebeurtenisse</string>
+    <string name="settings_chime">Klank by voltooiing</string>
+    <string name="settings_chime_summary">Speel \'n klank wanneer \'n fokussessie eindig</string>
+    <string name="settings_effects">Omgewingseffekte</string>
+    <string name="settings_effects_summary">Geanimeerde deeltjies agter die tydhouer</string>
+</resources>

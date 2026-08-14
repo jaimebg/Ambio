@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Configuración</string>
+    <string name="settings_back">Atrás</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Respuesta háptica</string>
+    <string name="settings_haptics_summary">Vibra al tocar y en los eventos del temporizador</string>
+    <string name="settings_chime">Tono de finalización</string>
+    <string name="settings_chime_summary">Reproduce un sonido cuando termina una sesión de concentración</string>
+    <string name="settings_effects">Efectos ambientales</string>
+    <string name="settings_effects_summary">Partículas animadas detrás del temporizador</string>
+</resources>

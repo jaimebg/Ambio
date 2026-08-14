@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_back">Quay lại</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Phản hồi xúc giác</string>
+    <string name="settings_haptics_summary">Rung khi chạm và khi bộ hẹn giờ hoạt động</string>
+    <string name="settings_chime">Âm báo kết thúc</string>
+    <string name="settings_chime_summary">Phát âm thanh khi phiên tập trung kết thúc</string>
+    <string name="settings_effects">Hiệu ứng nền</string>
+    <string name="settings_effects_summary">Các hạt chuyển động phía sau bộ hẹn giờ</string>
+</resources>

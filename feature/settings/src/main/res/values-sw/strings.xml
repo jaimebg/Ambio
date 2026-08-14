@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Mipangilio</string>
+    <string name="settings_back">Rudi</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Mrejesho wa mguso</string>
+    <string name="settings_haptics_summary">Hutetema unapogusa na kwenye matukio ya kipima muda</string>
+    <string name="settings_chime">Mlio wa kumaliza</string>
+    <string name="settings_chime_summary">Hucheza sauti kipindi cha umakini kinapoisha</string>
+    <string name="settings_effects">Athari za mandhari</string>
+    <string name="settings_effects_summary">Chembe zinazosogea nyuma ya kipima muda</string>
+</resources>

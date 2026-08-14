@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Nustatymai</string>
+    <string name="settings_back">Atgal</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptinis atsakas</string>
+    <string name="settings_haptics_summary">Vibruoja palietus ir suveikus laikmačiui</string>
+    <string name="settings_chime">Pabaigos signalas</string>
+    <string name="settings_chime_summary">Pasibaigus susikaupimo sesijai paleidžia garsą</string>
+    <string name="settings_effects">Aplinkos efektai</string>
+    <string name="settings_effects_summary">Animuotos dalelės už laikmačio</string>
+</resources>

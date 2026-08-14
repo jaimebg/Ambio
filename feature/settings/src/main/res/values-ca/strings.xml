@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Configuració</string>
+    <string name="settings_back">Enrere</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Resposta hàptica</string>
+    <string name="settings_haptics_summary">Vibra en tocar i en els avisos del temporitzador</string>
+    <string name="settings_chime">So de finalització</string>
+    <string name="settings_chime_summary">Reprodueix un so quan acaba una sessió de concentració</string>
+    <string name="settings_effects">Efectes ambientals</string>
+    <string name="settings_effects_summary">Partícules animades darrere del temporitzador</string>
+</resources>

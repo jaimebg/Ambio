@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_back">Retour</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Retour haptique</string>
+    <string name="settings_haptics_summary">Vibre lors des appuis et des événements du minuteur</string>
+    <string name="settings_chime">Son de fin</string>
+    <string name="settings_chime_summary">Émet un son à la fin d\'une session de concentration</string>
+    <string name="settings_effects">Effets d\'ambiance</string>
+    <string name="settings_effects_summary">Particules animées derrière le minuteur</string>
+</resources>

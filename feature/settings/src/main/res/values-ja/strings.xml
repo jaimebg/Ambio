@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">設定</string>
+    <string name="settings_back">戻る</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">触覚フィードバック</string>
+    <string name="settings_haptics_summary">タップ時とタイマーの動作時に振動します</string>
+    <string name="settings_chime">完了音</string>
+    <string name="settings_chime_summary">集中セッションが終わると音を鳴らします</string>
+    <string name="settings_effects">アンビエント効果</string>
+    <string name="settings_effects_summary">タイマーの背後に動くパーティクル</string>
+</resources>

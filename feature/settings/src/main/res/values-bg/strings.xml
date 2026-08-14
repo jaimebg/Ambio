@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Настройки</string>
+    <string name="settings_back">Назад</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Тактилна обратна връзка</string>
+    <string name="settings_haptics_summary">Вибриране при докосване и събития на таймера</string>
+    <string name="settings_chime">Звук при завършване</string>
+    <string name="settings_chime_summary">Възпроизвежда звук в края на сесия за фокусиране</string>
+    <string name="settings_effects">Атмосферни ефекти</string>
+    <string name="settings_effects_summary">Анимирани частици зад таймера</string>
+</resources>

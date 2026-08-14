@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">设置</string>
+    <string name="settings_back">返回</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">触感反馈</string>
+    <string name="settings_haptics_summary">点按和计时器事件时振动</string>
+    <string name="settings_chime">完成提示音</string>
+    <string name="settings_chime_summary">专注时段结束时播放提示音</string>
+    <string name="settings_effects">环境特效</string>
+    <string name="settings_effects_summary">计时器背后的动态粒子</string>
+</resources>

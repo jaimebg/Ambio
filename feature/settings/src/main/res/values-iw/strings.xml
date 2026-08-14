@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">הגדרות</string>
+    <string name="settings_back">חזרה</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">משוב מישושי</string>
+    <string name="settings_haptics_summary">רטט בהקשות ובאירועי הטיימר</string>
+    <string name="settings_chime">צליל סיום</string>
+    <string name="settings_chime_summary">משמיע צליל כשסשן מיקוד מסתיים</string>
+    <string name="settings_effects">אפקטים סביבתיים</string>
+    <string name="settings_effects_summary">חלקיקים מונפשים מאחורי הטיימר</string>
+</resources>

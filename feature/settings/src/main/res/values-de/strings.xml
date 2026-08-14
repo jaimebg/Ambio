@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_back">Zurück</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptisches Feedback</string>
+    <string name="settings_haptics_summary">Vibriert beim Tippen und bei Timer-Ereignissen</string>
+    <string name="settings_chime">Abschlusston</string>
+    <string name="settings_chime_summary">Spielt einen Ton ab, wenn eine Fokussitzung endet</string>
+    <string name="settings_effects">Umgebungseffekte</string>
+    <string name="settings_effects_summary">Animierte Partikel hinter dem Timer</string>
+</resources>

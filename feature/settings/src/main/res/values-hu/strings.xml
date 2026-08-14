@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Beállítások</string>
+    <string name="settings_back">Vissza</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Rezgő visszajelzés</string>
+    <string name="settings_haptics_summary">Rezgés koppintáskor és az időzítő eseményeinél</string>
+    <string name="settings_chime">Befejezési hangjelzés</string>
+    <string name="settings_chime_summary">Hangot játszik le, amikor egy fókuszidőszak véget ér</string>
+    <string name="settings_effects">Környezeti effektek</string>
+    <string name="settings_effects_summary">Animált részecskék az időzítő mögött</string>
+</resources>

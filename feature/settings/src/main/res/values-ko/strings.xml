@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">설정</string>
+    <string name="settings_back">뒤로</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">햅틱 피드백</string>
+    <string name="settings_haptics_summary">탭할 때와 타이머 동작 시 진동</string>
+    <string name="settings_chime">완료 알림음</string>
+    <string name="settings_chime_summary">집중 세션이 끝나면 소리를 재생합니다</string>
+    <string name="settings_effects">앰비언트 효과</string>
+    <string name="settings_effects_summary">타이머 뒤에서 움직이는 입자</string>
+</resources>

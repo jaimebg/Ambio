@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Postavke</string>
+    <string name="settings_back">Natrag</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptička reakcija</string>
+    <string name="settings_haptics_summary">Vibrira pri dodiru i događajima mjerača vremena</string>
+    <string name="settings_chime">Zvuk na kraju</string>
+    <string name="settings_chime_summary">Reproducira zvuk kad završi sesija fokusiranja</string>
+    <string name="settings_effects">Ambijentalni efekti</string>
+    <string name="settings_effects_summary">Animirane čestice iza mjerača vremena</string>
+</resources>

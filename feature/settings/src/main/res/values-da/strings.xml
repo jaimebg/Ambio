@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Indstillinger</string>
+    <string name="settings_back">Tilbage</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptisk feedback</string>
+    <string name="settings_haptics_summary">Vibrerer ved tryk og timerhændelser</string>
+    <string name="settings_chime">Lyd ved afslutning</string>
+    <string name="settings_chime_summary">Afspiller en lyd, når en fokussession slutter</string>
+    <string name="settings_effects">Stemningseffekter</string>
+    <string name="settings_effects_summary">Animerede partikler bag timeren</string>
+</resources>

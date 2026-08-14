@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Iestatījumi</string>
+    <string name="settings_back">Atpakaļ</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptiskā atbilde</string>
+    <string name="settings_haptics_summary">Vibrē pieskaroties un taimera notikumos</string>
+    <string name="settings_chime">Beigu signāls</string>
+    <string name="settings_chime_summary">Atskaņo skaņu, kad beidzas koncentrēšanās sesija</string>
+    <string name="settings_effects">Vides efekti</string>
+    <string name="settings_effects_summary">Animētas daļiņas aiz taimera</string>
+</resources>

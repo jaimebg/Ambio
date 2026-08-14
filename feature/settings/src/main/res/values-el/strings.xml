@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Ρυθμίσεις</string>
+    <string name="settings_back">Πίσω</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Απτική ανάδραση</string>
+    <string name="settings_haptics_summary">Δόνηση στα πατήματα και στα συμβάντα του χρονομέτρου</string>
+    <string name="settings_chime">Ήχος ολοκλήρωσης</string>
+    <string name="settings_chime_summary">Αναπαράγει έναν ήχο όταν τελειώνει μια συνεδρία εστίασης</string>
+    <string name="settings_effects">Εφέ ατμόσφαιρας</string>
+    <string name="settings_effects_summary">Κινούμενα σωματίδια πίσω από το χρονόμετρο</string>
+</resources>

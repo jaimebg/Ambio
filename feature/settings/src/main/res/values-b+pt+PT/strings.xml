@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Definições</string>
+    <string name="settings_back">Voltar</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Resposta tátil</string>
+    <string name="settings_haptics_summary">Vibra ao tocar e nos eventos do temporizador</string>
+    <string name="settings_chime">Som de conclusão</string>
+    <string name="settings_chime_summary">Reproduz um som quando termina uma sessão de concentração</string>
+    <string name="settings_effects">Efeitos ambientais</string>
+    <string name="settings_effects_summary">Partículas animadas atrás do temporizador</string>
+</resources>

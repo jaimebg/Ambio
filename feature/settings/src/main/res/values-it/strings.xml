@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Impostazioni</string>
+    <string name="settings_back">Indietro</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Feedback aptico</string>
+    <string name="settings_haptics_summary">Vibra ai tocchi e agli eventi del timer</string>
+    <string name="settings_chime">Suono di fine</string>
+    <string name="settings_chime_summary">Riproduce un suono al termine di una sessione di concentrazione</string>
+    <string name="settings_effects">Effetti ambientali</string>
+    <string name="settings_effects_summary">Particelle animate dietro il timer</string>
+</resources>

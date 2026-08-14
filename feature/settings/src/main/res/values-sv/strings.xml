@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Inställningar</string>
+    <string name="settings_back">Tillbaka</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptisk återkoppling</string>
+    <string name="settings_haptics_summary">Vibrerar vid tryck och timerhändelser</string>
+    <string name="settings_chime">Ljud vid avslut</string>
+    <string name="settings_chime_summary">Spelar upp ett ljud när ett fokuspass tar slut</string>
+    <string name="settings_effects">Stämningseffekter</string>
+    <string name="settings_effects_summary">Animerade partiklar bakom timern</string>
+</resources>

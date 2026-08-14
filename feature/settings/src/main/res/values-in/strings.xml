@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Setelan</string>
+    <string name="settings_back">Kembali</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Umpan balik haptik</string>
+    <string name="settings_haptics_summary">Bergetar saat diketuk dan pada peristiwa timer</string>
+    <string name="settings_chime">Nada saat selesai</string>
+    <string name="settings_chime_summary">Memutar suara saat sesi fokus berakhir</string>
+    <string name="settings_effects">Efek suasana</string>
+    <string name="settings_effects_summary">Partikel animasi di belakang timer</string>
+</resources>

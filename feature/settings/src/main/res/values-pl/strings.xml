@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Ustawienia</string>
+    <string name="settings_back">Wstecz</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Reakcja haptyczna</string>
+    <string name="settings_haptics_summary">Wibruje przy dotknięciach i zdarzeniach minutnika</string>
+    <string name="settings_chime">Dźwięk na koniec</string>
+    <string name="settings_chime_summary">Odtwarza dźwięk po zakończeniu sesji skupienia</string>
+    <string name="settings_effects">Efekty otoczenia</string>
+    <string name="settings_effects_summary">Animowane cząsteczki za minutnikiem</string>
+</resources>

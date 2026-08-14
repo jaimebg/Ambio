@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Configurações</string>
+    <string name="settings_back">Voltar</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Resposta tátil</string>
+    <string name="settings_haptics_summary">Vibra ao tocar e nos eventos do timer</string>
+    <string name="settings_chime">Som ao concluir</string>
+    <string name="settings_chime_summary">Toca um som quando uma sessão de foco termina</string>
+    <string name="settings_effects">Efeitos de ambiente</string>
+    <string name="settings_effects_summary">Partículas animadas atrás do timer</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Подешавања</string>
+    <string name="settings_back">Назад</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Хаптички одзив</string>
+    <string name="settings_haptics_summary">Вибрира при додиру и догађајима тајмера</string>
+    <string name="settings_chime">Звук на крају</string>
+    <string name="settings_chime_summary">Пушта звук када се сесија фокусирања заврши</string>
+    <string name="settings_effects">Амбијентални ефекти</string>
+    <string name="settings_effects_summary">Анимиране честице иза тајмера</string>
+</resources>

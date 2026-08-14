@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Mga Setting</string>
+    <string name="settings_back">Bumalik</string>
+
+    <!-- Toggles -->
+    <string name="settings_haptics">Haptic feedback</string>
+    <string name="settings_haptics_summary">Nagva-vibrate sa pag-tap at sa mga timer event</string>
+    <string name="settings_chime">Tunog kapag tapos</string>
+    <string name="settings_chime_summary">Nagpe-play ng tunog kapag natapos ang isang focus session</string>
+    <string name="settings_effects">Mga ambient effect</string>
+    <string name="settings_effects_summary">Mga animated na particle sa likod ng timer</string>
+</resources>
