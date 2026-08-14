@@ -3,9 +3,11 @@ package com.jbgsoft.ambio.ui.effects
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import com.jbgsoft.ambio.core.domain.model.MixGradient
@@ -44,52 +46,84 @@ private const val BLOB_RADIUS = 0.75f
  * stops are what change: switching a sound out of a three-mix alters one stop
  * and leaves two alone, and animating them separately keeps the other two
  * perfectly still instead of dragging them through an intermediate value.
+ *
+ * Hands back a [State] rather than a [MixGradient], and never reads the three
+ * animations itself. A composable that returns a value has no restart scope of
+ * its own, so a read here would invalidate the *caller* instead — the whole Home
+ * content lambda would re-execute on every frame of the cross-fade to move a
+ * colour the draw phase could have picked up on its own.
+ * [mixGradientBackground] performs the read inside its cache block, which is the
+ * same deferral, for the same reason, as the frameTimeNanos read in
+ * AmbientEffectsOverlay.
  */
 @Composable
-fun animatedMixGradient(target: MixGradient): MixGradient {
-    val first by animateColorAsState(
+fun animatedMixGradient(target: MixGradient): State<MixGradient> {
+    val first = animateColorAsState(
         targetValue = target.stops[0],
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "gradientStop0"
     )
-    val second by animateColorAsState(
+    val second = animateColorAsState(
         targetValue = target.stops[1],
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "gradientStop1"
     )
-    val third by animateColorAsState(
+    val third = animateColorAsState(
         targetValue = target.stops[2],
         animationSpec = tween(THEME_ANIMATION_DURATION),
         label = "gradientStop2"
     )
-    return MixGradient(base = target.base, stops = listOf(first, second, third))
+
+    val base = target.base
+    return remember(base, first, second, third) {
+        derivedStateOf {
+            MixGradient(base = base, stops = listOf(first.value, second.value, third.value))
+        }
+    }
 }
 
 /**
- * Paints [gradient] behind the content: the base, then one soft radial blob per
- * stop.
+ * Paints the gradient behind the content: the base, then one soft radial blob
+ * per stop.
  *
- * `drawBehind` rather than a composable Canvas so this runs in the draw phase
- * only. During a sound change it repaints for the 400 ms of the cross-fade and
- * is then completely static, which matters because it sits underneath the
- * particle overlay, and that already invalidates every frame.
+ * [gradient] is a lambda so that the animated colours are read where it is
+ * invoked — inside the cache block, in the draw phase — and never during
+ * composition. A cross-fade therefore repaints without recomposing anything.
+ *
+ * `drawWithCache` rather than `drawBehind`: the brushes are built once in the
+ * cache block, which re-runs only when the draw size or the gradient it read
+ * changes. That is every frame of the 400 ms cross-fade, which is exactly when
+ * they do have to be rebuilt, and never in between.
+ *
+ * The distinction is not academic, because this sits underneath the particle
+ * overlay. That overlay reads frameTimeNanos inside its own draw lambda and
+ * nothing between it and the root isolates the invalidation, so while effects
+ * run — the normal Home state — the whole display list is re-recorded every
+ * frame. A `drawBehind` lambda here would be re-executed by that, and would
+ * rebuild three `Brush.radialGradient`s, and with them three native
+ * `android.graphics.RadialGradient`s, at refresh rate for a picture that has not
+ * changed. The cached brushes keep their shaders instead.
  */
-fun Modifier.mixGradientBackground(gradient: MixGradient): Modifier = drawBehind {
-    drawRect(color = gradient.base)
+fun Modifier.mixGradientBackground(gradient: () -> MixGradient): Modifier = drawWithCache {
+    val mix = gradient()
+    val base = mix.base
 
     val radius = maxOf(size.width, size.height) * BLOB_RADIUS
-    ANCHORS.forEachIndexed { index, anchor ->
-        val color = gradient.stops[index]
-        drawRect(
-            brush = Brush.radialGradient(
-                // The outer stop keeps the blob's own RGB and drops only alpha.
-                // Color.Transparent here would be transparent *black*, and since
-                // Compose interpolates un-premultiplied, every blob would fade
-                // through grey and pick up a visible halo.
-                colors = listOf(color.copy(alpha = BLOB_ALPHA), color.copy(alpha = 0f)),
-                center = Offset(size.width * anchor.x, size.height * anchor.y),
-                radius = radius
-            )
+    val blobs = ANCHORS.mapIndexed { index, anchor ->
+        val color = mix.stops[index]
+        Brush.radialGradient(
+            // The outer stop keeps the blob's own RGB and drops only alpha.
+            // Color.Transparent here would be transparent *black*, and since
+            // Compose interpolates un-premultiplied, every blob would fade
+            // through grey and pick up a visible halo.
+            colors = listOf(color.copy(alpha = BLOB_ALPHA), color.copy(alpha = 0f)),
+            center = Offset(size.width * anchor.x, size.height * anchor.y),
+            radius = radius
         )
+    }
+
+    onDrawBehind {
+        drawRect(color = base)
+        blobs.forEach { drawRect(brush = it) }
     }
 }

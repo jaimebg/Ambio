@@ -18,7 +18,7 @@ import kotlin.math.pow
  * test enumerates it instead of sampling. With the ceiling at three sounds and
  * six themes the reachable space is the 41 non-empty subsets of size <= 3.
  *
- * Thirteen sounds share those six themes, so adding a sound only widens this
+ * Twelve sounds share those six themes, so adding a sound only widens this
  * space when it also brings a new palette — which is why most of the catalogue
  * reuses one.
  */

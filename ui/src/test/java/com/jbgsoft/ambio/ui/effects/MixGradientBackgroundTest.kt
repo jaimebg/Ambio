@@ -39,7 +39,7 @@ class MixGradientBackgroundTest {
 
     private fun render(gradient: MixGradient) {
         compose.setContent {
-            Box(Modifier.fillMaxSize().mixGradientBackground(gradient))
+            Box(Modifier.fillMaxSize().mixGradientBackground { gradient })
         }
         compose.waitForIdle()
     }

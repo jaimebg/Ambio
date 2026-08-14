@@ -15,7 +15,10 @@ android {
 
 dependencies {
     // Project modules
-    implementation(project(":core:domain"))
+    // api, not implementation: :ui's public surface exposes domain types
+    // (AmbioTheme takes an AmbioPalette, mixGradientBackground a MixGradient),
+    // so a consumer that only calls those must still see them.
+    api(project(":core:domain"))
 
     // Compose BOM
     implementation(platform(libs.compose.bom))

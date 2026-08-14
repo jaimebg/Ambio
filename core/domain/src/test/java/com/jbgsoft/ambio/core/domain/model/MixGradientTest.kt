@@ -68,6 +68,15 @@ class MixGradientTest {
     }
 
     @Test
+    fun `removing the middle sound leaves the outer stops untouched`() {
+        val three = gradientOf(listOf(SoundGlow.RAIN, SoundGlow.FOREST, SoundGlow.OCEAN))
+        val two = gradientOf(listOf(SoundGlow.RAIN, SoundGlow.OCEAN))
+
+        assertThat(two.stops[0]).isEqualTo(three.stops[0])
+        assertThat(two.stops[2]).isEqualTo(three.stops[2])
+    }
+
+    @Test
     fun `the gradient is independent of the order sounds were activated`() {
         assertThat(gradientOf(listOf(SoundGlow.FIREPLACE, SoundGlow.RAIN)))
             .isEqualTo(gradientOf(listOf(SoundGlow.RAIN, SoundGlow.FIREPLACE)))

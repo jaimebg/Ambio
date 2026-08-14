@@ -87,10 +87,15 @@ fun HomeScreen(
             )
         }
 
+        // Read in the draw phase, not here: animatedMixGradient hands back a
+        // State and mixGradientBackground takes a lambda, so the 400 ms
+        // cross-fade repaints without re-running this content lambda every frame.
+        val animatedGradient = animatedMixGradient(gradient)
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .mixGradientBackground(animatedMixGradient(gradient))
+                .mixGradientBackground { animatedGradient.value }
         ) {
             // Ambient effects BEHIND content
             val effectsAllowed = rememberAmbientEffectsAllowed()
