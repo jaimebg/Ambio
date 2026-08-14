@@ -23,11 +23,24 @@
 #
 # Every new sound added to the catalogue has to go through here.
 #
+# This script never writes into core/data/src/main/res/raw/ itself -- OUT defaults
+# to build/processed-audio, which is gitignored and wiped by `./gradlew clean`.
+# Once a run reports "all files passed", copy the results into place by hand:
+#
+#   cp build/processed-audio/*.ogg core/data/src/main/res/raw/
+#
 # Usage: tools/process-audio.sh [SRC_DIR] [OUT_DIR]
 
 set -euo pipefail
 
-SRC="${1:-core/data/src/main/res/raw}"
+# SRC must default to the untouched originals (audio-src/), never to the app's
+# res/raw/ output directory. This pipeline is destructive-looking but not
+# idempotent: res/raw/ already holds crossfaded, once-encoded Opus files, so
+# pointing SRC at it would bake a second crossfade onto an already-seamed loop
+# and Opus-encode an already-lossy file a second time. verify-loop.py cannot
+# catch this either -- it compares the output against the intermediate this
+# same run produced, so a second-generation file still "passes".
+SRC="${1:-audio-src}"
 OUT="${2:-build/processed-audio}"
 
 XFADE=4                # seconds of loop crossfade, also how much shorter the output is

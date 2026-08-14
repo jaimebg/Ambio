@@ -76,9 +76,11 @@ def main(path, reference_wav):
     if seam_step > p9999:
         failures.append(f"seam sample step {seam_step:.3e} exceeds p99.99 {p9999:.3e}")
 
+    interior_p95 = np.percentile(interior, 95) if len(interior) else float("nan")
+
     print(f"    length      {len(x)} samples = {len(x) / SR:.6f}s")
     print(f"    seam RMS    {seam_rms:.2f} dB   (interior max {interior_max:.2f}, p95 "
-          f"{np.percentile(interior, 95):.2f})")
+          f"{interior_p95:.2f})")
     print(f"    seam sample {seam_step:.3e}  (file p99.99 {p9999:.3e})")
 
     for f in failures:
