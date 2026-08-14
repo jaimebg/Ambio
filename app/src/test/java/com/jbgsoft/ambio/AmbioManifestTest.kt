@@ -5,26 +5,32 @@ import android.content.pm.PackageManager
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import java.io.File
+import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.w3c.dom.Element
 
 /**
- * Reads the *merged* manifest — every module's contribution, as the installed app sees it —
- * and pins the two entries in it that fail silently.
+ * Pins three manifest entries that fail silently: a missing POST_NOTIFICATIONS
+ * declaration, a missing Quick Settings tile <service>, and a missing or misplaced
+ * android:localeConfig attribute. None of the three is covered by any other test, and
+ * none announces itself when it breaks. A missing POST_NOTIFICATIONS declaration does not
+ * crash: Android 13+ simply never shows AudioService's notification, so playback runs
+ * with no transport controls anywhere. A missing tile <service> does not crash either:
+ * the tile just stops appearing in the Quick Settings editor, which looks like the user
+ * never added it. A missing or misplaced localeConfig does not crash either: Android
+ * simply never offers a per-app language picker for this app.
  *
- * Neither is covered by any other test, and neither announces itself when it breaks. A
- * missing POST_NOTIFICATIONS declaration does not crash: Android 13+ simply never shows
- * AudioService's notification, so playback runs with no transport controls anywhere. A
- * missing tile <service> does not crash either: the tile just stops appearing in the Quick
- * Settings editor, which looks like the user never added it.
+ * The first four tests read the *merged* manifest — every module's contribution, as the
+ * installed app sees it — through PackageManager. The localeConfig test reads the
+ * *source* manifest directly instead; see it for why, and for what that leaves unchecked.
  *
  * @Config(application = Application::class) keeps Robolectric from instantiating
  * AmbioApplication, whose @HiltAndroidApp needs a Hilt test runtime this test has no other
- * use for. The manifest is read from the merged file either way. The sdk pin matches the
- * one core:common's tests already carry: Robolectric 4.16.1 tops out below this project's
- * compileSdk of 37.
+ * use for. The sdk pin matches the one core:common's tests already carry: Robolectric
+ * 4.16.1 tops out below this project's compileSdk of 37.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34], application = Application::class)
@@ -83,14 +89,27 @@ class AmbioManifestTest {
     @Test
     fun `wires the manifest's localeConfig to the locales_config resource`() {
         // LocalesConfigTest pins the contents of locales_config.xml but never reads the
-        // manifest, so deleting android:localeConfig would leave that test green while
-        // silently taking the per-app language picker down with it.
+        // manifest, so removing android:localeConfig — or leaving it on the wrong element,
+        // where Android silently ignores it — would leave that test green while quietly
+        // taking the per-app language picker down with it. Parsing structurally, and
+        // reading the attribute off the <application> element specifically, is what
+        // catches the second case; a substring search on the raw text would not.
         //
-        // Robolectric's manifest parser does not surface this particular attribute through
-        // ApplicationInfo or PackageManager the way it does permissions and services above,
-        // so this reads the manifest source directly instead.
-        val manifest = File("src/main/AndroidManifest.xml").readText()
+        // This reads the *source* manifest, not the *merged* one the four tests above
+        // read through PackageManager: Robolectric 4.16.1 does not surface this attribute
+        // through ApplicationInfo the way it does permissions and services, so there is no
+        // PackageManager-backed way to check it here. The gap that leaves: a manifest-merger
+        // rule in some other module that stripped or overrode this attribute on the merged
+        // manifest would go undetected by this test. No other module declares it today.
+        val factory = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }
+        val manifest = factory.newDocumentBuilder().parse(File("src/main/AndroidManifest.xml"))
+        val application = manifest.getElementsByTagName("application").item(0) as Element
 
-        assertThat(manifest).contains("""android:localeConfig="@xml/locales_config"""")
+        val localeConfig = application.getAttributeNS(
+            "http://schemas.android.com/apk/res/android",
+            "localeConfig"
+        )
+
+        assertThat(localeConfig).isEqualTo("@xml/locales_config")
     }
 }
