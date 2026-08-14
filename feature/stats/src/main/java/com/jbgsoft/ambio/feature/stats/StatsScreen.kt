@@ -40,6 +40,19 @@ fun StatsScreen(
     viewModel: StatsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    StatsScreen(
+        uiState = uiState,
+        onDeleteSession = viewModel::onDeleteSession,
+        onNavigateBack = onNavigateBack
+    )
+}
+
+@Composable
+internal fun StatsScreen(
+    uiState: StatsUiState,
+    onDeleteSession: (Long) -> Unit,
+    onNavigateBack: () -> Unit
+) {
     var sessionPendingDelete by remember { mutableStateOf<Long?>(null) }
 
     Surface(
@@ -119,7 +132,7 @@ fun StatsScreen(
     sessionPendingDelete?.let { id ->
         DeleteSessionDialog(
             onConfirm = {
-                viewModel.onDeleteSession(id)
+                onDeleteSession(id)
                 sessionPendingDelete = null
             },
             onDismiss = { sessionPendingDelete = null }
