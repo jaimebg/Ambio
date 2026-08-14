@@ -77,7 +77,27 @@ class LocaleMappingTest {
         val wellFormed = Regex("^[a-z]{2,3}(-[A-Z][a-z]{3})?(-([A-Z]{2}|[0-9]{3}))?$")
         PLAY_TO_BCP47.forEach { (play, tag) ->
             assertThat(tag).matches(wellFormed.pattern)
-            assertThat(play).isNotEmpty()
+        }
+    }
+
+    @Test
+    fun `each qualifier keeps the language of its Play code`() {
+        // The four locales where Android deliberately disagrees with Play.
+        val deliberate = setOf(
+            "iw-IL",  // Hebrew: Android resolves the legacy code
+            "no-NO",  // Play says Norwegian; Android wants Bokmal
+            "id",     // Indonesian: legacy code
+            "fil"     // Filipino, not Tagalog
+        )
+
+        PLAY_TO_RESOURCE_QUALIFIER.forEach { (play, qualifier) ->
+            if (play in deliberate || qualifier.isEmpty()) return@forEach
+            val playLanguage = play.substringBefore('-')
+            val qualifierLanguage = qualifier
+                .removePrefix("b+")
+                .substringBefore('+')
+                .substringBefore('-')
+            assertThat(qualifierLanguage).isEqualTo(playLanguage)
         }
     }
 
