@@ -27,7 +27,7 @@ import kotlin.math.sqrt
  */
 @UnstableApi
 class MixPlayer(
-    private val looper: Looper,
+    looper: Looper,
     private val createTrack: (soundId: String) -> SoundTrack,
     private val audioFocus: AudioFocus,
     private val onPlayRequestedWithEmptyMix: () -> Unit
@@ -231,7 +231,7 @@ class MixPlayer(
         invalidateState()
     }
 
-    fun setSoundActive(soundId: String, @RawRes audioRes: Int, active: Boolean) {
+    internal fun setSoundActive(soundId: String, @RawRes audioRes: Int, active: Boolean) {
         if (released) return
         if (active) {
             if (entries.containsKey(soundId)) return
@@ -273,7 +273,7 @@ class MixPlayer(
         }
     }
 
-    fun setSoundLevel(soundId: String, level: Float) {
+    internal fun setSoundLevel(soundId: String, level: Float) {
         if (released) return
         val entry = entries[soundId] ?: return
         entry.level = level.coerceIn(0f, 1f)
@@ -334,8 +334,12 @@ class MixPlayer(
             // come back at 0.2x for good.
             duckMultiplier = 1f
             // Set before the calls below, which branch on the mix being audible.
+            val wasPlaying = playWhenReadyValue
             playWhenReadyValue = true
-            settleRamps()
+            // Only a real paused->playing transition settles. A PLAY arriving while
+            // already playing (a head unit re-sending it, or startPlayback during the
+            // stop fade) must not cut an in-flight fade-out dead.
+            if (!wasPlaying) settleRamps() else applyVolumes()
         } else {
             // A deliberate pause keeps the focus: abandoning and re-requesting on every
             // pause would let another app take our place while the user is deciding.

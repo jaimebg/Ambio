@@ -645,6 +645,32 @@ class MixPlayerTest {
     }
 
     @Test
+    fun `a redundant play call does not cut an in-flight fade-out`() {
+        // Reachable from a car or Bluetooth head unit re-sending PLAY while already
+        // playing, and from startPlayback() during the 3-second stop fade. Only a
+        // genuine paused->playing transition may settle ramps; a PLAY that changes
+        // nothing must leave a retiring track exactly where its fade left it.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+        mix.setSoundActive("ocean", audioRes = 2, active = false)
+        advance(MixPlayer.FADE_OUT_MS / 2)
+        val midFade = tracks["ocean"]!!.appliedVolume
+        assertThat(tracks["ocean"]!!.released).isFalse()
+        assertThat(midFade).isGreaterThan(0f)
+
+        mix.play()
+
+        // Still fading, not cut to silence or released by the redundant play().
+        assertThat(tracks["ocean"]!!.released).isFalse()
+        assertThat(tracks["ocean"]!!.appliedVolume).isGreaterThan(0f)
+
+        advance(MixPlayer.FADE_OUT_MS)
+        assertThat(tracks["ocean"]!!.released).isTrue()
+    }
+
+    @Test
     fun `a retiring sound leaves the mix state immediately`() {
         // The fade is audio cleanup. The UI and the empty-mix guard must see the
         // removal at once, or the player looks busy while nothing is playing.
