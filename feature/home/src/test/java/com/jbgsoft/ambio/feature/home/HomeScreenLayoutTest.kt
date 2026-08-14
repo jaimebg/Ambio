@@ -51,7 +51,14 @@ class HomeScreenLayoutTest {
         effectsEnabled = false
     )
 
+    // Every test below declares its window twice, and both halves are load-bearing.
+    // Modifier.size cannot grow past the constraints it is handed and the default
+    // Robolectric device is 320x470dp, so the size the test asks for only becomes
+    // real if the device qualifiers grant it. Drop the qualifiers and the box is
+    // silently clamped back to 320x470 — which still passes some of these
+    // assertions, while measuring a screen nobody wrote a test for.
     @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     fun `the stateless body renders from plain state with no view model`() {
         compose.setContent {
             Box(Modifier.size(411.dp, 891.dp)) {
@@ -70,6 +77,7 @@ class HomeScreenLayoutTest {
     }
 
     @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     fun `tapping the settings icon reports navigation, not an event`() {
         var navigated = false
         compose.setContent {
@@ -90,12 +98,8 @@ class HomeScreenLayoutTest {
         assertThat(navigated).isTrue()
     }
 
-    // Modifier.size cannot grow past the constraints it is handed, and the default
-    // Robolectric device is 320x470dp, so a tablet-sized window has to come from the
-    // device qualifiers. Without this the box below would be clamped back to 320dp
-    // and the test would silently measure the compact layout instead.
     @Test
-    @Config(qualifiers = "w1280dp-h800dp")
+    @Config(sdk = [34], qualifiers = "w1280dp-h800dp")
     fun `at expanded width the picker is visible without opening the sheet`() {
         compose.setContent {
             Box(Modifier.size(1280.dp, 800.dp)) {
@@ -115,6 +119,7 @@ class HomeScreenLayoutTest {
     }
 
     @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     fun `at compact width the picker stays hidden until the sheet is asked for`() {
         compose.setContent {
             Box(Modifier.size(411.dp, 891.dp)) {
@@ -133,7 +138,7 @@ class HomeScreenLayoutTest {
     }
 
     @Test
-    @Config(qualifiers = "w1280dp-h800dp")
+    @Config(sdk = [34], qualifiers = "w1280dp-h800dp")
     fun `at expanded width the change button is gone because the picker is already open`() {
         compose.setContent {
             Box(Modifier.size(1280.dp, 800.dp)) {
@@ -145,6 +150,13 @@ class HomeScreenLayoutTest {
                 )
             }
         }
+
+        // The settings icon sits in the timer column's header row, so this is the
+        // proof that the left pane rendered at all. Without it the assertion below
+        // would also pass on a layout that dropped the timer column entirely.
+        compose.onNodeWithContentDescription(
+            context.getString(R.string.action_open_settings)
+        ).assertIsDisplayed()
 
         compose.onNodeWithText(
             context.getString(R.string.action_change_sound)

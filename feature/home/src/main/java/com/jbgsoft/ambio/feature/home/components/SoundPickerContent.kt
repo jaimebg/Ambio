@@ -33,8 +33,8 @@ fun SoundPickerContent(
     onToggleSound: (Sound) -> Unit,
     onLevelChange: (String, Float) -> Unit,
     onLevelChangeFinished: (String) -> Unit,
-    columns: Int = 3,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    columns: Int = 3
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(

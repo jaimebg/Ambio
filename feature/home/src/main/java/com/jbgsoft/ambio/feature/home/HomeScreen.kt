@@ -169,10 +169,10 @@ internal fun HomeScreen(
                             onToggleSound = { onEvent(HomeEvent.ToggleSound(it)) },
                             onLevelChange = { id, level -> onEvent(HomeEvent.SetSoundLevel(id, level)) },
                             onLevelChangeFinished = { id -> onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
-                            columns = 2,
                             modifier = Modifier
                                 .weight(1f)
-                                .fillMaxHeight()
+                                .fillMaxHeight(),
+                            columns = 2
                         )
                     }
                 } else {
@@ -400,10 +400,10 @@ private fun HomeContentColumn(
             CurrentSoundBar(
                 activeMix = uiState.activeMix,
                 onChangeClick = { onEvent(HomeEvent.ShowSoundPicker) },
+                modifier = Modifier.fillMaxWidth(),
                 // The picker is already on screen beside this column, so there is
                 // nothing left for the button to open.
-                showChangeButton = !isExpanded,
-                modifier = Modifier.fillMaxWidth()
+                showChangeButton = !isExpanded
             )
         }
     }

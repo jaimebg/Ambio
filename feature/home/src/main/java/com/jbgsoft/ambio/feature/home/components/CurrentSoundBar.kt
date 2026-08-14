@@ -29,8 +29,8 @@ import com.jbgsoft.ambio.feature.home.R
 fun CurrentSoundBar(
     activeMix: List<ActiveSound>,
     onChangeClick: () -> Unit,
-    showChangeButton: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showChangeButton: Boolean = true
 ) {
     Row(
         modifier = modifier
