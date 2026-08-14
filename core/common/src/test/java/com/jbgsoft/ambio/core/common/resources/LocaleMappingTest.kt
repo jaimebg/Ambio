@@ -52,7 +52,9 @@ class LocaleMappingTest {
         // Hebrew and Indonesian changed ISO codes; Android resource resolution
         // still keys off the old ones on older API levels.
         assertThat(resourceDirFor("iw-IL")).isEqualTo("values-iw")
-        assertThat(resourceDirFor("id")).isEqualTo("values-b+id")
+        // `values-id` compiles, but the resource table keys Indonesian on `in`,
+        // so a directory named for the modern code is never read.
+        assertThat(resourceDirFor("id")).isEqualTo("values-in")
     }
 
     @Test

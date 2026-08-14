@@ -76,7 +76,7 @@ val PLAY_TO_RESOURCE_QUALIFIER: Map<String, String> = mapOf(
 
     // Legacy ISO codes Android still resolves against.
     "iw-IL" to "iw",   // Hebrew: modern code is `he`
-    "id" to "b+id",    // Indonesian: legacy code is `in`
+    "id" to "in",      // Indonesian: modern code is `id`
 
     // Play says Norwegian; Android wants Bokmal specifically.
     "no-NO" to "nb",
