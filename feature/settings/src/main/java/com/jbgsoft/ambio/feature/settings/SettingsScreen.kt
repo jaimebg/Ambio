@@ -31,7 +31,23 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    SettingsScreen(
+        uiState = uiState,
+        onHapticsChanged = viewModel::onHapticsChanged,
+        onChimeChanged = viewModel::onChimeChanged,
+        onEffectsChanged = viewModel::onEffectsChanged,
+        onNavigateBack = onNavigateBack
+    )
+}
 
+@Composable
+internal fun SettingsScreen(
+    uiState: SettingsUiState,
+    onHapticsChanged: (Boolean) -> Unit,
+    onChimeChanged: (Boolean) -> Unit,
+    onEffectsChanged: (Boolean) -> Unit,
+    onNavigateBack: () -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -65,19 +81,19 @@ fun SettingsScreen(
                 title = stringResource(R.string.settings_haptics),
                 summary = stringResource(R.string.settings_haptics_summary),
                 checked = uiState.hapticsEnabled,
-                onCheckedChange = viewModel::onHapticsChanged
+                onCheckedChange = onHapticsChanged
             )
             SettingRow(
                 title = stringResource(R.string.settings_chime),
                 summary = stringResource(R.string.settings_chime_summary),
                 checked = uiState.chimeEnabled,
-                onCheckedChange = viewModel::onChimeChanged
+                onCheckedChange = onChimeChanged
             )
             SettingRow(
                 title = stringResource(R.string.settings_effects),
                 summary = stringResource(R.string.settings_effects_summary),
                 checked = uiState.effectsEnabled,
-                onCheckedChange = viewModel::onEffectsChanged
+                onCheckedChange = onEffectsChanged
             )
         }
     }
