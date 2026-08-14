@@ -2,6 +2,7 @@ package com.jbgsoft.ambio.feature.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,10 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jbgsoft.ambio.ui.layout.CappedWidthContainer
 
 @Composable
 fun SettingsScreen(
@@ -52,49 +55,52 @@ internal fun SettingsScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
-                .verticalScroll(rememberScrollState())
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+        CappedWidthContainer { columnModifier ->
+            Column(
+                modifier = columnModifier
+                    .fillMaxHeight()
+                    .systemBarsPadding()
+                    .verticalScroll(rememberScrollState())
             ) {
-                IconButton(onClick = onNavigateBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.settings_back)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("settingsHeader")
+                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.settings_back)
+                        )
+                    }
+                    Text(
+                        text = stringResource(R.string.settings_title),
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(start = 8.dp)
                     )
                 }
-                Text(
-                    text = stringResource(R.string.settings_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(start = 8.dp)
+
+                SettingRow(
+                    title = stringResource(R.string.settings_haptics),
+                    summary = stringResource(R.string.settings_haptics_summary),
+                    checked = uiState.hapticsEnabled,
+                    onCheckedChange = onHapticsChanged
+                )
+                SettingRow(
+                    title = stringResource(R.string.settings_chime),
+                    summary = stringResource(R.string.settings_chime_summary),
+                    checked = uiState.chimeEnabled,
+                    onCheckedChange = onChimeChanged
+                )
+                SettingRow(
+                    title = stringResource(R.string.settings_effects),
+                    summary = stringResource(R.string.settings_effects_summary),
+                    checked = uiState.effectsEnabled,
+                    onCheckedChange = onEffectsChanged
                 )
             }
-
-            SettingRow(
-                title = stringResource(R.string.settings_haptics),
-                summary = stringResource(R.string.settings_haptics_summary),
-                checked = uiState.hapticsEnabled,
-                onCheckedChange = onHapticsChanged
-            )
-            SettingRow(
-                title = stringResource(R.string.settings_chime),
-                summary = stringResource(R.string.settings_chime_summary),
-                checked = uiState.chimeEnabled,
-                onCheckedChange = onChimeChanged
-            )
-            SettingRow(
-                title = stringResource(R.string.settings_effects),
-                summary = stringResource(R.string.settings_effects_summary),
-                checked = uiState.effectsEnabled,
-                onCheckedChange = onEffectsChanged
-            )
         }
     }
 }

@@ -1,12 +1,18 @@
 package com.jbgsoft.ambio.feature.settings
 
 import android.content.Context
+import androidx.compose.ui.test.assertWidthIsAtLeast
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.width
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
+import com.jbgsoft.ambio.ui.layout.CONTENT_MAX_WIDTH
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -74,5 +80,63 @@ class SettingsScreenTest {
         compose.onNodeWithText(context.getString(R.string.settings_haptics)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_chime)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_effects)).assertExists()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w1280dp-h800dp")
+    fun `at expanded width the content stops tracking the window and caps its column`() {
+        compose.setContent {
+            SettingsScreen(
+                uiState = SettingsUiState(),
+                onHapticsChanged = {},
+                onChimeChanged = {},
+                onEffectsChanged = {},
+                onNavigateBack = {}
+            )
+        }
+
+        // The header Row is fillMaxWidth, so uncapped it would span all 1280dp.
+        // androidx.compose.ui.test has no assertWidthIsAtMost, so the bound is
+        // read directly and compared.
+        val headerWidth = compose.onNodeWithTag("settingsHeader").getUnclippedBoundsInRoot().width
+        assertThat(headerWidth <= CONTENT_MAX_WIDTH).isTrue()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    fun `at compact width the content still spans the window`() {
+        compose.setContent {
+            SettingsScreen(
+                uiState = SettingsUiState(),
+                onHapticsChanged = {},
+                onChimeChanged = {},
+                onEffectsChanged = {},
+                onNavigateBack = {}
+            )
+        }
+
+        // Guards the other direction: the cap must not leak into phone widths.
+        compose.onNodeWithTag("settingsHeader").assertWidthIsAtLeast(400.dp)
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w700dp-h800dp")
+    fun `at a compact width wider than the cap the content still spans the window`() {
+        compose.setContent {
+            SettingsScreen(
+                uiState = SettingsUiState(),
+                onHapticsChanged = {},
+                onChimeChanged = {},
+                onEffectsChanged = {},
+                onNavigateBack = {}
+            )
+        }
+
+        // 700dp is still COMPACT (under the 840dp threshold) but wider than
+        // CONTENT_MAX_WIDTH (600dp) — the 411dp check above is narrower than
+        // the cap itself, so it cannot tell "no cap" from "cap always
+        // applied" apart. This width can.
+        val headerWidth = compose.onNodeWithTag("settingsHeader").getUnclippedBoundsInRoot().width
+        assertThat(headerWidth > CONTENT_MAX_WIDTH).isTrue()
     }
 }
