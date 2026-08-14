@@ -73,13 +73,19 @@ fun AmbioTheme(
         outlineVariant = animatedSecondary.copy(alpha = 0.3f)
     )
 
-    // Update system bar colors to match theme
+    // The activity is already edge-to-edge, so content draws under the system
+    // bars and Home's gradient reaches them on its own. Painting a flat scrim
+    // back over that would cut a seam across the top of the gradient, so the
+    // bars stay transparent — which is what enableEdgeToEdge() sets up and this
+    // block used to override. Settings and Stats have a flat background, so
+    // there is nothing to see there either way. The light/dark appearance flags
+    // still matter: every palette is dark, so the icons stay light.
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = animatedBackground.toArgb()
-            window.navigationBarColor = animatedBackground.toArgb()
+            window.statusBarColor = Color.Transparent.toArgb()
+            window.navigationBarColor = Color.Transparent.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
                 isAppearanceLightStatusBars = false
                 isAppearanceLightNavigationBars = false

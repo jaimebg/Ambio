@@ -44,8 +44,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlin.math.min
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
+import com.jbgsoft.ambio.core.domain.model.gradientOf
 import com.jbgsoft.ambio.feature.home.components.CurrentSoundBar
 import com.jbgsoft.ambio.feature.home.components.ModeToggle
 import com.jbgsoft.ambio.feature.home.components.PlayPauseButton
@@ -55,6 +57,8 @@ import com.jbgsoft.ambio.feature.home.components.TimerPresetSelector
 import com.jbgsoft.ambio.feature.home.components.VolumeSlider
 import com.jbgsoft.ambio.ui.effects.AmbientEffectsOverlay
 import com.jbgsoft.ambio.ui.effects.ParticleSource
+import com.jbgsoft.ambio.ui.effects.animatedMixGradient
+import com.jbgsoft.ambio.ui.effects.mixGradientBackground
 import com.jbgsoft.ambio.ui.effects.rememberAmbientEffectsAllowed
 
 @Composable
@@ -69,7 +73,25 @@ fun HomeScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        // The gradient is computed here rather than in the ViewModel for the
+        // same reason particleMix below is: it is a pure function of the mix,
+        // and remember keyed on the mix recomputes it exactly when the mix
+        // changes and never on any other recomposition.
+        //
+        // ifEmpty guards the very first frame only. HomeUiState starts with an
+        // empty activeMix and the repository's real mix arrives a beat later;
+        // it is never empty after that, which is why gradientOf requires it.
+        val gradient = remember(uiState.activeMix) {
+            gradientOf(
+                uiState.activeMix.map { it.sound.glow }.ifEmpty { listOf(SoundGlow.RAIN) }
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .mixGradientBackground(animatedMixGradient(gradient))
+        ) {
             // Ambient effects BEHIND content
             val effectsAllowed = rememberAmbientEffectsAllowed()
             if (uiState.effectsEnabled && effectsAllowed) {
