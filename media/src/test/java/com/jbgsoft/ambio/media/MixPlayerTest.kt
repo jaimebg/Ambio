@@ -616,4 +616,111 @@ class MixPlayerTest {
         settle()
         assertThat(tracks["ocean"]!!.appliedVolume).isWithin(0.01f).of(1f)
     }
+
+    // --- fade-out on removal ---
+
+    @Test
+    fun `removing a sound releases its track only after the fade finishes`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+
+        mix.setSoundActive("ocean", audioRes = 2, active = false)
+
+        // Still alive and still audible, mid-fade.
+        assertThat(tracks["ocean"]!!.released).isFalse()
+        advance(MixPlayer.FADE_OUT_MS / 2)
+        assertThat(tracks["ocean"]!!.released).isFalse()
+        assertThat(tracks["ocean"]!!.appliedVolume).isGreaterThan(0f)
+
+        advance(MixPlayer.FADE_OUT_MS)
+        assertThat(tracks["ocean"]!!.released).isTrue()
+    }
+
+    @Test
+    fun `a retiring sound leaves the mix state immediately`() {
+        // The fade is audio cleanup. The UI and the empty-mix guard must see the
+        // removal at once, or the player looks busy while nothing is playing.
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.play()
+
+        mix.setSoundActive("rain", audioRes = 1, active = false)
+
+        assertThat(mix.playbackState).isEqualTo(Player.STATE_IDLE)
+    }
+
+    @Test
+    fun `re-adding a sound mid-fade reuses its track instead of starting a second one`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+        val original = tracks["ocean"]
+        mix.setSoundActive("ocean", audioRes = 2, active = false)
+        advance(MixPlayer.FADE_OUT_MS / 2)
+
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        settle()
+
+        assertThat(tracks["ocean"]).isSameInstanceAs(original)
+        assertThat(original!!.released).isFalse()
+        assertThat(original.appliedVolume).isGreaterThan(0f)
+    }
+
+    @Test
+    fun `removing a sound while paused releases it at once without a fade`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+        mix.pause()
+
+        mix.setSoundActive("ocean", audioRes = 2, active = false)
+
+        assertThat(tracks["ocean"]!!.released).isTrue()
+    }
+
+    @Test
+    fun `pausing mid-fade releases the retiring track rather than stranding it`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+        mix.setSoundActive("ocean", audioRes = 2, active = false)
+
+        mix.pause()
+
+        assertThat(tracks["ocean"]!!.released).isTrue()
+    }
+
+    @Test
+    fun `stopping mid-fade releases the retiring track immediately`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setSoundActive("ocean", audioRes = 2, active = true)
+        mix.play()
+        mix.setSoundActive("ocean", audioRes = 2, active = false)
+
+        mix.stop()
+
+        assertThat(tracks.values.all { it.released }).isTrue()
+    }
+
+    @Test
+    fun `setMix fades out sounds it drops rather than cutting them`() {
+        val mix = player()
+        mix.setMix(
+            listOf(MixEntry("rain", 1, 1f), MixEntry("ocean", 2, 1f)),
+            title = "Rain + Ocean"
+        )
+        mix.play()
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+
+        assertThat(tracks["ocean"]!!.released).isFalse()
+        advance(MixPlayer.FADE_OUT_MS + MixPlayer.TICK_MS)
+        assertThat(tracks["ocean"]!!.released).isTrue()
+    }
 }

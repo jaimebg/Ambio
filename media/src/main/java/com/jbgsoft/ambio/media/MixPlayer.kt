@@ -39,6 +39,10 @@ class MixPlayer(
     }
 
     private val entries = LinkedHashMap<String, Entry>()
+
+    // Sounds fading toward silence. Deliberately NOT part of getState(): the fade is
+    // audio cleanup, and a mix the user has emptied must report itself empty at once.
+    private val retiring = LinkedHashMap<String, Entry>()
     private var playWhenReadyValue = false
     private var masterVolume = 1f
     private var title = ""
@@ -91,6 +95,7 @@ class MixPlayer(
 
     private fun applyVolumes() {
         entries.values.forEach { it.applyVolume() }
+        retiring.values.forEach { it.applyVolume() }
     }
 
     private fun Entry.applyVolume() {
@@ -108,6 +113,17 @@ class MixPlayer(
                 if (it.ramp < 1f) {
                     it.ramp = stepToward(it.ramp, 1f, FADE_IN_MS)
                     if (it.ramp < 1f) stillMoving = true
+                }
+            }
+            val leaving = retiring.entries.iterator()
+            while (leaving.hasNext()) {
+                val entry = leaving.next().value
+                entry.ramp = stepToward(entry.ramp, 0f, FADE_OUT_MS)
+                if (entry.ramp <= 0f) {
+                    entry.track.release()
+                    leaving.remove()
+                } else {
+                    stillMoving = true
                 }
             }
             applyVolumes()
@@ -128,6 +144,8 @@ class MixPlayer(
      */
     private fun settleRamps() {
         entries.values.forEach { it.ramp = 1f }
+        retiring.values.forEach { it.track.release() }
+        retiring.clear()
         ticker.removeCallbacks(tick)
         ticking = false
         applyVolumes()
@@ -180,7 +198,7 @@ class MixPlayer(
         val desired = mix.mapTo(mutableSetOf()) { it.soundId }
         entries.keys.toList()
             .filterNot { it in desired }
-            .forEach { entries.remove(it)?.track?.release() }
+            .forEach { deactivate(it) }
         mix.forEach { entry ->
             // Already-active sounds are left running by setSoundActive; setSoundLevel
             // then re-asserts the level for new and existing tracks alike.
@@ -195,21 +213,40 @@ class MixPlayer(
         if (released) return
         if (active) {
             if (entries.containsKey(soundId)) return
-            val track = createTrack(soundId)
-            track.start(audioRes)
-            // ramp starts at 0, so applyVolume() below silences it before it is heard.
-            entries[soundId] = Entry(track, level = 1f)
+            // A sound still fading out comes back from where it is, rather than
+            // starting a second decoder for something already playing.
+            val revived = retiring.remove(soundId)
+            entries[soundId] = revived ?: Entry(
+                createTrack(soundId).also { it.start(audioRes) },
+                level = 1f
+            )
             if (playWhenReadyValue) {
                 applyVolumes()
                 startTicking()
             } else {
-                track.pause()
+                entries.getValue(soundId).track.pause()
                 settleRamps()
             }
         } else {
-            entries.remove(soundId)?.track?.release()
+            deactivate(soundId)
         }
         invalidateState()
+    }
+
+    private fun deactivate(soundId: String) {
+        val entry = entries.remove(soundId) ?: return
+        if (playWhenReadyValue) {
+            retiring[soundId] = entry
+            startTicking()
+        } else {
+            // Nothing to fade toward silence when nothing is audible; freeing the
+            // decoder now beats holding it for 600ms of inaudible ramp.
+            entry.track.release()
+            // Settle rather than just release: once Task 3 lands, losing a sound
+            // changes the bus for every remaining track, and that has to reach them
+            // even though no ticker is running while paused.
+            settleRamps()
+        }
     }
 
     fun setSoundLevel(soundId: String, level: Float) {
@@ -272,7 +309,7 @@ class MixPlayer(
             // the focus, so no GAINED will ever arrive, and without this the mix would
             // come back at 0.2x for good.
             duckMultiplier = 1f
-            // Set before settling: settleRamps() and applyVolumes() both read this.
+            // Set before the calls below, which branch on the mix being audible.
             playWhenReadyValue = true
             settleRamps()
         } else {
@@ -320,12 +357,15 @@ class MixPlayer(
         ticking = false
         entries.values.forEach { it.track.release() }
         entries.clear()
+        retiring.values.forEach { it.track.release() }
+        retiring.clear()
     }
 
     internal companion object {
         const val MIX_ITEM_ID = "ambio_mix"
         const val DUCK_MULTIPLIER = 0.2f
         const val FADE_IN_MS = 1500L
+        const val FADE_OUT_MS = 600L
         const val TICK_MS = 50L
     }
 }
