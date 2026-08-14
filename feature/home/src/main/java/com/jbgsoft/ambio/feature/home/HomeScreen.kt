@@ -156,7 +156,9 @@ internal fun HomeScreen(
                                 onEvent = onEvent,
                                 onNavigateToSettings = onNavigateToSettings,
                                 onNavigateToStats = onNavigateToStats,
-                                isExpanded = true,
+                                // The picker is already on screen beside this column,
+                                // so there is nothing left for the button to open.
+                                showChangeButton = false,
                                 modifier = Modifier.widthIn(max = CONTENT_MAX_WIDTH)
                             )
                         }
@@ -181,7 +183,7 @@ internal fun HomeScreen(
                         onEvent = onEvent,
                         onNavigateToSettings = onNavigateToSettings,
                         onNavigateToStats = onNavigateToStats,
-                        isExpanded = false,
+                        showChangeButton = true,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -222,7 +224,7 @@ private fun HomeContentColumn(
     onEvent: (HomeEvent) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToStats: () -> Unit,
-    isExpanded: Boolean,
+    showChangeButton: Boolean,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(modifier = modifier) {
@@ -401,9 +403,7 @@ private fun HomeContentColumn(
                 activeMix = uiState.activeMix,
                 onChangeClick = { onEvent(HomeEvent.ShowSoundPicker) },
                 modifier = Modifier.fillMaxWidth(),
-                // The picker is already on screen beside this column, so there is
-                // nothing left for the button to open.
-                showChangeButton = !isExpanded
+                showChangeButton = showChangeButton
             )
         }
     }

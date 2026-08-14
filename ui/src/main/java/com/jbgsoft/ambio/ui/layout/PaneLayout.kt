@@ -8,8 +8,8 @@ import androidx.compose.ui.unit.dp
  *
  * Derived from [androidx.compose.foundation.layout.BoxWithConstraints] rather than
  * `WindowSizeClass` on purpose: `calculateWindowSizeClass` needs an Activity, which
- * neither Robolectric tests nor the store-asset renderer have. The threshold is the
- * same one Material3 uses for EXPANDED, so the behaviour is unchanged.
+ * neither Robolectric tests nor the store-asset renderer have. 840.dp is Material3's
+ * EXPANDED boundary, so screens land on the same breakpoint the spec names.
  */
 enum class PaneLayout { COMPACT, EXPANDED }
 
