@@ -244,7 +244,7 @@ class HomeViewModel @Inject constructor(
         if (mix.size <= 2) {
             mix.joinToString(" + ") { stringProvider.get(it.sound.nameRes) }
         } else {
-            stringProvider.get(R.string.mix_sound_count, mix.size)
+            stringProvider.getQuantity(R.plurals.mix_sound_count, mix.size, mix.size)
         }
 
     /**

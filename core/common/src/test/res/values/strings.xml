@@ -2,4 +2,8 @@
 <resources>
     <string name="test_plain">Plain value</string>
     <string name="test_formatted">Volume at %1$d percent</string>
+    <plurals name="test_quantity">
+        <item quantity="one">%1$d sound</item>
+        <item quantity="other">%1$d sounds</item>
+    </plurals>
 </resources>

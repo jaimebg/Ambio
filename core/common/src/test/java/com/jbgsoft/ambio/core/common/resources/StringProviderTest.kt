@@ -30,4 +30,16 @@ class StringProviderTest {
         assertThat(provider.get(R.string.test_formatted, 70))
             .isEqualTo("Volume at 70 percent")
     }
+
+    @Test
+    fun `resolves the singular form of a plural resource`() {
+        assertThat(provider.getQuantity(R.plurals.test_quantity, 1, 1))
+            .isEqualTo("1 sound")
+    }
+
+    @Test
+    fun `resolves the plural form of a plural resource`() {
+        assertThat(provider.getQuantity(R.plurals.test_quantity, 3, 3))
+            .isEqualTo("3 sounds")
+    }
 }

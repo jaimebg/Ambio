@@ -37,7 +37,10 @@
     <string name="sound_none_selected">No sound selected</string>
 
     <!-- Sound mixer -->
-    <string name="mix_sound_count">%1$d sounds</string>
+    <plurals name="mix_sound_count">
+        <item quantity="one">%1$d sound</item>
+        <item quantity="other">%1$d sounds</item>
+    </plurals>
     <string name="mix_level_for">Level for %1$s</string>
     <string name="mix_remove_sound">Remove %1$s from the mix</string>
     <string name="mix_add_sound">Add %1$s to the mix</string>

@@ -75,6 +75,7 @@ class HomeViewModelTest {
 
     private val stringProvider = object : StringProvider {
         override fun get(id: Int, vararg args: Any): String = "test-string-$id"
+        override fun getQuantity(id: Int, quantity: Int, vararg args: Any): String = "test-string-$id"
     }
 
     // Flows for controlling state

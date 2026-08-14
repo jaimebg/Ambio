@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
@@ -60,7 +61,7 @@ fun CurrentSoundBar(
                     text = if (names.size <= 2) {
                         names.joinToString(" + ")
                     } else {
-                        stringResource(R.string.mix_sound_count, names.size)
+                        pluralStringResource(R.plurals.mix_sound_count, names.size, names.size)
                     },
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
