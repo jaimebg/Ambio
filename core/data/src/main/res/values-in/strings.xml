@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Hujan</string>
+
+    <string name="sound_fireplace">Perapian</string>
+
+    <string name="sound_cafe">Kafe</string>
+
+    <string name="sound_forest">Hutan</string>
+
+    <string name="sound_birds">Burung</string>
+
+    <string name="sound_crickets">Jangkrik</string>
+
+    <string name="sound_ocean">Samudra</string>
+
+    <string name="sound_stream">Aliran sungai</string>
+
+    <string name="sound_cave">Gua</string>
+
+    <string name="sound_wind">Angin</string>
+
+    <string name="sound_white_noise">Derau putih</string>
+
+    <string name="sound_brown_noise">Derau cokelat</string>
+</resources>

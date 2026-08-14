@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Eső</string>
+
+    <string name="sound_fireplace">Kandalló</string>
+
+    <string name="sound_cafe">Kávézó</string>
+
+    <string name="sound_forest">Erdő</string>
+
+    <string name="sound_birds">Madarak</string>
+
+    <string name="sound_crickets">Tücskök</string>
+
+    <string name="sound_ocean">Óceán</string>
+
+    <string name="sound_stream">Patak</string>
+
+    <string name="sound_cave">Barlang</string>
+
+    <string name="sound_wind">Szél</string>
+
+    <string name="sound_white_noise">Fehér zaj</string>
+
+    <string name="sound_brown_noise">Barna zaj</string>
+</resources>

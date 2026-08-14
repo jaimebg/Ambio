@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Regn</string>
+
+    <string name="sound_fireplace">Pejs</string>
+
+    <string name="sound_cafe">Café</string>
+
+    <string name="sound_forest">Skov</string>
+
+    <string name="sound_birds">Fugle</string>
+
+    <string name="sound_crickets">Fårekyllinger</string>
+
+    <string name="sound_ocean">Hav</string>
+
+    <string name="sound_stream">Bæk</string>
+
+    <string name="sound_cave">Hule</string>
+
+    <string name="sound_wind">Vind</string>
+
+    <string name="sound_white_noise">Hvid støj</string>
+
+    <string name="sound_brown_noise">Brun støj</string>
+</resources>

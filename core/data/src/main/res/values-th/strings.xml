@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">ฝน</string>
+
+    <string name="sound_fireplace">เตาผิง</string>
+
+    <string name="sound_cafe">คาเฟ่</string>
+
+    <string name="sound_forest">ป่า</string>
+
+    <string name="sound_birds">นก</string>
+
+    <string name="sound_crickets">จิ้งหรีด</string>
+
+    <string name="sound_ocean">มหาสมุทร</string>
+
+    <string name="sound_stream">ลำธาร</string>
+
+    <string name="sound_cave">ถ้ำ</string>
+
+    <string name="sound_wind">ลม</string>
+
+    <string name="sound_white_noise">เสียงสีขาว</string>
+
+    <string name="sound_brown_noise">เสียงสีน้ำตาล</string>
+</resources>

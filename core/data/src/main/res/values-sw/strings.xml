@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Mvua</string>
+
+    <string name="sound_fireplace">Mahali pa moto</string>
+
+    <string name="sound_cafe">Mkahawa</string>
+
+    <string name="sound_forest">Msitu</string>
+
+    <string name="sound_birds">Ndege</string>
+
+    <string name="sound_crickets">Nyenje</string>
+
+    <string name="sound_ocean">Bahari</string>
+
+    <string name="sound_stream">Kijito</string>
+
+    <string name="sound_cave">Pango</string>
+
+    <string name="sound_wind">Upepo</string>
+
+    <string name="sound_white_noise">Kelele nyeupe</string>
+
+    <string name="sound_brown_noise">Kelele ya kahawia</string>
+</resources>

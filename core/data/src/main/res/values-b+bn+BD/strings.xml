@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">বৃষ্টি</string>
+
+    <string name="sound_fireplace">অগ্নিকুণ্ড</string>
+
+    <string name="sound_cafe">ক্যাফে</string>
+
+    <string name="sound_forest">বন</string>
+
+    <string name="sound_birds">পাখি</string>
+
+    <string name="sound_crickets">ঝিঁঝিঁ পোকা</string>
+
+    <string name="sound_ocean">সমুদ্র</string>
+
+    <string name="sound_stream">স্রোতধারা</string>
+
+    <string name="sound_cave">গুহা</string>
+
+    <string name="sound_wind">বাতাস</string>
+
+    <string name="sound_white_noise">হোয়াইট নয়েজ</string>
+
+    <string name="sound_brown_noise">ব্রাউন নয়েজ</string>
+</resources>

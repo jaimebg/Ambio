@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Ulan</string>
+
+    <string name="sound_fireplace">Apuyan</string>
+
+    <string name="sound_cafe">Kapihan</string>
+
+    <string name="sound_forest">Gubat</string>
+
+    <string name="sound_birds">Mga ibon</string>
+
+    <string name="sound_crickets">Mga kuliglig</string>
+
+    <string name="sound_ocean">Karagatan</string>
+
+    <string name="sound_stream">Batis</string>
+
+    <string name="sound_cave">Yungib</string>
+
+    <string name="sound_wind">Hangin</string>
+
+    <string name="sound_white_noise">Puting ingay</string>
+
+    <string name="sound_brown_noise">Kayumangging ingay</string>
+</resources>

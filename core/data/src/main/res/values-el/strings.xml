@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Βροχή</string>
+
+    <string name="sound_fireplace">Τζάκι</string>
+
+    <string name="sound_cafe">Καφετέρια</string>
+
+    <string name="sound_forest">Δάσος</string>
+
+    <string name="sound_birds">Πουλιά</string>
+
+    <string name="sound_crickets">Γρύλοι</string>
+
+    <string name="sound_ocean">Ωκεανός</string>
+
+    <string name="sound_stream">Ρυάκι</string>
+
+    <string name="sound_cave">Σπηλιά</string>
+
+    <string name="sound_wind">Άνεμος</string>
+
+    <string name="sound_white_noise">Λευκός θόρυβος</string>
+
+    <string name="sound_brown_noise">Καφέ θόρυβος</string>
+</resources>

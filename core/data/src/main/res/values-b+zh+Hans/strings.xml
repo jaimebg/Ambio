@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">雨</string>
+
+    <string name="sound_fireplace">壁炉</string>
+
+    <string name="sound_cafe">咖啡馆</string>
+
+    <string name="sound_forest">森林</string>
+
+    <string name="sound_birds">鸟鸣</string>
+
+    <string name="sound_crickets">蟋蟀</string>
+
+    <string name="sound_ocean">海洋</string>
+
+    <string name="sound_stream">溪流</string>
+
+    <string name="sound_cave">洞穴</string>
+
+    <string name="sound_wind">风</string>
+
+    <string name="sound_white_noise">白噪音</string>
+
+    <string name="sound_brown_noise">棕色噪音</string>
+</resources>

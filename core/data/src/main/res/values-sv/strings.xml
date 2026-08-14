@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Regn</string>
+
+    <string name="sound_fireplace">Öppen spis</string>
+
+    <string name="sound_cafe">Kafé</string>
+
+    <string name="sound_forest">Skog</string>
+
+    <string name="sound_birds">Fåglar</string>
+
+    <string name="sound_crickets">Syrsor</string>
+
+    <string name="sound_ocean">Hav</string>
+
+    <string name="sound_stream">Bäck</string>
+
+    <string name="sound_cave">Grotta</string>
+
+    <string name="sound_wind">Vind</string>
+
+    <string name="sound_white_noise">Vitt brus</string>
+
+    <string name="sound_brown_noise">Brunt brus</string>
+</resources>

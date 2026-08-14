@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Regen</string>
+
+    <string name="sound_fireplace">Kamin</string>
+
+    <string name="sound_cafe">Café</string>
+
+    <string name="sound_forest">Wald</string>
+
+    <string name="sound_birds">Vögel</string>
+
+    <string name="sound_crickets">Grillen</string>
+
+    <string name="sound_ocean">Ozean</string>
+
+    <string name="sound_stream">Bach</string>
+
+    <string name="sound_cave">Höhle</string>
+
+    <string name="sound_wind">Wind</string>
+
+    <string name="sound_white_noise">Weißes Rauschen</string>
+
+    <string name="sound_brown_noise">Braunes Rauschen</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Mưa</string>
+
+    <string name="sound_fireplace">Lò sưởi</string>
+
+    <string name="sound_cafe">Quán cà phê</string>
+
+    <string name="sound_forest">Rừng</string>
+
+    <string name="sound_birds">Chim hót</string>
+
+    <string name="sound_crickets">Dế</string>
+
+    <string name="sound_ocean">Đại dương</string>
+
+    <string name="sound_stream">Suối</string>
+
+    <string name="sound_cave">Hang động</string>
+
+    <string name="sound_wind">Gió</string>
+
+    <string name="sound_white_noise">Tiếng ồn trắng</string>
+
+    <string name="sound_brown_noise">Tiếng ồn nâu</string>
+</resources>

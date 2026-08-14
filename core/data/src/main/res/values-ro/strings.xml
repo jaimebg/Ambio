@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Ploaie</string>
+
+    <string name="sound_fireplace">Șemineu</string>
+
+    <string name="sound_cafe">Cafenea</string>
+
+    <string name="sound_forest">Pădure</string>
+
+    <string name="sound_birds">Păsări</string>
+
+    <string name="sound_crickets">Greieri</string>
+
+    <string name="sound_ocean">Ocean</string>
+
+    <string name="sound_stream">Pârâu</string>
+
+    <string name="sound_cave">Peșteră</string>
+
+    <string name="sound_wind">Vânt</string>
+
+    <string name="sound_white_noise">Zgomot alb</string>
+
+    <string name="sound_brown_noise">Zgomot maro</string>
+</resources>

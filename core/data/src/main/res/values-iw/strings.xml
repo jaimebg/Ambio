@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">גשם</string>
+
+    <string name="sound_fireplace">קמין</string>
+
+    <string name="sound_cafe">בית קפה</string>
+
+    <string name="sound_forest">יער</string>
+
+    <string name="sound_birds">ציפורים</string>
+
+    <string name="sound_crickets">צרצרים</string>
+
+    <string name="sound_ocean">אוקיינוס</string>
+
+    <string name="sound_stream">נחל</string>
+
+    <string name="sound_cave">מערה</string>
+
+    <string name="sound_wind">רוח</string>
+
+    <string name="sound_white_noise">רעש לבן</string>
+
+    <string name="sound_brown_noise">רעש חום</string>
+</resources>

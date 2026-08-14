@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Chuva</string>
+
+    <string name="sound_fireplace">Lareira</string>
+
+    <string name="sound_cafe">Cafeteria</string>
+
+    <string name="sound_forest">Floresta</string>
+
+    <string name="sound_birds">Pássaros</string>
+
+    <string name="sound_crickets">Grilos</string>
+
+    <string name="sound_ocean">Oceano</string>
+
+    <string name="sound_stream">Riacho</string>
+
+    <string name="sound_cave">Caverna</string>
+
+    <string name="sound_wind">Vento</string>
+
+    <string name="sound_white_noise">Ruído branco</string>
+
+    <string name="sound_brown_noise">Ruído marrom</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Дъжд</string>
+
+    <string name="sound_fireplace">Камина</string>
+
+    <string name="sound_cafe">Кафене</string>
+
+    <string name="sound_forest">Гора</string>
+
+    <string name="sound_birds">Птици</string>
+
+    <string name="sound_crickets">Щурци</string>
+
+    <string name="sound_ocean">Океан</string>
+
+    <string name="sound_stream">Поток</string>
+
+    <string name="sound_cave">Пещера</string>
+
+    <string name="sound_wind">Вятър</string>
+
+    <string name="sound_white_noise">Бял шум</string>
+
+    <string name="sound_brown_noise">Кафяв шум</string>
+</resources>

@@ -7,6 +7,12 @@ plugins {
 
 android {
     namespace = "com.jbgsoft.ambio.core.data"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 room {

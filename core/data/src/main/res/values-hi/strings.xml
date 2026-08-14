@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">बारिश</string>
+
+    <string name="sound_fireplace">अंगीठी</string>
+
+    <string name="sound_cafe">कैफ़े</string>
+
+    <string name="sound_forest">जंगल</string>
+
+    <string name="sound_birds">पक्षी</string>
+
+    <string name="sound_crickets">झींगुर</string>
+
+    <string name="sound_ocean">समुद्र</string>
+
+    <string name="sound_stream">जलधारा</string>
+
+    <string name="sound_cave">गुफा</string>
+
+    <string name="sound_wind">हवा</string>
+
+    <string name="sound_white_noise">व्हाइट नॉइज़</string>
+
+    <string name="sound_brown_noise">ब्राउन नॉइज़</string>
+</resources>

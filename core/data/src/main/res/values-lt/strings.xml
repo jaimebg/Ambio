@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Lietus</string>
+
+    <string name="sound_fireplace">Židinys</string>
+
+    <string name="sound_cafe">Kavinė</string>
+
+    <string name="sound_forest">Miškas</string>
+
+    <string name="sound_birds">Paukščiai</string>
+
+    <string name="sound_crickets">Svirpliai</string>
+
+    <string name="sound_ocean">Vandenynas</string>
+
+    <string name="sound_stream">Upelis</string>
+
+    <string name="sound_cave">Urvas</string>
+
+    <string name="sound_wind">Vėjas</string>
+
+    <string name="sound_white_noise">Baltasis triukšmas</string>
+
+    <string name="sound_brown_noise">Rudasis triukšmas</string>
+</resources>

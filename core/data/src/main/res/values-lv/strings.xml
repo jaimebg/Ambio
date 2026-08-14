@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Lietus</string>
+
+    <string name="sound_fireplace">Kamīns</string>
+
+    <string name="sound_cafe">Kafejnīca</string>
+
+    <string name="sound_forest">Mežs</string>
+
+    <string name="sound_birds">Putni</string>
+
+    <string name="sound_crickets">Circeņi</string>
+
+    <string name="sound_ocean">Okeāns</string>
+
+    <string name="sound_stream">Strauts</string>
+
+    <string name="sound_cave">Ala</string>
+
+    <string name="sound_wind">Vējš</string>
+
+    <string name="sound_white_noise">Baltais troksnis</string>
+
+    <string name="sound_brown_noise">Brūnais troksnis</string>
+</resources>

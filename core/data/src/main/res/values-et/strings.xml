@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Vihm</string>
+
+    <string name="sound_fireplace">Kamin</string>
+
+    <string name="sound_cafe">Kohvik</string>
+
+    <string name="sound_forest">Mets</string>
+
+    <string name="sound_birds">Linnud</string>
+
+    <string name="sound_crickets">Ritsikad</string>
+
+    <string name="sound_ocean">Ookean</string>
+
+    <string name="sound_stream">Oja</string>
+
+    <string name="sound_cave">Koobas</string>
+
+    <string name="sound_wind">Tuul</string>
+
+    <string name="sound_white_noise">Valge müra</string>
+
+    <string name="sound_brown_noise">Pruun müra</string>
+</resources>

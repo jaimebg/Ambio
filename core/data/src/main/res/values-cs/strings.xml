@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_rain">Déšť</string>
+
+    <string name="sound_fireplace">Krb</string>
+
+    <string name="sound_cafe">Kavárna</string>
+
+    <string name="sound_forest">Les</string>
+
+    <string name="sound_birds">Ptáci</string>
+
+    <string name="sound_crickets">Cvrčci</string>
+
+    <string name="sound_ocean">Oceán</string>
+
+    <string name="sound_stream">Potok</string>
+
+    <string name="sound_cave">Jeskyně</string>
+
+    <string name="sound_wind">Vítr</string>
+
+    <string name="sound_white_noise">Bílý šum</string>
+
+    <string name="sound_brown_noise">Hnědý šum</string>
+</resources>
