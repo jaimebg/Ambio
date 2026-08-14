@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">आंकड़े</string>
+    <string name="stats_back">वापस जाएं</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">कुल फ़ोकस समय</string>
+    <string name="stats_sessions_completed">पूरे हुए सेशन</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d मिनट</item>
+        <item quantity="other">%1$d मिनट</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">इतिहास</string>
+    <string name="stats_empty">अभी तक कोई सेशन नहीं है। एक फ़ोकस सेशन पूरा करें, वह यहां दिखेगा।</string>
+    <string name="stats_unknown_sound">हटाई गई आवाज़</string>
+    <string name="stats_delete_session">सेशन मिटाएं</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">क्या यह सेशन मिटाना है?</string>
+    <string name="stats_delete_session_message">यह फ़ोकस सेशन आपके इतिहास से हमेशा के लिए हटा दिया जाएगा। इसे पहले जैसा नहीं किया जा सकता।</string>
+    <string name="stats_delete_session_confirm">मिटाएं</string>
+    <string name="stats_delete_session_cancel">रद्द करें</string>
+</resources>

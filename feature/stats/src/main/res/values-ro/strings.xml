@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistici</string>
+    <string name="stats_back">Înapoi</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Timp total de concentrare</string>
+    <string name="stats_sessions_completed">Sesiuni finalizate</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min.</item>
+        <item quantity="few">%1$d min.</item>
+        <item quantity="other">%1$d min.</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Istoric</string>
+    <string name="stats_empty">Nu există încă sesiuni. Finalizează o sesiune de concentrare și va apărea aici.</string>
+    <string name="stats_unknown_sound">Sunet eliminat</string>
+    <string name="stats_delete_session">Șterge sesiunea</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Ștergi această sesiune?</string>
+    <string name="stats_delete_session_message">Această sesiune de concentrare va fi eliminată definitiv din istoricul tău. Acțiunea nu poate fi anulată.</string>
+    <string name="stats_delete_session_confirm">Șterge</string>
+    <string name="stats_delete_session_cancel">Anulează</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Στατιστικά</string>
+    <string name="stats_back">Πίσω</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Συνολικός χρόνος εστίασης</string>
+    <string name="stats_sessions_completed">Ολοκληρωμένες συνεδρίες</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d λεπτό</item>
+        <item quantity="other">%1$d λεπτά</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Ιστορικό</string>
+    <string name="stats_empty">Δεν υπάρχουν ακόμα συνεδρίες. Ολοκλήρωσε μια συνεδρία εστίασης και θα εμφανιστεί εδώ.</string>
+    <string name="stats_unknown_sound">Ήχος που αφαιρέθηκε</string>
+    <string name="stats_delete_session">Διαγραφή συνεδρίας</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Διαγραφή αυτής της συνεδρίας;</string>
+    <string name="stats_delete_session_message">Αυτή η συνεδρία εστίασης θα αφαιρεθεί οριστικά από το ιστορικό σου. Η ενέργεια δεν αναιρείται.</string>
+    <string name="stats_delete_session_confirm">Διαγραφή</string>
+    <string name="stats_delete_session_cancel">Ακύρωση</string>
+</resources>

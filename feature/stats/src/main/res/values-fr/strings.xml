@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistiques</string>
+    <string name="stats_back">Retour</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Temps de concentration total</string>
+    <string name="stats_sessions_completed">Sessions terminées</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Historique</string>
+    <string name="stats_empty">Aucune session pour l\'instant. Terminez une session de concentration et elle apparaîtra ici.</string>
+    <string name="stats_unknown_sound">Son supprimé</string>
+    <string name="stats_delete_session">Supprimer la session</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Supprimer cette session ?</string>
+    <string name="stats_delete_session_message">Cette session de concentration sera définitivement supprimée de votre historique. Cette action est irréversible.</string>
+    <string name="stats_delete_session_confirm">Supprimer</string>
+    <string name="stats_delete_session_cancel">Annuler</string>
+</resources>

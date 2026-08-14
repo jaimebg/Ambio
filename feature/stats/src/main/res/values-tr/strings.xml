@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">İstatistikler</string>
+    <string name="stats_back">Geri</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Toplam odaklanma süresi</string>
+    <string name="stats_sessions_completed">Tamamlanan oturumlar</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d dk.</item>
+        <item quantity="other">%1$d dk.</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Geçmiş</string>
+    <string name="stats_empty">Henüz oturum yok. Bir odaklanma oturumu tamamlayın, burada görünecek.</string>
+    <string name="stats_unknown_sound">Kaldırılan ses</string>
+    <string name="stats_delete_session">Oturumu sil</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Bu oturum silinsin mi?</string>
+    <string name="stats_delete_session_message">Bu odaklanma oturumu geçmişinizden kalıcı olarak kaldırılacak. Bu işlem geri alınamaz.</string>
+    <string name="stats_delete_session_confirm">Sil</string>
+    <string name="stats_delete_session_cancel">İptal</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Статистика</string>
+    <string name="stats_back">Назад</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Загальний час зосередження</string>
+    <string name="stats_sessions_completed">Завершені сеанси</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d хв</item>
+        <item quantity="few">%1$d хв</item>
+        <item quantity="many">%1$d хв</item>
+        <item quantity="other">%1$d хв</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Історія</string>
+    <string name="stats_empty">Сеансів поки немає. Завершіть сеанс зосередження, і він з\'явиться тут.</string>
+    <string name="stats_unknown_sound">Вилучений звук</string>
+    <string name="stats_delete_session">Видалити сеанс</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Видалити цей сеанс?</string>
+    <string name="stats_delete_session_message">Цей сеанс зосередження буде назавжди вилучено з вашої історії. Скасувати цю дію не можна.</string>
+    <string name="stats_delete_session_confirm">Видалити</string>
+    <string name="stats_delete_session_cancel">Скасувати</string>
+</resources>

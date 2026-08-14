@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">סטטיסטיקה</string>
+    <string name="stats_back">חזרה</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">זמן מיקוד כולל</string>
+    <string name="stats_sessions_completed">סשנים שהושלמו</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d דקה</item>
+        <item quantity="two">%1$d דקות</item>
+        <item quantity="other">%1$d דקות</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">היסטוריה</string>
+    <string name="stats_empty">אין עדיין סשנים. סיימו סשן מיקוד והוא יופיע כאן.</string>
+    <string name="stats_unknown_sound">צליל שהוסר</string>
+    <string name="stats_delete_session">מחיקת סשן</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">למחוק את הסשן הזה?</string>
+    <string name="stats_delete_session_message">סשן המיקוד הזה יימחק לצמיתות מההיסטוריה שלכם. אי אפשר לבטל את הפעולה.</string>
+    <string name="stats_delete_session_confirm">מחיקה</string>
+    <string name="stats_delete_session_cancel">ביטול</string>
+</resources>

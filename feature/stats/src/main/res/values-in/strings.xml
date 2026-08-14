@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistik</string>
+    <string name="stats_back">Kembali</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Total waktu fokus</string>
+    <string name="stats_sessions_completed">Sesi selesai</string>
+    <plurals name="stats_minutes">
+        <item quantity="other">%1$d mnt</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Riwayat</string>
+    <string name="stats_empty">Belum ada sesi. Selesaikan satu sesi fokus dan sesi itu akan muncul di sini.</string>
+    <string name="stats_unknown_sound">Suara yang dihapus</string>
+    <string name="stats_delete_session">Hapus sesi</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Hapus sesi ini?</string>
+    <string name="stats_delete_session_message">Sesi fokus ini akan dihapus permanen dari riwayat Anda. Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="stats_delete_session_confirm">Hapus</string>
+    <string name="stats_delete_session_cancel">Batal</string>
+</resources>

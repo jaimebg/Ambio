@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistika</string>
+    <string name="stats_back">Tagasi</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Keskendumise koguaeg</string>
+    <string name="stats_sessions_completed">Lõpetatud seansid</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Ajalugu</string>
+    <string name="stats_empty">Seansse pole veel. Lõpeta keskendumisseanss ja see ilmub siia.</string>
+    <string name="stats_unknown_sound">Eemaldatud heli</string>
+    <string name="stats_delete_session">Kustuta seanss</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Kas kustutada see seanss?</string>
+    <string name="stats_delete_session_message">See keskendumisseanss eemaldatakse jäädavalt sinu ajaloost. Seda ei saa tagasi võtta.</string>
+    <string name="stats_delete_session_confirm">Kustuta</string>
+    <string name="stats_delete_session_cancel">Loobu</string>
+</resources>

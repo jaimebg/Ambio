@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistik</string>
+    <string name="stats_back">Zurück</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Gesamte Fokuszeit</string>
+    <string name="stats_sessions_completed">Abgeschlossene Sitzungen</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d Min.</item>
+        <item quantity="other">%1$d Min.</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Verlauf</string>
+    <string name="stats_empty">Noch keine Sitzungen. Schließe eine Fokussitzung ab, dann erscheint sie hier.</string>
+    <string name="stats_unknown_sound">Entfernter Sound</string>
+    <string name="stats_delete_session">Sitzung löschen</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Diese Sitzung löschen?</string>
+    <string name="stats_delete_session_message">Diese Fokussitzung wird dauerhaft aus deinem Verlauf entfernt. Das lässt sich nicht rückgängig machen.</string>
+    <string name="stats_delete_session_confirm">Löschen</string>
+    <string name="stats_delete_session_cancel">Abbrechen</string>
+</resources>

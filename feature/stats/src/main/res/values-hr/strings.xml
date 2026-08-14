@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistika</string>
+    <string name="stats_back">Natrag</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Ukupno vrijeme fokusiranja</string>
+    <string name="stats_sessions_completed">Završene sesije</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Povijest</string>
+    <string name="stats_empty">Još nema sesija. Završite sesiju fokusiranja i pojavit će se ovdje.</string>
+    <string name="stats_unknown_sound">Uklonjeni zvuk</string>
+    <string name="stats_delete_session">Izbriši sesiju</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Izbrisati ovu sesiju?</string>
+    <string name="stats_delete_session_message">Ova sesija fokusiranja trajno će se ukloniti iz vaše povijesti. Radnja se ne može poništiti.</string>
+    <string name="stats_delete_session_confirm">Izbriši</string>
+    <string name="stats_delete_session_cancel">Odustani</string>
+</resources>

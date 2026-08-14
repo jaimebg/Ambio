@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Takwimu</string>
+    <string name="stats_back">Rudi</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Muda wote wa umakini</string>
+    <string name="stats_sessions_completed">Vipindi vilivyokamilika</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">dakika %1$d</item>
+        <item quantity="other">dakika %1$d</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Historia</string>
+    <string name="stats_empty">Bado hakuna vipindi. Kamilisha kipindi cha umakini nacho kitaonekana hapa.</string>
+    <string name="stats_unknown_sound">Sauti iliyoondolewa</string>
+    <string name="stats_delete_session">Futa kipindi</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Ungependa kufuta kipindi hiki?</string>
+    <string name="stats_delete_session_message">Kipindi hiki cha umakini kitaondolewa kabisa kwenye historia yako. Kitendo hiki hakiwezi kutenduliwa.</string>
+    <string name="stats_delete_session_confirm">Futa</string>
+    <string name="stats_delete_session_cancel">Ghairi</string>
+</resources>

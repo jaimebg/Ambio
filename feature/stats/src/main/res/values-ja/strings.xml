@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">統計</string>
+    <string name="stats_back">戻る</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">合計集中時間</string>
+    <string name="stats_sessions_completed">完了したセッション</string>
+    <plurals name="stats_minutes">
+        <item quantity="other">%1$d 分</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">履歴</string>
+    <string name="stats_empty">まだセッションがありません。集中セッションを終えるとここに表示されます。</string>
+    <string name="stats_unknown_sound">削除されたサウンド</string>
+    <string name="stats_delete_session">セッションを削除</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">このセッションを削除しますか？</string>
+    <string name="stats_delete_session_message">この集中セッションは履歴から完全に削除されます。この操作は取り消せません。</string>
+    <string name="stats_delete_session_confirm">削除</string>
+    <string name="stats_delete_session_cancel">キャンセル</string>
+</resources>

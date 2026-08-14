@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Tilastot</string>
+    <string name="stats_back">Takaisin</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Keskittymisaika yhteensä</string>
+    <string name="stats_sessions_completed">Valmiit jaksot</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Historia</string>
+    <string name="stats_empty">Ei vielä jaksoja. Suorita keskittymisjakso, niin se näkyy täällä.</string>
+    <string name="stats_unknown_sound">Poistettu ääni</string>
+    <string name="stats_delete_session">Poista jakso</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Poistetaanko tämä jakso?</string>
+    <string name="stats_delete_session_message">Tämä keskittymisjakso poistetaan pysyvästi historiastasi. Toimintoa ei voi kumota.</string>
+    <string name="stats_delete_session_confirm">Poista</string>
+    <string name="stats_delete_session_cancel">Peruuta</string>
+</resources>

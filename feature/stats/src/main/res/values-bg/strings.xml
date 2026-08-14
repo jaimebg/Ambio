@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Статистика</string>
+    <string name="stats_back">Назад</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Общо време на фокус</string>
+    <string name="stats_sessions_completed">Завършени сесии</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d мин</item>
+        <item quantity="other">%1$d мин</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">История</string>
+    <string name="stats_empty">Все още няма сесии. Завършете сесия за фокусиране и тя ще се появи тук.</string>
+    <string name="stats_unknown_sound">Премахнат звук</string>
+    <string name="stats_delete_session">Изтриване на сесията</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Да се изтрие ли тази сесия?</string>
+    <string name="stats_delete_session_message">Тази сесия за фокусиране ще бъде премахната завинаги от историята ви. Действието е необратимо.</string>
+    <string name="stats_delete_session_confirm">Изтриване</string>
+    <string name="stats_delete_session_cancel">Отказ</string>
+</resources>

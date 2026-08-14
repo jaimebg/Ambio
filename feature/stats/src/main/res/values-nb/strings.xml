@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistikk</string>
+    <string name="stats_back">Tilbake</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Total fokustid</string>
+    <string name="stats_sessions_completed">Fullførte økter</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Historikk</string>
+    <string name="stats_empty">Ingen økter ennå. Fullfør en fokusøkt, så vises den her.</string>
+    <string name="stats_unknown_sound">Fjernet lyd</string>
+    <string name="stats_delete_session">Slett økt</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Vil du slette denne økten?</string>
+    <string name="stats_delete_session_message">Denne fokusøkten blir slettet permanent fra historikken din. Dette kan ikke angres.</string>
+    <string name="stats_delete_session_confirm">Slett</string>
+    <string name="stats_delete_session_cancel">Avbryt</string>
+</resources>

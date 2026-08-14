@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">สถิติ</string>
+    <string name="stats_back">ย้อนกลับ</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">เวลาโฟกัสทั้งหมด</string>
+    <string name="stats_sessions_completed">เซสชันที่เสร็จสิ้น</string>
+    <plurals name="stats_minutes">
+        <item quantity="other">%1$d นาที</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">ประวัติ</string>
+    <string name="stats_empty">ยังไม่มีเซสชัน ทำเซสชันโฟกัสให้เสร็จแล้วจะแสดงที่นี่</string>
+    <string name="stats_unknown_sound">เสียงที่ถูกนำออก</string>
+    <string name="stats_delete_session">ลบเซสชัน</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">ลบเซสชันนี้ใช่ไหม</string>
+    <string name="stats_delete_session_message">เซสชันโฟกัสนี้จะถูกลบออกจากประวัติของคุณอย่างถาวร และไม่สามารถเรียกคืนได้</string>
+    <string name="stats_delete_session_confirm">ลบ</string>
+    <string name="stats_delete_session_cancel">ยกเลิก</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Mga Istatistika</string>
+    <string name="stats_back">Bumalik</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Kabuuang oras ng focus</string>
+    <string name="stats_sessions_completed">Mga natapos na session</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min.</item>
+        <item quantity="other">%1$d min.</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Kasaysayan</string>
+    <string name="stats_empty">Wala pang session. Tapusin ang isang focus session at lalabas ito rito.</string>
+    <string name="stats_unknown_sound">Inalis na tunog</string>
+    <string name="stats_delete_session">I-delete ang session</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">I-delete ang session na ito?</string>
+    <string name="stats_delete_session_message">Permanenteng aalisin ang focus session na ito sa iyong kasaysayan. Hindi na ito maibabalik.</string>
+    <string name="stats_delete_session_confirm">I-delete</string>
+    <string name="stats_delete_session_cancel">Kanselahin</string>
+</resources>

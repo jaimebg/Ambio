@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Статистика</string>
+    <string name="stats_back">Назад</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Общее время концентрации</string>
+    <string name="stats_sessions_completed">Завершённые сеансы</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d мин</item>
+        <item quantity="few">%1$d мин</item>
+        <item quantity="many">%1$d мин</item>
+        <item quantity="other">%1$d мин</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">История</string>
+    <string name="stats_empty">Сеансов пока нет. Завершите сеанс концентрации, и он появится здесь.</string>
+    <string name="stats_unknown_sound">Удалённый звук</string>
+    <string name="stats_delete_session">Удалить сеанс</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Удалить этот сеанс?</string>
+    <string name="stats_delete_session_message">Этот сеанс концентрации будет навсегда удалён из вашей истории. Отменить это действие нельзя.</string>
+    <string name="stats_delete_session_confirm">Удалить</string>
+    <string name="stats_delete_session_cancel">Отмена</string>
+</resources>

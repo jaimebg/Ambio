@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statisztika</string>
+    <string name="stats_back">Vissza</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Teljes fókuszidő</string>
+    <string name="stats_sessions_completed">Befejezett időszakok</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d perc</item>
+        <item quantity="other">%1$d perc</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Előzmények</string>
+    <string name="stats_empty">Még nincsenek időszakok. Fejezzen be egy fókuszidőszakot, és megjelenik itt.</string>
+    <string name="stats_unknown_sound">Eltávolított hang</string>
+    <string name="stats_delete_session">Időszak törlése</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Törli ezt az időszakot?</string>
+    <string name="stats_delete_session_message">Ez a fókuszidőszak véglegesen törlődik az előzményekből. A művelet nem vonható vissza.</string>
+    <string name="stats_delete_session_confirm">Törlés</string>
+    <string name="stats_delete_session_cancel">Mégse</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistika</string>
+    <string name="stats_back">Nazaj</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Skupni čas zbranosti</string>
+    <string name="stats_sessions_completed">Končane seje</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="two">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Zgodovina</string>
+    <string name="stats_empty">Sej še ni. Končajte sejo zbranosti in prikazala se bo tukaj.</string>
+    <string name="stats_unknown_sound">Odstranjen zvok</string>
+    <string name="stats_delete_session">Izbriši sejo</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Želite izbrisati to sejo?</string>
+    <string name="stats_delete_session_message">Ta seja zbranosti bo trajno odstranjena iz vaše zgodovine. Dejanja ni mogoče razveljaviti.</string>
+    <string name="stats_delete_session_confirm">Izbriši</string>
+    <string name="stats_delete_session_cancel">Prekliči</string>
+</resources>

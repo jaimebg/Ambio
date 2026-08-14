@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">统计</string>
+    <string name="stats_back">返回</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">专注总时长</string>
+    <string name="stats_sessions_completed">已完成时段</string>
+    <plurals name="stats_minutes">
+        <item quantity="other">%1$d分钟</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">历史记录</string>
+    <string name="stats_empty">还没有记录。完成一次专注时段后就会显示在这里。</string>
+    <string name="stats_unknown_sound">已移除的声音</string>
+    <string name="stats_delete_session">删除时段</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">要删除这个时段吗？</string>
+    <string name="stats_delete_session_message">这个专注时段将从你的历史记录中永久删除，此操作无法撤销。</string>
+    <string name="stats_delete_session_confirm">删除</string>
+    <string name="stats_delete_session_cancel">取消</string>
+</resources>

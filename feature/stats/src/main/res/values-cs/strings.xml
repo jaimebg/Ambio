@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistiky</string>
+    <string name="stats_back">Zpět</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Celkový čas soustředění</string>
+    <string name="stats_sessions_completed">Dokončená soustředění</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Historie</string>
+    <string name="stats_empty">Zatím žádná soustředění. Dokončete jedno a objeví se tady.</string>
+    <string name="stats_unknown_sound">Odebraný zvuk</string>
+    <string name="stats_delete_session">Smazat soustředění</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Smazat toto soustředění?</string>
+    <string name="stats_delete_session_message">Toto soustředění bude natrvalo odstraněno z vaší historie. Akci nelze vrátit zpět.</string>
+    <string name="stats_delete_session_confirm">Smazat</string>
+    <string name="stats_delete_session_cancel">Zrušit</string>
+</resources>

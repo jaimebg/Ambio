@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">الإحصائيات</string>
+    <string name="stats_back">رجوع</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">إجمالي وقت التركيز</string>
+    <string name="stats_sessions_completed">الجلسات المكتملة</string>
+    <plurals name="stats_minutes">
+        <item quantity="zero">%1$d دقيقة</item>
+        <item quantity="one">%1$d دقيقة</item>
+        <item quantity="two">%1$d دقيقة</item>
+        <item quantity="few">%1$d دقائق</item>
+        <item quantity="many">%1$d دقيقة</item>
+        <item quantity="other">%1$d دقيقة</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">السجل</string>
+    <string name="stats_empty">لا توجد جلسات بعد. أكمل جلسة تركيز وستظهر هنا.</string>
+    <string name="stats_unknown_sound">صوت محذوف</string>
+    <string name="stats_delete_session">حذف الجلسة</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">حذف هذه الجلسة؟</string>
+    <string name="stats_delete_session_message">ستُحذف جلسة التركيز هذه نهائيًا من سجلك. ولا يمكن التراجع عن ذلك.</string>
+    <string name="stats_delete_session_confirm">حذف</string>
+    <string name="stats_delete_session_cancel">إلغاء</string>
+</resources>

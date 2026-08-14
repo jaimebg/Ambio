@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">পরিসংখ্যান</string>
+    <string name="stats_back">ফিরে যান</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">মোট ফোকাস সময়</string>
+    <string name="stats_sessions_completed">সম্পন্ন সেশন</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d মিনিট</item>
+        <item quantity="other">%1$d মিনিট</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">ইতিহাস</string>
+    <string name="stats_empty">এখনও কোনও সেশন নেই। একটি ফোকাস সেশন শেষ করুন, সেটি এখানে দেখা যাবে।</string>
+    <string name="stats_unknown_sound">সরিয়ে ফেলা শব্দ</string>
+    <string name="stats_delete_session">সেশন মুছুন</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">এই সেশনটি মুছবেন?</string>
+    <string name="stats_delete_session_message">এই ফোকাস সেশনটি আপনার ইতিহাস থেকে স্থায়ীভাবে মুছে যাবে। এটি আর ফেরানো যাবে না।</string>
+    <string name="stats_delete_session_confirm">মুছুন</string>
+    <string name="stats_delete_session_cancel">বাতিল করুন</string>
+</resources>

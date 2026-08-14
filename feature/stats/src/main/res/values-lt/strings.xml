@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistika</string>
+    <string name="stats_back">Atgal</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Bendras susikaupimo laikas</string>
+    <string name="stats_sessions_completed">Baigtos sesijos</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min.</item>
+        <item quantity="few">%1$d min.</item>
+        <item quantity="many">%1$d min.</item>
+        <item quantity="other">%1$d min.</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Istorija</string>
+    <string name="stats_empty">Sesijų kol kas nėra. Užbaikite susikaupimo sesiją ir ji bus rodoma čia.</string>
+    <string name="stats_unknown_sound">Pašalintas garsas</string>
+    <string name="stats_delete_session">Ištrinti sesiją</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Ištrinti šią sesiją?</string>
+    <string name="stats_delete_session_message">Ši susikaupimo sesija bus visam laikui pašalinta iš jūsų istorijos. Šio veiksmo anuliuoti nepavyks.</string>
+    <string name="stats_delete_session_confirm">Ištrinti</string>
+    <string name="stats_delete_session_cancel">Atšaukti</string>
+</resources>

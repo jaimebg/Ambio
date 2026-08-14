@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Estadísticas</string>
+    <string name="stats_back">Atrás</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Tiempo total de concentración</string>
+    <string name="stats_sessions_completed">Sesiones completadas</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Historial</string>
+    <string name="stats_empty">Aún no hay sesiones. Completa una sesión de concentración y aparecerá aquí.</string>
+    <string name="stats_unknown_sound">Sonido eliminado</string>
+    <string name="stats_delete_session">Eliminar sesión</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">¿Eliminar esta sesión?</string>
+    <string name="stats_delete_session_message">Esta sesión de concentración se eliminará permanentemente de tu historial. No se puede deshacer.</string>
+    <string name="stats_delete_session_confirm">Eliminar</string>
+    <string name="stats_delete_session_cancel">Cancelar</string>
+</resources>

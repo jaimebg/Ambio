@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Thống kê</string>
+    <string name="stats_back">Quay lại</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Tổng thời gian tập trung</string>
+    <string name="stats_sessions_completed">Phiên đã hoàn thành</string>
+    <plurals name="stats_minutes">
+        <item quantity="other">%1$d phút</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Lịch sử</string>
+    <string name="stats_empty">Chưa có phiên nào. Hãy hoàn thành một phiên tập trung và nó sẽ xuất hiện ở đây.</string>
+    <string name="stats_unknown_sound">Âm thanh đã bị xóa</string>
+    <string name="stats_delete_session">Xóa phiên</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Xóa phiên này?</string>
+    <string name="stats_delete_session_message">Phiên tập trung này sẽ bị xóa vĩnh viễn khỏi lịch sử của bạn. Bạn không thể hoàn tác.</string>
+    <string name="stats_delete_session_confirm">Xóa</string>
+    <string name="stats_delete_session_cancel">Hủy</string>
+</resources>

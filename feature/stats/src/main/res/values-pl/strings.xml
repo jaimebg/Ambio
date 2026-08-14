@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statystyki</string>
+    <string name="stats_back">Wstecz</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Łączny czas skupienia</string>
+    <string name="stats_sessions_completed">Ukończone sesje</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Historia</string>
+    <string name="stats_empty">Nie ma jeszcze sesji. Ukończ sesję skupienia, a pojawi się tutaj.</string>
+    <string name="stats_unknown_sound">Usunięty dźwięk</string>
+    <string name="stats_delete_session">Usuń sesję</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Usunąć tę sesję?</string>
+    <string name="stats_delete_session_message">Ta sesja skupienia zostanie trwale usunięta z historii. Tej operacji nie można cofnąć.</string>
+    <string name="stats_delete_session_confirm">Usuń</string>
+    <string name="stats_delete_session_cancel">Anuluj</string>
+</resources>

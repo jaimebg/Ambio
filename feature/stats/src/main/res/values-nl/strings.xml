@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_title">Statistieken</string>
+    <string name="stats_back">Terug</string>
+
+    <!-- Totals -->
+    <string name="stats_total_focus">Totale focustijd</string>
+    <string name="stats_sessions_completed">Voltooide sessies</string>
+    <plurals name="stats_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+
+    <!-- History -->
+    <string name="stats_history">Geschiedenis</string>
+    <string name="stats_empty">Nog geen sessies. Rond een focussessie af en die verschijnt hier.</string>
+    <string name="stats_unknown_sound">Verwijderd geluid</string>
+    <string name="stats_delete_session">Sessie verwijderen</string>
+
+    <!-- Delete confirmation -->
+    <string name="stats_delete_session_title">Deze sessie verwijderen?</string>
+    <string name="stats_delete_session_message">Deze focussessie wordt permanent uit je geschiedenis verwijderd. Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="stats_delete_session_confirm">Verwijderen</string>
+    <string name="stats_delete_session_cancel">Annuleren</string>
+</resources>
