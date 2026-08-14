@@ -87,4 +87,32 @@ class SoundBottomSheetTest {
 
         compose.onNodeWithContentDescription(limitLabel).assertIsNotEnabled()
     }
+
+    @Test
+    fun `the extracted picker content enforces the mix limit without a sheet around it`() {
+        val sounds = listOf(
+            sound("rain", TestR.string.test_sound_name, SoundTheme.RAIN, Icons.Default.WaterDrop),
+            sound("fire", TestR.string.test_sound_name_2, SoundTheme.FIREPLACE, Icons.Default.LocalFireDepartment),
+            sound("forest", TestR.string.test_sound_name_3, SoundTheme.FOREST, Icons.Default.Forest),
+            sound("ocean", TestR.string.test_sound_name_4, SoundTheme.OCEAN, Icons.Default.Cloud),
+            sound("cave", TestR.string.test_sound_name_5, SoundTheme.CAVE, Icons.Default.AcUnit)
+        )
+        val activeMix = sounds.take(3).map { ActiveSound(it, 1f) }
+        val limitLabel = context.getString(
+            com.jbgsoft.ambio.feature.home.R.string.mix_limit_reached,
+            context.getString(TestR.string.test_sound_name_4)
+        )
+
+        compose.setContent {
+            SoundPickerContent(
+                sounds = sounds,
+                activeMix = activeMix,
+                onToggleSound = {},
+                onLevelChange = { _, _ -> },
+                onLevelChangeFinished = {}
+            )
+        }
+
+        compose.onNodeWithContentDescription(limitLabel).assertIsNotEnabled()
+    }
 }
