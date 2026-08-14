@@ -68,7 +68,21 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    HomeScreen(
+        uiState = uiState,
+        onEvent = viewModel::onEvent,
+        onNavigateToSettings = onNavigateToSettings,
+        onNavigateToStats = onNavigateToStats
+    )
+}
 
+@Composable
+internal fun HomeScreen(
+    uiState: HomeUiState,
+    onEvent: (HomeEvent) -> Unit,
+    onNavigateToSettings: () -> Unit,
+    onNavigateToStats: () -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -177,7 +191,7 @@ fun HomeScreen(
                         // Top Section - Mode Toggle
                         ModeToggle(
                             selectedMode = uiState.mode,
-                            onModeSelected = { viewModel.onEvent(HomeEvent.SetMode(it)) },
+                            onModeSelected = { onEvent(HomeEvent.SetMode(it)) },
                             modifier = Modifier.padding(horizontal = if (isSmallScreen) 16.dp else 32.dp)
                         )
 
@@ -212,11 +226,11 @@ fun HomeScreen(
                                     selectedPreset = uiState.selectedPreset,
                                     customMinutes = uiState.customMinutes,
                                     breakMinutes = uiState.breakMinutes,
-                                    onPresetSelected = { viewModel.onEvent(HomeEvent.SelectPreset(it)) },
-                                    onCustomMinutesChanged = { viewModel.onEvent(HomeEvent.SetCustomMinutes(it)) },
-                                    onCustomMinutesChangeFinished = { viewModel.onEvent(HomeEvent.CustomMinutesChangeFinished) },
-                                    onBreakMinutesChanged = { viewModel.onEvent(HomeEvent.SetBreakMinutes(it)) },
-                                    onBreakMinutesChangeFinished = { viewModel.onEvent(HomeEvent.BreakMinutesChangeFinished) },
+                                    onPresetSelected = { onEvent(HomeEvent.SelectPreset(it)) },
+                                    onCustomMinutesChanged = { onEvent(HomeEvent.SetCustomMinutes(it)) },
+                                    onCustomMinutesChangeFinished = { onEvent(HomeEvent.CustomMinutesChangeFinished) },
+                                    onBreakMinutesChanged = { onEvent(HomeEvent.SetBreakMinutes(it)) },
+                                    onBreakMinutesChangeFinished = { onEvent(HomeEvent.BreakMinutesChangeFinished) },
                                     modifier = Modifier.fillMaxWidth(),
                                     isCompact = isSmallScreen
                                 )
@@ -246,7 +260,7 @@ fun HomeScreen(
                                 ) {
                                     Row {
                                         FloatingActionButton(
-                                            onClick = { viewModel.onEvent(HomeEvent.Reset) },
+                                            onClick = { onEvent(HomeEvent.Reset) },
                                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
                                             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                             elevation = FloatingActionButtonDefaults.elevation(
@@ -269,7 +283,7 @@ fun HomeScreen(
                                 // Play/Pause Button
                                 PlayPauseButton(
                                     isPlaying = uiState.isPlaying,
-                                    onClick = { viewModel.onEvent(HomeEvent.PlayPause) },
+                                    onClick = { onEvent(HomeEvent.PlayPause) },
                                     size = playButtonSize
                                 )
                             }
@@ -277,8 +291,8 @@ fun HomeScreen(
                             // Volume Slider
                             VolumeSlider(
                                 volume = uiState.volume,
-                                onVolumeChange = { viewModel.onEvent(HomeEvent.SetVolume(it)) },
-                                onVolumeChangeFinished = { viewModel.onEvent(HomeEvent.VolumeChangeFinished) },
+                                onVolumeChange = { onEvent(HomeEvent.SetVolume(it)) },
+                                onVolumeChangeFinished = { onEvent(HomeEvent.VolumeChangeFinished) },
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -288,7 +302,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(controlsSpacing))
                     CurrentSoundBar(
                         activeMix = uiState.activeMix,
-                        onChangeClick = { viewModel.onEvent(HomeEvent.ShowSoundPicker) },
+                        onChangeClick = { onEvent(HomeEvent.ShowSoundPicker) },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -300,10 +314,10 @@ fun HomeScreen(
             showSheet = uiState.showSoundPicker,
             sounds = uiState.availableSounds,
             activeMix = uiState.activeMix,
-            onToggleSound = { viewModel.onEvent(HomeEvent.ToggleSound(it)) },
-            onLevelChange = { id, level -> viewModel.onEvent(HomeEvent.SetSoundLevel(id, level)) },
-            onLevelChangeFinished = { id -> viewModel.onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
-            onDismiss = { viewModel.onEvent(HomeEvent.HideSoundPicker) }
+            onToggleSound = { onEvent(HomeEvent.ToggleSound(it)) },
+            onLevelChange = { id, level -> onEvent(HomeEvent.SetSoundLevel(id, level)) },
+            onLevelChangeFinished = { id -> onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
+            onDismiss = { onEvent(HomeEvent.HideSoundPicker) }
         )
     }
 }
