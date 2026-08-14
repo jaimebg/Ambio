@@ -18,7 +18,8 @@ class MixCodecTest {
                 nameRes = index,
                 icon = Icons.Default.WaterDrop,
                 audioRes = index,
-                theme = SoundTheme.entries[index]
+                theme = SoundTheme.entries[index],
+                glow = SoundGlow.entries[index]
             )
         }
 

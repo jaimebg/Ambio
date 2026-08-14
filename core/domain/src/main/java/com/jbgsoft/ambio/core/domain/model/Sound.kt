@@ -9,5 +9,6 @@ data class Sound(
     @param:StringRes val nameRes: Int,
     val icon: ImageVector,
     @param:RawRes val audioRes: Int,
-    val theme: SoundTheme
+    val theme: SoundTheme,
+    val glow: SoundGlow
 )

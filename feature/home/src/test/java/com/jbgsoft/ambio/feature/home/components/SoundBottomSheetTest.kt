@@ -14,6 +14,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.test.core.app.ApplicationProvider
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.feature.home.test.R as TestR
 import org.junit.Rule
@@ -39,12 +40,19 @@ class SoundBottomSheetTest {
     // 34 shadow actually ships: android.R.string.yes resolved to "OK" and
     // android.R.string.no resolved to "Cancel" under this classpath. Test-only string
     // resources sidestep that skew entirely.
-    private fun sound(id: String, nameRes: Int, theme: SoundTheme, icon: ImageVector) = Sound(
+    private fun sound(
+        id: String,
+        nameRes: Int,
+        theme: SoundTheme,
+        icon: ImageVector,
+        glow: SoundGlow = SoundGlow.RAIN
+    ) = Sound(
         id = id,
         nameRes = nameRes,
         icon = icon,
         audioRes = 0,
-        theme = theme
+        theme = theme,
+        glow = glow
     )
 
     @Test

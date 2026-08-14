@@ -10,6 +10,7 @@ import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
@@ -89,7 +90,8 @@ class HomeViewModelTest {
         nameRes = 5,
         icon = Icons.Default.WaterDrop,
         audioRes = 1,
-        theme = SoundTheme.RAIN
+        theme = SoundTheme.RAIN,
+        glow = SoundGlow.RAIN
     )
 
     private val testSoundForest = Sound(
@@ -97,7 +99,8 @@ class HomeViewModelTest {
         nameRes = 6,
         icon = Icons.Default.WaterDrop,
         audioRes = 3,
-        theme = SoundTheme.FOREST
+        theme = SoundTheme.FOREST,
+        glow = SoundGlow.FOREST
     )
 
     private val testSounds = listOf(testSound, testSoundForest)

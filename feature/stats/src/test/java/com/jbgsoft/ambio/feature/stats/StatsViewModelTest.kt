@@ -6,6 +6,7 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.domain.model.Session
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.repository.SessionRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
@@ -39,7 +40,8 @@ class StatsViewModelTest {
         nameRes = 101,
         icon = Icons.Default.WaterDrop,
         audioRes = 1,
-        theme = SoundTheme.RAIN
+        theme = SoundTheme.RAIN,
+        glow = SoundGlow.RAIN
     )
 
     private val fireplaceSound = Sound(
@@ -47,7 +49,8 @@ class StatsViewModelTest {
         nameRes = 102,
         icon = Icons.Default.WaterDrop,
         audioRes = 3,
-        theme = SoundTheme.FIREPLACE
+        theme = SoundTheme.FIREPLACE,
+        glow = SoundGlow.FIREPLACE
     )
 
     // "wind" is the real pre-rename id of what is now "cave"; it is deliberately

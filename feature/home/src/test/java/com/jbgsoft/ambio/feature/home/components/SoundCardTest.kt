@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.test.core.app.ApplicationProvider
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.feature.home.test.R as TestR
 import org.junit.Rule
@@ -33,7 +34,8 @@ class SoundCardTest {
         nameRes = TestR.string.test_sound_name,
         icon = Icons.Default.WaterDrop,
         audioRes = 0,
-        theme = SoundTheme.RAIN
+        theme = SoundTheme.RAIN,
+        glow = SoundGlow.RAIN
     )
 
     private fun render(isActive: Boolean, canDeactivate: Boolean, canActivate: Boolean) {

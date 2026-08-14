@@ -2,6 +2,7 @@ package com.jbgsoft.ambio.core.data.repository
 
 import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.data.datastore.PreferencesDataStore
+import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.UserPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -241,5 +242,23 @@ class SoundRepositoryImplTest {
 
         assertThat(repository.getActiveMix().first().map { it.sound.id })
             .containsExactly("rain", "fireplace", "ocean").inOrder()
+    }
+
+    @Test
+    fun `every sound in the catalogue carries its own glow`() {
+        val glows = repositoryStoring("rain").getAllSounds().map { it.glow }
+
+        assertThat(glows).containsNoDuplicates()
+        assertThat(glows).hasSize(SoundGlow.entries.size)
+    }
+
+    @Test
+    fun `each sound's glow is the one named after it`() {
+        // The mapping is positional by name, so a copy-paste slip that gave two
+        // sounds the same glow, or gave `cafe` the `cave` colour, would survive
+        // the duplicate check above but not this.
+        repositoryStoring("rain").getAllSounds().forEach { sound ->
+            assertThat(sound.glow.name).isEqualTo(sound.id.uppercase())
+        }
     }
 }

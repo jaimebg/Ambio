@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.WaterDrop
 import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.Sound
+import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.media.MixEntry
@@ -34,7 +35,8 @@ class RepositoryMixSourceTest {
         nameRes = 1,
         icon = Icons.Default.WaterDrop,
         audioRes = 101,
-        theme = SoundTheme.RAIN
+        theme = SoundTheme.RAIN,
+        glow = SoundGlow.RAIN
     )
 
     private val forest = Sound(
@@ -42,7 +44,8 @@ class RepositoryMixSourceTest {
         nameRes = 3,
         icon = Icons.Default.WaterDrop,
         audioRes = 102,
-        theme = SoundTheme.FOREST
+        theme = SoundTheme.FOREST,
+        glow = SoundGlow.FOREST
     )
 
     private fun repositoryWith(mix: List<ActiveSound>): SoundRepository = mockk {
