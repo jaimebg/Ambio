@@ -44,6 +44,9 @@ fun SoundPickerContent(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
+        // Three columns is the default for a twelve-sound catalogue on full width:
+        // at two, only four tiles would be visible and most options would be below
+        // the fold. Narrower containers (like the Task 6 pane) should pass 2.
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
             contentPadding = PaddingValues(12.dp),
