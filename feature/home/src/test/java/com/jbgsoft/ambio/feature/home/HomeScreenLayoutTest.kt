@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -135,6 +137,51 @@ class HomeScreenLayoutTest {
         compose.onNodeWithText(
             context.getString(R.string.sound_picker_title)
         ).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    fun `at compact width asking for the sheet brings the picker up`() {
+        compose.setContent {
+            Box(Modifier.size(411.dp, 891.dp)) {
+                HomeScreen(
+                    uiState = state.copy(showSoundPicker = true),
+                    onEvent = {},
+                    onNavigateToSettings = {},
+                    onNavigateToStats = {}
+                )
+            }
+        }
+
+        // The only way to reach the mix on a phone. The test above proves the
+        // picker is absent while the flag is false; this one proves the flag is
+        // still wired to the sheet, so "hidden" cannot quietly become "gone".
+        compose.onNodeWithText(
+            context.getString(R.string.sound_picker_title)
+        ).assertExists()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w1280dp-h800dp")
+    fun `at expanded width asking for the sheet does not stack it on the picker pane`() {
+        compose.setContent {
+            Box(Modifier.size(1280.dp, 800.dp)) {
+                HomeScreen(
+                    uiState = state.copy(showSoundPicker = true),
+                    onEvent = {},
+                    onNavigateToSettings = {},
+                    onNavigateToStats = {}
+                )
+            }
+        }
+
+        // The pane renders the title on its own here, so asserting the title
+        // exists would pass whether or not the sheet also opened over it. The
+        // count is what separates the two: one title is the pane, two would be
+        // the sheet duplicating a picker that is already on screen.
+        compose.onAllNodesWithText(
+            context.getString(R.string.sound_picker_title)
+        ).assertCountEquals(1)
     }
 
     @Test

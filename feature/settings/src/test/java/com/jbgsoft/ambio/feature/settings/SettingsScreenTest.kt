@@ -80,6 +80,13 @@ class SettingsScreenTest {
         compose.onNodeWithText(context.getString(R.string.settings_haptics)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_chime)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_effects)).assertExists()
+
+        // The summaries matter as much as the titles: SettingRow takes both as
+        // plain strings, so a copy-pasted row can pair the right title with the
+        // wrong explanation and still look correct from the titles alone.
+        compose.onNodeWithText(context.getString(R.string.settings_haptics_summary)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.settings_chime_summary)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.settings_effects_summary)).assertExists()
     }
 
     @Test

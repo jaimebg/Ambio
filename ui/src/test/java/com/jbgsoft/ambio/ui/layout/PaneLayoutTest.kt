@@ -32,4 +32,13 @@ class PaneLayoutTest {
     fun `a ten inch tablet is expanded`() {
         assertThat(paneLayoutFor(1280.dp)).isEqualTo(PaneLayout.EXPANDED)
     }
+
+    @Test
+    fun `the content cap is 600dp`() {
+        // Every other assertion about the cap compares a measured width against
+        // this constant, which holds for any value it is given. Shrink it to 100dp
+        // and the columns on Stats and Settings turn into a ribbon while the whole
+        // suite stays green — so the number itself is pinned here.
+        assertThat(CONTENT_MAX_WIDTH).isEqualTo(600.dp)
+    }
 }
