@@ -56,6 +56,19 @@ android {
         }
     }
 
+    // AGP embeds a Google-specific protobuf of the dependency tree in the APK's
+    // signing block by default. F-Droid's scanner treats it as an opaque blob and
+    // refuses the APK outright: "found extra signing block 'Dependency metadata'".
+    //
+    // The two outputs are configured apart on purpose. Play reads this block to
+    // raise security advisories about vulnerable dependencies, and that is worth
+    // keeping, so the bundle it consumes still carries it. Only the APK — the
+    // artifact F-Droid builds and ships — drops it.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
