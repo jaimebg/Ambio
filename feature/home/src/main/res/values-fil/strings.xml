@@ -13,7 +13,7 @@
 
     <!-- Modes -->
     <string name="mode_timer">Timer</string>
-    <string name="mode_ambient">Ambient</string>
+    <string name="mode_ambient">Ambient na mode</string>
 
     <!-- Timer states -->
     <string name="state_ambient_mode">Ambient na mode</string>
