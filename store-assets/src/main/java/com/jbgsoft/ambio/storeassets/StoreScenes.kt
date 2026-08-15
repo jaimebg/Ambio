@@ -32,9 +32,42 @@ enum class StoreScene(val id: String, val captionRes: Int) {
     STATS("stats", R.string.shot_stats),
     SETTINGS("settings", R.string.shot_settings);
 
-    /** The glows the frame's gradient is built from, matching what the scene shows. */
-    val glows: List<SoundGlow>
-        get() = HERO_MIX.map { it.sound.glow }
+    /**
+     * The mix this scene is caught playing, and with it the scene's colour.
+     *
+     * A different one per shot, sequenced warm to cool: embers, then a spread of
+     * all three families, then forest, then water, then the quiet end of the
+     * catalogue. One mix across the whole set rendered five teal screens with
+     * the same three tiles lit, which sells neither the palette nor the
+     * catalogue. Walking the hues also makes the panorama a journey rather than
+     * one colour smeared across five frames.
+     *
+     * A computed property rather than a constructor argument: an enum entry
+     * cannot safely read a top-level val declared below it.
+     */
+    val mix: List<ActiveSound>
+        get() = when (this) {
+            // Embers: fireplace, cafe and brown noise all sit in the warm corner.
+            MIX -> mixOf("fireplace" to 0.85f, "cafe" to 0.55f, "brown_noise" to 0.4f)
+            // The widest spread in the catalogue, warm through green to blue,
+            // which is precisely what this caption claims.
+            PICKER -> mixOf("fireplace" to 0.7f, "forest" to 0.8f, "ocean" to 0.6f)
+            TIMER -> mixOf("forest" to 0.85f, "birds" to 0.6f, "crickets" to 0.45f)
+            STATS -> mixOf("ocean" to 0.8f, "stream" to 0.6f, "wind" to 0.45f)
+            SETTINGS -> mixOf("rain" to 0.75f, "cave" to 0.6f, "white_noise" to 0.35f)
+        }
+
+    /**
+     * The glows the frame behind the device is built from.
+     *
+     * Deliberately the same for every shot, and deliberately not this scene's
+     * own mix. The frame is one panorama sliced five ways, so if each slice
+     * brought its own colours the set gained a hard seam at every boundary and
+     * stopped reading as one image. The devices carry the colour instead: each
+     * one wears its own mix, so the set still sweeps warm to violet while the
+     * ground under it stays continuous.
+     */
+    val glows: List<SoundGlow> get() = PANORAMA_GLOWS
 
     /**
      * The palette the app itself would be wearing.
@@ -42,36 +75,30 @@ enum class StoreScene(val id: String, val captionRes: Int) {
      * AmbioTheme defaults to RAIN, so leaving this out renders every screen in
      * blue no matter what is in the mix -- which would put a screenshot of
      * palette mixing on the store that does not show palette mixing. The app
-     * derives it the same way, in AmbioAppViewModel, and holds it across Stats
-     * and Settings too, which is why every scene uses the one mix.
+     * derives it the same way, in AmbioAppViewModel.
      */
     val palette: AmbioPalette
-        get() = mixPalettes(HERO_MIX.map { it.sound.theme })
+        get() = mixPalettes(mix.map { it.sound.theme })
 }
+
+/** Warm, green and blue: the widest span the catalogue offers in three stops. */
+private val PANORAMA_GLOWS = listOf(SoundGlow.FIREPLACE, SoundGlow.FOREST, SoundGlow.OCEAN)
+
+private fun mixOf(vararg parts: Pair<String, Float>): List<ActiveSound> =
+    parts.map { (id, level) -> ActiveSound(sound(id), level) }
 
 private fun sound(id: String) = SOUND_CATALOGUE.first { it.id == id }
 
-/**
- * Forest, ocean and cave: three sounds whose glows are far enough apart that the
- * gradient reads as a blend rather than as one colour, which is the entire claim
- * the mixer screenshots are making.
- */
-private val HERO_MIX = listOf(
-    ActiveSound(sound("forest"), 0.85f),
-    ActiveSound(sound("ocean"), 0.6f),
-    ActiveSound(sound("cave"), 0.45f)
-)
-
-private val HOME_BASE = HomeUiState(
-    activeMix = HERO_MIX,
+private fun homeState(mix: List<ActiveSound>) = HomeUiState(
+    activeMix = mix,
     availableSounds = SOUND_CATALOGUE,
     volume = 0.7f,
     effectsEnabled = true
 )
 
 @Composable
-private fun Home(mode: AppMode) = HomeScreen(
-    uiState = HOME_BASE.copy(
+private fun Home(mix: List<ActiveSound>, mode: AppMode) = HomeScreen(
+    uiState = homeState(mix).copy(
         mode = mode,
         isPlaying = true,
         selectedPreset = TimerPreset.FOCUS_25,
@@ -89,24 +116,18 @@ private fun Home(mode: AppMode) = HomeScreen(
     onNavigateToStats = {}
 )
 
+// The picker's own composable rather than the bottom sheet: a sheet draws into
+// its own window, which a decor-view capture does not see.
 @Composable
-private fun Picker(columns: Int = 3) = SoundPickerContent(
+private fun Picker(mix: List<ActiveSound>, columns: Int = 3) = SoundPickerContent(
     sounds = SOUND_CATALOGUE,
-    activeMix = HERO_MIX,
+    activeMix = mix,
     onToggleSound = {},
     onLevelChange = { _, _ -> },
     onLevelChangeFinished = {},
     columns = columns
 )
 
-/**
- * What the tablet panel shows in a landscape shot.
- *
- * Not the same pairing as the phone shots. On a tablet the interesting thing is
- * the two-pane Home, so it leads wherever it can, and the picker earns its own
- * shot only at four columns, where all twelve sounds are on screen at once --
- * which is exactly the claim that caption makes.
- */
 @Composable
 private fun Stats() = StatsScreen(
     uiState = StatsUiState(
@@ -119,76 +140,46 @@ private fun Stats() = StatsScreen(
 )
 
 @Composable
-fun StoreScene.TabletMain() {
-    when (this) {
-        StoreScene.MIX -> Home(AppMode.AMBIENT)
-        StoreScene.PICKER -> Picker(columns = 4)
-        StoreScene.TIMER -> Home(AppMode.TIMER)
-        StoreScene.STATS -> Stats()
-        StoreScene.SETTINGS -> Content()
-    }
-}
+private fun Settings() = SettingsScreen(
+    uiState = SettingsUiState(
+        hapticsEnabled = true,
+        chimeEnabled = true,
+        effectsEnabled = true
+    ),
+    onHapticsChanged = {},
+    onChimeChanged = {},
+    onEffectsChanged = {},
+    onNavigateBack = {}
+)
 
+/** What the phone panel shows. */
 @Composable
 fun StoreScene.Content() {
     when (this) {
-        StoreScene.MIX -> HomeScreen(
-            uiState = HOME_BASE.copy(
-                mode = AppMode.AMBIENT,
-                isPlaying = true
-            ),
-            onEvent = {},
-            onNavigateToSettings = {},
-            onNavigateToStats = {}
-        )
+        StoreScene.MIX -> Home(mix, AppMode.AMBIENT)
+        StoreScene.PICKER -> Picker(mix)
+        StoreScene.TIMER -> Home(mix, AppMode.TIMER)
+        StoreScene.STATS -> Stats()
+        StoreScene.SETTINGS -> Settings()
+    }
+}
 
-        // The picker's own composable rather than the bottom sheet: a sheet draws
-        // into its own window, which a decor-view capture does not see.
-        StoreScene.PICKER -> SoundPickerContent(
-            sounds = SOUND_CATALOGUE,
-            activeMix = HERO_MIX,
-            onToggleSound = {},
-            onLevelChange = { _, _ -> },
-            onLevelChangeFinished = {},
-            columns = 3
-        )
-
-        StoreScene.TIMER -> HomeScreen(
-            uiState = HOME_BASE.copy(
-                mode = AppMode.TIMER,
-                isPlaying = true,
-                selectedPreset = TimerPreset.FOCUS_25,
-                timerState = TimerState.Running(
-                    remainingMs = (18 * 60 + 42) * 1_000L,
-                    totalMs = 25 * 60 * 1_000L
-                )
-            ),
-            onEvent = {},
-            onNavigateToSettings = {},
-            onNavigateToStats = {}
-        )
-
-        StoreScene.STATS -> StatsScreen(
-            uiState = StatsUiState(
-                totalFocusMinutes = 1_285,
-                completedSessionCount = 47,
-                sessions = SAMPLE_SESSIONS
-            ),
-            onDeleteSession = {},
-            onNavigateBack = {}
-        )
-
-        StoreScene.SETTINGS -> SettingsScreen(
-            uiState = SettingsUiState(
-                hapticsEnabled = true,
-                chimeEnabled = true,
-                effectsEnabled = true
-            ),
-            onHapticsChanged = {},
-            onChimeChanged = {},
-            onEffectsChanged = {},
-            onNavigateBack = {}
-        )
+/**
+ * What the tablet panel shows in a landscape shot.
+ *
+ * On a tablet the interesting thing is the two-pane Home, so it leads wherever
+ * it can, and the picker earns its own shot only at four columns, where all
+ * twelve sounds are on screen at once -- which is exactly what that caption
+ * claims.
+ */
+@Composable
+fun StoreScene.TabletMain() {
+    when (this) {
+        StoreScene.MIX -> Home(mix, AppMode.AMBIENT)
+        StoreScene.PICKER -> Picker(mix, columns = 4)
+        StoreScene.TIMER -> Home(mix, AppMode.TIMER)
+        StoreScene.STATS -> Stats()
+        StoreScene.SETTINGS -> Settings()
     }
 }
 
