@@ -34,11 +34,6 @@
 
 ---
 
-> **Under Construction**
-> Ambio is in active development. Core features work, but expect rough edges. Contributions welcome!
-
----
-
 ## About
 
 **Ambio** turns focus time into an environment you build yourself. Pick up to three ambient
@@ -68,9 +63,7 @@ the mix, not just one of them.
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/gplay-mixer.png" alt="Three-sound mixer in ambient mode" width="250">
-  <img src="screenshots/gplay-sound-selection.png" alt="The twelve sounds, each its own colour" width="250">
-  <img src="screenshots/gplay-timer.png" alt="Focus timer running over a mix" width="250">
+  <img src="screenshots/gplay-panorama.png" alt="The mixer, the twelve sounds, a focus session, session history and settings" width="100%">
 </p>
 
 ## Tech Stack
