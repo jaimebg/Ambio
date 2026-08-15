@@ -10,6 +10,10 @@ class LocaleMappingTest {
         // 48 Play locales; en-US is the default values/ directory, so 47 are translations.
         assertThat(PLAY_TO_RESOURCE_QUALIFIER).hasSize(48)
         assertThat(PLAY_TO_BCP47).hasSize(48)
+        // Matching sizes alone would not catch a locale added to one map and a
+        // different one added to the other: both stay at 48 while the two maps
+        // describe different locale sets.
+        assertThat(PLAY_TO_BCP47.keys).isEqualTo(PLAY_TO_RESOURCE_QUALIFIER.keys)
     }
 
     @Test
@@ -55,6 +59,16 @@ class LocaleMappingTest {
         // `values-id` compiles, but the resource table keys Indonesian on `in`,
         // so a directory named for the modern code is never read.
         assertThat(resourceDirFor("id")).isEqualTo("values-in")
+    }
+
+    @Test
+    fun `declares both legacy locales in the picker under the code their directory uses`() {
+        // `Locale.forLanguageTag` resolves the legacy and modern spellings to the
+        // same locale, so the picker works either way — but declaring the tag the
+        // resource directory is named for keeps the two legacy cases consistent
+        // and stops lint reading the directory as an undeclared translation.
+        assertThat(PLAY_TO_BCP47["iw-IL"]).isEqualTo("iw")
+        assertThat(PLAY_TO_BCP47["id"]).isEqualTo("in")
     }
 
     @Test
