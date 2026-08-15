@@ -16,7 +16,6 @@ android {
 
 dependencies {
     // Project modules
-    implementation(project(":core:common"))
     implementation(project(":core:domain"))
     implementation(project(":ui"))
 
@@ -35,6 +34,9 @@ dependencies {
     implementation(libs.bundles.coroutines)
 
     // Testing
+    // core:common is test-only here: no production code in this module touches it,
+    // LocaleDirectorySetTest just needs the Play-to-qualifier locale map.
+    testImplementation(project(":core:common"))
     testImplementation(libs.bundles.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
