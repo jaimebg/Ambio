@@ -29,125 +29,127 @@ import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Order matters twice over: it is the order the picker draws, and
+ * [MixCodec.encode] emits ids in list order so that the same mix always
+ * produces the same string. Grouped by theme family rather than by when each
+ * was added, so related sounds sit together in the grid.
+ *
+ * Several sounds deliberately share a theme: birds and crickets are forest's
+ * because they are what a forest sounds like at either end of the day, cafe
+ * borrows fireplace's warm indoor palette, and stream sits with ocean.
+ * Sharing costs nothing and keeps the palette space small enough that
+ * ThemeContrastTest can still enumerate every reachable mix.
+ *
+ * Glows are the opposite: never shared, one per sound. The theme drives
+ * Material's flat colours, where sharing is free; the glow drives the mix
+ * gradient, where two sounds holding the same colour renders a flat screen.
+ */
+val SOUND_CATALOGUE: List<Sound> = listOf(
+    Sound(
+        id = "rain",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_rain,
+        icon = Icons.Default.WaterDrop,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.rain_loop,
+        theme = SoundTheme.RAIN,
+        glow = SoundGlow.RAIN
+    ),
+    Sound(
+        id = "fireplace",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_fireplace,
+        icon = Icons.Default.LocalFireDepartment,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.fireplace_loop,
+        theme = SoundTheme.FIREPLACE,
+        glow = SoundGlow.FIREPLACE
+    ),
+    Sound(
+        id = "cafe",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_cafe,
+        icon = Icons.Default.LocalCafe,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.cafe_loop,
+        theme = SoundTheme.FIREPLACE,
+        glow = SoundGlow.CAFE
+    ),
+    Sound(
+        id = "forest",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_forest,
+        icon = Icons.Default.Forest,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.forest_loop,
+        theme = SoundTheme.FOREST,
+        glow = SoundGlow.FOREST
+    ),
+    Sound(
+        id = "birds",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_birds,
+        icon = Icons.Default.FlutterDash,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.birds_loop,
+        theme = SoundTheme.FOREST,
+        glow = SoundGlow.BIRDS
+    ),
+    Sound(
+        id = "crickets",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_crickets,
+        icon = Icons.Default.NightsStay,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.crickets_loop,
+        theme = SoundTheme.FOREST,
+        glow = SoundGlow.CRICKETS
+    ),
+    Sound(
+        id = "ocean",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_ocean,
+        icon = Icons.Default.Waves,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.ocean_loop,
+        theme = SoundTheme.OCEAN,
+        glow = SoundGlow.OCEAN
+    ),
+    Sound(
+        id = "stream",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_stream,
+        icon = Icons.Default.Water,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.stream_loop,
+        theme = SoundTheme.OCEAN,
+        glow = SoundGlow.STREAM
+    ),
+    Sound(
+        id = "cave",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_cave,
+        icon = Icons.Default.Terrain,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.cave_loop,
+        theme = SoundTheme.CAVE,
+        glow = SoundGlow.CAVE
+    ),
+    Sound(
+        id = "wind",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_wind,
+        icon = Icons.Default.Air,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.wind_loop,
+        theme = SoundTheme.CAVE,
+        glow = SoundGlow.WIND
+    ),
+    Sound(
+        id = "white_noise",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_white_noise,
+        icon = Icons.Default.GraphicEq,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.white_noise_loop,
+        theme = SoundTheme.NOISE,
+        glow = SoundGlow.WHITE_NOISE
+    ),
+    Sound(
+        id = "brown_noise",
+        nameRes = com.jbgsoft.ambio.core.data.R.string.sound_brown_noise,
+        icon = Icons.Default.BlurOn,
+        audioRes = com.jbgsoft.ambio.core.data.R.raw.brown_noise_loop,
+        theme = SoundTheme.NOISE,
+        glow = SoundGlow.BROWN_NOISE
+    )
+)
+
 @Singleton
 class SoundRepositoryImpl @Inject constructor(
     private val preferencesDataStore: PreferencesDataStore
 ) : SoundRepository {
 
-    /**
-     * Order matters twice over: it is the order the picker draws, and
-     * [MixCodec.encode] emits ids in list order so that the same mix always
-     * produces the same string. Grouped by theme family rather than by when each
-     * was added, so related sounds sit together in the grid.
-     *
-     * Several sounds deliberately share a theme: birds and crickets are forest's
-     * because they are what a forest sounds like at either end of the day, cafe
-     * borrows fireplace's warm indoor palette, and stream sits with ocean.
-     * Sharing costs nothing and keeps the palette space small enough that
-     * ThemeContrastTest can still enumerate every reachable mix.
-     *
-     * Glows are the opposite: never shared, one per sound. The theme drives
-     * Material's flat colours, where sharing is free; the glow drives the mix
-     * gradient, where two sounds holding the same colour renders a flat screen.
-     */
-    private val sounds = listOf(
-        Sound(
-            id = "rain",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_rain,
-            icon = Icons.Default.WaterDrop,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.rain_loop,
-            theme = SoundTheme.RAIN,
-            glow = SoundGlow.RAIN
-        ),
-        Sound(
-            id = "fireplace",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_fireplace,
-            icon = Icons.Default.LocalFireDepartment,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.fireplace_loop,
-            theme = SoundTheme.FIREPLACE,
-            glow = SoundGlow.FIREPLACE
-        ),
-        Sound(
-            id = "cafe",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_cafe,
-            icon = Icons.Default.LocalCafe,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.cafe_loop,
-            theme = SoundTheme.FIREPLACE,
-            glow = SoundGlow.CAFE
-        ),
-        Sound(
-            id = "forest",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_forest,
-            icon = Icons.Default.Forest,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.forest_loop,
-            theme = SoundTheme.FOREST,
-            glow = SoundGlow.FOREST
-        ),
-        Sound(
-            id = "birds",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_birds,
-            icon = Icons.Default.FlutterDash,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.birds_loop,
-            theme = SoundTheme.FOREST,
-            glow = SoundGlow.BIRDS
-        ),
-        Sound(
-            id = "crickets",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_crickets,
-            icon = Icons.Default.NightsStay,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.crickets_loop,
-            theme = SoundTheme.FOREST,
-            glow = SoundGlow.CRICKETS
-        ),
-        Sound(
-            id = "ocean",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_ocean,
-            icon = Icons.Default.Waves,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.ocean_loop,
-            theme = SoundTheme.OCEAN,
-            glow = SoundGlow.OCEAN
-        ),
-        Sound(
-            id = "stream",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_stream,
-            icon = Icons.Default.Water,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.stream_loop,
-            theme = SoundTheme.OCEAN,
-            glow = SoundGlow.STREAM
-        ),
-        Sound(
-            id = "cave",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_cave,
-            icon = Icons.Default.Terrain,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.cave_loop,
-            theme = SoundTheme.CAVE,
-            glow = SoundGlow.CAVE
-        ),
-        Sound(
-            id = "wind",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_wind,
-            icon = Icons.Default.Air,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.wind_loop,
-            theme = SoundTheme.CAVE,
-            glow = SoundGlow.WIND
-        ),
-        Sound(
-            id = "white_noise",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_white_noise,
-            icon = Icons.Default.GraphicEq,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.white_noise_loop,
-            theme = SoundTheme.NOISE,
-            glow = SoundGlow.WHITE_NOISE
-        ),
-        Sound(
-            id = "brown_noise",
-            nameRes = com.jbgsoft.ambio.core.data.R.string.sound_brown_noise,
-            icon = Icons.Default.BlurOn,
-            audioRes = com.jbgsoft.ambio.core.data.R.raw.brown_noise_loop,
-            theme = SoundTheme.NOISE,
-            glow = SoundGlow.BROWN_NOISE
-        )
-    )
+    private val sounds = SOUND_CATALOGUE
 
     private val mixOverride = MutableStateFlow<String?>(null)
 

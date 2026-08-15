@@ -15,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
+import kotlin.random.Random
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
@@ -33,10 +34,14 @@ data class ParticleSource(
 fun AmbientEffectsOverlay(
     isPlaying: Boolean,
     mix: List<ParticleSource>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    // Seedable so a render can be reproduced exactly. Store assets are
+    // regenerated every release and must diff cleanly rather than churn on
+    // particle noise; Random.Default keeps the app itself unpredictable.
+    random: Random = Random.Default
 ) {
     val density = LocalDensity.current.density
-    val field = remember { ParticleField() }
+    val field = remember(random) { ParticleField(random) }
 
     val sources = remember(mix) {
         mix.map { FieldSource(it.theme.toParticleType(), it.weight) }

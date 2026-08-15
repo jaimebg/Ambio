@@ -92,7 +92,7 @@ fun HomeScreen(
 }
 
 @Composable
-internal fun HomeScreen(
+fun HomeScreen(
     uiState: HomeUiState,
     onEvent: (HomeEvent) -> Unit,
     onNavigateToSettings: () -> Unit,

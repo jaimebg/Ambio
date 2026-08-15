@@ -34,3 +34,7 @@ include(":feature:stats")
 include(":feature:tile")
 include(":media")
 include(":ui")
+
+// Renders the Play Store assets on the JVM. Test-only: :app never depends on it,
+// so it cannot reach the shipped bundle.
+include(":store-assets")

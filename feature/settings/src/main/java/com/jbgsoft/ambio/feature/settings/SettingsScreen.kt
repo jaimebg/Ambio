@@ -44,7 +44,7 @@ fun SettingsScreen(
 }
 
 @Composable
-internal fun SettingsScreen(
+fun SettingsScreen(
     uiState: SettingsUiState,
     onHapticsChanged: (Boolean) -> Unit,
     onChimeChanged: (Boolean) -> Unit,

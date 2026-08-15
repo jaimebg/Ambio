@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Store screenshot captions. Ordinary string resources on purpose: they
+      travel through the same translation pipeline as the app, so a caption
+      cannot drift out of sync with the UI it is describing.
+    -->
+    <string name="shot_mix">Blend up to three sounds</string>
+    <string name="shot_picker">Twelve sounds, each its own colour</string>
+    <string name="shot_timer">Focus timers that keep the mood</string>
+    <string name="shot_stats">See where your focus went</string>
+    <string name="shot_settings">Offline. No account. No ads.</string>
+</resources>

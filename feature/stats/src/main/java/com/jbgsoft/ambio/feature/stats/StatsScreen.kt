@@ -51,7 +51,7 @@ fun StatsScreen(
 }
 
 @Composable
-internal fun StatsScreen(
+fun StatsScreen(
     uiState: StatsUiState,
     onDeleteSession: (Long) -> Unit,
     onNavigateBack: () -> Unit
