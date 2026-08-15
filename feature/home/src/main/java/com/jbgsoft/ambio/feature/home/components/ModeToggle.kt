@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.feature.home.R
@@ -76,7 +77,14 @@ fun ModeToggle(
                         // to ask for the whole thing on one line; the width
                         // floor above is what makes that line actually fit.
                         maxLines = 1,
-                        softWrap = false
+                        softWrap = false,
+                        // The floor is a minimum, not a guarantee: the row is
+                        // still clamped by the width it is handed, so a very
+                        // narrow window or a large font scale can leave the
+                        // widest label short of its line. Clipping it mid-glyph
+                        // reads as a rendering fault; an ellipsis reads as a
+                        // truncation, which is what it is.
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             )
