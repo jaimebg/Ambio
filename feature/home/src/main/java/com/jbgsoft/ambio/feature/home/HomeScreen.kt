@@ -254,6 +254,19 @@ private fun HomeContentColumn(
 
         val scrollState = rememberScrollState()
 
+        // Play is the primary action, so it is pinned below the scrolling area
+        // rather than left at the end of it: at full size the stack is about
+        // 820dp tall, which overflows both a phone in portrait and the half of a
+        // landscape tablet the left pane gets, and the button was the part that
+        // fell off.
+        //
+        // Not on the shortest windows, though. A landscape phone has around
+        // 410dp of height, and the header, toggle, transport and mix bar leave
+        // some 60dp for the dial, so pinning there only trades an invisible
+        // button for an invisible timer. Those windows keep scrolling for both,
+        // which is what they did before, until they get a layout of their own.
+        val pinTransport = !isVerySmallScreen
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -336,68 +349,31 @@ private fun HomeContentColumn(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(sectionSpacing))
-
-                // Controls Section - Play/Pause, Reset, Volume
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(controlsSpacing)
-                ) {
-                    // Play/Pause and Reset Buttons
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        // Reset Button (only visible when timer is active)
-                        val showReset = uiState.mode == AppMode.TIMER &&
-                            (uiState.timerState is TimerState.Running || uiState.timerState is TimerState.Paused)
-
-                        AnimatedVisibility(
-                            visible = showReset,
-                            enter = fadeIn(tween(200)),
-                            exit = fadeOut(tween(200))
-                        ) {
-                            Row {
-                                FloatingActionButton(
-                                    onClick = { onEvent(HomeEvent.Reset) },
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    elevation = FloatingActionButtonDefaults.elevation(
-                                        defaultElevation = 2.dp
-                                    ),
-                                    modifier = Modifier
-                                        .minimumInteractiveComponentSize()
-                                        .size(resetButtonSize)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Stop,
-                                        contentDescription = stringResource(R.string.action_reset),
-                                        modifier = Modifier.size(if (isSmallScreen) 20.dp else 24.dp)
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(if (isSmallScreen) 12.dp else 16.dp))
-                            }
-                        }
-
-                        // Play/Pause Button
-                        PlayPauseButton(
-                            isPlaying = uiState.isPlaying,
-                            onClick = { onEvent(HomeEvent.PlayPause) },
-                            size = playButtonSize
-                        )
-                    }
-
-                    // Volume Slider
-                    VolumeSlider(
-                        volume = uiState.volume,
-                        onVolumeChange = { onEvent(HomeEvent.SetVolume(it)) },
-                        onVolumeChangeFinished = { onEvent(HomeEvent.VolumeChangeFinished) },
-                        modifier = Modifier.fillMaxWidth()
+                if (!pinTransport) {
+                    Spacer(modifier = Modifier.height(sectionSpacing))
+                    TransportControls(
+                        uiState = uiState,
+                        onEvent = onEvent,
+                        isSmallScreen = isSmallScreen,
+                        playButtonSize = playButtonSize,
+                        resetButtonSize = resetButtonSize,
+                        controlsSpacing = controlsSpacing
                     )
                 }
             }
 
-            // Fixed at bottom - Current Sound Bar (outside scroll)
+            if (pinTransport) {
+                Spacer(modifier = Modifier.height(controlsSpacing))
+                TransportControls(
+                    uiState = uiState,
+                    onEvent = onEvent,
+                    isSmallScreen = isSmallScreen,
+                    playButtonSize = playButtonSize,
+                    resetButtonSize = resetButtonSize,
+                    controlsSpacing = controlsSpacing
+                )
+            }
+
             Spacer(modifier = Modifier.height(controlsSpacing))
             CurrentSoundBar(
                 activeMix = uiState.activeMix,
@@ -406,5 +382,75 @@ private fun HomeContentColumn(
                 showChangeButton = showChangeButton
             )
         }
+    }
+}
+
+/** Play/pause, reset and volume: the controls that drive playback. */
+@Composable
+private fun TransportControls(
+    uiState: HomeUiState,
+    onEvent: (HomeEvent) -> Unit,
+    isSmallScreen: Boolean,
+    playButtonSize: Dp,
+    resetButtonSize: Dp,
+    controlsSpacing: Dp,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(controlsSpacing)
+    ) {
+        // Play/Pause and Reset Buttons
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            // Reset Button (only visible when timer is active)
+            val showReset = uiState.mode == AppMode.TIMER &&
+                (uiState.timerState is TimerState.Running || uiState.timerState is TimerState.Paused)
+
+            AnimatedVisibility(
+                visible = showReset,
+                enter = fadeIn(tween(200)),
+                exit = fadeOut(tween(200))
+            ) {
+                Row {
+                    FloatingActionButton(
+                        onClick = { onEvent(HomeEvent.Reset) },
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        elevation = FloatingActionButtonDefaults.elevation(
+                            defaultElevation = 2.dp
+                        ),
+                        modifier = Modifier
+                            .minimumInteractiveComponentSize()
+                            .size(resetButtonSize)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Stop,
+                            contentDescription = stringResource(R.string.action_reset),
+                            modifier = Modifier.size(if (isSmallScreen) 20.dp else 24.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(if (isSmallScreen) 12.dp else 16.dp))
+                }
+            }
+
+            // Play/Pause Button
+            PlayPauseButton(
+                isPlaying = uiState.isPlaying,
+                onClick = { onEvent(HomeEvent.PlayPause) },
+                size = playButtonSize
+            )
+        }
+
+        // Volume Slider
+        VolumeSlider(
+            volume = uiState.volume,
+            onVolumeChange = { onEvent(HomeEvent.SetVolume(it)) },
+            onVolumeChangeFinished = { onEvent(HomeEvent.VolumeChangeFinished) },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
