@@ -190,9 +190,15 @@ tasks.register("validateFdroidMetadata") {
                     problems += "$name/$relativePath: missing"
                     return@forEach
                 }
+                val text = file.readText()
+                // Blank check is trimmed: whitespace the file might open with
+                // (or consist entirely of) should not count as content.
+                if (text.isBlank()) {
+                    problems += "$name/$relativePath: empty"
+                    return@forEach
+                }
                 // Code points, untrimmed — the same measure validateStoreText
                 // settled on after Play counted a trailing newline as content.
-                val text = file.readText()
                 val length = text.codePointCount(0, text.length)
                 if (length > limit) {
                     problems += "$name/$relativePath: $length characters, limit is $limit"
@@ -203,7 +209,7 @@ tasks.register("validateFdroidMetadata") {
         }
 
         // en-US is F-Droid's fallback for every locale without its own images,
-        // so these three are the whole app's graphics, not just English's.
+        // so these two are the whole app's graphics, not just English's.
         listOf(
             "en-US/images/icon.png",
             "en-US/images/featureGraphic.png"

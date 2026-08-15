@@ -25,16 +25,21 @@ hash a silent substitution upstream would flow into a shipped asset.
 `tools/synth-noise.sh` from fixed seeds. They are public domain by construction:
 there is no recording and no third party involved.
 
-## Sourced as CC0, originals not retained (6)
+## Sourced as CC0, upstream provenance not retained (6)
 
 `rain_loop`, `fireplace_loop`, `forest_loop`, `ocean_loop`, `cave_loop` and
 `timer_chime`.
 
 These predate the `sources.json` manifest. They were obtained from CC0 /
-public-domain sources, but the originals were not kept and the specific upstream
-files can no longer be identified, so there is no per-file record to point at.
-The processed `.ogg` files in `core/data/src/main/res/raw/` are the only
-surviving artefact.
+public-domain sources, but which upstream file each came from — the specific
+source, its uploader and a licence URL — was never recorded, and cannot be
+reconstructed now.
+
+The source audio itself is not lost: [`audio-src/`](audio-src/README.md) tracks
+an unprocessed `.ogg` master for each of these six, distinct from and larger
+than the versions shipped in `core/data/src/main/res/raw/` (`cave_loop`, for
+example, is 1,626,352 bytes in `audio-src/` versus 1,322,332 bytes shipped).
+What is missing is the upstream record, not the audio.
 
 This is recorded as an open gap rather than papered over. Re-sourcing these six
 from traceable originals would close it, at the cost of changing how the app

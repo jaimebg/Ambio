@@ -1,3 +1,6 @@
+# Reference copy, kept in this repo for review and history.
+# In the fdroiddata repository, this file belongs at
+# metadata/com.jbgsoft.ambio.yml.
 Categories:
   - Multimedia
   - Time
