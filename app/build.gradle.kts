@@ -44,6 +44,18 @@ android {
         }
     }
 
+    bundle {
+        language {
+            // Keep every language in the base APK. Play otherwise installs only the
+            // splits matching the device's system locale, which would leave the
+            // per-app language picker resolving to resources that are not present:
+            // a user on an English device picking Japanese would keep seeing English.
+            // The whole translatable surface is 67 strings and 3 plurals, so carrying
+            // all of it costs far less than an on-demand split fetch would.
+            enableSplit = false
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
