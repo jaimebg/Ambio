@@ -73,8 +73,13 @@ tasks.register("validateStoreText") {
                 }
                 // Count code points, not UTF-16 units: a String of one emoji has
                 // length 2, and failing a listing over that would be nonsense.
-                // Trailing newlines are not content and supply does not upload them.
-                val text = file.readText().trim()
+                //
+                // Counted untrimmed, because Play counts the trailing newline.
+                // This gate used to trim it and passed an Italian changelog of
+                // exactly 500 that Play then rejected at 501. The measure has to
+                // be the bytes supply actually sends, not a tidier version of
+                // them.
+                val text = file.readText()
                 val length = text.codePointCount(0, text.length)
                 if (length > limit) {
                     tooLong += "${localeDir.name}/$relativePath: $length characters, limit is $limit"
