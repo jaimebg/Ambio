@@ -1,11 +1,13 @@
 package com.jbgsoft.ambio.feature.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -25,6 +27,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.FloatingActionButton
@@ -38,6 +41,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -248,9 +257,11 @@ private fun HomeContentColumn(
         val sectionSpacing = if (isSmallScreen) 12.dp else 24.dp
         val controlsSpacing = if (isSmallScreen) 16.dp else 24.dp
 
-        // Responsive button sizes
-        val playButtonSize = if (isSmallScreen) 72.dp else 96.dp
-        val resetButtonSize = if (isSmallScreen) 44.dp else 56.dp
+        // Responsive button sizes. Now that the transport is pinned it no longer
+        // has to shout to be found, and every dp it gives back is one the dial
+        // and the presets above it get to keep.
+        val playButtonSize = if (isSmallScreen) 60.dp else 76.dp
+        val resetButtonSize = if (isSmallScreen) 40.dp else 48.dp
 
         val scrollState = rememberScrollState()
 
@@ -273,93 +284,112 @@ private fun HomeContentColumn(
                 .padding(vertical = verticalPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Scrollable content
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(scrollState),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButton(onClick = onNavigateToStats) {
-                        Icon(
-                            imageVector = Icons.Default.BarChart,
-                            contentDescription = stringResource(R.string.action_open_stats)
-                        )
-                    }
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = stringResource(R.string.action_open_settings)
-                        )
-                    }
-                }
+            // Scrollable content, with an edge fade marking the cut. The column
+            // ends wherever the window runs out, which on a short phone lands
+            // mid-element and reads as the end of the screen rather than the top
+            // of a scroll.
+            val moreBelow by animateFloatAsState(
+                targetValue = if (scrollState.canScrollForward) 1f else 0f,
+                animationSpec = tween(200),
+                label = "scrollMore"
+            )
 
-                // Top Section - Mode Toggle
-                ModeToggle(
-                    selectedMode = uiState.mode,
-                    onModeSelected = { onEvent(HomeEvent.SetMode(it)) },
-                    modifier = Modifier.padding(horizontal = if (isSmallScreen) 16.dp else 32.dp)
-                )
-
-                Spacer(modifier = Modifier.height(sectionSpacing))
-
-                // Center Section - Timer Display
+            Box(modifier = Modifier.weight(1f)) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    modifier = Modifier
+                        .fillMaxSize()
+                        // Outside verticalScroll on purpose: it has to dissolve the
+                        // clipped result, not the content before it is cut.
+                        .fadingBottomEdge(moreBelow)
+                        .verticalScroll(scrollState),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TimerDisplay(
-                        timerState = uiState.timerState,
-                        mode = uiState.mode,
-                        isPlaying = uiState.isPlaying,
-                        selectedMinutes = when (uiState.selectedPreset) {
-                            TimerPreset.FOCUS_25 -> 25
-                            TimerPreset.FOCUS_50 -> 50
-                            TimerPreset.CUSTOM -> uiState.customMinutes
-                        },
-                        size = timerDisplaySize
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        IconButton(onClick = onNavigateToStats) {
+                            Icon(
+                                imageVector = Icons.Default.BarChart,
+                                contentDescription = stringResource(R.string.action_open_stats)
+                            )
+                        }
+                        IconButton(onClick = onNavigateToSettings) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = stringResource(R.string.action_open_settings)
+                            )
+                        }
+                    }
+
+                    // Top Section - Mode Toggle
+                    ModeToggle(
+                        selectedMode = uiState.mode,
+                        onModeSelected = { onEvent(HomeEvent.SetMode(it)) },
+                        modifier = Modifier.padding(horizontal = if (isSmallScreen) 16.dp else 32.dp)
                     )
 
                     Spacer(modifier = Modifier.height(sectionSpacing))
 
-                    // Timer Presets (only in Timer mode)
-                    AnimatedVisibility(
-                        visible = uiState.mode == AppMode.TIMER,
-                        enter = fadeIn(tween(300)) + expandVertically(tween(300)),
-                        exit = fadeOut(tween(300)) + shrinkVertically(tween(300))
+                    // Center Section - Timer Display
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        TimerPresetSelector(
-                            selectedPreset = uiState.selectedPreset,
-                            customMinutes = uiState.customMinutes,
-                            breakMinutes = uiState.breakMinutes,
-                            onPresetSelected = { onEvent(HomeEvent.SelectPreset(it)) },
-                            onCustomMinutesChanged = { onEvent(HomeEvent.SetCustomMinutes(it)) },
-                            onCustomMinutesChangeFinished = { onEvent(HomeEvent.CustomMinutesChangeFinished) },
-                            onBreakMinutesChanged = { onEvent(HomeEvent.SetBreakMinutes(it)) },
-                            onBreakMinutesChangeFinished = { onEvent(HomeEvent.BreakMinutesChangeFinished) },
-                            modifier = Modifier.fillMaxWidth(),
-                            isCompact = isSmallScreen
+                        TimerDisplay(
+                            timerState = uiState.timerState,
+                            mode = uiState.mode,
+                            isPlaying = uiState.isPlaying,
+                            selectedMinutes = when (uiState.selectedPreset) {
+                                TimerPreset.FOCUS_25 -> 25
+                                TimerPreset.FOCUS_50 -> 50
+                                TimerPreset.CUSTOM -> uiState.customMinutes
+                            },
+                            size = timerDisplaySize
+                        )
+
+                        Spacer(modifier = Modifier.height(sectionSpacing))
+
+                        // Timer Presets (only in Timer mode)
+                        AnimatedVisibility(
+                            visible = uiState.mode == AppMode.TIMER,
+                            enter = fadeIn(tween(300)) + expandVertically(tween(300)),
+                            exit = fadeOut(tween(300)) + shrinkVertically(tween(300))
+                        ) {
+                            TimerPresetSelector(
+                                selectedPreset = uiState.selectedPreset,
+                                customMinutes = uiState.customMinutes,
+                                breakMinutes = uiState.breakMinutes,
+                                onPresetSelected = { onEvent(HomeEvent.SelectPreset(it)) },
+                                onCustomMinutesChanged = { onEvent(HomeEvent.SetCustomMinutes(it)) },
+                                onCustomMinutesChangeFinished = { onEvent(HomeEvent.CustomMinutesChangeFinished) },
+                                onBreakMinutesChanged = { onEvent(HomeEvent.SetBreakMinutes(it)) },
+                                onBreakMinutesChangeFinished = { onEvent(HomeEvent.BreakMinutesChangeFinished) },
+                                modifier = Modifier.fillMaxWidth(),
+                                isCompact = isSmallScreen
+                            )
+                        }
+                    }
+
+                    if (!pinTransport) {
+                        Spacer(modifier = Modifier.height(sectionSpacing))
+                        TransportControls(
+                            uiState = uiState,
+                            onEvent = onEvent,
+                            isSmallScreen = isSmallScreen,
+                            playButtonSize = playButtonSize,
+                            resetButtonSize = resetButtonSize,
+                            controlsSpacing = controlsSpacing
                         )
                     }
                 }
 
-                if (!pinTransport) {
-                    Spacer(modifier = Modifier.height(sectionSpacing))
-                    TransportControls(
-                        uiState = uiState,
-                        onEvent = onEvent,
-                        isSmallScreen = isSmallScreen,
-                        playButtonSize = playButtonSize,
-                        resetButtonSize = resetButtonSize,
-                        controlsSpacing = controlsSpacing
-                    )
-                }
+                ScrollMoreChevron(
+                    amount = moreBelow,
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )
             }
 
             if (pinTransport) {
@@ -383,6 +413,57 @@ private fun HomeContentColumn(
             )
         }
     }
+}
+
+/** How tall the fade marking more scrollable content is. */
+private val SCROLL_FADE_HEIGHT = 44.dp
+
+/**
+ * Dissolves the bottom of a scrolling area so the cut reads as "more below"
+ * rather than as the end of the screen.
+ *
+ * It erases the content's own alpha with [BlendMode.DstIn] instead of painting a
+ * scrim over it. A scrim has to fade towards some colour, and this screen's
+ * background is an animated mix gradient, so black left a visible band with a
+ * hard edge where it met the transport below. Dissolving reveals whatever the
+ * gradient happens to be at that moment, so there is no edge to see.
+ *
+ * The offscreen layer is only paid for while the fade is actually drawn: the
+ * particle field already has a frame budget worth protecting.
+ */
+private fun Modifier.fadingBottomEdge(amount: Float): Modifier =
+    if (amount <= 0f) {
+        this
+    } else {
+        this
+            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+            .drawWithContent {
+                drawContent()
+                val fade = SCROLL_FADE_HEIGHT.toPx() * amount
+                drawRect(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color.Black, Color.Transparent),
+                        startY = size.height - fade,
+                        endY = size.height
+                    ),
+                    blendMode = BlendMode.DstIn
+                )
+            }
+    }
+
+/** The chevron that says the dissolve above it is scrollable, not decorative. */
+@Composable
+private fun ScrollMoreChevron(amount: Float, modifier: Modifier = Modifier) {
+    if (amount <= 0f) return
+
+    Icon(
+        imageVector = Icons.Default.KeyboardArrowDown,
+        // Decoration: everything it points at is reachable by scrolling and is
+        // already announced on its own.
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f * amount),
+        modifier = modifier.size(20.dp)
+    )
 }
 
 /** Play/pause, reset and volume: the controls that drive playback. */
