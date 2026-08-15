@@ -1,12 +1,11 @@
 package com.jbgsoft.ambio.storeassets
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
@@ -35,25 +34,29 @@ private val SYSTEM_BAR_BOTTOM = 24.dp
 private val PANEL_CORNER = 26.dp
 
 /**
- * The frame every store image is rendered into: the real mix gradient behind, a
- * localised headline, and two device panels showing the app.
+ * One store image: a slice of a single wide gradient, a localised headline, and
+ * the app.
  *
- * Two panels rather than one, angled and overlapping, because a single flat
- * screenshot wastes most of a 9:16 canvas and says nothing about the app running
- * anywhere else. The pair reads as one panorama and lets a shot make two points
- * at once -- the mixer and what it is mixing, the timer and the mix behind it.
+ * The gradient is not drawn per shot. It is laid out [total] canvases wide and
+ * shifted left by [index] of them, so shot two continues exactly where shot one
+ * stopped and the set reads as one panorama when it is scrolled in the Play
+ * gallery. That continuity is the only reason every shot shares one mix.
  *
- * Both panels are real screens, not mockups. That is the point of rendering
- * these rather than compositing them: a shot cannot claim a layout the app does
- * not have.
+ * One device per shot. A second panel fills the frame but halves the size of the
+ * thing being sold, so pairing is worth it only where a shot has to make two
+ * points at once, and none of these do.
+ *
+ * The panel is a real screen, not a mockup. That is the point of rendering these
+ * rather than compositing them: a shot cannot claim a layout the app lacks.
  */
 @Composable
 fun StoreShot(
     caption: String,
     glows: List<SoundGlow>,
     spec: ShotSpec,
-    back: @Composable () -> Unit,
-    front: @Composable () -> Unit
+    index: Int,
+    total: Int,
+    content: @Composable () -> Unit
 ) {
     val gradient = gradientOf(glows)
     val landscape = spec.widthPx > spec.heightPx
@@ -61,7 +64,10 @@ fun StoreShot(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .mixGradientBackground { gradient }
+            .mixGradientBackground(
+                panoramaIndex = index,
+                panoramaCount = total
+            ) { gradient }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Text(
@@ -77,118 +83,43 @@ fun StoreShot(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 28.dp)
-                    .padding(top = if (landscape) 22.dp else 30.dp, bottom = 10.dp)
+                    .padding(top = if (landscape) 24.dp else 32.dp, bottom = 12.dp)
             )
 
             BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-                if (landscape) {
-                    LandscapePair(spec, back, front)
-                } else {
-                    PortraitPair(spec, back, front)
-                }
+                // Sized off the height so the whole screen stays in frame. The
+                // layouts these shots are selling are the reason workstream A
+                // happened; cropping the bottom would cut the transport off again.
+                val scale = ((maxHeight - 34.dp) / spec.deviceHeight)
+                    .coerceAtMost(if (landscape) 0.86f else 0.64f)
+
+                Panel(
+                    width = spec.deviceWidth,
+                    height = spec.deviceHeight,
+                    scale = scale,
+                    // A couple of degrees, alternating, so a scrolled set has some
+                    // rhythm without any single shot looking crooked on its own.
+                    rotation = if (index % 2 == 0) -1.5f else 1.5f,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    content = content
+                )
             }
         }
     }
 }
 
 /**
- * Two phones, the second raised behind the first.
- *
- * Sized off the height, not the width: the whole screen has to be in frame,
- * because the layouts these shots are selling are the reason workstream A
- * happened at all. Cropping the bottom would cut the transport off again.
- */
-@Composable
-private fun BoxWithConstraintsScope.PortraitPair(
-    spec: ShotSpec,
-    back: @Composable () -> Unit,
-    front: @Composable () -> Unit
-) {
-    // Both panels stay inside the canvas. Letting them bleed off the edge looked
-    // dynamic in the abstract and simply cut the mix bar off in practice, which
-    // is the control this release exists to keep on screen.
-    //
-    // The margins clear the rotation, not just the panel: turning a 420dp panel
-    // by four degrees swings its corners about 15dp wider than its box, which at
-    // a 10dp margin sheared the corner off the one behind.
-    val frontScale = ((maxHeight - 30.dp) / spec.deviceHeight).coerceAtMost(0.56f)
-    val backScale = frontScale * 0.82f
-
-    DevicePanel(
-        spec = spec,
-        scale = backScale,
-        rotation = 4f,
-        modifier = Modifier
-            .align(Alignment.TopEnd)
-            .offset(x = (-24).dp, y = 10.dp),
-        content = back
-    )
-    DevicePanel(
-        spec = spec,
-        scale = frontScale,
-        rotation = -3f,
-        modifier = Modifier
-            .align(Alignment.BottomStart)
-            .offset(x = 22.dp, y = (-12).dp),
-        content = front
-    )
-}
-
-/** A tablet beside a phone: the same app, both layouts, in one frame. */
-@Composable
-private fun BoxWithConstraintsScope.LandscapePair(
-    spec: ShotSpec,
-    back: @Composable () -> Unit,
-    front: @Composable () -> Unit
-) {
-    val tabletScale = ((maxHeight - 28.dp) / spec.deviceHeight).coerceAtMost(0.78f)
-    val phoneScale = ((maxHeight - 20.dp) / PHONE_H).coerceAtMost(0.46f)
-
-    DevicePanel(
-        spec = spec,
-        scale = tabletScale,
-        rotation = -2f,
-        modifier = Modifier
-            .align(Alignment.CenterStart)
-            .offset(x = 12.dp),
-        content = front
-    )
-    Panel(
-        width = PHONE_W,
-        height = PHONE_H,
-        scale = phoneScale,
-        rotation = 4f,
-        modifier = Modifier
-            .align(Alignment.CenterEnd)
-            .offset(x = (-30).dp),
-        content = back
-    )
-}
-
-private val PHONE_W = 411.dp
-private val PHONE_H = 914.dp
-
-@Composable
-private fun DevicePanel(
-    spec: ShotSpec,
-    scale: Float,
-    rotation: Float,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) = Panel(spec.deviceWidth, spec.deviceHeight, scale, rotation, modifier, content)
-
-/**
  * One device panel: a box of the right shape whose contents believe they are a
  * whole phone or tablet.
  *
- * It works by scaling the density rather than the drawing. A box
- * `deviceWidth * scale` wide, composed under a density multiplied by the same
- * scale, measures as exactly `deviceWidth` to everything inside it, so the app
- * picks the layout it would pick on real hardware and the text scales with it.
+ * It works by scaling the density rather than the drawing. A box `width * scale`
+ * wide, composed under a density multiplied by the same scale, measures as
+ * exactly `width` to everything inside it, so the app picks the layout it would
+ * pick on real hardware and the text scales with it.
  *
  * Scaling the drawing instead does not work here: a graphicsLayer transform is
  * applied after layout, so the app still composes at full size and the parent
- * just crops it, which is what the first attempt produced -- fragments of a
+ * merely crops it, which is what an earlier attempt produced -- fragments of a
  * phone rather than a phone.
  */
 @Composable
@@ -218,6 +149,10 @@ private fun Panel(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    // Opaque, so every panel reads as a device. Home paints its own
+                    // gradient over this, but the picker draws no background of its
+                    // own and without it that shot alone had no edges.
+                    .background(MaterialTheme.colorScheme.background)
                     // Robolectric hands the window no system bars, so
                     // systemBarsPadding() inside the app reserves nothing and every
                     // screen lays out taller than it ever does on a device. These

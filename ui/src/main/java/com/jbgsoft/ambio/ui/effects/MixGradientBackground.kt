@@ -95,6 +95,15 @@ fun animatedMixGradient(target: MixGradient): State<MixGradient> {
  * changes. That is every frame of the 400 ms cross-fade, which is exactly when
  * they do have to be rebuilt, and never in between.
  *
+ * [panoramaIndex] and [panoramaCount] widen the composition without widening
+ * the surface. The blobs are placed as though the canvas were `panoramaCount`
+ * times as wide and this were slice `panoramaIndex` of it, while only the real
+ * canvas is rasterised. Store screenshots use it so a set of five reads as one
+ * continuous image in the Play gallery; drawing an actually five-canvas-wide
+ * box instead runs past the maximum surface width and the last slices come back
+ * blank. The defaults are a single full-width canvas, which is every other
+ * caller.
+ *
  * The distinction is not academic, because this sits underneath the particle
  * overlay. That overlay reads frameTimeNanos inside its own draw lambda and
  * nothing between it and the root isolates the invalidation, so while effects
@@ -104,11 +113,19 @@ fun animatedMixGradient(target: MixGradient): State<MixGradient> {
  * `android.graphics.RadialGradient`s, at refresh rate for a picture that has not
  * changed. The cached brushes keep their shaders instead.
  */
-fun Modifier.mixGradientBackground(gradient: () -> MixGradient): Modifier = drawWithCache {
+fun Modifier.mixGradientBackground(
+    panoramaIndex: Int = 0,
+    panoramaCount: Int = 1,
+    // Last so that every existing call site keeps its trailing lambda.
+    gradient: () -> MixGradient
+): Modifier = drawWithCache {
     val mix = gradient()
     val base = mix.base
 
-    val radius = maxOf(size.width, size.height) * BLOB_RADIUS
+    val virtualWidth = size.width * panoramaCount
+    val originX = -size.width * panoramaIndex
+
+    val radius = maxOf(virtualWidth, size.height) * BLOB_RADIUS
     val blobs = ANCHORS.mapIndexed { index, anchor ->
         val color = mix.stops[index]
         Brush.radialGradient(
@@ -117,7 +134,7 @@ fun Modifier.mixGradientBackground(gradient: () -> MixGradient): Modifier = draw
             // Compose interpolates un-premultiplied, every blob would fade
             // through grey and pick up a visible halo.
             colors = listOf(color.copy(alpha = BLOB_ALPHA), color.copy(alpha = 0f)),
-            center = Offset(size.width * anchor.x, size.height * anchor.y),
+            center = Offset(originX + virtualWidth * anchor.x, size.height * anchor.y),
             radius = radius
         )
     }

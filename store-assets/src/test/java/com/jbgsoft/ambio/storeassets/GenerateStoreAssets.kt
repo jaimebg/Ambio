@@ -77,15 +77,13 @@ class GenerateStoreAssets {
                     caption = stringResource(current.captionRes),
                     glows = current.glows,
                     spec = shotSpec,
-                    // Landscape leads with the tablet, portrait with the phone,
-                    // so each canvas shows the layout it is actually selling.
-                    back = {
-                        if (landscape) current.TabletSide() else current.BackContent()
-                    },
-                    front = {
-                        if (landscape) current.TabletMain() else current.Content()
-                    }
-                )
+                    index = current.ordinal,
+                    total = StoreScene.entries.size
+                ) {
+                    // Landscape leads with the tablet layout, portrait with the
+                    // phone one, so each canvas shows what it is actually selling.
+                    if (landscape) current.TabletMain() else current.Content()
+                }
             }
         }
 

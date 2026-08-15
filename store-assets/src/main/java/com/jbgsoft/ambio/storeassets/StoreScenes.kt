@@ -69,24 +69,6 @@ private val HOME_BASE = HomeUiState(
     effectsEnabled = true
 )
 
-/**
- * The panel that sits behind, giving the shot its second point.
- *
- * Pairing is deliberate rather than decorative: the mixer shot shows what is
- * being mixed, the timer shot shows the mix it is running over, and the two
- * quiet screens back each other so no shot is a single flat rectangle.
- */
-@Composable
-fun StoreScene.BackContent() {
-    when (this) {
-        StoreScene.MIX -> Picker()
-        StoreScene.PICKER -> Home(AppMode.AMBIENT)
-        StoreScene.TIMER -> Home(AppMode.AMBIENT)
-        StoreScene.STATS -> Home(AppMode.TIMER)
-        StoreScene.SETTINGS -> Stats()
-    }
-}
-
 @Composable
 private fun Home(mode: AppMode) = HomeScreen(
     uiState = HOME_BASE.copy(
@@ -126,29 +108,6 @@ private fun Picker(columns: Int = 3) = SoundPickerContent(
  * which is exactly the claim that caption makes.
  */
 @Composable
-fun StoreScene.TabletMain() {
-    when (this) {
-        StoreScene.MIX -> Home(AppMode.AMBIENT)
-        StoreScene.PICKER -> Picker(columns = 4)
-        StoreScene.TIMER -> Home(AppMode.TIMER)
-        StoreScene.STATS -> Stats()
-        StoreScene.SETTINGS -> Content()
-    }
-}
-
-/** The phone alongside it: the same app on the other form factor. */
-@Composable
-fun StoreScene.TabletSide() {
-    when (this) {
-        StoreScene.MIX -> Picker()
-        StoreScene.PICKER -> Home(AppMode.AMBIENT)
-        StoreScene.TIMER -> Home(AppMode.AMBIENT)
-        StoreScene.STATS -> Home(AppMode.TIMER)
-        StoreScene.SETTINGS -> Stats()
-    }
-}
-
-@Composable
 private fun Stats() = StatsScreen(
     uiState = StatsUiState(
         totalFocusMinutes = 1_285,
@@ -158,6 +117,17 @@ private fun Stats() = StatsScreen(
     onDeleteSession = {},
     onNavigateBack = {}
 )
+
+@Composable
+fun StoreScene.TabletMain() {
+    when (this) {
+        StoreScene.MIX -> Home(AppMode.AMBIENT)
+        StoreScene.PICKER -> Picker(columns = 4)
+        StoreScene.TIMER -> Home(AppMode.TIMER)
+        StoreScene.STATS -> Stats()
+        StoreScene.SETTINGS -> Content()
+    }
+}
 
 @Composable
 fun StoreScene.Content() {
