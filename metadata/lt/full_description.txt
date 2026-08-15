@@ -1,0 +1,55 @@
+Ambio paverčia susikaupimo laiką aplinka, kurią susikuri pats. Pasirink iki trijų aplinkos garsų, nustatyk, kaip garsiai kiekvienas skamba mišinyje, ir visa programėlė atsiliepia: spalva, šviesa ir judesys seka tuo, ką sukūrei.
+
+MAIŠYTUVAS
+Dvylika garsų, trys vienu metu, kiekvienas su savo lygiu. Lietus virš tolimos kavinės. Židinys po vėju. Vandenynas su svirpliais prieblandoje. Kiekvienas mišinys tavo derinamas, ir Ambio jį prisimena kitam kartui.
+
+- Lietus, Židinys, Kavinė, Miškas
+- Paukščiai, Svirpliai, Vandenynas, Upelis
+- Urvas, Vėjas, Baltasis triukšmas, Rudasis triukšmas
+
+ATRODO TAIP, KAIP SKAMBA
+Fonas yra gyvas perėjimas, sumaišytas iš visų tavo mišinio garsų: vėsiai mėlyna lietui, šiltas gintaras židiniui, sodriai žalia miškui. Dalelės plaukioja už laikmačio ir atsiliepia į visą mišinį, ne į vieną garsą. Mieliau tylos? Išjunk efektus.
+
+SUSIKAUPIMO LAIKMATIS
+Pomodoro nustatymai 25 arba 50 minučių, arba nustatyk savo darbo ir pertraukų trukmes. Švelnus skambtelėjimas užbaigia seansą tavęs iš jo neišplėšdamas. Sukurta mokytis, rašyti, programuoti ar bet kam, kas reikalauja ilgo dėmesio.
+
+APLINKOS REŽIMAS
+Nieko nematuoji laiku? Perjunk į aplinkos režimą ir leisk mišiniui skambėti. Skaityti, medituoti, nurimti ar užmigti.
+
+PAMATYK, KUR DINGO TAVO DĖMESYS
+Seansų istorija fiksuoja valandas, kurias iš tikrųjų skyrei.
+
+SUKURTA KIEKVIENAM EKRANUI
+Planšetėse maišytuvas lieka šalia laikmačio: du skydeliai, jokio vaikščiojimo pirmyn ir atgal.
+
+SVEIKI!
+Ambio dabar kalba lietuviškai, visa programėlė, o ne tik šis puslapis. Su Android 13+ gali pasirinkti jos kalbą atskirai, neliesdamas viso telefono.
+
+PIRMIAUSIA PRIVATUMAS
+Ambio gerbia tavo laiką IR tavo duomenis:
+- Veikia visiškai neprisijungus
+- Paskyros nereikia
+- Jokių reklamų, niekada
+- Jokio sekimo ar analitikos
+- Jokie duomenys nepalieka tavo įrenginio
+- Atviras kodas (MIT licencija)
+
+GROJIMAS FONE
+Pradėk seansą ir padėk telefoną. Ambio groja toliau su visais medijos valdikliais: pristabdyk, tęsk arba sustabdyk iš pranešimų skydelio, užrakinimo ekrano ar spartaus nustatymo plytelės.
+
+SUKURTA ŠIUOLAIKINIAM ANDROID
+- Material Design 3
+- Prisitaikančios piktogramos su vienspalviu palaikymu Android 13+
+- Tausoja akumuliatorių
+- Nedidelis programėlės dydis
+
+KAM SKIRTA AMBIO?
+- Studentams, besiruošiantiems egzaminams
+- Nuotoliniams darbuotojams, kuriems reikia susikaupti
+- Rašantiems kovoje su blaškymusi
+- Programuotojams sraute
+- Visiems, kas nori ramaus produktyvumo
+
+Visi aplinkos garsai licencijuoti CC0 (viešoji sritis). Pati programėlė yra atviro kodo su MIT licencija.
+
+Atsisiųsk Ambio ir susikurk tylą, kurioje dirbi geriausiai.

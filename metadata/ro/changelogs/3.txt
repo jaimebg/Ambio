@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIXERUL
+Combină până la trei din douăsprezece sunete de ambianță odată, fiecare cu nivelul lui. Degradeul și particulele din spatele cronometrului urmează acum tot mixul.
+
+TABLETE
+Un aranjament real cu două panouri: mixerul rămâne lângă cronometru.
+
+SALUT!
+Ambio vorbește acum română: toată aplicația, nu doar pagina asta.
+
+DE ASEMENEA
+- Butonul de redare nu mai rămâne în afara ecranului
+- Dalele de sunet păstrează o singură dimensiune
+- Corecții la focusul audio și la mixurile salvate

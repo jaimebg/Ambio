@@ -1,0 +1,15 @@
+Ambio 2.0
+
+DER MISCHER
+Mische bis zu drei von zwölf Umgebungsklängen, jeden mit eigenem Pegel. Verlauf und Partikel hinter dem Timer folgen jetzt der ganzen Mischung.
+
+TABLETS
+Ein echtes Zwei-Bereiche-Layout: der Mischer bleibt neben dem Timer.
+
+HALLO!
+Ambio spricht jetzt Deutsch: die ganze App, nicht nur diese Seite.
+
+AUSSERDEM
+- Die Wiedergabetaste rutscht nicht mehr aus dem Bild
+- Klangkacheln behalten eine feste Größe
+- Korrekturen bei Audiofokus und gespeicherten Mischungen

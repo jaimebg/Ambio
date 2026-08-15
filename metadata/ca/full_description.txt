@@ -1,0 +1,55 @@
+L'Ambio converteix el temps de concentració en un entorn que construeixes tu. Tria fins a tres sons ambientals, ajusta quant sona cadascun a la barreja i tota l'aplicació respon: el color, la llum i el moviment segueixen el que has creat.
+
+EL MESCLADOR
+Dotze sons, tres alhora, cadascun amb el seu nivell. Pluja sobre una cafeteria llunyana. Llar de foc sota el vent. Oceà amb grills al capvespre. Cada barreja és teva per equilibrar-la, i l'Ambio la recorda per a la propera vegada.
+
+- Pluja, Llar de foc, Cafeteria, Bosc
+- Ocells, Grills, Oceà, Rierol
+- Cova, Vent, Soroll blanc, Soroll marró
+
+ES VEU COM SONA
+El fons és un degradat viu barrejat a partir de tots els sons de la teva barreja: blaus freds per a la pluja, ambre càlid per a la llar de foc, verd profund per al bosc. Les partícules suren darrere del temporitzador i responen a la barreja sencera, no a un sol so. Prefereixes la quietud? Desactiva els efectes.
+
+TEMPORITZADOR DE CONCENTRACIÓ
+Preajustos Pomodoro de 25 o 50 minuts, o defineix els teus propis temps de concentració i descans. Un timbre suau tanca la sessió sense treure-te'n. Fet per estudiar, escriure, programar o qualsevol cosa que demani atenció sostinguda.
+
+MODE AMBIENT
+No estàs cronometrant res? Canvia al mode ambient i deixa córrer la barreja. Per llegir, meditar, desconnectar o dormir.
+
+MIRA ON HA ANAT LA TEVA CONCENTRACIÓ
+Un historial de sessions registra les hores que realment hi has dedicat.
+
+FET PER A CADA PANTALLA
+A les tauletes, el mesclador es queda al costat del temporitzador: dos plafons, sense anar amunt i avall.
+
+HOLA!
+L'Ambio ja parla català, tota l'aplicació i no només aquesta pàgina. A Android 13+ pots triar-ne l'idioma per separat, sense tocar la resta del telèfon.
+
+LA PRIVADESA, PRIMER
+L'Ambio respecta el teu temps I les teves dades:
+- Funciona completament sense connexió
+- No cal cap compte
+- Sense anuncis, mai
+- Sense seguiment ni analítiques
+- Cap dada surt del teu dispositiu
+- Codi obert (llicència MIT)
+
+REPRODUCCIÓ EN SEGON PLA
+Comença una sessió i deixa el telèfon. L'Ambio continua sonant amb controls multimèdia complets: pausa, reprèn o atura des de la safata de notificacions, la pantalla de bloqueig o el mosaic de Configuració ràpida.
+
+FET PER A L'ANDROID MODERN
+- Material Design 3
+- Icones adaptatives amb suport monocrom a Android 13+
+- Ús eficient de la bateria
+- Mida reduïda
+
+PER A QUI ÉS L'AMBIO?
+- Estudiants preparant exàmens
+- Teletreballadors que necessiten concentrar-se
+- Escriptors lluitant contra les distraccions
+- Programadors en ratxa
+- Qualsevol que vulgui productivitat tranquil·la
+
+Tots els sons ambientals tenen llicència CC0 (domini públic). L'aplicació és de codi obert amb llicència MIT.
+
+Descarrega l'Ambio i construeix el silenci on treballes millor.

@@ -236,3 +236,87 @@ tasks.register("validateFdroidMetadata") {
         }
     }
 }
+
+// Play's codes carry two deprecated language subtags. Renamed rather than
+// passed through: both forms work on F-Droid, but the bare modern tag is the
+// dominant convention there and matches a broader set of device locales than a
+// region-qualified one does.
+val fdroidLocaleRenames = mapOf("iw-IL" to "he", "no-NO" to "nb")
+
+val storeImagesDir = layout.projectDirectory
+    .dir("fastlane/metadata/android/en-US/images/phoneScreenshots").asFile
+val appIconFile = layout.projectDirectory.file("assets/app-icon.png").asFile
+val featureGraphicFile = layout.projectDirectory.file("assets/gplay-feature-graphic.png").asFile
+
+/**
+ * Copies the publishable slice of `fastlane/` into the tracked `metadata/`.
+ *
+ * `fastlane/` is gitignored in full and must stay that way: it holds the Play
+ * service account key. So the listing is not published by un-ignoring part of
+ * that directory — one wrong negation pattern there would put a credential in a
+ * public repo forever — but by copying a named whitelist somewhere clean.
+ *
+ * Whitelist, not blacklist: every published file is named below, so a new file
+ * appearing in `fastlane/` cannot leak into the listing by default.
+ *
+ * Text ships for all 48 locales; images only for en-US, which F-Droid falls
+ * back to for every locale without its own. The full localised image set is
+ * 344MB and git would carry it forever.
+ */
+tasks.register<Sync>("syncFdroidMetadata") {
+    group = "publishing"
+    description = "Copies the publishable store listing from fastlane/ into metadata/."
+
+    // Captured into a local val rather than read directly inside `onlyIf`: that
+    // spec runs at execution time, and a lambda referencing the top-level val
+    // there would need to capture the whole script object, which the
+    // configuration cache cannot serialize.
+    val metadataSourceDir = storeMetadataDir
+
+    // Without this, a run on CI — where fastlane/ does not exist — would see an
+    // empty source and Sync would delete the tracked listing.
+    onlyIf { metadataSourceDir.isDirectory }
+
+    into(layout.projectDirectory.dir("metadata"))
+
+    from(storeMetadataDir) {
+        include("*/title.txt")
+        include("*/short_description.txt")
+        include("*/full_description.txt")
+        include("*/changelogs/*.txt")
+        // A supply convention F-Droid has no use for; it reads changelogs by
+        // versionCode only.
+        exclude("*/changelogs/default.txt")
+    }
+
+    from(storeImagesDir) {
+        into("en-US/images/phoneScreenshots")
+        include("*.png")
+    }
+
+    from(appIconFile) {
+        into("en-US/images")
+        rename { "icon.png" }
+    }
+
+    from(featureGraphicFile) {
+        into("en-US/images")
+        rename { "featureGraphic.png" }
+    }
+
+    exclude("**/.DS_Store")
+    includeEmptyDirs = false
+
+    val renames = fdroidLocaleRenames
+    eachFile {
+        val segments = relativePath.segments
+        val replacement = renames[segments.firstOrNull()]
+        if (replacement != null) {
+            relativePath = RelativePath(
+                true,
+                replacement,
+                *segments.drop(1).toTypedArray()
+            )
+        }
+    }
+}

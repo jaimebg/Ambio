@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIKSER
+Połącz do trzech z dwunastu dźwięków otoczenia naraz, każdy z własnym poziomem. Gradient i cząsteczki za minutnikiem podążają teraz za całym miksem.
+
+TABLETY
+Prawdziwy układ dwupanelowy: mikser zostaje obok minutnika.
+
+CZEŚĆ!
+Ambio mówi teraz po polsku: cała aplikacja, nie tylko ta strona.
+
+PONADTO
+- Przycisk odtwarzania nie chowa się już poza ekranem
+- Kafelki dźwięków mają stały rozmiar
+- Poprawki fokusu audio i zapisanych miksów

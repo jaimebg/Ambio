@@ -1,0 +1,15 @@
+Ambio 2.0
+
+A KEVERŐ
+Keverj össze egyszerre három hangot a tizenkettőből, mindegyiket saját szinttel. A színátmenet és a részecskék mostantól az egész keveréket követik.
+
+TÁBLAGÉPEK
+Igazi kétpaneles elrendezés: a keverő az időzítő mellett marad.
+
+SZIA!
+Az Ambio most már magyarul beszél: az egész alkalmazás, nem csak ez az oldal.
+
+TOVÁBBÁ
+- A lejátszás gomb már nem csúszik le a képernyőről
+- A hangcsempék egy méretet tartanak
+- Javítások a hangfókuszban és a mentett keverékekben

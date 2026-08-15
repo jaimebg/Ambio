@@ -1,0 +1,15 @@
+Ambio 2.0
+
+LE MIXEUR
+Mélangez jusqu'à trois des douze sons d'ambiance, chacun avec son niveau. Le dégradé et les particules suivent désormais tout le mélange, pas un seul son.
+
+TABLETTES
+Deux vrais volets : le mixeur reste à côté du minuteur.
+
+BONJOUR !
+Ambio parle désormais français : toute l'application, pas seulement cette page.
+
+AUSSI
+- Le bouton de lecture ne disparaît plus sous l'écran
+- Les vignettes de son gardent une taille fixe
+- Corrections du focus audio et des mélanges enregistrés

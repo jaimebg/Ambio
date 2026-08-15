@@ -1,0 +1,55 @@
+Ambio turns focus time into an environment you build yourself. Pick up to three ambient sounds, set how loud each one sits in the mix, and the whole app answers — colour, light and motion follow what you made.
+
+THE MIXER
+Twelve sounds, three at a time, each with its own level. Rain over a distant café. Fireplace under wind. Ocean with crickets at dusk. Every blend is yours to balance, and Ambio remembers it for next time.
+
+- Rain, Fireplace, Café, Forest
+- Birds, Crickets, Ocean, Stream
+- Cave, Wind, White Noise, Brown Noise
+
+IT LOOKS LIKE IT SOUNDS
+The background is a living gradient blended from every sound in your mix — cool blues for rain, warm amber for fireplace, deep green for forest. Particles drift behind the timer and answer the whole mix, not just one sound. Prefer stillness? Turn the effects off.
+
+FOCUS TIMER
+Pomodoro presets at 25 or 50 minutes, or set your own focus and break lengths. A gentle chime closes the session without pulling you out of it. Made for studying, writing, coding, or anything that needs sustained attention.
+
+AMBIENT MODE
+Not timing anything? Switch to ambient mode and let the mix run. For reading, meditation, winding down, or sleep.
+
+SEE WHERE YOUR FOCUS WENT
+A session history keeps track of the hours you actually put in.
+
+BUILT FOR EVERY SCREEN
+On tablets, the mixer sits permanently beside the timer — two panes, no switching back and forth.
+
+HELLO, HOLA, BONJOUR, こんにちは
+Ambio speaks your language now — the whole app, not just this page. On Android 13+ you can set its language on its own, without touching the rest of your phone.
+
+PRIVACY FIRST
+Ambio respects your time AND your data:
+- Works completely offline
+- No account required
+- No ads, ever
+- No tracking or analytics
+- No data leaves your device
+- Open source (MIT License)
+
+BACKGROUND PLAYBACK
+Start a session and put the phone down. Ambio keeps playing with full media controls — pause, resume or stop from the notification shade, the lock screen, or the Quick Settings tile.
+
+BUILT FOR MODERN ANDROID
+- Material Design 3
+- Adaptive icons with Android 13+ monochrome support
+- Efficient battery usage
+- Small app size
+
+WHO IS AMBIO FOR?
+- Students preparing for exams
+- Remote workers needing focus
+- Writers battling distractions
+- Developers in the zone
+- Anyone who wants peaceful productivity
+
+All ambient sounds are CC0 licensed (public domain). The app itself is open source under the MIT License.
+
+Download Ambio and build the quiet you work best in.

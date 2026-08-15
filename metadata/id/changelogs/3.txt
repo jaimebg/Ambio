@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIXER
+Padukan hingga tiga dari dua belas suara ambien sekaligus, masing-masing dengan levelnya. Gradien dan partikel di belakang pengatur waktu kini mengikuti seluruh campuran.
+
+TABLET
+Tata letak dua panel yang sebenarnya: mixer tetap di samping pengatur waktu.
+
+HALO!
+Ambio kini berbahasa Indonesia: seluruh aplikasinya, bukan cuma halaman ini.
+
+JUGA
+- Tombol putar tidak lagi berada di luar layar
+- Ubin suara mempertahankan satu ukuran
+- Perbaikan fokus audio dan campuran tersimpan

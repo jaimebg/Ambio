@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIKSERIS
+Sajauc līdz trim no divpadsmit vides skaņām vienlaikus, katrai savs līmenis. Krāsu pāreja un daļiņas aiz taimera tagad seko visam miksam, nevis vienai skaņai.
+
+PLANŠETES
+Īsts divu paneļu izkārtojums: mikseris paliek blakus taimerim.
+
+SVEIKI!
+Ambio tagad runā latviski: visa lietotne, ne tikai šī lapa.
+
+ARĪ
+- Atskaņošanas poga vairs nepaliek ārpus ekrāna
+- Skaņu elementi saglabā vienu izmēru
+- Labojumi audio fokusā un saglabātajos miksos

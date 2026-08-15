@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIKSER
+Sega korraga kuni kolm heli kaheteistkümnest, igaühel oma tase. Üleminek ja taimeri taga hõljuvad osakesed järgivad nüüd tervet miksi, mitte üht heli.
+
+TAHVELARVUTID
+Päris kahe paneeliga paigutus: mikser jääb taimeri kõrvale.
+
+TERE!
+Ambio räägib nüüd eesti keelt: kogu rakendus, mitte ainult see leht.
+
+SAMUTI
+- Esitusnupp ei jää enam ekraanilt välja
+- Heliplaadid hoiavad ühte kindlat suurust
+- Parandused helifookuses ja salvestatud miksides

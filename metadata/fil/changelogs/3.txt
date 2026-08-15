@@ -1,0 +1,15 @@
+Ambio 2.0
+
+ANG MIXER
+Paghaluin ang hanggang tatlo sa labindalawang tunog nang sabay, bawat isa may sariling lakas. Ang gradient at mga particle sa likod ng timer ay sumusunod na sa buong halo.
+
+MGA TABLET
+Tunay na dalawang panel: nasa tabi ng timer ang mixer.
+
+KUMUSTA!
+Nagsasalita na ng Filipino ang Ambio: buong app, hindi lang ang pahinang ito.
+
+BUKOD PA
+- Hindi na nawawala sa screen ang play button
+- Pare-pareho na ang laki ng mga tile
+- Mga pag-aayos sa audio focus at naka-save na halo

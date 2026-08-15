@@ -1,0 +1,15 @@
+Ambio 2.0
+
+THE MIXER
+Blend up to three of twelve ambient sounds at once, each with its own level. The gradient and the particles behind the timer now follow your whole mix, not one sound.
+
+TABLETS
+A real two-pane layout: the mixer stays beside the timer instead of sliding over it.
+
+HELLO, HOLA, BONJOUR, こんにちは
+Ambio speaks your language now — the whole app, not just this page.
+
+ALSO
+- The play button no longer hides below the fold
+- Sound tiles keep one size
+- Audio focus and saved-mix fixes

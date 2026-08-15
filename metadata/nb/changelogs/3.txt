@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIKSEREN
+Bland opptil tre av tolv omgivelseslyder samtidig, hver med sitt eget nivå. Gradienten og partiklene bak tidtakeren følger nå hele miksen din, ikke én lyd.
+
+NETTBRETT
+Et ekte oppsett med to ruter: mikseren blir stående ved siden av tidtakeren.
+
+HEI!
+Ambio snakker nå norsk: hele appen, ikke bare denne siden.
+
+OGSÅ
+- Avspillingsknappen faller ikke lenger utenfor skjermen
+- Lydfelter beholder én fast størrelse
+- Rettelser for lydfokus og lagrede mikser

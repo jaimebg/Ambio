@@ -1,0 +1,55 @@
+Ambio mengubah waktu fokus menjadi lingkungan yang kamu bangun sendiri. Pilih hingga tiga suara ambien, atur seberapa keras masing-masing dalam campuran, dan seluruh aplikasi menjawab: warna, cahaya, dan gerak mengikuti apa yang kamu buat.
+
+MIXER
+Dua belas suara, tiga sekaligus, masing-masing dengan levelnya sendiri. Hujan di atas kafe yang jauh. Perapian di bawah angin. Samudra dengan jangkrik saat senja. Setiap campuran milikmu untuk diseimbangkan, dan Ambio mengingatnya untuk lain kali.
+
+- Hujan, Perapian, Kafe, Hutan
+- Burung, Jangkrik, Samudra, Aliran sungai
+- Gua, Angin, Derau putih, Derau cokelat
+
+TAMPAK SEPERTI BUNYINYA
+Latarnya adalah gradien hidup, dicampur dari semua suara dalam campuranmu: biru sejuk untuk hujan, ambar hangat untuk perapian, hijau pekat untuk hutan. Partikel melayang di belakang pengatur waktu dan menjawab seluruh campuran, bukan satu suara saja. Lebih suka hening? Matikan efeknya.
+
+PENGATUR WAKTU FOKUS
+Prasetel Pomodoro 25 atau 50 menit, atau tentukan sendiri durasi kerja dan istirahatmu. Dentingan lembut menutup sesi tanpa merenggutmu darinya. Dibuat untuk belajar, menulis, ngoding, dan apa pun yang menuntut perhatian berkelanjutan.
+
+MODE AMBIEN
+Sedang tidak menghitung waktu? Beralihlah ke mode ambien dan biarkan campurannya mengalir. Untuk membaca, meditasi, melambat, atau tidur.
+
+LIHAT KE MANA FOKUSMU PERGI
+Riwayat sesi mencatat jam-jam yang benar-benar kamu curahkan.
+
+DIBUAT UNTUK SETIAP LAYAR
+Di tablet, mixer tetap di samping pengatur waktu: dua panel, tanpa bolak-balik.
+
+HALO!
+Ambio kini berbahasa Indonesia, seluruh aplikasinya, bukan cuma halaman ini. Di Android 13+ kamu bisa memilih bahasanya sendiri, tanpa mengubah sisa ponselmu.
+
+PRIVASI DULU
+Ambio menghormati waktumu DAN datamu:
+- Berjalan sepenuhnya luring
+- Tanpa perlu akun
+- Tanpa iklan, selamanya
+- Tanpa pelacakan atau analitik
+- Tidak ada data yang meninggalkan perangkatmu
+- Sumber terbuka (lisensi MIT)
+
+PEMUTARAN DI LATAR
+Mulai sesi lalu letakkan ponselmu. Ambio terus berbunyi dengan kontrol media lengkap: jeda, lanjutkan, atau hentikan dari panel notifikasi, layar kunci, atau ubin di Setelan cepat.
+
+DIBUAT UNTUK ANDROID MODERN
+- Material Design 3
+- Ikon adaptif dengan dukungan monokrom di Android 13+
+- Hemat baterai
+- Ukuran aplikasi kecil
+
+UNTUK SIAPA AMBIO?
+- Pelajar yang bersiap ujian
+- Pekerja jarak jauh yang butuh fokus
+- Penulis yang melawan gangguan
+- Pengembang yang sedang mengalir
+- Siapa pun yang ingin produktivitas yang tenang
+
+Semua suara ambien berlisensi CC0 (domain publik). Aplikasinya sendiri sumber terbuka di bawah lisensi MIT.
+
+Unduh Ambio dan bangun keheningan tempat kamu bekerja paling baik.

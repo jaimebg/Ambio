@@ -1,0 +1,15 @@
+Ambio 2.0
+
+EL MESCLADOR
+Combina fins a tres de dotze sons ambientals, cadascun amb el seu nivell. El degradat i les partícules segueixen ara tota la barreja, no un sol so.
+
+TAULETES
+Dos plafons de debò: el mesclador es queda al costat del temporitzador.
+
+HOLA!
+L'Ambio ja parla català: tota l'aplicació, no només aquesta pàgina.
+
+TAMBÉ
+- El botó de reproducció ja no queda fora de pantalla
+- Les fitxes de so mantenen una mida fixa
+- Correccions de focus d'àudio i barreges desades

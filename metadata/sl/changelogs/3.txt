@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MEŠALNIK
+Zmešaj do tri od dvanajstih zvokov okolice hkrati, vsakega s svojo ravnjo. Preliv in delci za časovnikom zdaj sledijo celotni mešanici.
+
+TABLICE
+Pravi razpored z dvema podoknoma: mešalnik ostane ob časovniku.
+
+ŽIVJO!
+Ambio zdaj govori slovensko: vsa aplikacija, ne le ta stran.
+
+TUDI
+- Gumb za predvajanje ne ostane več zunaj zaslona
+- Ploščice zvokov ohranijo eno velikost
+- Popravki zvočnega fokusa in shranjenih mešanic

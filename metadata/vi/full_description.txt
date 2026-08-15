@@ -1,0 +1,55 @@
+Ambio biến thời gian tập trung thành một không gian do chính bạn dựng nên. Chọn tối đa ba âm thanh môi trường, chỉnh mỗi âm to nhỏ ra sao trong bản phối, và cả ứng dụng đáp lại: màu sắc, ánh sáng và chuyển động đi theo thứ bạn tạo ra.
+
+BÀN TRỘN
+Mười hai âm thanh, ba âm cùng lúc, mỗi âm một mức riêng. Mưa trên một quán cà phê xa. Lò sưởi dưới gió. Đại dương cùng tiếng dế lúc chạng vạng. Mỗi bản phối là của bạn để cân chỉnh, và Ambio nhớ nó cho lần sau.
+
+- Mưa, Lò sưởi, Quán cà phê, Rừng
+- Chim, Dế, Đại dương, Suối
+- Hang động, Gió, Nhiễu trắng, Nhiễu nâu
+
+TRÔNG NHƯ NÓ NGHE
+Nền là một dải chuyển màu sống động, pha từ mọi âm trong bản phối của bạn: xanh lạnh cho mưa, hổ phách ấm cho lò sưởi, xanh sâu cho rừng. Các hạt trôi phía sau đồng hồ và đáp lại cả bản phối, không phải một âm đơn lẻ. Bạn thích tĩnh lặng hơn? Hãy tắt hiệu ứng.
+
+ĐỒNG HỒ TẬP TRUNG
+Cài sẵn Pomodoro 25 hoặc 50 phút, hoặc tự đặt thời gian làm việc và nghỉ. Một tiếng chuông nhẹ khép lại phiên mà không giật bạn ra khỏi nó. Dành cho học, viết, lập trình và mọi việc đòi hỏi chú ý bền bỉ.
+
+CHẾ ĐỘ MÔI TRƯỜNG
+Không đang bấm giờ gì? Chuyển sang chế độ môi trường và để bản phối chạy. Để đọc, thiền, chậm lại hoặc ngủ.
+
+XEM SỰ TẬP TRUNG CỦA BẠN ĐÃ ĐI ĐÂU
+Lịch sử phiên ghi lại số giờ bạn thực sự bỏ ra.
+
+DỰNG CHO MỌI MÀN HÌNH
+Trên máy tính bảng, bàn trộn nằm ngay cạnh đồng hồ: hai khung, không phải qua lại.
+
+XIN CHÀO!
+Ambio giờ nói tiếng Việt, cả ứng dụng chứ không chỉ trang này. Trên Android 13+ bạn có thể chọn riêng ngôn ngữ của nó mà không đụng tới phần còn lại của điện thoại.
+
+RIÊNG TƯ TRƯỚC TIÊN
+Ambio tôn trọng thời gian VÀ dữ liệu của bạn:
+- Chạy hoàn toàn ngoại tuyến
+- Không cần tài khoản
+- Không quảng cáo, không bao giờ
+- Không theo dõi hay phân tích
+- Không dữ liệu nào rời khỏi thiết bị
+- Mã nguồn mở (giấy phép MIT)
+
+PHÁT Ở NỀN
+Bắt đầu một phiên rồi đặt điện thoại xuống. Ambio vẫn phát với đầy đủ điều khiển media: tạm dừng, tiếp tục hoặc dừng từ bảng thông báo, màn hình khóa hoặc ô trong Cài đặt nhanh.
+
+DỰNG CHO ANDROID HIỆN ĐẠI
+- Material Design 3
+- Biểu tượng thích ứng, hỗ trợ đơn sắc trên Android 13+
+- Nhẹ nhàng với pin
+- Dung lượng nhỏ
+
+AMBIO DÀNH CHO AI?
+- Sinh viên ôn thi
+- Người làm từ xa cần tập trung
+- Người viết đang chống lại xao nhãng
+- Lập trình viên đang vào guồng
+- Bất kỳ ai muốn năng suất trong yên tĩnh
+
+Mọi âm thanh môi trường đều theo giấy phép CC0 (phạm vi công cộng). Bản thân ứng dụng là mã nguồn mở theo giấy phép MIT.
+
+Tải Ambio và dựng nên sự yên tĩnh mà bạn làm việc tốt nhất trong đó.

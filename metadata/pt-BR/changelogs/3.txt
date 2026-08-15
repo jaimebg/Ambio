@@ -1,0 +1,15 @@
+Ambio 2.0
+
+O MIXER
+Combine até três de doze sons ambientes ao mesmo tempo, cada um com seu nível. O degradê e as partículas atrás do timer agora seguem a mistura inteira, não um som só.
+
+TABLETS
+Um layout real de dois painéis: o mixer fica ao lado do timer.
+
+OLÁ!
+O Ambio agora fala português: o app inteiro, não só esta página.
+
+TAMBÉM
+- O botão de reprodução não fica mais fora da tela
+- Os blocos de som mantêm um tamanho fixo
+- Correções de foco de áudio e de mixes salvos

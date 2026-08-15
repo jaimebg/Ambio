@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MİKSER
+On iki ortam sesinden üçünü aynı anda, her birini kendi düzeyiyle birleştir. Geçiş ve zamanlayıcının ardındaki parçacıklar artık miksin tamamını izliyor.
+
+TABLETLER
+Gerçek iki bölmeli düzen: mikser zamanlayıcının yanında kalıyor.
+
+MERHABA!
+Ambio artık Türkçe konuşuyor: uygulamanın tamamı, sadece bu sayfa değil.
+
+AYRICA
+- Oynat düğmesi artık ekranın dışında kalmıyor
+- Ses kartları tek bir boyutu koruyor
+- Ses odağı ve kayıtlı miks düzeltmeleri

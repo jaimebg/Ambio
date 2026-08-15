@@ -1,0 +1,55 @@
+Az Ambio a fókuszidőt olyan környezetté alakítja, amelyet te magad építesz. Válassz legfeljebb három környezeti hangot, állítsd be, mennyire szól mindegyik a keverékben, és az egész alkalmazás válaszol: a szín, a fény és a mozgás azt követi, amit alkottál.
+
+A KEVERŐ
+Tizenkét hang, három egyszerre, mindegyik saját szinttel. Eső egy távoli kávézó felett. Kandalló a szél alatt. Óceán tücskökkel alkonyatkor. Minden keverék a tiéd, és az Ambio megjegyzi a következő alkalomra.
+
+- Eső, Kandalló, Kávézó, Erdő
+- Madarak, Tücskök, Óceán, Patak
+- Barlang, Szél, Fehér zaj, Barna zaj
+
+ÚGY NÉZ KI, AHOGY SZÓL
+A háttér élő színátmenet, a keveréked összes hangjából kikeverve: hűvös kékek az esőhöz, meleg borostyán a kandallóhoz, mély zöld az erdőhöz. Részecskék lebegnek az időzítő mögött, és az egész keverékre válaszolnak, nem egyetlen hangra. Inkább csendet szeretnél? Kapcsold ki a hatásokat.
+
+FÓKUSZ IDŐZÍTŐ
+Pomodoro előbeállítások 25 vagy 50 perccel, vagy saját munka- és szünetidők. Lágy csengés zárja a menetet anélkül, hogy kirántana belőle. Tanuláshoz, íráshoz, programozáshoz és mindenhez, ami tartós figyelmet kíván.
+
+KÖRNYEZETI MÓD
+Épp nem mérsz semmit? Válts környezeti módra, és hagyd szólni a keveréket. Olvasáshoz, meditációhoz, lelassuláshoz vagy alváshoz.
+
+NÉZD MEG, HOVÁ LETT A FÓKUSZOD
+A munkamenetek előzménye számon tartja az órákat, amiket tényleg beletettél.
+
+MINDEN KÉPERNYŐRE
+Táblagépen a keverő az időzítő mellett marad: két panel, oda-vissza kapkodás nélkül.
+
+SZIA!
+Az Ambio most már magyarul beszél, az egész alkalmazás, nem csak ez az oldal. Android 13+ rendszeren külön is beállíthatod a nyelvét, a telefon többi részéhez nyúlás nélkül.
+
+ELŐSZÖR A MAGÁNSZFÉRA
+Az Ambio tiszteletben tartja az idődet ÉS az adataidat:
+- Teljesen offline működik
+- Nem kell fiók
+- Semmi hirdetés, soha
+- Semmi követés vagy analitika
+- Egyetlen adat sem hagyja el a készüléked
+- Nyílt forráskód (MIT licenc)
+
+LEJÁTSZÁS A HÁTTÉRBEN
+Indíts egy menetet, és tedd le a telefont. Az Ambio játszik tovább, teljes médiavezérlőkkel: szüneteltetés, folytatás vagy leállítás az értesítési panelről, a zárképernyőről vagy a Gyorsbeállítások csempéjéről.
+
+A MODERN ANDROIDRA ÉPÍTVE
+- Material Design 3
+- Adaptív ikonok monokróm támogatással Android 13+ rendszeren
+- Kíméli az akkumulátort
+- Kis alkalmazásméret
+
+KINEK VALÓ AZ AMBIO?
+- Vizsgára készülő diákoknak
+- Távmunkásoknak, akiknek fókusz kell
+- Íróknak a figyelemelterelés elleni harcban
+- Fejlesztőknek lendületben
+- Bárkinek, aki nyugodt termelékenységet szeretne
+
+Minden környezeti hang CC0 licencű (közkincs). Maga az alkalmazás nyílt forráskódú, MIT licenc alatt.
+
+Töltsd le az Ambiót, és építsd meg a csendet, amelyben a legjobban dolgozol.

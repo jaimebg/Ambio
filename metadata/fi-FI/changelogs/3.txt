@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIKSERI
+Sekoita enintään kolme kahdestatoista ympäristöäänestä kerralla, kullakin oma tasonsa. Liukuväri ja ajastimen takana leijuvat hiukkaset seuraavat nyt koko miksausta, eivät yhtä ääntä.
+
+TABLETIT
+Aito kahden paneelin asettelu: mikseri pysyy ajastimen vieressä.
+
+HEI!
+Ambio puhuu nyt suomea: koko sovellus, ei vain tämä sivu.
+
+MYÖS
+- Toistopainike ei enää jää näytön ulkopuolelle
+- Ääniruudut pysyvät yhdessä koossa
+- Korjauksia äänen kohdistukseen ja tallennettuihin miksauksiin
