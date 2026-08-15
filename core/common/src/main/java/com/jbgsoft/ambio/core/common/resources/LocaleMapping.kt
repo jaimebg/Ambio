@@ -85,7 +85,16 @@ val PLAY_TO_RESOURCE_QUALIFIER: Map<String, String> = mapOf(
     "fil" to "fil"
 )
 
-/** Play code to the BCP-47 tag used in `locales_config.xml`. */
+/**
+ * Play code to the tag used in `locales_config.xml`.
+ *
+ * Hebrew and Indonesian are declared with the same legacy codes their resource
+ * directories use — `iw` and `in`, not `he` and `id`. `Locale.forLanguageTag`
+ * resolves the legacy and modern spellings to the same locale, so either works
+ * for the picker, but matching the directory keeps the two cases consistent and
+ * keeps lint's `UnusedTranslation` from reading `values-in` as a translation no
+ * declared locale asks for.
+ */
 val PLAY_TO_BCP47: Map<String, String> = mapOf(
     "en-US" to "en-US",
     "af" to "af", "ar" to "ar", "bg" to "bg", "ca" to "ca",
@@ -101,7 +110,7 @@ val PLAY_TO_BCP47: Map<String, String> = mapOf(
     "es-419" to "es-419", "pt-BR" to "pt-BR", "pt-PT" to "pt-PT",
     "bn-BD" to "bn-BD",
     "zh-CN" to "zh-Hans", "zh-TW" to "zh-Hant-TW", "zh-HK" to "zh-Hant-HK",
-    "iw-IL" to "iw", "id" to "id",
+    "iw-IL" to "iw", "id" to "in",
     "no-NO" to "nb",
     "fil" to "fil"
 )
