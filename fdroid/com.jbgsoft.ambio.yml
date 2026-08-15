@@ -1,9 +1,12 @@
 # Reference copy, kept in this repo for review and history.
 # In the fdroiddata repository, this file belongs at
 # metadata/com.jbgsoft.ambio.yml.
+# Both verified against config/categories.yml in fdroiddata. An earlier draft
+# used "Time", which no longer exists: F-Droid replaced the coarse category set
+# with a granular one, and lint would have rejected it.
 Categories:
   - Multimedia
-  - Time
+  - Timer
 License: MIT
 AuthorName: Jaime Barreto
 AuthorEmail: yaimesil@gmail.com
