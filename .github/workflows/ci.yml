@@ -72,19 +72,30 @@ jobs:
         run: |
           VERSION_CODE=$(grep -oE 'versionCode = [0-9]+' app/build.gradle.kts | grep -oE '[0-9]+')
           CHANGELOG_DIR=fastlane/metadata/android/en-US/changelogs
-          if [ -f "$CHANGELOG_DIR/$VERSION_CODE.txt" ]; then
-            NOTES_FILE="$CHANGELOG_DIR/$VERSION_CODE.txt"
-          else
-            NOTES_FILE="$CHANGELOG_DIR/default.txt"
+          # fastlane/ ya no se rastrea, así que aquí el changelog normalmente no
+          # existe. Antes esto era un cp a secas y habría tumbado la release.
+          for f in "$CHANGELOG_DIR/$VERSION_CODE.txt" "$CHANGELOG_DIR/default.txt"; do
+            if [ -f "$f" ]; then
+              echo "versionCode $VERSION_CODE, notas desde $f"
+              cp "$f" release-notes.md
+              break
+            fi
+          done
+          if [ ! -f release-notes.md ]; then
+            echo "versionCode $VERSION_CODE, sin changelog local: las genera gh"
           fi
-          echo "versionCode $VERSION_CODE, notas desde $NOTES_FILE"
-          cp "$NOTES_FILE" release-notes.md
 
       - name: Crear la release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --title "$GITHUB_REF_NAME" \
-            --notes-file release-notes.md \
-            --generate-notes
+          if [ -f release-notes.md ]; then
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --notes-file release-notes.md \
+              --generate-notes
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi

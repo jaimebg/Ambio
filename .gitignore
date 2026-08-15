@@ -58,19 +58,10 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-# fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-fastlane/README.md
-fastlane/.env*
-
-# fastlane deploy plumbing — kept local, not published
-# (fastlane/metadata/ stays tracked: it is the public store listing)
-fastlane/Appfile
-fastlane/Fastfile
-fastlane/*.json
+# Store listing, deploy plumbing and generated assets — kept local, not published
+# (this used to track fastlane/metadata/ as the public store listing; the whole
+# directory is now local, like docs/ below)
+fastlane/
 
 # Design specs and implementation plans — kept local, not published
 docs/

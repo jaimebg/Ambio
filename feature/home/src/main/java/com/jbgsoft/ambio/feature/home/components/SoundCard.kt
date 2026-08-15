@@ -36,7 +36,7 @@ import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.feature.home.R
 
 /**
- * Sized for a three-column grid. The catalogue is thirteen sounds, so at the
+ * Sized for a three-column grid. The catalogue is twelve sounds, so at the
  * previous two columns and 120dp only four tiles were on screen at once and
  * building a mix meant scrolling past most of the options.
  *
