@@ -80,9 +80,12 @@ jobs:
       - name: Preparar notas de la release
         run: |
           VERSION_CODE=$(grep -oE 'versionCode = [0-9]+' app/build.gradle.kts | grep -oE '[0-9]+')
-          CHANGELOG_DIR=fastlane/metadata/android/en-US/changelogs
-          # fastlane/ ya no se rastrea, así que aquí el changelog normalmente no
-          # existe. Antes esto era un cp a secas y habría tumbado la release.
+          # metadata/ es la ficha publicada para F-Droid y sí se rastrea, así que
+          # aquí el changelog existe de verdad. Antes esto miraba en
+          # fastlane/metadata/, que está en .gitignore entero porque guarda la
+          # clave de servicio de Play: el fichero nunca llegaba al runner y toda
+          # release caía en las notas automáticas de gh.
+          CHANGELOG_DIR=metadata/en-US/changelogs
           for f in "$CHANGELOG_DIR/$VERSION_CODE.txt" "$CHANGELOG_DIR/default.txt"; do
             if [ -f "$f" ]; then
               echo "versionCode $VERSION_CODE, notas desde $f"
@@ -98,7 +101,21 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -f release-notes.md ]; then
+          # Idempotente a propósito: re-empujar una etiqueta vuelve a lanzar este
+          # job, y `gh release create` sobre una release existente devuelve
+          # HTTP 422 "Release.tag_name already exists" y tumba el build. Pasó al
+          # mover v2.0.0 sobre el commit que ya lleva la ficha de F-Droid.
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "la release $GITHUB_REF_NAME ya existe: la actualizo"
+            if [ -f release-notes.md ]; then
+              gh release edit "$GITHUB_REF_NAME" \
+                --title "$GITHUB_REF_NAME" \
+                --notes-file release-notes.md
+            else
+              gh release edit "$GITHUB_REF_NAME" \
+                --title "$GITHUB_REF_NAME"
+            fi
+          elif [ -f release-notes.md ]; then
             gh release create "$GITHUB_REF_NAME" \
               --title "$GITHUB_REF_NAME" \
               --notes-file release-notes.md \
