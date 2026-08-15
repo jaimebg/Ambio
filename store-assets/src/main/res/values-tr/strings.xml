@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Üç sesi bir arada karıştır</string>
+    <string name="shot_picker">On iki ses, her birinin kendi rengi</string>
+    <string name="shot_timer">Havayı bozmayan odak zamanlayıcıları</string>
+    <string name="shot_stats">Odağının nereye gittiğini gör</string>
+    <string name="shot_settings">Çevrimdışı. Hesap yok. Reklam yok.</string>
+</resources>

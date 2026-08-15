@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Paghaluin ang hanggang tatlong tunog</string>
+    <string name="shot_picker">Labindalawang tunog, bawat isa may sariling kulay</string>
+    <string name="shot_timer">Mga timer na hindi sumisira sa mood</string>
+    <string name="shot_stats">Tingnan kung saan napunta ang pokus mo</string>
+    <string name="shot_settings">Offline. Walang account. Walang ads.</string>
+</resources>

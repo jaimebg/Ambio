@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Combină până la trei sunete</string>
+    <string name="shot_picker">Douăsprezece sunete, fiecare cu culoarea lui</string>
+    <string name="shot_timer">Cronometre care păstrează atmosfera</string>
+    <string name="shot_stats">Vezi unde s-a dus concentrarea ta</string>
+    <string name="shot_settings">Offline. Fără cont. Fără reclame.</string>
+</resources>

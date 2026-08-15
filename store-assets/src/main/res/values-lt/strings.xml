@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Sumaišyk iki trijų garsų</string>
+    <string name="shot_picker">Dvylika garsų, kiekvienas su sava spalva</string>
+    <string name="shot_timer">Laikmačiai, išlaikantys nuotaiką</string>
+    <string name="shot_stats">Pamatyk, kur dingo tavo dėmesys</string>
+    <string name="shot_settings">Neprisijungus. Be paskyros. Be reklamų.</string>
+</resources>

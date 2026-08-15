@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Combina fins a tres sons</string>
+    <string name="shot_picker">Dotze sons, cadascun amb el seu color</string>
+    <string name="shot_timer">Temporitzadors que mantenen l\'ambient</string>
+    <string name="shot_stats">Mira on ha anat la teva concentració</string>
+    <string name="shot_settings">Sense connexió. Sense compte. Sense anuncis.</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Połącz do trzech dźwięków</string>
+    <string name="shot_picker">Dwanaście dźwięków, każdy w swoim kolorze</string>
+    <string name="shot_timer">Minutniki, które trzymają nastrój</string>
+    <string name="shot_stats">Zobacz, gdzie podziało się twoje skupienie</string>
+    <string name="shot_settings">Offline. Bez konta. Bez reklam.</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">音を三つまで重ねる</string>
+    <string name="shot_picker">十二の音、それぞれの色</string>
+    <string name="shot_timer">雰囲気を保つ集中タイマー</string>
+    <string name="shot_stats">集中がどこへ行ったかを見る</string>
+    <string name="shot_settings">オフライン。アカウント不要。広告なし。</string>
+</resources>

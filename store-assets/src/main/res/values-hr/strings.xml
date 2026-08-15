@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Pomiješaj do tri zvuka</string>
+    <string name="shot_picker">Dvanaest zvukova, svaki sa svojom bojom</string>
+    <string name="shot_timer">Mjerači koji čuvaju ugođaj</string>
+    <string name="shot_stats">Vidi kamo je otišla tvoja pažnja</string>
+    <string name="shot_settings">Bez interneta. Bez računa. Bez oglasa.</string>
+</resources>

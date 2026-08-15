@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Padukan hingga tiga suara</string>
+    <string name="shot_picker">Dua belas suara, masing-masing warnanya</string>
+    <string name="shot_timer">Timer fokus yang menjaga suasana</string>
+    <string name="shot_stats">Lihat ke mana fokusmu pergi</string>
+    <string name="shot_settings">Luring. Tanpa akun. Tanpa iklan.</string>
+</resources>

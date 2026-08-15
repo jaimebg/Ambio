@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Змішайте до трьох звуків</string>
+    <string name="shot_picker">Дванадцять звуків, у кожного свій колір</string>
+    <string name="shot_timer">Таймери, що бережуть настрій</string>
+    <string name="shot_stats">Подивіться, куди пішла увага</string>
+    <string name="shot_settings">Офлайн. Без облікового запису. Без реклами.</string>
+</resources>

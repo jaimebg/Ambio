@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Sega kuni kolm heli</string>
+    <string name="shot_picker">Kaksteist heli, igaühel oma värv</string>
+    <string name="shot_timer">Taimerid, mis hoiavad meeleolu</string>
+    <string name="shot_stats">Vaata, kuhu su keskendumine läks</string>
+    <string name="shot_settings">Võrguühenduseta. Kontot pole. Reklaame pole.</string>
+</resources>

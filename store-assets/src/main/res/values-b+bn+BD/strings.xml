@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">তিনটি পর্যন্ত শব্দ মেশান</string>
+    <string name="shot_picker">বারোটি শব্দ, প্রতিটির নিজের রং</string>
+    <string name="shot_timer">মেজাজ ধরে রাখা ফোকাস টাইমার</string>
+    <string name="shot_stats">দেখুন আপনার মনোযোগ কোথায় গেল</string>
+    <string name="shot_settings">অফলাইন। অ্যাকাউন্ট নেই। বিজ্ঞাপন নেই।</string>
+</resources>

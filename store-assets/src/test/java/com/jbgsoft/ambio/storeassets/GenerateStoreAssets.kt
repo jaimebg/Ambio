@@ -1,15 +1,23 @@
 package com.jbgsoft.ambio.storeassets
 
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.Snapshot
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.unit.LayoutDirection
 import com.jbgsoft.ambio.ui.theme.AmbioTheme
 import java.awt.image.BufferedImage
 import java.io.File
+import java.util.Locale
 import javax.imageio.ImageIO
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -21,6 +29,68 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
+ * A locale Play lists this app in, paired with the language tag that resolves to
+ * the matching `values-*` directory.
+ *
+ * The two are not the same string, and the differences are the whole reason this
+ * table is written out rather than derived. Play says `no-NO` where Android
+ * wants Norwegian Bokmal, `id` and `iw-IL` land on Java's frozen `in` and `iw`,
+ * and Chinese resolves by script rather than by region.
+ */
+private data class ShotLocale(val play: String, val tag: String)
+
+private val LOCALES = listOf(
+    ShotLocale("af", "af"),
+    ShotLocale("ar", "ar"),
+    ShotLocale("bg", "bg"),
+    ShotLocale("bn-BD", "bn-BD"),
+    ShotLocale("ca", "ca"),
+    ShotLocale("cs-CZ", "cs"),
+    ShotLocale("da-DK", "da"),
+    ShotLocale("de-DE", "de"),
+    ShotLocale("el-GR", "el"),
+    ShotLocale("en-GB", "en-GB"),
+    ShotLocale("en-US", "en-US"),
+    ShotLocale("es-419", "es-419"),
+    ShotLocale("es-ES", "es-ES"),
+    ShotLocale("et", "et"),
+    ShotLocale("fi-FI", "fi"),
+    ShotLocale("fil", "fil"),
+    ShotLocale("fr-CA", "fr-CA"),
+    ShotLocale("fr-FR", "fr"),
+    ShotLocale("hi-IN", "hi"),
+    ShotLocale("hr", "hr"),
+    ShotLocale("hu-HU", "hu"),
+    ShotLocale("id", "id"),
+    ShotLocale("it-IT", "it"),
+    ShotLocale("iw-IL", "he"),
+    ShotLocale("ja-JP", "ja"),
+    ShotLocale("ko-KR", "ko"),
+    ShotLocale("lt", "lt"),
+    ShotLocale("lv", "lv"),
+    ShotLocale("ms", "ms"),
+    ShotLocale("nl-NL", "nl"),
+    ShotLocale("no-NO", "nb"),
+    ShotLocale("pl-PL", "pl"),
+    ShotLocale("pt-BR", "pt-BR"),
+    ShotLocale("pt-PT", "pt-PT"),
+    ShotLocale("ro", "ro"),
+    ShotLocale("ru-RU", "ru"),
+    ShotLocale("sk", "sk"),
+    ShotLocale("sl", "sl"),
+    ShotLocale("sr", "sr"),
+    ShotLocale("sv-SE", "sv"),
+    ShotLocale("sw", "sw"),
+    ShotLocale("th", "th"),
+    ShotLocale("tr-TR", "tr"),
+    ShotLocale("uk", "uk"),
+    ShotLocale("vi", "vi"),
+    ShotLocale("zh-CN", "zh-Hans-CN"),
+    ShotLocale("zh-HK", "zh-Hant-HK"),
+    ShotLocale("zh-TW", "zh-Hant-TW")
+)
+
+/**
  * Writes the Play Store screenshots by rendering the real screens on the JVM.
  *
  * No emulator, consistent with this project's standing rule that instrumented
@@ -29,8 +99,11 @@ import org.robolectric.annotation.GraphicsMode
  * them. They are build output: regenerated per release, and `fastlane/` is not
  * tracked.
  *
- * Locale comes from `-Dambio.shotLocale`, so the fan-out across all 48 is a loop
- * outside Gradle rather than 48 copies of this class.
+ * All 48 locales render in one pass per bucket. The locale reaches the
+ * composition as a context built from a Configuration rather than through
+ * Robolectric's qualifiers, because the rule creates the activity before any
+ * test code runs and a qualifier set afterwards would not reach the resources it
+ * has already resolved.
  */
 // SDK pinned to 34: Robolectric 4.16.1 supports at most 36, and its API 36
 // shadow needs Java 21 while this toolchain is 17.
@@ -65,46 +138,58 @@ class GenerateStoreAssets {
         // same frame, same pixels.
         compose.mainClock.autoAdvance = false
 
-        // One setContent for the whole bucket, with the scene held in state: the
-        // rule refuses a second call on the same activity.
-        val scene = mutableStateOf(StoreScene.entries.first())
-        val shotSpec = spec
         val landscape = spec.widthPx > spec.heightPx
+        val scene = mutableStateOf(StoreScene.entries.first())
+        val locale = mutableStateOf(LOCALES.first())
+
+        // One setContent for the whole bucket: the rule refuses a second call on
+        // the same activity, so both the scene and the locale are state it reads.
         compose.setContent {
             val current = scene.value
-            AmbioTheme(palette = current.palette) {
-                StoreShot(
-                    caption = stringResource(current.captionRes),
-                    glows = current.glows,
-                    spec = shotSpec,
-                    index = current.ordinal,
-                    total = StoreScene.entries.size
-                ) {
-                    // Landscape leads with the tablet layout, portrait with the
-                    // phone one, so each canvas shows what it is actually selling.
-                    if (landscape) current.TabletMain() else current.Content()
+            val context = localizedContext(compose.activity, locale.value.tag)
+
+            CompositionLocalProvider(
+                LocalContext provides context,
+                LocalConfiguration provides context.resources.configuration,
+                LocalLayoutDirection provides layoutDirectionOf(locale.value.tag)
+            ) {
+                AmbioTheme(palette = current.palette) {
+                    StoreShot(
+                        caption = stringResource(current.captionRes),
+                        glows = current.glows,
+                        spec = spec,
+                        index = current.ordinal,
+                        total = StoreScene.entries.size
+                    ) {
+                        // Landscape leads with the tablet layout, portrait with
+                        // the phone one, so each canvas shows what it is selling.
+                        if (landscape) current.TabletMain() else current.Content()
+                    }
                 }
             }
         }
 
-        StoreScene.entries.forEachIndexed { index, entry ->
-            scene.value = entry
-            // With autoAdvance off, a state write does not reach composition on
-            // its own. Without this the loop would quietly render scene one five
-            // times over, which looks exactly like a working run.
-            Snapshot.sendApplyNotifications()
+        LOCALES.forEach { shotLocale ->
+            locale.value = shotLocale
+            StoreScene.entries.forEachIndexed { index, entry ->
+                scene.value = entry
+                // With autoAdvance off, a state write does not reach composition
+                // on its own. Without this the loop would quietly render one
+                // scene over and over, which looks exactly like a working run.
+                Snapshot.sendApplyNotifications()
 
-            // Long enough for the 400ms gradient cross-fade to land and for the
-            // particles to spread out of their starting positions.
-            compose.mainClock.advanceTimeBy(SETTLE_MS)
-            compose.waitForIdle()
+                // Long enough for the 400ms gradient cross-fade to land and for
+                // the particles to spread out of their starting positions.
+                compose.mainClock.advanceTimeBy(SETTLE_MS)
+                compose.waitForIdle()
 
-            capture(spec, entry, index)
+                capture(spec, shotLocale.play, entry, index)
+            }
         }
     }
 
-    private fun capture(spec: ShotSpec, scene: StoreScene, index: Int) {
-        val outDir = File(outputRoot, "${locale()}/images/${spec.folder}").apply { mkdirs() }
+    private fun capture(spec: ShotSpec, playLocale: String, scene: StoreScene, index: Int) {
+        val outDir = File(outputRoot, "$playLocale/images/${spec.folder}").apply { mkdirs() }
         // Play orders screenshots by filename, so the index has to lead.
         val file = File(outDir, "${index + 1}_${scene.id}.png")
 
@@ -151,7 +236,24 @@ class GenerateStoreAssets {
         ImageIO.write(image, "png", file)
     }
 
-    private fun locale(): String = System.getProperty("ambio.shotLocale") ?: "en-US"
+    private fun localizedContext(base: Context, tag: String): Context {
+        val locale = Locale.forLanguageTag(tag)
+        val configuration = Configuration(base.resources.configuration).apply {
+            setLocale(locale)
+            setLayoutDirection(locale)
+        }
+        return base.createConfigurationContext(configuration)
+    }
+
+    /** Arabic and Hebrew mirror; nothing else in this catalogue of locales does. */
+    private fun layoutDirectionOf(tag: String): LayoutDirection {
+        val language = Locale.forLanguageTag(tag).language
+        return if (language == "ar" || language == "iw" || language == "he") {
+            LayoutDirection.Rtl
+        } else {
+            LayoutDirection.Ltr
+        }
+    }
 
     private val outputRoot: File
         get() = File(System.getProperty("ambio.storeMetadataDir") ?: DEFAULT_METADATA_DIR)

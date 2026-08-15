@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Changanya hadi sauti tatu</string>
+    <string name="shot_picker">Sauti kumi na mbili, kila moja na rangi yake</string>
+    <string name="shot_timer">Vipima muda vinavyohifadhi hali</string>
+    <string name="shot_stats">Ona umakini wako ulipokwenda</string>
+    <string name="shot_settings">Nje ya mtandao. Hakuna akaunti. Hakuna matangazo.</string>
+</resources>

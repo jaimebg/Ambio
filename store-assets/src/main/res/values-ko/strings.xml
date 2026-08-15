@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">소리를 셋까지 겹치세요</string>
+    <string name="shot_picker">열두 가지 소리, 저마다의 색</string>
+    <string name="shot_timer">분위기를 지키는 집중 타이머</string>
+    <string name="shot_stats">집중이 어디로 갔는지 보세요</string>
+    <string name="shot_settings">오프라인. 계정 없음. 광고 없음.</string>
+</resources>

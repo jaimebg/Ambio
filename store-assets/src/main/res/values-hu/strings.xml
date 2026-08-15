@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Keverj össze három hangot</string>
+    <string name="shot_picker">Tizenkét hang, mind a maga színével</string>
+    <string name="shot_timer">Időzítők, amelyek megtartják a hangulatot</string>
+    <string name="shot_stats">Nézd meg, hová lett a fókuszod</string>
+    <string name="shot_settings">Offline. Fiók nélkül. Hirdetés nélkül.</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Adun sehingga tiga bunyi</string>
+    <string name="shot_picker">Dua belas bunyi, setiap satu warnanya</string>
+    <string name="shot_timer">Pemasa yang mengekalkan suasana</string>
+    <string name="shot_stats">Lihat ke mana fokus anda pergi</string>
+    <string name="shot_settings">Luar talian. Tiada akaun. Tiada iklan.</string>
+</resources>

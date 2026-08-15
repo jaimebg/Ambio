@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Meng tot drie klanke</string>
+    <string name="shot_picker">Twaalf klanke, elk sy eie kleur</string>
+    <string name="shot_timer">Fokustydhouers wat die stemming hou</string>
+    <string name="shot_stats">Sien waarheen jou fokus gegaan het</string>
+    <string name="shot_settings">Vanlyn. Geen rekening. Geen advertensies.</string>
+</resources>

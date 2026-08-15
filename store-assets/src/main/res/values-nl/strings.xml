@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Meng tot drie geluiden</string>
+    <string name="shot_picker">Twaalf geluiden, elk zijn eigen kleur</string>
+    <string name="shot_timer">Timers die de sfeer bewaren</string>
+    <string name="shot_stats">Zie waar je focus bleef</string>
+    <string name="shot_settings">Offline. Geen account. Geen advertenties.</string>
+</resources>

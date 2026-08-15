@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">最多叠三种声音</string>
+    <string name="shot_picker">十二种声音，各有各的颜色</string>
+    <string name="shot_timer">不打扰氛围的专注计时器</string>
+    <string name="shot_stats">看看你的专注去了哪里</string>
+    <string name="shot_settings">离线。无需账号。没有广告。</string>
+</resources>

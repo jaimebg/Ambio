@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">שלבו עד שלושה צלילים</string>
+    <string name="shot_picker">שנים עשר צלילים, לכל אחד צבע משלו</string>
+    <string name="shot_timer">טיימרים ששומרים על האווירה</string>
+    <string name="shot_stats">ראו לאן הלך הריכוז שלכם</string>
+    <string name="shot_settings">לא מקוון. בלי חשבון. בלי פרסומות.</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">最多疊三種聲音</string>
+    <string name="shot_picker">十二種聲音，各有各的顏色</string>
+    <string name="shot_timer">不打擾氛圍的專注計時器</string>
+    <string name="shot_stats">看看你的專注去了哪裡</string>
+    <string name="shot_settings">離線。不需帳號。沒有廣告。</string>
+</resources>

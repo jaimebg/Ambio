@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">ผสมเสียงได้ถึงสามเสียง</string>
+    <string name="shot_picker">สิบสองเสียง แต่ละเสียงมีสีของตัวเอง</string>
+    <string name="shot_timer">ตัวจับเวลาที่รักษาบรรยากาศ</string>
+    <string name="shot_stats">ดูว่าสมาธิของคุณไปอยู่ที่ไหน</string>
+    <string name="shot_settings">ออฟไลน์ ไม่ต้องมีบัญชี ไม่มีโฆษณา</string>
+</resources>

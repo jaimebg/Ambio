@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Sajauc līdz trim skaņām</string>
+    <string name="shot_picker">Divpadsmit skaņas, katrai sava krāsa</string>
+    <string name="shot_timer">Taimeri, kas notur noskaņu</string>
+    <string name="shot_stats">Redzi, kur aizgāja tava uzmanība</string>
+    <string name="shot_settings">Bezsaistē. Bez konta. Bez reklāmām.</string>
+</resources>

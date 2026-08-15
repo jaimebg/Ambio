@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Ανάμειξε έως τρεις ήχους</string>
+    <string name="shot_picker">Δώδεκα ήχοι, ο καθένας με το χρώμα του</string>
+    <string name="shot_timer">Χρονόμετρα που κρατούν τη διάθεση</string>
+    <string name="shot_stats">Δες πού πήγε η συγκέντρωσή σου</string>
+    <string name="shot_settings">Εκτός σύνδεσης. Χωρίς λογαριασμό. Χωρίς διαφημίσεις.</string>
+</resources>

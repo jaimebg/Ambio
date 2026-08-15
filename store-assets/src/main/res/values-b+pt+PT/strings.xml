@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Combine até três sons</string>
+    <string name="shot_picker">Doze sons, cada um com a sua cor</string>
+    <string name="shot_timer">Temporizadores que mantêm o ambiente</string>
+    <string name="shot_stats">Veja para onde foi a sua concentração</string>
+    <string name="shot_settings">Sem ligação. Sem conta. Sem anúncios.</string>
+</resources>

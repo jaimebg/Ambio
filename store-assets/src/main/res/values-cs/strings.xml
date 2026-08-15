@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Smíchej až tři zvuky</string>
+    <string name="shot_picker">Dvanáct zvuků, každý se svou barvou</string>
+    <string name="shot_timer">Časovače, které udrží náladu</string>
+    <string name="shot_stats">Podívej se, kam šlo tvé soustředění</string>
+    <string name="shot_settings">Offline. Bez účtu. Bez reklam.</string>
+</resources>

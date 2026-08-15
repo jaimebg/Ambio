@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Hòa tối đa ba âm thanh</string>
+    <string name="shot_picker">Mười hai âm thanh, mỗi âm một màu</string>
+    <string name="shot_timer">Đồng hồ giữ nguyên không khí</string>
+    <string name="shot_stats">Xem sự tập trung của bạn đã đi đâu</string>
+    <string name="shot_settings">Ngoại tuyến. Không tài khoản. Không quảng cáo.</string>
+</resources>

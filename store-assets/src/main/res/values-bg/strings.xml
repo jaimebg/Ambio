@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Смесете до три звука</string>
+    <string name="shot_picker">Дванадесет звука, всеки със свой цвят</string>
+    <string name="shot_timer">Таймери, които пазят настроението</string>
+    <string name="shot_stats">Вижте къде отиде вниманието ви</string>
+    <string name="shot_settings">Офлайн. Без акаунт. Без реклами.</string>
+</resources>

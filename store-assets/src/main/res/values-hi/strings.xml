@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">तीन तक ध्वनियाँ मिलाइए</string>
+    <string name="shot_picker">बारह ध्वनियाँ, हर एक का अपना रंग</string>
+    <string name="shot_timer">माहौल बनाए रखने वाले टाइमर</string>
+    <string name="shot_stats">देखिए आपका ध्यान कहाँ गया</string>
+    <string name="shot_settings">ऑफ़लाइन। खाता नहीं। विज्ञापन नहीं।</string>
+</resources>

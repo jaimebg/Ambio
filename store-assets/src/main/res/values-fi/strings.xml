@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Sekoita jopa kolme ääntä</string>
+    <string name="shot_picker">Kaksitoista ääntä, kullakin oma värinsä</string>
+    <string name="shot_timer">Ajastimet, jotka säilyttävät tunnelman</string>
+    <string name="shot_stats">Katso mihin keskittymisesi meni</string>
+    <string name="shot_settings">Ilman verkkoa. Ei tiliä. Ei mainoksia.</string>
+</resources>

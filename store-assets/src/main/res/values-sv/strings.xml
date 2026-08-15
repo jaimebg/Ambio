@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shot_mix">Blanda upp till tre ljud</string>
+    <string name="shot_picker">Tolv ljud, vart och ett med sin färg</string>
+    <string name="shot_timer">Timers som behåller stämningen</string>
+    <string name="shot_stats">Se vart ditt fokus tog vägen</string>
+    <string name="shot_settings">Offline. Inget konto. Inga annonser.</string>
+</resources>
