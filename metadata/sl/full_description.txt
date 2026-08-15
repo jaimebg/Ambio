@@ -1,0 +1,55 @@
+Ambio spremeni čas zbranosti v okolje, ki ga zgradiš sam. Izberi do tri zvoke okolice, določi, kako glasen je vsak v mešanici, in vsa aplikacija odgovori: barva, svetloba in gibanje sledijo temu, kar si ustvaril.
+
+MEŠALNIK
+Dvanajst zvokov, trije hkrati, vsak s svojo ravnjo. Dež nad oddaljeno kavarno. Kamin pod vetrom. Ocean s čriki v mraku. Vsaka mešanica je tvoja za uravnoteženje, in Ambio si jo zapomni za naslednjič.
+
+- Dež, Kamin, Kavarna, Gozd
+- Ptice, Čriki, Ocean, Potok
+- Jama, Veter, Beli šum, Rjavi šum
+
+VIDI SE, KAKOR ZVENI
+Ozadje je živ preliv, zmešan iz vseh zvokov tvoje mešanice: hladne modre za dež, topel jantar za kamin, globoko zelena za gozd. Delci lebdijo za časovnikom in odgovarjajo celotni mešanici, ne enemu zvoku. Imaš raje tišino? Izklopi učinke.
+
+ČASOVNIK ZBRANOSTI
+Pomodoro prednastavitve 25 ali 50 minut ali lastni časi dela in odmora. Blag zvon zaključi sejo, ne da bi te iz nje iztrgal. Narejeno za učenje, pisanje, programiranje in vse, kar terja vztrajno pozornost.
+
+NAČIN OKOLICE
+Ničesar ne meriš? Preklopi v način okolice in pusti mešanico teči. Za branje, meditacijo, umirjanje ali spanje.
+
+POGLEJ, KAM JE ŠLA TVOJA POZORNOST
+Zgodovina sej beleži ure, ki si jih zares vložil.
+
+ZGRAJENO ZA VSAK ZASLON
+Na tablicah mešalnik ostane ob časovniku: dve podokni, brez skakanja sem in tja.
+
+ŽIVJO!
+Ambio zdaj govori slovensko, vsa aplikacija, ne le ta stran. V Androidu 13+ lahko izbereš njen jezik posebej, ne da bi se dotaknil preostanka telefona.
+
+NAJPREJ ZASEBNOST
+Ambio spoštuje tvoj čas IN tvoje podatke:
+- Deluje popolnoma brez povezave
+- Račun ni potreben
+- Brez oglasov, nikoli
+- Brez sledenja ali analitike
+- Noben podatek ne zapusti tvoje naprave
+- Odprta koda (licenca MIT)
+
+PREDVAJANJE V OZADJU
+Začni sejo in odloži telefon. Ambio igra naprej s polnimi medijskimi kontrolniki: premor, nadaljevanje ali ustavitev iz obvestilne plošče, z zaklenjenega zaslona ali ploščice v Hitrih nastavitvah.
+
+ZGRAJENO ZA SODOBNI ANDROID
+- Material Design 3
+- Prilagodljive ikone z enobarvno podporo v Androidu 13+
+- Prijazno do baterije
+- Majhna velikost aplikacije
+
+ZA KOGA JE AMBIO?
+- Za študente pred izpiti
+- Za tiste, ki delajo na daljavo in potrebujejo zbranost
+- Za pisce v boju z motnjami
+- Za razvijalce v toku
+- Za vse, ki želijo mirno produktivnost
+
+Vsi zvoki okolice so pod licenco CC0 (javna last). Aplikacija sama je odprtokodna pod licenco MIT.
+
+Prenesi Ambio in zgradi tišino, v kateri najbolje delaš.

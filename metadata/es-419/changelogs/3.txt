@@ -1,0 +1,15 @@
+Ambio 2.0
+
+EL MEZCLADOR
+Combina hasta tres de doce sonidos ambientales, cada uno con su nivel. El degradado y las partículas siguen ahora tu mezcla entera, no un solo sonido.
+
+TABLETS
+Dos paneles de verdad: el mezclador se queda junto al temporizador.
+
+¡HOLA!
+Ambio ya habla español: toda la app, no solo esta página.
+
+ADEMÁS
+- El botón de reproducción ya no queda fuera de pantalla
+- Las fichas de sonido mantienen un tamaño fijo
+- Correcciones de foco de audio y mezclas guardadas

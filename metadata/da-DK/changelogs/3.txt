@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIXEREN
+Bland op til tre af tolv omgivelseslyde på én gang, hver med sit eget niveau. Gradienten og partiklerne bag timeren følger nu hele dit mix, ikke én lyd.
+
+TABLETS
+Et rigtigt layout med to ruder: mixeren bliver ved siden af timeren.
+
+HEJ!
+Ambio taler nu dansk: hele appen, ikke kun denne side.
+
+OGSÅ
+- Afspilningsknappen falder ikke længere uden for skærmen
+- Lydfelter beholder én fast størrelse
+- Rettelser til lydfokus og gemte mix

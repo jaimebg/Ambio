@@ -1,0 +1,55 @@
+Ambio transformă timpul de concentrare într-un mediu pe care îl construiești singur. Alege până la trei sunete de ambianță, stabilește cât de tare stă fiecare în mix, și toată aplicația răspunde: culoarea, lumina și mișcarea urmează ceea ce ai creat.
+
+MIXERUL
+Douăsprezece sunete, trei odată, fiecare cu nivelul lui. Ploaie peste o cafenea îndepărtată. Șemineu sub vânt. Ocean cu greieri în amurg. Fiecare mix e al tău de echilibrat, iar Ambio și-l amintește pentru data viitoare.
+
+- Ploaie, Șemineu, Cafenea, Pădure
+- Păsări, Greieri, Ocean, Pârâu
+- Peșteră, Vânt, Zgomot alb, Zgomot maro
+
+ARATĂ CUM SUNĂ
+Fundalul este un degrade viu, amestecat din toate sunetele mixului tău: albastru rece pentru ploaie, chihlimbar cald pentru șemineu, verde adânc pentru pădure. Particulele plutesc în spatele cronometrului și răspund întregului mix, nu unui singur sunet. Preferi liniștea? Oprește efectele.
+
+CRONOMETRU DE CONCENTRARE
+Presetări Pomodoro de 25 sau 50 de minute, sau propriile tale durate de lucru și pauză. Un clinchet blând închide sesiunea fără să te smulgă din ea. Făcut pentru studiu, scris, programare și orice cere atenție susținută.
+
+MOD AMBIANȚĂ
+Nu cronometrezi nimic? Treci pe modul ambianță și lasă mixul să curgă. Pentru citit, meditație, relaxare sau somn.
+
+VEZI UNDE S-A DUS CONCENTRAREA TA
+Un istoric al sesiunilor ține socoteala orelor pe care chiar le-ai pus la treabă.
+
+CONSTRUIT PENTRU FIECARE ECRAN
+Pe tablete, mixerul rămâne lângă cronometru: două panouri, fără dus-întors.
+
+SALUT!
+Ambio vorbește acum română, toată aplicația, nu doar pagina asta. Pe Android 13+ îi poți alege limba separat, fără să atingi restul telefonului.
+
+ÎNTÂI CONFIDENȚIALITATEA
+Ambio îți respectă timpul ȘI datele:
+- Funcționează complet offline
+- Nu cere cont
+- Fără reclame, niciodată
+- Fără urmărire sau analize
+- Nicio dată nu îți părăsește dispozitivul
+- Sursă deschisă (licență MIT)
+
+REDARE ÎN FUNDAL
+Pornește o sesiune și lasă telefonul. Ambio cântă mai departe cu comenzi media complete: pauză, reluare sau oprire din panoul de notificări, de pe ecranul de blocare sau din dala din Setări rapide.
+
+CONSTRUIT PENTRU ANDROIDUL MODERN
+- Material Design 3
+- Pictograme adaptive cu suport monocrom pe Android 13+
+- Blând cu bateria
+- Dimensiune mică
+
+PENTRU CINE E AMBIO?
+- Pentru studenți înainte de examene
+- Pentru cei care lucrează de acasă și au nevoie de concentrare
+- Pentru cei care scriu, în luptă cu distragerile
+- Pentru dezvoltatori în ritm
+- Pentru oricine vrea productivitate liniștită
+
+Toate sunetele de ambianță au licență CC0 (domeniu public). Aplicația în sine este open source sub licență MIT.
+
+Descarcă Ambio și construiește liniștea în care lucrezi cel mai bine.

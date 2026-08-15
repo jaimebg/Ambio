@@ -1,0 +1,55 @@
+Ambio tekee keskittymisajasta ympäristön, jonka rakennat itse. Valitse enintään kolme ympäristöääntä, säädä kunkin voimakkuus miksauksessa, ja koko sovellus vastaa: väri, valo ja liike seuraavat sitä, minkä loit.
+
+MIKSERI
+Kaksitoista ääntä, kolme kerrallaan, kullakin oma tasonsa. Sade kaukaisen kahvilan yllä. Takkatuli tuulen alla. Meri ja sirkat hämärissä. Jokainen miksaus on sinun tasapainotettavanasi, ja Ambio muistaa sen ensi kerraksi.
+
+- Sade, Takkatuli, Kahvila, Metsä
+- Linnut, Sirkat, Meri, Puro
+- Luola, Tuuli, Valkoinen kohina, Ruskea kohina
+
+SE NÄYTTÄÄ SILTÄ MILTÄ KUULOSTAA
+Tausta on elävä liukuväri, sekoitettu kaikista miksauksesi äänistä: viileän siniset sateelle, lämmin meripihka takalle, syvä vihreä metsälle. Hiukkaset leijuvat ajastimen takana ja vastaavat koko miksaukseen, eivät yhteen ääneen. Pidätkö hiljaisuudesta? Kytke tehosteet pois.
+
+KESKITTYMISAJASTIN
+Pomodoro-esiasetukset 25 tai 50 minuuttia, tai aseta omat työ- ja taukoajat. Pehmeä kilahdus päättää jakson repimättä sinua siitä irti. Tehty opiskeluun, kirjoittamiseen, koodaamiseen ja kaikkeen, mikä vaatii pitkäkestoista tarkkaavaisuutta.
+
+YMPÄRISTÖTILA
+Etkö ota aikaa mistään? Vaihda ympäristötilaan ja anna miksauksen soida. Lukemiseen, meditointiin, rauhoittumiseen tai nukkumiseen.
+
+KATSO MIHIN KESKITTYMISESI MENI
+Jaksohistoria pitää kirjaa tunneista, jotka todella käytit.
+
+TEHTY JOKAISELLE NÄYTÖLLE
+Tableteilla mikseri pysyy ajastimen vieressä: kaksi paneelia, ei edestakaisin siirtymistä.
+
+HEI!
+Ambio puhuu nyt suomea, koko sovellus eikä vain tämä sivu. Android 13+:ssa voit valita sen kielen erikseen koskematta puhelimen muihin osiin.
+
+YKSITYISYYS ENSIN
+Ambio kunnioittaa aikaasi JA tietojasi:
+- Toimii täysin ilman verkkoa
+- Tiliä ei tarvita
+- Ei mainoksia, ei koskaan
+- Ei seurantaa eikä analytiikkaa
+- Mitään tietoa ei lähde laitteeltasi
+- Avoin lähdekoodi (MIT-lisenssi)
+
+TOISTO TAUSTALLA
+Aloita jakso ja laske puhelin kädestä. Ambio jatkaa soittamista täysin mediasäätimin: keskeytä, jatka tai pysäytä ilmoituspaneelista, lukitusnäytöltä tai pika-asetusten ruudusta.
+
+TEHTY NYKYAIKAISELLE ANDROIDILLE
+- Material Design 3
+- Mukautuvat kuvakkeet ja yksivärituki Android 13+:ssa
+- Säästää akkua
+- Pieni sovelluskoko
+
+KENELLE AMBIO ON?
+- Opiskelijoille tenttiin lukiessa
+- Etätyöläisille, jotka tarvitsevat keskittymistä
+- Kirjoittajille häiriöitä vastaan
+- Kehittäjille flowssa
+- Kaikille, jotka haluavat rauhallista tuottavuutta
+
+Kaikki ympäristöäänet ovat CC0-lisensoituja (vapaasti käytettäviä). Sovellus itse on avointa lähdekoodia MIT-lisenssillä.
+
+Lataa Ambio ja rakenna hiljaisuus, jossa työskentelet parhaiten.

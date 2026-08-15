@@ -1,0 +1,55 @@
+O Ambio transforma o tempo de concentração num ambiente que você mesmo monta. Escolha até três sons ambientes, ajuste o quanto cada um aparece na mistura, e o app inteiro responde: cor, luz e movimento seguem o que você criou.
+
+O MIXER
+Doze sons, três de cada vez, cada um com seu próprio nível. Chuva sobre um café distante. Lareira sob o vento. Oceano com grilos ao anoitecer. Cada mistura é sua para equilibrar, e o Ambio lembra dela na próxima vez.
+
+- Chuva, Lareira, Café, Floresta
+- Pássaros, Grilos, Oceano, Riacho
+- Caverna, Vento, Ruído branco, Ruído marrom
+
+PARECE O QUE SOA
+O fundo é um degradê vivo, misturado a partir de todos os sons da sua mistura: azuis frios para a chuva, âmbar quente para a lareira, verde profundo para a floresta. As partículas flutuam atrás do timer e respondem à mistura inteira, não a um som só. Prefere quietude? Desligue os efeitos.
+
+TIMER DE FOCO
+Predefinições Pomodoro de 25 ou 50 minutos, ou defina seus próprios tempos de foco e pausa. Um sino suave encerra a sessão sem tirar você dela. Feito para estudar, escrever, programar ou qualquer coisa que exija atenção contínua.
+
+MODO AMBIENTE
+Não está cronometrando nada? Mude para o modo ambiente e deixe a mistura rolar. Para ler, meditar, desacelerar ou dormir.
+
+VEJA PARA ONDE FOI SEU FOCO
+Um histórico de sessões registra as horas que você realmente dedicou.
+
+FEITO PARA CADA TELA
+Em tablets, o mixer fica permanentemente ao lado do timer: dois painéis, sem ficar alternando.
+
+OLÁ!
+O Ambio agora fala português, o app inteiro e não só esta página. No Android 13+ você pode escolher o idioma dele separadamente, sem mexer no resto do telefone.
+
+PRIVACIDADE EM PRIMEIRO LUGAR
+O Ambio respeita seu tempo E seus dados:
+- Funciona totalmente offline
+- Não exige conta
+- Sem anúncios, nunca
+- Sem rastreamento nem análises
+- Nenhum dado sai do seu aparelho
+- Código aberto (licença MIT)
+
+REPRODUÇÃO EM SEGUNDO PLANO
+Comece uma sessão e largue o telefone. O Ambio continua tocando com controles de mídia completos: pause, retome ou pare pela central de notificações, pela tela de bloqueio ou pelo bloco das Configurações rápidas.
+
+FEITO PARA O ANDROID MODERNO
+- Material Design 3
+- Ícones adaptativos com suporte monocromático no Android 13+
+- Uso eficiente de bateria
+- Tamanho reduzido
+
+PARA QUEM É O AMBIO?
+- Estudantes se preparando para provas
+- Quem trabalha remoto e precisa focar
+- Escritores lutando contra distrações
+- Desenvolvedores no ritmo
+- Qualquer pessoa que queira produtividade tranquila
+
+Todos os sons ambientes têm licença CC0 (domínio público). O app é de código aberto sob licença MIT.
+
+Baixe o Ambio e construa o silêncio em que você trabalha melhor.

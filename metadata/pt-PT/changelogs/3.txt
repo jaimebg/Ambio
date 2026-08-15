@@ -1,0 +1,15 @@
+Ambio 2.0
+
+O MISTURADOR
+Combine até três de doze sons ambiente, cada um com o seu nível. O gradiente e as partículas seguem agora a mistura inteira, não um som só.
+
+TABLETS
+Dois painéis a sério: o misturador fica ao lado do temporizador.
+
+OLÁ!
+O Ambio já fala português: a aplicação inteira, não apenas esta página.
+
+TAMBÉM
+- O botão de reprodução deixou de ficar fora do ecrã
+- Os cartões de som mantêm um tamanho fixo
+- Correções no foco de áudio e nas misturas guardadas

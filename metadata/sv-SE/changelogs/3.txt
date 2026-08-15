@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIXERN
+Blanda upp till tre av tolv omgivningsljud samtidigt, vart och ett med egen nivå. Gradienten och partiklarna bakom timern följer nu hela din mix, inte ett enda ljud.
+
+SURFPLATTOR
+En riktig layout med två paneler: mixern står kvar bredvid timern.
+
+HEJ!
+Ambio talar nu svenska: hela appen, inte bara den här sidan.
+
+OCKSÅ
+- Uppspelningsknappen hamnar inte längre utanför skärmen
+- Ljudrutor behåller en fast storlek
+- Rättningar för ljudfokus och sparade mixar

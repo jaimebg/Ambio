@@ -1,0 +1,15 @@
+Ambio 2.0
+
+BÀN TRỘN
+Hòa tối đa ba trong mười hai âm thanh môi trường cùng lúc, mỗi âm một mức riêng. Dải màu và các hạt phía sau đồng hồ giờ đi theo cả bản phối.
+
+MÁY TÍNH BẢNG
+Bố cục hai khung thực thụ: bàn trộn nằm cạnh đồng hồ.
+
+XIN CHÀO!
+Ambio giờ nói tiếng Việt: cả ứng dụng, không chỉ trang này.
+
+NGOÀI RA
+- Nút phát không còn nằm ngoài màn hình
+- Các ô âm thanh giữ một kích thước
+- Sửa lỗi tiêu điểm âm thanh và bản phối đã lưu

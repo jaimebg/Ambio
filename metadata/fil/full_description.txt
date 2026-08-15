@@ -1,0 +1,55 @@
+Ginagawa ng Ambio ang oras ng pokus na isang kapaligirang ikaw mismo ang bumubuo. Pumili ng hanggang tatlong tunog ng paligid, itakda kung gaano kalakas ang bawat isa sa halo, at sumasagot ang buong app: ang kulay, liwanag at galaw ay sumusunod sa ginawa mo.
+
+ANG MIXER
+Labindalawang tunog, tatlo nang sabay, bawat isa ay may sariling lakas. Ulan sa ibabaw ng malayong kapihan. Apuyan sa ilalim ng hangin. Karagatan kasama ang mga kuliglig sa dapithapon. Sa iyo ang bawat halo upang balansehin, at naaalala ito ng Ambio sa susunod.
+
+- Ulan, Apuyan, Kapihan, Gubat
+- Mga ibon, Mga kuliglig, Karagatan, Batis
+- Yungib, Hangin, Puting ingay, Kayumangging ingay
+
+GANOON ANG ITSURA, GANOON ANG TUNOG
+Ang likuran ay buhay na gradient, hinalo mula sa lahat ng tunog sa halo mo: malamig na asul para sa ulan, mainit na ambar para sa apuyan, malalim na berde para sa gubat. Lumulutang ang mga particle sa likod ng timer at tumutugon sa buong halo, hindi sa isang tunog lang. Mas gusto ang katahimikan? Patayin ang mga effect.
+
+TIMER NG POKUS
+Mga preset na Pomodoro na 25 o 50 minuto, o itakda ang sarili mong oras ng trabaho at pahinga. Isang banayad na kampana ang nagtatapos ng sesyon nang hindi ka hinihila palabas. Ginawa para sa pag-aaral, pagsulat, pag-code, at anumang nangangailangan ng tuloy-tuloy na atensyon.
+
+AMBIENT NA MODE
+Wala kang tinitimbang na oras ngayon? Lumipat sa ambient na mode at hayaang tumugtog ang halo. Para sa pagbabasa, meditasyon, pagbagal, o pagtulog.
+
+TINGNAN KUNG SAAN NAPUNTA ANG POKUS MO
+May kasaysayan ng mga sesyon na nagtatala ng oras na talagang inilaan mo.
+
+GINAWA PARA SA BAWAT SCREEN
+Sa mga tablet, nananatili ang mixer sa tabi ng timer: dalawang panel, walang paroo't parito.
+
+KUMUSTA!
+Nagsasalita na ng Filipino ang Ambio, ang buong app at hindi lang ang pahinang ito. Sa Android 13+ maaari mong piliin ang wika nito nang hiwalay, nang hindi ginagalaw ang iba pang bahagi ng telepono.
+
+UNA ANG PRIVACY
+Iginagalang ng Ambio ang oras mo AT ang datos mo:
+- Gumagana nang buong offline
+- Walang kailangang account
+- Walang ads, kailanman
+- Walang pagsubaybay o analytics
+- Walang datos na lumalabas sa device mo
+- Open source (lisensyang MIT)
+
+PAGTUGTOG SA BACKGROUND
+Simulan ang sesyon at ibaba ang telepono. Patuloy na tumutugtog ang Ambio na may kumpletong media control: i-pause, ituloy, o itigil mula sa notification panel, lock screen, o tile sa Mabilisang setting.
+
+GINAWA PARA SA MODERNONG ANDROID
+- Material Design 3
+- Mga adaptive icon na may monochrome na suporta sa Android 13+
+- Maalaga sa baterya
+- Maliit na laki ng app
+
+PARA KANINO ANG AMBIO?
+- Para sa mga estudyanteng naghahanda sa pagsusulit
+- Para sa mga nagtatrabaho nang malayuan na kailangan ng pokus
+- Para sa mga manunulat na lumalaban sa distraksyon
+- Para sa mga developer na nasa agos
+- Para sa sinumang gustong tahimik na produktibidad
+
+Lahat ng tunog ng paligid ay may lisensyang CC0 (pampublikong domain). Ang app mismo ay open source sa ilalim ng lisensyang MIT.
+
+I-download ang Ambio at buuin ang katahimikang pinakamahusay mong pinagtatrabahuhan.

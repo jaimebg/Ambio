@@ -1,0 +1,55 @@
+Ambio muudab keskendumisaja keskkonnaks, mille ehitad ise. Vali kuni kolm ümbrusheli, määra, kui valjult iga üks miksis istub, ja kogu rakendus vastab: värv, valgus ja liikumine järgivad seda, mille lõid.
+
+MIKSER
+Kaksteist heli, kolm korraga, igaühel oma tase. Vihm kauge kohviku kohal. Kamin tuule all. Ookean ritsikatega videvikus. Iga miks on sinu tasakaalustada ja Ambio jätab selle järgmiseks korraks meelde.
+
+- Vihm, Kamin, Kohvik, Mets
+- Linnud, Ritsikad, Ookean, Oja
+- Koobas, Tuul, Valge müra, Pruun müra
+
+SEE NÄEB VÄLJA NAGU KÕLAB
+Taust on elav üleminek, segatud kõigist su miksi helidest: jahedad sinised vihmale, soe merevaik kaminale, sügav roheline metsale. Osakesed hõljuvad taimeri taga ja vastavad tervele miksile, mitte ühele helile. Eelistad vaikust? Lülita efektid välja.
+
+KESKENDUMISTAIMER
+Pomodoro eelseaded 25 või 50 minutit või määra oma töö- ja pausiajad. Pehme helin lõpetab seansi ilma sind sellest välja rebimata. Tehtud õppimiseks, kirjutamiseks, koodi kirjutamiseks või kõigeks, mis nõuab püsivat tähelepanu.
+
+ÜMBRUSREŽIIM
+Ei mõõda praegu aega? Lülitu ümbrusrežiimi ja lase miksil käia. Lugemiseks, meditatsiooniks, rahunemiseks või uinumiseks.
+
+VAATA, KUHU SU KESKENDUMINE LÄKS
+Seansside ajalugu peab arvet tundide üle, mille tegelikult panustasid.
+
+EHITATUD IGALE EKRAANILE
+Tahvlitel jääb mikser taimeri kõrvale: kaks paneeli, ei mingit edasi-tagasi liikumist.
+
+TERE!
+Ambio räägib nüüd eesti keelt, kogu rakendus, mitte ainult see leht. Android 13+ puhul saad selle keele eraldi valida, puudutamata ülejäänud telefoni.
+
+PRIVAATSUS ENNE KÕIKE
+Ambio austab su aega JA su andmeid:
+- Töötab täielikult võrguühenduseta
+- Kontot pole vaja
+- Reklaame ei ole, mitte kunagi
+- Ei mingit jälgimist ega analüütikat
+- Ükski andmekild ei lahku su seadmest
+- Avatud lähtekood (MIT-litsents)
+
+TAUSTAL ESITAMINE
+Alusta seanssi ja pane telefon käest. Ambio mängib edasi täielike meediumijuhtnuppudega: peata, jätka või lõpeta teavituspaneelilt, lukustuskuvalt või kiirseadete paanilt.
+
+EHITATUD KAASAEGSELE ANDROIDILE
+- Material Design 3
+- Kohanduvad ikoonid ühevärvilise toega Android 13+ puhul
+- Säästab akut
+- Väike rakenduse maht
+
+KELLELE AMBIO ON?
+- Üliõpilastele eksamiteks valmistudes
+- Kaugtöötajatele, kes vajavad keskendumist
+- Kirjutajatele võitluses tähelepanu hajumisega
+- Arendajatele voolus
+- Kõigile, kes tahavad rahulikku tootlikkust
+
+Kõik ümbrushelid on CC0-litsentsiga (avalik omand). Rakendus ise on avatud lähtekoodiga MIT-litsentsi all.
+
+Laadi Ambio alla ja ehita vaikus, milles töötad kõige paremini.

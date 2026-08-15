@@ -1,0 +1,15 @@
+Ambio 2.0
+
+DE MIXER
+Meng tot drie van twaalf omgevingsgeluiden tegelijk, elk met een eigen niveau. Het verloop en de deeltjes achter de timer volgen nu je hele mix, niet één geluid.
+
+TABLETS
+Een echte indeling met twee panelen: de mixer blijft naast de timer.
+
+HALLO!
+Ambio spreekt nu Nederlands: de hele app, niet alleen deze pagina.
+
+OOK
+- De afspeelknop valt niet meer onder de rand
+- Geluidstegels houden één vaste grootte
+- Correcties voor audiofocus en opgeslagen mixen

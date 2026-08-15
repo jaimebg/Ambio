@@ -1,0 +1,55 @@
+Ambio convierte el tiempo de concentración en un entorno que construyes tú. Elige hasta tres sonidos ambientales, ajusta cuánto suena cada uno en la mezcla y toda la app responde: el color, la luz y el movimiento siguen lo que has creado.
+
+EL MEZCLADOR
+Doce sonidos, tres a la vez, cada uno con su propio nivel. Lluvia sobre una cafetería lejana. Chimenea bajo el viento. Océano con grillos al anochecer. Cada mezcla es tuya para equilibrarla, y Ambio la recuerda para la próxima vez.
+
+- Lluvia, Chimenea, Cafetería, Bosque
+- Pájaros, Grillos, Océano, Arroyo
+- Cueva, Viento, Ruido blanco, Ruido marrón
+
+SE VE COMO SUENA
+El fondo es un degradado vivo mezclado a partir de todos los sonidos de tu mezcla: azules fríos para la lluvia, ámbar cálido para la chimenea, verde profundo para el bosque. Las partículas flotan detrás del temporizador y responden a la mezcla entera, no a un solo sonido. ¿Prefieres la quietud? Desactiva los efectos.
+
+TEMPORIZADOR DE CONCENTRACIÓN
+Ajustes Pomodoro de 25 o 50 minutos, o define tus propios tiempos de concentración y descanso. Un suave timbre cierra la sesión sin sacarte de ella. Hecho para estudiar, escribir, programar o cualquier cosa que exija atención sostenida.
+
+MODO AMBIENTE
+¿No estás cronometrando nada? Cambia al modo ambiente y deja correr la mezcla. Para leer, meditar, desconectar o dormir.
+
+MIRA ADÓNDE FUE TU CONCENTRACIÓN
+Un historial de sesiones registra las horas que de verdad dedicaste.
+
+HECHO PARA CADA PANTALLA
+En tablets, el mezclador se queda junto al temporizador: dos paneles, sin ir y venir.
+
+¡HOLA!
+Ambio ya habla español, toda la app y no solo esta página. En Android 13+ puedes elegir su idioma por separado, sin tocar el resto del teléfono.
+
+LA PRIVACIDAD, PRIMERO
+Ambio respeta tu tiempo Y tus datos:
+- Funciona completamente sin conexión
+- No requiere cuenta
+- Sin anuncios, nunca
+- Sin rastreo ni analíticas
+- Ningún dato sale de tu dispositivo
+- Código abierto (licencia MIT)
+
+REPRODUCCIÓN EN SEGUNDO PLANO
+Empieza una sesión y deja el teléfono. Ambio sigue sonando con controles multimedia completos: pausa, reanuda o detén desde la barra de notificaciones, la pantalla de bloqueo o el mosaico de Ajustes rápidos.
+
+HECHO PARA EL ANDROID MODERNO
+- Material Design 3
+- Iconos adaptativos con soporte monocromo en Android 13+
+- Uso eficiente de la batería
+- Tamaño reducido
+
+¿PARA QUIÉN ES AMBIO?
+- Estudiantes preparando exámenes
+- Teletrabajadores que necesitan concentrarse
+- Escritores luchando contra las distracciones
+- Programadores en racha
+- Cualquiera que quiera productividad tranquila
+
+Todos los sonidos ambientales tienen licencia CC0 (dominio público). La app es de código abierto bajo licencia MIT.
+
+Descarga Ambio y construye el silencio en el que mejor trabajas.

@@ -1,0 +1,55 @@
+Ambio promění čas soustředění v prostředí, které si postavíš sám. Vyber až tři zvuky prostředí, nastav, jak hlasitě každý sedí v mixu, a celá aplikace odpoví: barva, světlo i pohyb sledují to, co jsi vytvořil.
+
+MIXÁŽNÍ PULT
+Dvanáct zvuků, tři naráz, každý s vlastní úrovní. Déšť nad vzdálenou kavárnou. Krb pod větrem. Oceán s cvrčky za soumraku. Každý mix je tvůj k vyvážení a Ambio si ho pamatuje na příště.
+
+- Déšť, Krb, Kavárna, Les
+- Ptáci, Cvrčci, Oceán, Potok
+- Jeskyně, Vítr, Bílý šum, Hnědý šum
+
+VYPADÁ TO, JAK TO ZNÍ
+Pozadí je živý přechod smíchaný ze všech zvuků tvého mixu: chladné modré pro déšť, teplá jantarová pro krb, hluboká zelená pro les. Částice se vznášejí za časovačem a odpovídají celému mixu, ne jednomu zvuku. Máš raději ticho? Vypni efekty.
+
+ČASOVAČ SOUSTŘEDĚNÍ
+Předvolby Pomodoro na 25 nebo 50 minut, nebo si nastav vlastní časy práce a přestávek. Jemné zacinkání ukončí sezení, aniž by tě z něj vytrhlo. Vytvořeno pro studium, psaní, programování a vše, co žádá vytrvalou pozornost.
+
+REŽIM PROSTŘEDÍ
+Nic zrovna neměříš? Přepni do režimu prostředí a nech mix běžet. Ke čtení, meditaci, zklidnění nebo spánku.
+
+PODÍVEJ SE, KAM ŠLO TVÉ SOUSTŘEDĚNÍ
+Historie sezení sleduje hodiny, které jsi do toho opravdu dal.
+
+POSTAVENO PRO KAŽDOU OBRAZOVKU
+Na tabletech zůstává mixážní pult vedle časovače: dva panely, žádné přebíhání sem a tam.
+
+AHOJ!
+Ambio teď mluví česky, celá aplikace, ne jen tahle stránka. V Androidu 13+ můžeš zvolit její jazyk zvlášť, aniž bys sáhl na zbytek telefonu.
+
+SOUKROMÍ NA PRVNÍM MÍSTĚ
+Ambio respektuje tvůj čas I tvá data:
+- Funguje zcela offline
+- Nevyžaduje účet
+- Žádné reklamy, nikdy
+- Žádné sledování ani analytika
+- Žádná data neopustí tvé zařízení
+- Otevřený zdrojový kód (licence MIT)
+
+PŘEHRÁVÁNÍ NA POZADÍ
+Spusť sezení a odlož telefon. Ambio hraje dál s plným ovládáním médií: pozastav, pokračuj nebo zastav z panelu oznámení, zamykací obrazovky nebo dlaždice v Rychlém nastavení.
+
+POSTAVENO PRO MODERNÍ ANDROID
+- Material Design 3
+- Adaptivní ikony s monochromatickou podporou v Androidu 13+
+- Šetrné k baterii
+- Malá velikost aplikace
+
+PRO KOHO JE AMBIO?
+- Pro studenty před zkouškami
+- Pro ty, kdo pracují z domova a potřebují soustředění
+- Pro píšící v boji s rozptýlením
+- Pro vývojáře v proudu
+- Pro každého, kdo chce klidnou produktivitu
+
+Všechny zvuky prostředí jsou pod licencí CC0 (volné dílo). Samotná aplikace je otevřený software pod licencí MIT.
+
+Stáhni si Ambio a postav si ticho, ve kterém pracuješ nejlépe.

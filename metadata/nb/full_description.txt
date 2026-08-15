@@ -1,0 +1,55 @@
+Ambio gjør fokustid til et miljø du bygger selv. Velg opptil tre omgivelseslyder, bestem hvor høyt hver enkelt ligger i miksen, og hele appen svarer: farge, lys og bevegelse følger det du har laget.
+
+MIKSEREN
+Tolv lyder, tre om gangen, hver med sitt eget nivå. Regn over en fjern kafé. Peis under vind. Hav med sirisser i skumringen. Hver miks er din å balansere, og Ambio husker den til neste gang.
+
+- Regn, Peis, Kafé, Skog
+- Fugler, Sirisser, Hav, Bekk
+- Hule, Vind, Hvit støy, Brun støy
+
+DET SER UT SOM DET HØRES UT
+Bakgrunnen er en levende gradient, blandet av alle lydene i miksen din: kjølige blåtoner for regn, varm rav for peisen, dyp grønn for skogen. Partikler driver bak tidtakeren og svarer på hele miksen, ikke på én lyd. Foretrekker du stillhet? Slå av effektene.
+
+FOKUSTIDTAKER
+Pomodoro-forhåndsvalg på 25 eller 50 minutter, eller sett dine egne arbeids- og pausetider. En mild klang avslutter økten uten å rive deg ut av den. Laget for å lese, skrive, kode eller alt som krever vedvarende oppmerksomhet.
+
+OMGIVELSESMODUS
+Tar du ikke tiden på noe? Bytt til omgivelsesmodus og la miksen gå. Til lesing, meditasjon, ro eller søvn.
+
+SE HVOR FOKUSET BLE AV
+En økthistorikk holder styr på timene du faktisk la ned.
+
+BYGD FOR HVER SKJERM
+På nettbrett blir mikseren stående ved siden av tidtakeren: to ruter, ingen fram og tilbake.
+
+HEI!
+Ambio snakker nå norsk, hele appen og ikke bare denne siden. På Android 13+ kan du velge språket separat, uten å røre resten av telefonen.
+
+PERSONVERN FØRST
+Ambio respekterer tiden din OG dataene dine:
+- Virker helt frakoblet
+- Ingen konto nødvendig
+- Ingen annonser, aldri
+- Ingen sporing eller analyse
+- Ingen data forlater enheten din
+- Åpen kildekode (MIT-lisens)
+
+AVSPILLING I BAKGRUNNEN
+Start en økt og legg fra deg telefonen. Ambio spiller videre med fulle mediekontroller: pause, gjenoppta eller stopp fra varselpanelet, låseskjermen eller feltet i Hurtiginnstillinger.
+
+BYGD FOR MODERNE ANDROID
+- Material Design 3
+- Adaptive ikoner med monokrom støtte på Android 13+
+- Skånsom mot batteriet
+- Liten appstørrelse
+
+HVEM ER AMBIO FOR?
+- Studenter som leser til eksamen
+- Hjemmearbeidende som trenger fokus
+- Skribenter i kamp med distraksjoner
+- Utviklere i flyt
+- Alle som vil ha rolig produktivitet
+
+Alle omgivelseslyder er CC0-lisensiert (offentlig eiendom). Appen selv er åpen kildekode under MIT-lisens.
+
+Last ned Ambio og bygg stillheten du jobber best i.

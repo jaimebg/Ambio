@@ -1,0 +1,55 @@
+Ambio maakt van focustijd een omgeving die je zelf bouwt. Kies tot drie omgevingsgeluiden, bepaal hoe hard elk in de mix staat, en de hele app reageert: kleur, licht en beweging volgen wat jij hebt gemaakt.
+
+DE MIXER
+Twaalf geluiden, drie tegelijk, elk met een eigen niveau. Regen boven een ver café. Haardvuur onder wind. Oceaan met krekels in de schemering. Elke mix is van jou om te balanceren, en Ambio onthoudt hem voor de volgende keer.
+
+- Regen, Haardvuur, Café, Bos
+- Vogels, Krekels, Oceaan, Beek
+- Grot, Wind, Witte ruis, Bruine ruis
+
+HET ZIET ERUIT ZOALS HET KLINKT
+De achtergrond is een levend verloop, gemengd uit alle geluiden in je mix: koele blauwtinten voor regen, warm amber voor haardvuur, diep groen voor bos. Deeltjes zweven achter de timer en reageren op de hele mix, niet op één geluid. Liever stilte? Zet de effecten uit.
+
+FOCUSTIMER
+Pomodoro-voorinstellingen van 25 of 50 minuten, of stel je eigen werk- en pauzetijden in. Een zachte toon sluit de sessie af zonder je eruit te trekken. Gemaakt om te studeren, schrijven, programmeren, of wat dan ook dat langdurige aandacht vraagt.
+
+OMGEVINGSMODUS
+Klok je even niets? Schakel over naar de omgevingsmodus en laat de mix lopen. Om te lezen, mediteren, tot rust te komen of te slapen.
+
+ZIE WAAR JE FOCUS BLEEF
+Een sessiegeschiedenis houdt bij hoeveel uur je er echt in stak.
+
+GEBOUWD VOOR ELK SCHERM
+Op tablets blijft de mixer naast de timer staan: twee panelen, geen heen en weer.
+
+HALLO!
+Ambio spreekt nu Nederlands, de hele app en niet alleen deze pagina. Op Android 13+ kies je de taal apart, zonder de rest van je telefoon aan te raken.
+
+PRIVACY VOOROP
+Ambio respecteert je tijd ÉN je gegevens:
+- Werkt volledig offline
+- Geen account nodig
+- Geen advertenties, nooit
+- Geen tracking of analyse
+- Geen gegevens verlaten je toestel
+- Open source (MIT-licentie)
+
+AFSPELEN OP DE ACHTERGROND
+Start een sessie en leg je telefoon weg. Ambio speelt door met volledige mediabediening: pauzeer, hervat of stop vanuit het meldingenpaneel, het vergrendelscherm of de tegel in Snelle instellingen.
+
+GEBOUWD VOOR MODERN ANDROID
+- Material Design 3
+- Adaptieve pictogrammen met monochrome ondersteuning op Android 13+
+- Zuinig met de batterij
+- Kleine app-omvang
+
+VOOR WIE IS AMBIO?
+- Studenten die zich voorbereiden op tentamens
+- Thuiswerkers die focus nodig hebben
+- Schrijvers in gevecht met afleiding
+- Ontwikkelaars in de flow
+- Iedereen die rustige productiviteit wil
+
+Alle omgevingsgeluiden staan onder CC0 (publiek domein). De app zelf is open source onder MIT-licentie.
+
+Download Ambio en bouw de stilte waarin jij het best werkt.

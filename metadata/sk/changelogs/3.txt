@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIXÁŽNY PULT
+Zmiešaj až tri z dvanástich zvukov prostredia naraz, každý s vlastnou úrovňou. Prechod a častice za časovačom teraz sledujú celý mix.
+
+TABLETY
+Naozajstné rozloženie dvoch panelov: mixážny pult zostáva vedľa časovača.
+
+AHOJ!
+Ambio teraz hovorí po slovensky: celá aplikácia, nielen táto stránka.
+
+ĎALEJ
+- Tlačidlo prehrávania už nezostáva mimo obrazovky
+- Dlaždice zvukov držia jednu veľkosť
+- Opravy zvukového fokusu a uložených mixov

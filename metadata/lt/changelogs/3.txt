@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MAIŠYTUVAS
+Sumaišyk iki trijų iš dvylikos aplinkos garsų vienu metu, kiekvieną su savo lygiu. Perėjimas ir dalelės už laikmačio dabar seka visą tavo mišinį, ne vieną garsą.
+
+PLANŠETĖS
+Tikras dviejų skydelių išdėstymas: maišytuvas lieka šalia laikmačio.
+
+SVEIKI!
+Ambio dabar kalba lietuviškai: visa programėlė, ne tik šis puslapis.
+
+TAIP PAT
+- Grojimo mygtukas nebelieka už ekrano ribų
+- Garsų plytelės išlaiko vieną dydį
+- Garso fokuso ir išsaugotų mišinių pataisymai

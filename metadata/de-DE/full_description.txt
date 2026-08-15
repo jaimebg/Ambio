@@ -1,0 +1,55 @@
+Ambio macht aus Konzentrationszeit eine Umgebung, die du dir selbst baust. Wähle bis zu drei Umgebungsklänge, bestimme, wie laut jeder in der Mischung sitzt, und die ganze App antwortet: Farbe, Licht und Bewegung folgen dem, was du erschaffen hast.
+
+DER MISCHER
+Zwölf Klänge, drei gleichzeitig, jeder mit eigenem Pegel. Regen über einem fernen Café. Kaminfeuer unter Wind. Meer mit Grillen in der Dämmerung. Jede Mischung gehört dir, und Ambio merkt sie sich für das nächste Mal.
+
+- Regen, Kaminfeuer, Café, Wald
+- Vögel, Grillen, Meer, Bach
+- Höhle, Wind, Weißes Rauschen, Braunes Rauschen
+
+ES SIEHT AUS, WIE ES KLINGT
+Der Hintergrund ist ein lebendiger Verlauf, gemischt aus allen Klängen deiner Mischung: kühles Blau für Regen, warmes Bernstein für das Kaminfeuer, tiefes Grün für den Wald. Partikel treiben hinter dem Timer und antworten auf die ganze Mischung, nicht auf einen Klang. Lieber Ruhe? Schalte die Effekte ab.
+
+FOKUS-TIMER
+Pomodoro-Vorgaben mit 25 oder 50 Minuten, oder setze eigene Arbeits- und Pausenzeiten. Ein sanfter Klang schließt die Sitzung, ohne dich herauszureißen. Gemacht zum Lernen, Schreiben, Programmieren und für alles, was dauerhafte Aufmerksamkeit braucht.
+
+AMBIENTE-MODUS
+Du stoppst gerade nichts? Wechsle in den Ambiente-Modus und lass die Mischung laufen. Zum Lesen, Meditieren, Runterkommen oder Einschlafen.
+
+SIEH, WOHIN DEIN FOKUS GING
+Ein Sitzungsverlauf hält fest, wie viele Stunden du wirklich investiert hast.
+
+FÜR JEDEN BILDSCHIRM GEBAUT
+Auf Tablets bleibt der Mischer dauerhaft neben dem Timer: zwei Bereiche, kein Hin und Her.
+
+HALLO!
+Ambio spricht jetzt Deutsch, die ganze App und nicht nur diese Seite. Unter Android 13+ kannst du ihre Sprache einzeln wählen, ohne den Rest des Telefons anzufassen.
+
+PRIVATSPHÄRE ZUERST
+Ambio respektiert deine Zeit UND deine Daten:
+- Funktioniert vollständig offline
+- Kein Konto nötig
+- Keine Werbung, niemals
+- Kein Tracking, keine Analyse
+- Keine Daten verlassen dein Gerät
+- Quelloffen (MIT-Lizenz)
+
+WIEDERGABE IM HINTERGRUND
+Starte eine Sitzung und leg das Telefon weg. Ambio spielt weiter, mit vollen Mediensteuerungen: pausieren, fortsetzen oder stoppen aus der Benachrichtigungsleiste, vom Sperrbildschirm oder über die Kachel in den Schnelleinstellungen.
+
+FÜR DAS MODERNE ANDROID GEBAUT
+- Material Design 3
+- Adaptive Symbole mit monochromer Unterstützung ab Android 13
+- Sparsam mit dem Akku
+- Kleine App-Größe
+
+FÜR WEN IST AMBIO?
+- Studierende vor Prüfungen
+- Menschen im Homeoffice, die Fokus brauchen
+- Schreibende im Kampf mit Ablenkung
+- Entwicklerinnen und Entwickler im Flow
+- Alle, die ruhige Produktivität wollen
+
+Alle Umgebungsklänge stehen unter CC0 (gemeinfrei). Die App selbst ist quelloffen unter MIT-Lizenz.
+
+Lade Ambio und bau dir die Stille, in der du am besten arbeitest.

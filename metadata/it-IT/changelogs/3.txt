@@ -1,0 +1,15 @@
+Ambio 2.0
+
+IL MIXER
+Unisci fino a tre di dodici suoni ambientali insieme, ognuno con il suo livello. Il gradiente e le particelle dietro il timer ora seguono l'intero mix.
+
+TABLET
+Un vero layout a due pannelli: il mixer resta accanto al timer.
+
+CIAO!
+Ambio ora parla italiano: tutta l'app, non solo questa pagina.
+
+INOLTRE
+- Il pulsante di riproduzione non finisce piu fuori schermo
+- Le schede dei suoni mantengono una dimensione fissa
+- Correzioni al focus audio e ai mix salvati

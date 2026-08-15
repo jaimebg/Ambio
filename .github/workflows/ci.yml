@@ -42,6 +42,15 @@ jobs:
       - name: Build debug
         run: ./gradlew assembleDebug
 
+      - name: Validar la ficha de F-Droid
+        run: ./gradlew validateFdroidMetadata
+
+      # F-Droid compila con assembleRelease, no con bundleRelease. Sin este
+      # paso la ruta del APK no la prueba nadie hasta que falla en la cola de
+      # un maintainer voluntario.
+      - name: Build release APK
+        run: ./gradlew assembleRelease
+
       - name: Build release bundle
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
         run: ./gradlew bundleRelease

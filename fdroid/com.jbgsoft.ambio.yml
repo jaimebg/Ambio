@@ -1,0 +1,29 @@
+# Reference copy, kept in this repo for review and history.
+# In the fdroiddata repository, this file belongs at
+# metadata/com.jbgsoft.ambio.yml.
+Categories:
+  - Multimedia
+  - Time
+License: MIT
+AuthorName: Jaime Barreto
+AuthorEmail: yaimesil@gmail.com
+WebSite: https://jbgsoft.com
+SourceCode: https://github.com/jaimebg/Ambio
+IssueTracker: https://github.com/jaimebg/Ambio/issues
+Changelog: https://github.com/jaimebg/Ambio/releases
+
+RepoType: git
+Repo: https://github.com/jaimebg/Ambio.git
+
+Builds:
+  - versionName: 2.0.0
+    versionCode: 3
+    commit: v2.0.0
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.0.0
+CurrentVersionCode: 3

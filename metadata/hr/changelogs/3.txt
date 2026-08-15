@@ -1,0 +1,15 @@
+Ambio 2.0
+
+MIKSETA
+Pomiješaj do tri od dvanaest zvukova okoline odjednom, svaki sa svojom razinom. Prijelaz i čestice iza mjerača vremena sada prate cijeli miks.
+
+TABLETI
+Pravi raspored s dva okna: mikseta ostaje uz mjerač vremena.
+
+BOK!
+Ambio sada govori hrvatski: cijela aplikacija, ne samo ova stranica.
+
+TAKOĐER
+- Gumb za reprodukciju više ne ostaje izvan zaslona
+- Pločice zvukova drže jednu veličinu
+- Ispravci audio fokusa i spremljenih miksova

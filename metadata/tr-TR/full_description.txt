@@ -1,0 +1,55 @@
+Ambio, odaklanma zamanını kendi kurduğun bir ortama dönüştürür. En fazla üç ortam sesi seç, her birinin mikstek düzeyini ayarla; uygulamanın tamamı buna karşılık verir: renk, ışık ve hareket senin yarattığını izler.
+
+MİKSER
+On iki ses, aynı anda üç tanesi, her biri kendi düzeyiyle. Uzak bir kafenin üstünde yağmur. Rüzgârın altında şömine. Alacakaranlıkta cırcır böcekleriyle okyanus. Her miks senin dengeleyeceğin bir şey ve Ambio onu bir sonraki sefere hatırlıyor.
+
+- Yağmur, Şömine, Kafe, Orman
+- Kuşlar, Cırcır böcekleri, Okyanus, Dere
+- Mağara, Rüzgâr, Beyaz gürültü, Kahverengi gürültü
+
+NASIL DUYULUYORSA ÖYLE GÖRÜNÜYOR
+Arka plan, miksindeki tüm seslerden karılan canlı bir geçiş: yağmura serin maviler, şömineye sıcak kehribar, ormana derin yeşil. Parçacıklar zamanlayıcının ardında süzülür ve tek bir sese değil, miksin tamamına karşılık verir. Sessizliği mi yeğlersin? Efektleri kapat.
+
+ODAK ZAMANLAYICISI
+25 veya 50 dakikalık Pomodoro ön ayarları ya da kendi çalışma ve mola sürelerini belirle. Yumuşak bir çınlama, seni içinden koparmadan oturumu kapatır. Ders çalışmak, yazmak, kod yazmak ve sürekli dikkat isteyen her şey için.
+
+ORTAM MODU
+Şu an bir şey ölçmüyor musun? Ortam moduna geç ve miksi akışına bırak. Okumak, meditasyon, yavaşlamak ya da uyumak için.
+
+ODAĞININ NEREYE GİTTİĞİNİ GÖR
+Oturum geçmişi, gerçekten harcadığın saatleri tutar.
+
+HER EKRAN İÇİN
+Tabletlerde mikser zamanlayıcının yanında kalır: iki bölme, ileri geri gitmek yok.
+
+MERHABA!
+Ambio artık Türkçe konuşuyor; sadece bu sayfa değil, uygulamanın tamamı. Android 13+ üzerinde dilini ayrıca seçebilirsin, telefonun geri kalanına dokunmadan.
+
+ÖNCE GİZLİLİK
+Ambio zamanına DA verilerine DE saygı duyar:
+- Tamamen çevrimdışı çalışır
+- Hesap gerekmez
+- Reklam yok, asla
+- İzleme ya da analiz yok
+- Hiçbir veri cihazından çıkmaz
+- Açık kaynak (MIT lisansı)
+
+ARKA PLANDA ÇALMA
+Bir oturum başlat ve telefonu bırak. Ambio tam medya denetimleriyle çalmayı sürdürür: bildirim panelinden, kilit ekranından ya da Hızlı ayarlardaki karttan duraklat, sürdür veya durdur.
+
+MODERN ANDROID İÇİN
+- Material Design 3
+- Android 13+ üzerinde tek renk desteğiyle uyarlanabilir simgeler
+- Pile karşı nazik
+- Küçük uygulama boyutu
+
+AMBIO KİMLER İÇİN?
+- Sınava hazırlanan öğrenciler
+- Odaklanması gereken uzaktan çalışanlar
+- Dikkat dağınıklığıyla savaşan yazarlar
+- Akışa girmiş geliştiriciler
+- Sakin bir üretkenlik isteyen herkes
+
+Tüm ortam sesleri CC0 lisanslıdır (kamu malı). Uygulamanın kendisi MIT lisansıyla açık kaynaktır.
+
+Ambio'yu indir ve en iyi çalıştığın sessizliği kendin kur.
