@@ -5,7 +5,7 @@
 <h1 align="center">Ambio</h1>
 
 <p align="center">
-  <strong>Focus timer with ambient sounds for deep work sessions.</strong>
+  <strong>Blend up to three ambient sounds into a focus soundscape you build yourself.</strong>
 </p>
 
 <p align="center">
@@ -41,27 +41,36 @@
 
 ## About
 
-**Ambio** combines focus timers with immersive ambient soundscapes to help you achieve deep work. Unlike basic timer apps, Ambio adapts its entire visual theme to match your chosen sound, creating a cohesive, distraction-free environment.
+**Ambio** turns focus time into an environment you build yourself. Pick up to three ambient
+sounds, set how loud each one sits in the mix, and the whole app answers: colour, light and
+motion follow what you made.
 
-Choose rain, and the UI shifts to cool blues. Select fireplace, and warm oranges embrace you.
+Rain over a distant café gives you cool blues. Fireplace under wind gives you warm amber.
+The background gradient and the particles behind the timer are blended from every sound in
+the mix, not just one of them.
 
 ## Features
 
-- **Pomodoro Timer** — 25-min and 50-min presets for focused work sessions
-- **Ambient Mode** — Continuous playback without timer for relaxation or sleep
+- **Three-Sound Mixer** — Blend up to three sounds at once, each with its own level
 - **12 Soundscapes** — Rain, Fireplace, Café, Forest, Birds, Crickets, Ocean, Stream, Cave, Wind, White Noise, Brown Noise (CC0 / public domain)
-- **Dynamic Theming** — UI colors animate smoothly to match selected sound
-- **Background Playback** — Media notification controls, keeps playing when minimized
+- **Dynamic Theming** — The palette is mixed from every sound in the mix, not just one
+- **Ambient Visuals** — A particle field behind the timer that answers the whole mix, and can be switched off
+- **Pomodoro Timer** — 25-min and 50-min presets, or your own focus and break lengths
+- **Ambient Mode** — Continuous playback without a timer, for relaxation or sleep
+- **Session History** — Statistics for the hours you actually put in
+- **Adaptive Tablet Layout** — Two panes, the mixer permanently beside the timer past 840dp
+- **47 Languages** — The app itself, with per-app language selection on Android 13+
+- **Background Playback** — Media notification controls and a Quick Settings tile
 - **Haptic Feedback** — Subtle vibrations for interactions
-- **Timer Chime** — Gentle notification when focus session completes
-- **Offline-First** — All sounds bundled, no internet required
+- **Timer Chime** — Gentle notification when a focus session completes
+- **Offline-First** — All sounds bundled, no internet required, no account, no ads, no tracking
 
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/gplay-timer-fireplace.png" alt="Focus Timer with Fireplace" width="250">
-  <img src="screenshots/gplay-ambient-forest.png" alt="Ambient Mode with Forest" width="250">
-  <img src="screenshots/gplay-sound-selection.png" alt="Sound Selection" width="250">
+  <img src="screenshots/gplay-mixer.png" alt="Three-sound mixer in ambient mode" width="250">
+  <img src="screenshots/gplay-sound-selection.png" alt="The twelve sounds, each its own colour" width="250">
+  <img src="screenshots/gplay-timer.png" alt="Focus timer running over a mix" width="250">
 </p>
 
 ## Tech Stack
@@ -89,9 +98,13 @@ core/
   domain/      # Models, interfaces, use cases
   di/          # Hilt modules
 feature/
-  home/        # HomeScreen, ViewModel, UI components
+  home/        # HomeScreen, the mixer, timer and transport
+  settings/    # SettingsScreen
+  stats/       # StatsScreen, session history
+  tile/        # Quick Settings tile
 media/         # AudioService, MediaSession integration
-ui/            # Theme system, typography, shapes
+ui/            # Theme system, mix gradient, particle field
+store-assets/  # Renders the Play Store screenshots on the JVM (test-only)
 ```
 
 ## Requirements
@@ -127,7 +140,7 @@ ui/            # Theme system, typography, shapes
 ```bash
 ./gradlew assembleDebug   # Build debug APK
 ./gradlew lint            # Run lint checks
-./gradlew test            # Run unit tests (154: 77 tests × debug and release variants)
+./gradlew test            # Run unit tests (724: 362 tests × debug and release variants)
 ./gradlew clean           # Clean build cache
 ```
 
