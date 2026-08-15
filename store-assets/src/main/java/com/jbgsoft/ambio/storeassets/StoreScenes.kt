@@ -69,6 +69,96 @@ private val HOME_BASE = HomeUiState(
     effectsEnabled = true
 )
 
+/**
+ * The panel that sits behind, giving the shot its second point.
+ *
+ * Pairing is deliberate rather than decorative: the mixer shot shows what is
+ * being mixed, the timer shot shows the mix it is running over, and the two
+ * quiet screens back each other so no shot is a single flat rectangle.
+ */
+@Composable
+fun StoreScene.BackContent() {
+    when (this) {
+        StoreScene.MIX -> Picker()
+        StoreScene.PICKER -> Home(AppMode.AMBIENT)
+        StoreScene.TIMER -> Home(AppMode.AMBIENT)
+        StoreScene.STATS -> Home(AppMode.TIMER)
+        StoreScene.SETTINGS -> Stats()
+    }
+}
+
+@Composable
+private fun Home(mode: AppMode) = HomeScreen(
+    uiState = HOME_BASE.copy(
+        mode = mode,
+        isPlaying = true,
+        selectedPreset = TimerPreset.FOCUS_25,
+        timerState = if (mode == AppMode.TIMER) {
+            TimerState.Running(
+                remainingMs = (18 * 60 + 42) * 1_000L,
+                totalMs = 25 * 60 * 1_000L
+            )
+        } else {
+            TimerState.Idle
+        }
+    ),
+    onEvent = {},
+    onNavigateToSettings = {},
+    onNavigateToStats = {}
+)
+
+@Composable
+private fun Picker(columns: Int = 3) = SoundPickerContent(
+    sounds = SOUND_CATALOGUE,
+    activeMix = HERO_MIX,
+    onToggleSound = {},
+    onLevelChange = { _, _ -> },
+    onLevelChangeFinished = {},
+    columns = columns
+)
+
+/**
+ * What the tablet panel shows in a landscape shot.
+ *
+ * Not the same pairing as the phone shots. On a tablet the interesting thing is
+ * the two-pane Home, so it leads wherever it can, and the picker earns its own
+ * shot only at four columns, where all twelve sounds are on screen at once --
+ * which is exactly the claim that caption makes.
+ */
+@Composable
+fun StoreScene.TabletMain() {
+    when (this) {
+        StoreScene.MIX -> Home(AppMode.AMBIENT)
+        StoreScene.PICKER -> Picker(columns = 4)
+        StoreScene.TIMER -> Home(AppMode.TIMER)
+        StoreScene.STATS -> Stats()
+        StoreScene.SETTINGS -> Content()
+    }
+}
+
+/** The phone alongside it: the same app on the other form factor. */
+@Composable
+fun StoreScene.TabletSide() {
+    when (this) {
+        StoreScene.MIX -> Picker()
+        StoreScene.PICKER -> Home(AppMode.AMBIENT)
+        StoreScene.TIMER -> Home(AppMode.AMBIENT)
+        StoreScene.STATS -> Home(AppMode.TIMER)
+        StoreScene.SETTINGS -> Stats()
+    }
+}
+
+@Composable
+private fun Stats() = StatsScreen(
+    uiState = StatsUiState(
+        totalFocusMinutes = 1_285,
+        completedSessionCount = 47,
+        sessions = SAMPLE_SESSIONS
+    ),
+    onDeleteSession = {},
+    onNavigateBack = {}
+)
+
 @Composable
 fun StoreScene.Content() {
     when (this) {

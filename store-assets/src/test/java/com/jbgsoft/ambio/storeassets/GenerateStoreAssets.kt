@@ -8,7 +8,9 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.jbgsoft.ambio.ui.theme.AmbioTheme
+import java.awt.image.BufferedImage
 import java.io.File
+import javax.imageio.ImageIO
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -48,11 +50,11 @@ class GenerateStoreAssets {
     fun phone() = renderAll(ShotSpec.PHONE)
 
     @Test
-    @Config(qualifiers = "w960dp-h600dp-xhdpi")
+    @Config(qualifiers = "w960dp-h540dp-xhdpi")
     fun sevenInch() = renderAll(ShotSpec.SEVEN_INCH)
 
     @Test
-    @Config(qualifiers = "w1280dp-h800dp-xhdpi")
+    @Config(qualifiers = "w1280dp-h720dp-xhdpi")
     fun tenInch() = renderAll(ShotSpec.TEN_INCH)
 
     private fun renderAll(spec: ShotSpec) {
@@ -66,15 +68,24 @@ class GenerateStoreAssets {
         // One setContent for the whole bucket, with the scene held in state: the
         // rule refuses a second call on the same activity.
         val scene = mutableStateOf(StoreScene.entries.first())
+        val shotSpec = spec
+        val landscape = spec.widthPx > spec.heightPx
         compose.setContent {
             val current = scene.value
             AmbioTheme(palette = current.palette) {
                 StoreShot(
                     caption = stringResource(current.captionRes),
-                    glows = current.glows
-                ) {
-                    current.Content()
-                }
+                    glows = current.glows,
+                    spec = shotSpec,
+                    // Landscape leads with the tablet, portrait with the phone,
+                    // so each canvas shows the layout it is actually selling.
+                    back = {
+                        if (landscape) current.TabletSide() else current.BackContent()
+                    },
+                    front = {
+                        if (landscape) current.TabletMain() else current.Content()
+                    }
+                )
             }
         }
 
@@ -117,11 +128,29 @@ class GenerateStoreAssets {
 
             val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
             view.draw(Canvas(bitmap))
-            file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+            writeOpaquePng(bitmap, file)
             bitmap.recycle()
         }
 
         assertTrue("${file.name} was not written", file.isFile && file.length() > 0)
+    }
+
+    /**
+     * Writes a 24-bit PNG with no alpha channel, which is what Play accepts.
+     *
+     * Bitmap.compress on an ARGB_8888 bitmap emits RGBA, and an alpha channel is
+     * grounds for rejection. TYPE_INT_RGB drops it. ImageIO is available because
+     * all of this runs on the JVM.
+     */
+    private fun writeOpaquePng(bitmap: Bitmap, file: File) {
+        val w = bitmap.width
+        val h = bitmap.height
+        val pixels = IntArray(w * h)
+        bitmap.getPixels(pixels, 0, w, 0, 0, w, h)
+
+        val image = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+        image.setRGB(0, 0, w, h, pixels, 0, w)
+        ImageIO.write(image, "png", file)
     }
 
     private fun locale(): String = System.getProperty("ambio.shotLocale") ?: "en-US"
