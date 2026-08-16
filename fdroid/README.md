@@ -56,6 +56,9 @@ All four must pass. Each one has failed at least once.
 ```sh
 APK=app/build/outputs/apk/release/app-release.apk
 
+# apksigner and aapt2 ship with the Android SDK build-tools and are not on PATH
+export PATH="$(ls -d ~/Library/Android/sdk/build-tools/*/ | sort -V | tail -1):$PATH"
+
 # signing certificate must equal AllowedAPKSigningKeys in the metadata
 apksigner verify --print-certs $APK | grep "SHA-256 digest"
 #   expected: 4af641cff280d0c867f858328cdd8b94645b4555f563dcad56207c8f196e91b9
@@ -130,18 +133,35 @@ F-Droid maintainers goes in a `MaintainerNotes:` field.
 Check both CI jobs locally before pushing to the MR:
 
 ```sh
+FD=~/Documents/GitHub/Ambio/fdroid
+
 pip install fdroidserver
-mkdir -p /tmp/fdt/metadata && cd /tmp/fdt
-cp <this-dir>/com.jbgsoft.ambio.yml metadata/
+rm -rf /tmp/fdt && mkdir -p /tmp/fdt/metadata && cd /tmp/fdt
+cp "$FD/com.jbgsoft.ambio.yml" metadata/
 printf 'repo_url: https://example.com/fdroid/repo\nrepo_name: t\nrepo_description: t\n' > config.yml
 chmod 0600 config.yml
-fdroid rewritemeta com.jbgsoft.ambio && git diff --no-index metadata/ <this-dir>/
+
+fdroid rewritemeta com.jbgsoft.ambio
+diff metadata/com.jbgsoft.ambio.yml "$FD/com.jbgsoft.ambio.yml" && echo "canonical"
 fdroid lint com.jbgsoft.ambio
 ```
 
 `rewritemeta` producing no diff is the check that matters. (Locally, `lint` will
 complain that the categories are invalid — it has no `config/categories.yml`.
 Ignore that; the real one has them.)
+
+To push a change to the submission — review rounds, or a metadata edit the bot
+cannot make — commit it to the fork's branch over SSH:
+
+```sh
+git clone --depth 1 --single-branch --branch add-com.jbgsoft.ambio \
+  git@gitlab.com:jaimebg/fdroiddata.git /tmp/fdroiddata
+cp ~/Documents/GitHub/Ambio/fdroid/com.jbgsoft.ambio.yml /tmp/fdroiddata/metadata/
+cd /tmp/fdroiddata && git commit -am "Ambio: <what changed>" && git push
+```
+
+Prefer a new commit over amending: the reviewer's comments stay anchored to what
+they read. Pushing runs the pipeline again, which is the real check.
 
 Canonicalisation gotchas found so far:
 
