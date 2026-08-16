@@ -17,7 +17,7 @@ Repo: https://github.com/jaimebg/Ambio.git
 Builds:
   - versionName: 2.0.0
     versionCode: 3
-    commit: v2.0.0
+    commit: e8d54f3f50aac7bbb42e54adbf54a92fa089dfec
     subdir: app
     gradle:
       - yes
