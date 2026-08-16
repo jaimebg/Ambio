@@ -42,12 +42,26 @@ certificate, from `apksigner verify --print-certs`.
 Releases are signed locally, not in CI — the keystore stays off GitHub. For each
 new tag:
 
+Build it in a throwaway **clone** parked on the tagged commit — never from your
+working checkout, and never from a `git worktree`. Both details are load-bearing;
+see "Stamp the pinned commit" below.
+
 ```sh
+git clone . /tmp/ambio-release && cd /tmp/ambio-release
+git checkout v<versionName>
+cp ~/path/to/Ambio/keystore.properties .
+cp ~/path/to/Ambio/app/release-keystore.jks app/
+
 export JAVA_HOME=~/.sdkman/candidates/java/21.0.12-tem   # JDK 21, see below
 ./gradlew --stop && ./gradlew clean :app:assembleRelease
-apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk   # cert must match AllowedAPKSigningKeys
-cp app/build/outputs/apk/release/app-release.apk Ambio-<versionName>.apk
+
+APK=app/build/outputs/apk/release/app-release.apk
+apksigner verify --print-certs $APK      # cert must match AllowedAPKSigningKeys
+unzip -p $APK META-INF/version-control-info.textproto   # revision must be the pinned commit
+cp $APK Ambio-<versionName>.apk
 gh release upload v<versionName> Ambio-<versionName>.apk
+
+cd - && rm -rf /tmp/ambio-release          # it holds a copy of the signing key
 ```
 
 The `Ambio-%v.apk` filename is load-bearing: `%v` is the versionName, so the
@@ -94,3 +108,52 @@ F-Droid's image moves to a different JDK, match it rather than guessing.
 Note that CI still builds on JDK 17, which checks that the source compiles but
 does not reproduce what F-Droid produces. Only the locally built, locally signed
 APK uploaded to the release has to be byte-identical.
+
+## Stamp the pinned commit
+
+AGP writes `META-INF/version-control-info.textproto` into the release APK and
+stamps it with the git HEAD **of the machine doing the build**:
+
+```
+repositories {
+  system: GIT
+  local_root_path: "$PROJECT_DIR"
+  revision: "e8d54f3f50aac7bbb42e54adbf54a92fa089dfec"
+}
+```
+
+F-Droid builds the commit pinned in the metadata, so it stamps that hash. If our
+HEAD is anywhere else, this one file differs and the whole comparison fails:
+
+```
+diff -r .../META-INF/version-control-info.textproto
+4c4
+<   revision: "d35bfaef1af15eb602617c43194e3545da30b127"
+>   revision: "e8d54f3f50aac7bbb42e54adbf54a92fa089dfec"
+```
+
+That is easy to trip over, because it depends on repository state rather than on
+anything in the build. The first reference APK was fine here purely by accident —
+it was built while HEAD happened to be the tagged commit. Rebuilding it later,
+after a couple of unrelated commits, broke a field that had been correct.
+
+`local_root_path` is already normalised to `$PROJECT_DIR`, and building from a
+different directory does not change `classes.dex`, so the build path itself is
+not a problem. `revision` is the only volatile field.
+
+A `git worktree` does **not** work as the build directory: its `.git` is a file
+rather than a directory, AGP's reader cannot follow it, and the stamp becomes
+`generate_error_reason: NO_VALID_GIT_FOUND` — a different mismatch, not a fix.
+Use a real clone.
+
+The durable fix is to stop emitting the file at all, which removes the footgun:
+
+```kotlin
+release {
+    vcsInfo { include = false }
+}
+```
+
+That is a source change, so it moves the commit F-Droid builds, and it drops the
+data Play uses to map crashes back to a revision. Worth doing on the next version
+bump rather than mid-review.
