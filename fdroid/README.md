@@ -88,9 +88,17 @@ gh release upload v<versionName> Ambio-<versionName>.apk --repo jaimebg/Ambio
 cd - && rm -rf /tmp/ambio-release      # holds a copy of the signing key
 ```
 
-The `Ambio-<versionName>.apk` filename is load-bearing. The metadata says
-`binary: .../download/v%v/Ambio-%v.apk`, where `%v` is the versionName, so the
-URL resolves for every future tag without editing anything.
+The `Ambio-<versionName>.apk` filename is load-bearing. The metadata declares it
+once, app-level, as `Binaries: .../download/v%v/Ambio-%v.apk`, where `%v` is the
+versionName — so the URL resolves for every future tag without editing anything.
+
+Use app-level `Binaries:`, not the per-build `binary:` flag. Both work —
+`build.py` reads `build.binary or app.Binaries` — but only `Binaries` is checked
+by `lint.py`, which warns when a reproducible app has no `AllowedAPKSigningKeys`
+pinning its certificate. `checkupdates` also deep-copies the last build entry
+into each new one, so a per-build flag would be duplicated into every future
+entry. (Apps that ship several flavours with different APK names do need the
+per-build form; we have one build.)
 
 ### 5. Let F-Droid pick it up
 
