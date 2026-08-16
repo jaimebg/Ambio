@@ -1,9 +1,3 @@
-# Reference copy, kept in this repo for review and history.
-# In the fdroiddata repository, this file belongs at
-# metadata/com.jbgsoft.ambio.yml.
-# Both verified against config/categories.yml in fdroiddata. An earlier draft
-# used "Time", which no longer exists: F-Droid replaced the coarse category set
-# with a granular one, and lint would have rejected it.
 Categories:
   - Multimedia
   - Timer
@@ -14,6 +8,8 @@ WebSite: https://jbgsoft.com
 SourceCode: https://github.com/jaimebg/Ambio
 IssueTracker: https://github.com/jaimebg/Ambio/issues
 Changelog: https://github.com/jaimebg/Ambio/releases
+
+AutoName: Ambio
 
 RepoType: git
 Repo: https://github.com/jaimebg/Ambio.git
