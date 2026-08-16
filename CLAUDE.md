@@ -18,7 +18,12 @@ Clean and build:
 
 ## Operational Notes
 
-- Java 17 required (installed via sdkman or homebrew)
+- Java 17 or newer for everyday builds (installed via sdkman or homebrew)
+- **Release APKs must be built on JDK 21**, from a clone checked out at the tag.
+  The build succeeds on 17, but F-Droid ships this app as a reproducible build
+  and a JDK 17 APK does not match what F-Droid's Debian builders produce. The
+  full release procedure and the traps are in `fdroid/README.md` — read it before
+  cutting a release.
 - Project uses Gradle wrapper (no global Gradle needed)
 - CompileSDK 36 requires suppression flag (already in gradle.properties)
 
