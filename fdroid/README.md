@@ -43,7 +43,8 @@ Releases are signed locally, not in CI — the keystore stays off GitHub. For ea
 new tag:
 
 ```sh
-./gradlew clean :app:assembleRelease
+export JAVA_HOME=~/.sdkman/candidates/java/21.0.12-tem   # JDK 21, see below
+./gradlew --stop && ./gradlew clean :app:assembleRelease
 apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk   # cert must match AllowedAPKSigningKeys
 cp app/build/outputs/apk/release/app-release.apk Ambio-<versionName>.apk
 gh release upload v<versionName> Ambio-<versionName>.apk
@@ -56,7 +57,40 @@ Once `AllowedAPKSigningKeys` is published, F-Droid accepts no other key for
 `com.jbgsoft.ambio`. Losing `keystore.properties` and the keystore it points at
 means losing the app's identity on F-Droid — back both up offline.
 
-Expect the first reproducible build to need iteration: R8 minification and
-resource shrinking make byte-identical output sensitive to toolchain versions,
-and apps commonly need `srclibs: reproducible-apk-tools` plus a `postbuild:` step
-before F-Droid's build matches.
+## Build the release APK on JDK 21
+
+The app builds on any JDK 17 or newer, but only a **JDK 21** build reproduces.
+The first attempt was built on JDK 17 and F-Droid rejected it:
+
+```
+ERROR: APK Signature Scheme v2 signer #1: APK integrity check failed.
+       CHUNKED_SHA256 digest mismatch.
+compared built binary to supplied reference binary but failed
+  content/assets/dexopt/baseline.prof differ
+  content/classes.dex differ
+```
+
+F-Droid's builder runs Debian trixie with `openjdk-21` (21.0.12+8) and takes
+Gradle from our wrapper, so Gradle and AGP already matched; the JDK was the only
+toolchain difference left. `build-logic` pins `jvmTarget` rather than a
+toolchain — deliberately, so the build does not demand one exact JDK — which
+means whichever JDK runs Gradle is the one that compiles the bytecode R8 then
+dexes.
+
+Measured rather than assumed:
+
+- two clean builds on the same JDK produce byte-identical `classes.dex`, so the
+  build itself is deterministic;
+- switching only the JDK from 17 to 21 changes `classes.dex` and
+  `baseline.prof`, and nothing else in the APK — exactly the two entries F-Droid
+  reported.
+
+`baseline.prof` is not an independent problem: it is merged from AndroidX AARs
+and encodes indices into `classes.dex`, so it moves whenever the dex moves.
+
+Temurin `21.0.12-tem` is the same upstream build as Debian's `21.0.12+8`. If
+F-Droid's image moves to a different JDK, match it rather than guessing.
+
+Note that CI still builds on JDK 17, which checks that the source compiles but
+does not reproduce what F-Droid produces. Only the locally built, locally signed
+APK uploaded to the release has to be byte-identical.
