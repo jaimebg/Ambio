@@ -12,6 +12,9 @@
   <a href="https://play.google.com/store/apps/details?id=com.jbgsoft.ambio">
     <img src="https://img.shields.io/badge/Google%20Play-Download-414141?logo=googleplay&logoColor=white" alt="Get it on Google Play">
   </a>
+  <a href="https://f-droid.org/packages/com.jbgsoft.ambio/">
+    <img src="https://img.shields.io/f-droid/v/com.jbgsoft.ambio?logo=fdroid&logoColor=white&label=F-Droid&color=1976D2" alt="Get it on F-Droid">
+  </a>
   <a href="https://github.com/jaimebg/Ambio/releases/latest">
     <img src="https://img.shields.io/github/v/release/jaimebg/Ambio?label=release&color=3DDC84" alt="Latest release">
   </a>
@@ -33,6 +36,16 @@
 </p>
 
 ---
+
+## Install
+
+<a href="https://play.google.com/store/apps/details?id=com.jbgsoft.ambio">Google Play</a> ·
+<a href="https://f-droid.org/packages/com.jbgsoft.ambio/">F-Droid</a> ·
+<a href="https://github.com/jaimebg/Ambio/releases/latest">APK from the latest release</a>
+
+On F-Droid, Ambio is a **reproducible build**: F-Droid compiles the tagged commit on its own
+builders and distributes our signed APK only after it matches theirs byte for byte, so the
+binary you install is verifiably the one this source tree produces.
 
 ## About
 
