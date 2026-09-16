@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
@@ -39,6 +40,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.feature.home.R
@@ -93,7 +95,18 @@ fun TimerPresetSelector(
                         ),
                         onClick = { onPresetSelected(preset) },
                         selected = selectedPreset == preset,
-                        label = { Text(preset.label()) }
+                        label = {
+                            Text(
+                                text = preset.label(),
+                                maxLines = 1,
+                                softWrap = false,
+                                autoSize = TextAutoSize.StepBased(
+                                    minFontSize = 10.sp,
+                                    maxFontSize = 14.sp,
+                                    stepSize = 1.sp
+                                )
+                            )
+                        }
                     )
                 }
             }
