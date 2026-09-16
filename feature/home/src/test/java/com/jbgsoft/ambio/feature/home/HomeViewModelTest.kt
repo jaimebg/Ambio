@@ -1560,6 +1560,24 @@ class HomeViewModelTest {
         verify(exactly = 0) { audioServiceConnection.stop() }
     }
 
+    @Test
+    fun `turning break sound off returns the picker to the focus slot`() = runTest(testDispatcher) {
+        // The slot switch is only drawn while break sound is on. Left on BREAK, the
+        // picker would edit a mix that can no longer play, with nothing on screen to
+        // say so and no way back.
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        advanceUntilIdle()
+        assertThat(viewModel.uiState.value.pickerSlot).isEqualTo(MixSlot.BREAK)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = false)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.pickerSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
     // --- Plan Editor Tests ---
 
     @Test

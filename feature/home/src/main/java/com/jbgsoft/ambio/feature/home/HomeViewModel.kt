@@ -199,6 +199,12 @@ class HomeViewModel @Inject constructor(
      * is what turns it into sound.
      */
     private fun onBreakSoundToggled() {
+        // The break tab of the picker only exists while the toggle is on. Left there,
+        // the picker would silently edit a mix that can no longer play, and the switch
+        // that would move it back is the very thing the toggle just hid.
+        if (!_uiState.value.breakSoundEnabled) {
+            _uiState.update { it.copy(pickerSlot = MixSlot.FOCUS) }
+        }
         if (_uiState.value.timerState is TimerState.Running) {
             applyAudibility()
         } else {
