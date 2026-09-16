@@ -1,6 +1,6 @@
 # Attribution
 
-Ambio ships thirteen audio files. All are CC0 / public domain. This file records
+Ambio ships fourteen audio files. All are CC0 / public domain. This file records
 what is known about each, including where the record is incomplete.
 
 ## Traceable to a source (5)
@@ -19,11 +19,12 @@ hash a silent substitution upstream would flow into a shipped asset.
 | `birds_loop` | 234315 | nick121087 | CC0 1.0 |
 | `cafe_loop` | 625112 | sonically_sound | CC0 1.0 |
 
-## Generated, not recorded (2)
+## Generated, not recorded (3)
 
 `white_noise_loop` and `brown_noise_loop` are produced by
-`tools/synth-noise.sh` from fixed seeds. They are public domain by construction:
-there is no recording and no third party involved.
+`tools/synth-noise.sh` from fixed seeds, and `success_chime` by
+`tools/synth-success-chime.sh` from three fixed sine notes. They are public
+domain by construction: there is no recording and no third party involved.
 
 ## Sourced as CC0, upstream provenance not retained (6)
 

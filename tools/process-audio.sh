@@ -60,7 +60,23 @@ TARGET_LRA=11
 LOOPS=(cave_loop fireplace_loop forest_loop ocean_loop rain_loop
        stream_loop crickets_loop wind_loop birds_loop cafe_loop
        white_noise_loop brown_noise_loop)
-ONESHOTS=(timer_chime)
+ONESHOTS=(timer_chime success_chime)
+
+# ONLY=<name> restricts a run to that one file. Needed for anything that is not
+# a Freesound loop: without the fetched sources, the loop pass fails on the first
+# missing file before the one-shots are ever reached.
+if [ -n "${ONLY:-}" ]; then
+  LOOPS=()
+  ONESHOTS=()
+  for name in cave_loop fireplace_loop forest_loop ocean_loop rain_loop stream_loop \
+              crickets_loop wind_loop birds_loop cafe_loop white_noise_loop brown_noise_loop; do
+    [ "$name" = "$ONLY" ] && LOOPS=("$name")
+  done
+  for name in timer_chime success_chime; do
+    [ "$name" = "$ONLY" ] && ONESHOTS=("$name")
+  done
+  [ ${#LOOPS[@]} -eq 0 ] && [ ${#ONESHOTS[@]} -eq 0 ] && { echo "unknown ONLY=$ONLY"; exit 1; }
+fi
 
 # Per-file high-pass, in Hz. forest's loudest band is 63-125Hz at -20.6dB and it
 # barely varies (3.7dB between the whole file and its quietest tenth) -- steady
