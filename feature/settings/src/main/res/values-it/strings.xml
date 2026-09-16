@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Riproduce un suono al termine di una sessione di concentrazione</string>
     <string name="settings_effects">Effetti ambientali</string>
     <string name="settings_effects_summary">Particelle animate dietro il timer</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Suono durante le pause</string>
+    <string name="settings_break_sound_summary">Riproduce un mix separato mentre riposi</string>
 </resources>

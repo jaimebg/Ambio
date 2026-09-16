@@ -54,4 +54,24 @@
     <string name="a11y_decrease_focus">Μείωση διάρκειας εστίασης</string>
     <string name="a11y_increase_focus">Αύξηση διάρκειας εστίασης</string>
     <string name="a11y_volume_slider">Ένταση</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Πλάνο</string>
+    <string name="plan_edit">Επεξεργασία</string>
+    <string name="timer_step_focus_of">Εστίαση %1$d από %2$d</string>
+    <string name="timer_step_break">Διάλειμμα</string>
+    <string name="plan_editor_title">Πλάνο συνεδρίας</string>
+    <string name="plan_step_focus">Εστίαση</string>
+    <string name="plan_step_pause">Παύση</string>
+    <string name="plan_step_loop">Επανάληψη από εδώ</string>
+    <string name="plan_step_end">Λήξη εδώ</string>
+    <string name="plan_add_step">Προσθήκη βήματος</string>
+    <string name="plan_done">Τέλος</string>
+    <string name="plan_needs_focus">Προσθέστε τουλάχιστον ένα βήμα εστίασης</string>
+    <string name="a11y_decrease_pause">Μείωση διάρκειας παύσης</string>
+    <string name="a11y_increase_pause">Αύξηση διάρκειας παύσης</string>
+    <string name="a11y_plan_row_choice">Τύπος βήματος</string>
+    <string name="a11y_plan_row_state">Βήμα %1$d: %2$s</string>
+    <string name="picker_slot_focus">Εστίαση</string>
+    <string name="picker_slot_break">Διάλειμμα</string>
 </resources>

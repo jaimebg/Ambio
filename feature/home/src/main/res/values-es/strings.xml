@@ -56,4 +56,24 @@
     <string name="a11y_decrease_focus">Reducir la duración de la concentración</string>
     <string name="a11y_increase_focus">Aumentar la duración de la concentración</string>
     <string name="a11y_volume_slider">Volumen</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Editar</string>
+    <string name="timer_step_focus_of">Concentración %1$d de %2$d</string>
+    <string name="timer_step_break">Descanso</string>
+    <string name="plan_editor_title">Plan de sesión</string>
+    <string name="plan_step_focus">Concentración</string>
+    <string name="plan_step_pause">Pausa</string>
+    <string name="plan_step_loop">Repetir desde aquí</string>
+    <string name="plan_step_end">Terminar aquí</string>
+    <string name="plan_add_step">Añadir paso</string>
+    <string name="plan_done">Listo</string>
+    <string name="plan_needs_focus">Añade al menos un paso de concentración</string>
+    <string name="a11y_decrease_pause">Reducir la duración de la pausa</string>
+    <string name="a11y_increase_pause">Aumentar la duración de la pausa</string>
+    <string name="a11y_plan_row_choice">Tipo de paso</string>
+    <string name="a11y_plan_row_state">Paso %1$d: %2$s</string>
+    <string name="picker_slot_focus">Concentración</string>
+    <string name="picker_slot_break">Descanso</string>
 </resources>

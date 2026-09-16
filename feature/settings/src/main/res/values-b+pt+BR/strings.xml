@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Toca um som quando uma sessão de foco termina</string>
     <string name="settings_effects">Efeitos de ambiente</string>
     <string name="settings_effects_summary">Partículas animadas atrás do timer</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Som durante os intervalos</string>
+    <string name="settings_break_sound_summary">Toca uma mixagem separada enquanto você descansa</string>
 </resources>

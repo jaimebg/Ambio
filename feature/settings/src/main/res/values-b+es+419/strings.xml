@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Reproduce un sonido cuando termina una sesión de concentración</string>
     <string name="settings_effects">Efectos ambientales</string>
     <string name="settings_effects_summary">Partículas animadas detrás del temporizador</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Sonido en los descansos</string>
+    <string name="settings_break_sound_summary">Reproduce una mezcla aparte mientras descansas</string>
 </resources>

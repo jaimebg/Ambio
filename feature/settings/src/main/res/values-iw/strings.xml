@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">משמיע צליל כשסשן מיקוד מסתיים</string>
     <string name="settings_effects">אפקטים סביבתיים</string>
     <string name="settings_effects_summary">חלקיקים מונפשים מאחורי הטיימר</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">צליל בזמן הפסקות</string>
+    <string name="settings_break_sound_summary">משמיע מיקס נפרד בזמן המנוחה</string>
 </resources>

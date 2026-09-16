@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Hangot játszik le, amikor egy fókuszidőszak véget ér</string>
     <string name="settings_effects">Környezeti effektek</string>
     <string name="settings_effects_summary">Animált részecskék az időzítő mögött</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Hang a szünetekben</string>
+    <string name="settings_break_sound_summary">Külön mixet játszik le pihenés közben</string>
 </resources>

@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Воспроизводит звук в конце сеанса концентрации</string>
     <string name="settings_effects">Фоновые эффекты</string>
     <string name="settings_effects_summary">Анимированные частицы за таймером</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Звук во время перерывов</string>
+    <string name="settings_break_sound_summary">Воспроизводит отдельный микс во время отдыха</string>
 </resources>

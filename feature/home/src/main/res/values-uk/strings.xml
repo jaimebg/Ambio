@@ -58,4 +58,24 @@
     <string name="a11y_decrease_focus">Зменшити тривалість зосередження</string>
     <string name="a11y_increase_focus">Збільшити тривалість зосередження</string>
     <string name="a11y_volume_slider">Гучність</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">План</string>
+    <string name="plan_edit">Редагувати</string>
+    <string name="timer_step_focus_of">Зосередження %1$d з %2$d</string>
+    <string name="timer_step_break">Перерва</string>
+    <string name="plan_editor_title">План сеансу</string>
+    <string name="plan_step_focus">Зосередження</string>
+    <string name="plan_step_pause">Пауза</string>
+    <string name="plan_step_loop">Повторювати звідси</string>
+    <string name="plan_step_end">Завершити тут</string>
+    <string name="plan_add_step">Додати крок</string>
+    <string name="plan_done">Готово</string>
+    <string name="plan_needs_focus">Додайте принаймні один крок зосередження</string>
+    <string name="a11y_decrease_pause">Зменшити тривалість паузи</string>
+    <string name="a11y_increase_pause">Збільшити тривалість паузи</string>
+    <string name="a11y_plan_row_choice">Тип кроку</string>
+    <string name="a11y_plan_row_state">Крок %1$d: %2$s</string>
+    <string name="picker_slot_focus">Зосередження</string>
+    <string name="picker_slot_break">Перерва</string>
 </resources>

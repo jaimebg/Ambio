@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Émet un son à la fin d\'une session de concentration</string>
     <string name="settings_effects">Effets d\'ambiance</string>
     <string name="settings_effects_summary">Particules animées derrière le minuteur</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Son pendant les pauses</string>
+    <string name="settings_break_sound_summary">Diffuse un mélange distinct pendant le repos</string>
 </resources>

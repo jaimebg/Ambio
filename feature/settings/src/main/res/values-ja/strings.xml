@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">集中セッションが終わると音を鳴らします</string>
     <string name="settings_effects">アンビエント効果</string>
     <string name="settings_effects_summary">タイマーの背後に動くパーティクル</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">休憩中のサウンド</string>
+    <string name="settings_break_sound_summary">休憩中は別のミックスを再生します</string>
 </resources>

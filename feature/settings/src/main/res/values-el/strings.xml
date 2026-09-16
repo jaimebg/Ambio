@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Αναπαράγει έναν ήχο όταν τελειώνει μια συνεδρία εστίασης</string>
     <string name="settings_effects">Εφέ ατμόσφαιρας</string>
     <string name="settings_effects_summary">Κινούμενα σωματίδια πίσω από το χρονόμετρο</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Ήχος στα διαλείμματα</string>
+    <string name="settings_break_sound_summary">Αναπαράγει ξεχωριστό μείγμα όσο ξεκουράζεστε</string>
 </resources>

@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Redă un sunet când se încheie o sesiune de concentrare</string>
     <string name="settings_effects">Efecte de ambianță</string>
     <string name="settings_effects_summary">Particule animate în spatele temporizatorului</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Sunet în pauze</string>
+    <string name="settings_break_sound_summary">Redă un mix separat cât te odihnești</string>
 </resources>

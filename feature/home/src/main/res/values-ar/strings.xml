@@ -62,4 +62,24 @@
     <string name="a11y_decrease_focus">تقليل مدة التركيز</string>
     <string name="a11y_increase_focus">زيادة مدة التركيز</string>
     <string name="a11y_volume_slider">مستوى الصوت</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">خطة</string>
+    <string name="plan_edit">تعديل</string>
+    <string name="timer_step_focus_of">تركيز %1$d من %2$d</string>
+    <string name="timer_step_break">استراحة</string>
+    <string name="plan_editor_title">خطة الجلسة</string>
+    <string name="plan_step_focus">تركيز</string>
+    <string name="plan_step_pause">إيقاف مؤقت</string>
+    <string name="plan_step_loop">التكرار من هنا</string>
+    <string name="plan_step_end">الإنهاء هنا</string>
+    <string name="plan_add_step">إضافة خطوة</string>
+    <string name="plan_done">تم</string>
+    <string name="plan_needs_focus">أضف خطوة تركيز واحدة على الأقل</string>
+    <string name="a11y_decrease_pause">تقليل مدة الإيقاف المؤقت</string>
+    <string name="a11y_increase_pause">زيادة مدة الإيقاف المؤقت</string>
+    <string name="a11y_plan_row_choice">نوع الخطوة</string>
+    <string name="a11y_plan_row_state">الخطوة %1$d: %2$s</string>
+    <string name="picker_slot_focus">تركيز</string>
+    <string name="picker_slot_break">استراحة</string>
 </resources>

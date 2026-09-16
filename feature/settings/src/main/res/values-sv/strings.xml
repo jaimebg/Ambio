@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Spelar upp ett ljud när ett fokuspass tar slut</string>
     <string name="settings_effects">Stämningseffekter</string>
     <string name="settings_effects_summary">Animerade partiklar bakom timern</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Ljud under raster</string>
+    <string name="settings_break_sound_summary">Spelar upp en separat mix medan du vilar</string>
 </resources>

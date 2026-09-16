@@ -54,4 +54,24 @@
     <string name="a11y_decrease_focus">Reducer fokusvarigheden</string>
     <string name="a11y_increase_focus">Forøg fokusvarigheden</string>
     <string name="a11y_volume_slider">Lydstyrke</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Rediger</string>
+    <string name="timer_step_focus_of">Fokus %1$d af %2$d</string>
+    <string name="timer_step_break">Pause</string>
+    <string name="plan_editor_title">Sessionsplan</string>
+    <string name="plan_step_focus">Fokus</string>
+    <string name="plan_step_pause">Pause</string>
+    <string name="plan_step_loop">Gentag herfra</string>
+    <string name="plan_step_end">Slut her</string>
+    <string name="plan_add_step">Tilføj trin</string>
+    <string name="plan_done">Færdig</string>
+    <string name="plan_needs_focus">Tilføj mindst ét fokustrin</string>
+    <string name="a11y_decrease_pause">Reducer pausevarigheden</string>
+    <string name="a11y_increase_pause">Forøg pausevarigheden</string>
+    <string name="a11y_plan_row_choice">Trintype</string>
+    <string name="a11y_plan_row_state">Trin %1$d: %2$s</string>
+    <string name="picker_slot_focus">Fokus</string>
+    <string name="picker_slot_break">Pause</string>
 </resources>

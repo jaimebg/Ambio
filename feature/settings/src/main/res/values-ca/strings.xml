@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Reprodueix un so quan acaba una sessió de concentració</string>
     <string name="settings_effects">Efectes ambientals</string>
     <string name="settings_effects_summary">Partícules animades darrere del temporitzador</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">So durant els descansos</string>
+    <string name="settings_break_sound_summary">Reprodueix una mescla a part mentre descanses</string>
 </resources>

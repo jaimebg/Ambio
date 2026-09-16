@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Odtwarza dźwięk po zakończeniu sesji skupienia</string>
     <string name="settings_effects">Efekty otoczenia</string>
     <string name="settings_effects_summary">Animowane cząsteczki za minutnikiem</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Dźwięk podczas przerw</string>
+    <string name="settings_break_sound_summary">Odtwarza osobny miks podczas odpoczynku</string>
 </resources>

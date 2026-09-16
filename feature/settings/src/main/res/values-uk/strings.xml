@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Відтворює звук у кінці сеансу зосередження</string>
     <string name="settings_effects">Фонові ефекти</string>
     <string name="settings_effects_summary">Анімовані частинки за таймером</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Звук під час перерв</string>
+    <string name="settings_break_sound_summary">Відтворює окремий мікс під час відпочинку</string>
 </resources>

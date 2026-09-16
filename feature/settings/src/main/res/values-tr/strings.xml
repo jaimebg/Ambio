@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Odaklanma oturumu bittiğinde ses çalar</string>
     <string name="settings_effects">Ortam efektleri</string>
     <string name="settings_effects_summary">Zamanlayıcının arkasında hareketli parçacıklar</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Molalarda ses</string>
+    <string name="settings_break_sound_summary">Dinlenirken ayrı bir miks çalar</string>
 </resources>

@@ -54,4 +54,24 @@
     <string name="a11y_decrease_focus">Lyhennä keskittymisen kestoa</string>
     <string name="a11y_increase_focus">Pidennä keskittymisen kestoa</string>
     <string name="a11y_volume_slider">Äänenvoimakkuus</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Suunnitelma</string>
+    <string name="plan_edit">Muokkaa</string>
+    <string name="timer_step_focus_of">Keskittyminen %1$d/%2$d</string>
+    <string name="timer_step_break">Tauko</string>
+    <string name="plan_editor_title">Jakson suunnitelma</string>
+    <string name="plan_step_focus">Keskittyminen</string>
+    <string name="plan_step_pause">Tauko</string>
+    <string name="plan_step_loop">Toista tästä</string>
+    <string name="plan_step_end">Lopeta tähän</string>
+    <string name="plan_add_step">Lisää vaihe</string>
+    <string name="plan_done">Valmis</string>
+    <string name="plan_needs_focus">Lisää vähintään yksi keskittymisvaihe</string>
+    <string name="a11y_decrease_pause">Lyhennä tauon kestoa</string>
+    <string name="a11y_increase_pause">Pidennä tauon kestoa</string>
+    <string name="a11y_plan_row_choice">Vaiheen tyyppi</string>
+    <string name="a11y_plan_row_state">Vaihe %1$d: %2$s</string>
+    <string name="picker_slot_focus">Keskittyminen</string>
+    <string name="picker_slot_break">Tauko</string>
 </resources>

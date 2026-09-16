@@ -52,4 +52,24 @@
     <string name="a11y_decrease_focus">Giảm thời lượng tập trung</string>
     <string name="a11y_increase_focus">Tăng thời lượng tập trung</string>
     <string name="a11y_volume_slider">Âm lượng</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Kế hoạch</string>
+    <string name="plan_edit">Chỉnh sửa</string>
+    <string name="timer_step_focus_of">Tập trung %1$d/%2$d</string>
+    <string name="timer_step_break">Nghỉ</string>
+    <string name="plan_editor_title">Kế hoạch phiên</string>
+    <string name="plan_step_focus">Tập trung</string>
+    <string name="plan_step_pause">Nghỉ</string>
+    <string name="plan_step_loop">Lặp lại từ đây</string>
+    <string name="plan_step_end">Kết thúc tại đây</string>
+    <string name="plan_add_step">Thêm bước</string>
+    <string name="plan_done">Xong</string>
+    <string name="plan_needs_focus">Hãy thêm ít nhất một bước tập trung</string>
+    <string name="a11y_decrease_pause">Giảm thời lượng nghỉ</string>
+    <string name="a11y_increase_pause">Tăng thời lượng nghỉ</string>
+    <string name="a11y_plan_row_choice">Loại bước</string>
+    <string name="a11y_plan_row_state">Bước %1$d: %2$s</string>
+    <string name="picker_slot_focus">Tập trung</string>
+    <string name="picker_slot_break">Nghỉ</string>
 </resources>

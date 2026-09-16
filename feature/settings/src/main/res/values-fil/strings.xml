@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Nagpe-play ng tunog kapag natapos ang isang focus session</string>
     <string name="settings_effects">Mga ambient effect</string>
     <string name="settings_effects_summary">Mga animated na particle sa likod ng timer</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Tunog habang nagpapahinga</string>
+    <string name="settings_break_sound_summary">Nagpe-play ng hiwalay na mix habang nagpapahinga ka</string>
 </resources>

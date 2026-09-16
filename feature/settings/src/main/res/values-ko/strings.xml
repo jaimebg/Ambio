@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">집중 세션이 끝나면 소리를 재생합니다</string>
     <string name="settings_effects">앰비언트 효과</string>
     <string name="settings_effects_summary">타이머 뒤에서 움직이는 입자</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">휴식 중 사운드</string>
+    <string name="settings_break_sound_summary">휴식하는 동안 별도의 믹스를 재생합니다</string>
 </resources>

@@ -54,4 +54,24 @@
     <string name="a11y_decrease_focus">Focusduur verlagen</string>
     <string name="a11y_increase_focus">Focusduur verhogen</string>
     <string name="a11y_volume_slider">Volume</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Bewerken</string>
+    <string name="timer_step_focus_of">Focus %1$d van %2$d</string>
+    <string name="timer_step_break">Pauze</string>
+    <string name="plan_editor_title">Sessieplan</string>
+    <string name="plan_step_focus">Focus</string>
+    <string name="plan_step_pause">Pauze</string>
+    <string name="plan_step_loop">Herhalen vanaf hier</string>
+    <string name="plan_step_end">Hier eindigen</string>
+    <string name="plan_add_step">Stap toevoegen</string>
+    <string name="plan_done">Klaar</string>
+    <string name="plan_needs_focus">Voeg minstens één focusstap toe</string>
+    <string name="a11y_decrease_pause">Pauzeduur verlagen</string>
+    <string name="a11y_increase_pause">Pauzeduur verhogen</string>
+    <string name="a11y_plan_row_choice">Staptype</string>
+    <string name="a11y_plan_row_state">Stap %1$d: %2$s</string>
+    <string name="picker_slot_focus">Focus</string>
+    <string name="picker_slot_break">Pauze</string>
 </resources>

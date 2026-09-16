@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Esitab heli, kui keskendumisseanss lõpeb</string>
     <string name="settings_effects">Atmosfääriefektid</string>
     <string name="settings_effects_summary">Animeeritud osakesed taimeri taga</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Heli pauside ajal</string>
+    <string name="settings_break_sound_summary">Esitab puhkamise ajal eraldi miksi</string>
 </resources>

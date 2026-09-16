@@ -56,4 +56,24 @@
     <string name="a11y_decrease_focus">Смањи трајање фокусирања</string>
     <string name="a11y_increase_focus">Повећај трајање фокусирања</string>
     <string name="a11y_volume_slider">Јачина звука</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">План</string>
+    <string name="plan_edit">Измени</string>
+    <string name="timer_step_focus_of">Фокусирање %1$d од %2$d</string>
+    <string name="timer_step_break">Пауза</string>
+    <string name="plan_editor_title">План сесије</string>
+    <string name="plan_step_focus">Фокусирање</string>
+    <string name="plan_step_pause">Пауза</string>
+    <string name="plan_step_loop">Понављај одавде</string>
+    <string name="plan_step_end">Заврши овде</string>
+    <string name="plan_add_step">Додај корак</string>
+    <string name="plan_done">Готово</string>
+    <string name="plan_needs_focus">Додајте бар један корак фокусирања</string>
+    <string name="a11y_decrease_pause">Смањи трајање паузе</string>
+    <string name="a11y_increase_pause">Повећај трајање паузе</string>
+    <string name="a11y_plan_row_choice">Врста корака</string>
+    <string name="a11y_plan_row_state">Корак %1$d: %2$s</string>
+    <string name="picker_slot_focus">Фокусирање</string>
+    <string name="picker_slot_break">Пауза</string>
 </resources>

@@ -58,4 +58,24 @@
     <string name="a11y_decrease_focus">Уменьшить длительность концентрации</string>
     <string name="a11y_increase_focus">Увеличить длительность концентрации</string>
     <string name="a11y_volume_slider">Громкость</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">План</string>
+    <string name="plan_edit">Изменить</string>
+    <string name="timer_step_focus_of">Концентрация %1$d из %2$d</string>
+    <string name="timer_step_break">Перерыв</string>
+    <string name="plan_editor_title">План сеанса</string>
+    <string name="plan_step_focus">Концентрация</string>
+    <string name="plan_step_pause">Пауза</string>
+    <string name="plan_step_loop">Повторять отсюда</string>
+    <string name="plan_step_end">Завершить здесь</string>
+    <string name="plan_add_step">Добавить шаг</string>
+    <string name="plan_done">Готово</string>
+    <string name="plan_needs_focus">Добавьте хотя бы один шаг концентрации</string>
+    <string name="a11y_decrease_pause">Уменьшить длительность паузы</string>
+    <string name="a11y_increase_pause">Увеличить длительность паузы</string>
+    <string name="a11y_plan_row_choice">Тип шага</string>
+    <string name="a11y_plan_row_state">Шаг %1$d: %2$s</string>
+    <string name="picker_slot_focus">Концентрация</string>
+    <string name="picker_slot_break">Перерыв</string>
 </resources>

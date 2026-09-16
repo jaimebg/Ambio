@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">專注時段結束時播放提示音</string>
     <string name="settings_effects">環境特效</string>
     <string name="settings_effects_summary">計時器後方的動態粒子</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">休息時的聲音</string>
+    <string name="settings_break_sound_summary">休息時播放另一組混音</string>
 </resources>
