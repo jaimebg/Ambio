@@ -136,7 +136,9 @@ fun TimerPresetSelector(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                PlanSummary(plan = sessionPlan)
+                // fill = false so a short plan stays centred next to the button,
+                // while a twelve-step one gives way to it instead of pushing it off.
+                PlanSummary(plan = sessionPlan, modifier = Modifier.weight(1f, fill = false))
                 Spacer(modifier = Modifier.width(12.dp))
                 TextButton(onClick = onEditPlan) {
                     Text(stringResource(R.string.plan_edit))

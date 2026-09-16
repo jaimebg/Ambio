@@ -279,4 +279,57 @@ class HomeScreenLayoutTest {
 
         compose.onNodeWithText(context.getString(R.string.timer_step_focus_of, 2, 2)).assertExists()
     }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    fun `a paused plan says paused, not which step it stopped on`() {
+        val plan = SessionPlan(
+            listOf(PlanStep.Focus(25), PlanStep.Break(5), PlanStep.Focus(25)),
+            repeat = false
+        )
+        compose.setContent {
+            Box(Modifier.size(411.dp, 891.dp)) {
+                HomeScreen(
+                    uiState = state.copy(
+                        selectedPreset = TimerPreset.PLAN,
+                        sessionPlan = plan,
+                        sessionProgress = SessionProgress(plan, 2, 0),
+                        timerState = TimerState.Paused(remainingMs = 1000, totalMs = 1500)
+                    ),
+                    onEvent = {}, onNavigateToSettings = {}, onNavigateToStats = {}
+                )
+            }
+        }
+
+        // The dial's subtitle is the only place a pause is spelled out, so the
+        // step label must not take it over: a plan tells you where it is while it
+        // runs, and that it has stopped when it has.
+        compose.onNodeWithText(context.getString(R.string.state_paused)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.timer_step_focus_of, 2, 2)).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w360dp-h740dp")
+    fun `a full-length plan does not push the edit button off the row`() {
+        compose.setContent {
+            Box(Modifier.size(360.dp, 740.dp)) {
+                HomeScreen(
+                    uiState = state.copy(
+                        selectedPreset = TimerPreset.PLAN,
+                        sessionPlan = SessionPlan(
+                            List(12) { if (it % 2 == 0) PlanStep.Focus(120) else PlanStep.Break(60) },
+                            repeat = true
+                        )
+                    ),
+                    onEvent = {}, onNavigateToSettings = {}, onNavigateToStats = {}
+                )
+            }
+        }
+
+        // The longest plan the domain allows, at the narrowest width: the summary
+        // has to give way to the button rather than the other way round, or the
+        // only way back into the editor is gone.
+        compose.onNodeWithText(context.getString(R.string.plan_edit)).performScrollTo()
+        compose.onNodeWithText(context.getString(R.string.plan_edit)).assertIsDisplayed()
+    }
 }

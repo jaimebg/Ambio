@@ -60,7 +60,9 @@ fun TimerDisplay(
 
     val subtitleText = when {
         mode == AppMode.AMBIENT -> stringResource(R.string.state_ambient_mode)
-        stepLabel != null && (timerState is TimerState.Running || timerState is TimerState.Paused) -> stepLabel
+        // Running only: a paused plan has to say so, and this is the only place
+        // the dial spells that out.
+        stepLabel != null && timerState is TimerState.Running -> stepLabel
         timerState is TimerState.Running && timerState.isBreak -> stringResource(R.string.state_break_time)
         timerState is TimerState.Running -> stringResource(R.string.state_focus)
         timerState is TimerState.Paused -> stringResource(R.string.state_paused)

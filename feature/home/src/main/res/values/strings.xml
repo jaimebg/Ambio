@@ -58,7 +58,6 @@
 
     <!-- Session plan -->
     <string name="plan_edit">Edit</string>
-    <string name="a11y_plan_summary">Session plan</string>
     <string name="timer_step_focus_of">Focus %1$d of %2$d</string>
     <string name="timer_step_break">Break</string>
 </resources>
