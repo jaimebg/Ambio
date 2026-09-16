@@ -179,10 +179,13 @@ fun HomeScreen(
                         // parent would measure it with an unbounded height.
                         SoundPickerContent(
                             sounds = uiState.availableSounds,
-                            activeMix = uiState.activeMix,
+                            activeMix = uiState.pickerMix,
                             onToggleSound = { onEvent(HomeEvent.ToggleSound(it)) },
                             onLevelChange = { id, level -> onEvent(HomeEvent.SetSoundLevel(id, level)) },
                             onLevelChangeFinished = { id -> onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
+                            slot = uiState.pickerSlot,
+                            showSlotSwitch = uiState.breakSoundEnabled,
+                            onSlotChange = { onEvent(HomeEvent.SetPickerSlot(it)) },
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
@@ -210,11 +213,14 @@ fun HomeScreen(
                     SoundBottomSheet(
                         showSheet = uiState.showSoundPicker,
                         sounds = uiState.availableSounds,
-                        activeMix = uiState.activeMix,
+                        activeMix = uiState.pickerMix,
                         onToggleSound = { onEvent(HomeEvent.ToggleSound(it)) },
                         onLevelChange = { id, level -> onEvent(HomeEvent.SetSoundLevel(id, level)) },
                         onLevelChangeFinished = { id -> onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
-                        onDismiss = { onEvent(HomeEvent.HideSoundPicker) }
+                        onDismiss = { onEvent(HomeEvent.HideSoundPicker) },
+                        slot = uiState.pickerSlot,
+                        showSlotSwitch = uiState.breakSoundEnabled,
+                        onSlotChange = { onEvent(HomeEvent.SetPickerSlot(it)) }
                     )
                 }
 

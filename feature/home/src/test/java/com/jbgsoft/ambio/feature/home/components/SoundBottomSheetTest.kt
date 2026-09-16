@@ -11,11 +11,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
+import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
+import com.jbgsoft.ambio.feature.home.R
 import com.jbgsoft.ambio.feature.home.test.R as TestR
 import org.junit.Rule
 import org.junit.Test
@@ -114,5 +119,40 @@ class SoundBottomSheetTest {
         }
 
         compose.onNodeWithContentDescription(limitLabel).assertIsNotEnabled()
+    }
+
+    @Test
+    fun `the slot switch is hidden while break sound is off`() {
+        val sounds = listOf(sound("rain", TestR.string.test_sound_name, SoundTheme.RAIN, Icons.Default.WaterDrop))
+        compose.setContent {
+            SoundPickerContent(
+                sounds = sounds,
+                activeMix = sounds.map { ActiveSound(it, 1f) },
+                onToggleSound = {}, onLevelChange = { _, _ -> }, onLevelChangeFinished = {},
+                showSlotSwitch = false
+            )
+        }
+
+        compose.onNodeWithText(context.getString(R.string.picker_slot_break)).assertDoesNotExist()
+    }
+
+    @Test
+    fun `the slot switch reports the tapped slot`() {
+        var chosen: MixSlot? = null
+        val sounds = listOf(sound("rain", TestR.string.test_sound_name, SoundTheme.RAIN, Icons.Default.WaterDrop))
+        compose.setContent {
+            SoundPickerContent(
+                sounds = sounds,
+                activeMix = sounds.map { ActiveSound(it, 1f) },
+                onToggleSound = {}, onLevelChange = { _, _ -> }, onLevelChangeFinished = {},
+                slot = MixSlot.FOCUS,
+                showSlotSwitch = true,
+                onSlotChange = { chosen = it }
+            )
+        }
+
+        compose.onNodeWithText(context.getString(R.string.picker_slot_break)).performClick()
+
+        assertThat(chosen).isEqualTo(MixSlot.BREAK)
     }
 }
