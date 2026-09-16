@@ -397,7 +397,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `selectPreset saves minutes for non-custom presets`() = runTest(testDispatcher) {
+    fun `selectPreset saves minutes for the fixed-duration presets`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
@@ -413,6 +413,20 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.CUSTOM))
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { preferencesRepository.setLastTimerMinutes(any()) }
+    }
+
+    @Test
+    fun `selectPreset does not save minutes for the plan preset`() = runTest(testDispatcher) {
+        // PLAN has no duration of its own. Persisting its 0 focus minutes would land
+        // in customMinutes and make the next Custom plan invalid, which the runner
+        // refuses to start.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.PLAN))
         advanceUntilIdle()
 
         coVerify(exactly = 0) { preferencesRepository.setLastTimerMinutes(any()) }
@@ -602,6 +616,18 @@ class HomeViewModelTest {
     }
 
     @Test
+    fun `a started break step stops the audio`() = runTest(testDispatcher) {
+        createViewModel()
+        advanceUntilIdle()
+
+        eventsFlow.emit(SessionEvent.StepStarted(PlanStep.Break(5), 1))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        verify(exactly = 0) { audioServiceConnection.play() }
+    }
+
+    @Test
     fun `playPause in timer mode pauses the runner and the audio when running`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
@@ -707,6 +733,19 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         coVerify { sessionRunner.stop() }
+    }
+
+    @Test
+    fun `switching to ambient mode with no plan in progress stops nothing`() = runTest(testDispatcher) {
+        // progressFlow stays null: there is no plan to abandon, so the runner is
+        // left alone rather than being told to stop on every mode toggle.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { sessionRunner.stop() }
     }
 
     // --- Sound Picker Tests ---
