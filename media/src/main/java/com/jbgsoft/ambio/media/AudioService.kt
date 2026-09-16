@@ -231,6 +231,21 @@ class AudioService : MediaSessionService() {
             }
             return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
         }
+
+        override fun onDisconnected(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo
+        ) {
+            // See shouldStopOnDisconnect for why only idle, and why not the notification.
+            if (shouldStopOnDisconnect(
+                    isNotificationController = session.isMediaNotificationController(controller),
+                    playbackState = session.player.playbackState
+                )
+            ) {
+                Log.d(TAG, "Last real controller left an idle player; stopping")
+                stopSelf()
+            }
+        }
     }
 
     companion object {
