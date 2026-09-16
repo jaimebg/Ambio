@@ -44,6 +44,11 @@ class AudioService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
     private lateinit var player: MixPlayer
 
+    // Set while loadStoredMixAndPlay is reading the stored mix; onTaskRemoved must not
+    // stop the service in that window, because the tile's trampoline task is removed the
+    // instant it finishes, before the mix is loaded.
+    private var coldStartInFlight = false
+
     @Inject
     lateinit var mixSource: MixSource
 
@@ -154,30 +159,35 @@ class AudioService : MediaSessionService() {
      * cannot learn what to play cannot honor a startForeground() deadline either.
      */
     private fun loadStoredMixAndPlay() {
+        coldStartInFlight = true
         serviceScope.launch {
-            val mix = try {
-                mixSource.currentMix()
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to read the stored mix; stopping", e)
-                stopSelf()
-                return@launch
+            try {
+                val mix = try {
+                    mixSource.currentMix()
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to read the stored mix; stopping", e)
+                    stopSelf()
+                    return@launch
+                }
+                if (mix.isEmpty()) {
+                    // Should not happen — the repository never yields an empty mix — but the
+                    // bug this guards against was a service waiting forever for a
+                    // startForeground that could not come. Stopping is the difference between
+                    // a no-op and a system-level crash.
+                    stopSelf()
+                    return@launch
+                }
+                // Empty title, deliberately: media cannot see sound names — they are string
+                // resources in core:data, which this module is not allowed to reach — and the
+                // notification's text is not what this fix is about. The app overwrites it with
+                // a real title the moment it next pushes a mix.
+                player.setMix(mix, "")
+                player.play()
+            } finally {
+                coldStartInFlight = false
             }
-            if (mix.isEmpty()) {
-                // Should not happen — the repository never yields an empty mix — but the
-                // bug this guards against was a service waiting forever for a
-                // startForeground that could not come. Stopping is the difference between
-                // a no-op and a system-level crash.
-                stopSelf()
-                return@launch
-            }
-            // Empty title, deliberately: media cannot see sound names — they are string
-            // resources in core:data, which this module is not allowed to reach — and the
-            // notification's text is not what this fix is about. The app overwrites it with
-            // a real title the moment it next pushes a mix.
-            player.setMix(mix, "")
-            player.play()
         }
     }
 
@@ -186,8 +196,13 @@ class AudioService : MediaSessionService() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
+        if (coldStartInFlight) {
+            Log.d(TAG, "Task removed while the stored mix is still loading; the load decides")
+            return
+        }
         val player = mediaSession?.player
         if (player?.playWhenReady == false || player?.mediaItemCount == 0) {
+            Log.d(TAG, "Task removed with nothing playing; stopping")
             stopSelf()
         }
     }
