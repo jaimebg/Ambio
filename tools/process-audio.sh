@@ -190,7 +190,11 @@ aresample=48000" \
   [ "$codec" = "opus" ] || { echo "    FAIL: codec $codec"; failed=1; }
 }
 
-for name in "${LOOPS[@]}"; do
+# ${LOOPS[@]+"${LOOPS[@]}"} rather than a plain "${LOOPS[@]}": with ONLY set,
+# LOOPS can be an empty array, and under `set -u` on bash 3.2 (stock macOS
+# /bin/bash, as opposed to a newer bash first on PATH) expanding an empty
+# array's "[@]" is an unbound-variable error, not an empty expansion.
+for name in ${LOOPS[@]+"${LOOPS[@]}"}; do
   src=$(find_source "$name") || {
     echo "missing source for $name in $SRC or $FETCHED"
     echo "  run tools/fetch-sources.sh and tools/synth-noise.sh first"
@@ -228,7 +232,8 @@ for name in "${LOOPS[@]}"; do
   echo
 done
 
-for name in "${ONESHOTS[@]}"; do
+# Same empty-safe idiom as the LOOPS loop above, for the same bash-3.2 reason.
+for name in ${ONESHOTS[@]+"${ONESHOTS[@]}"}; do
   src=$(find_source "$name") || { echo "missing source for $name"; exit 1; }
   echo "=== $name  (one-shot: loudness only, no loop bake)"
 
