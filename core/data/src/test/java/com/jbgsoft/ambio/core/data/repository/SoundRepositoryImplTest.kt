@@ -2,6 +2,7 @@ package com.jbgsoft.ambio.core.data.repository
 
 import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.data.datastore.PreferencesDataStore
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.UserPreferences
 import io.mockk.coEvery
@@ -21,9 +22,10 @@ class SoundRepositoryImplTest {
 
     private val dataStore = mockk<PreferencesDataStore>(relaxed = true)
 
-    private fun repositoryStoring(lastMix: String): SoundRepositoryImpl {
-        every { dataStore.preferences } returns flowOf(UserPreferences(lastMix = lastMix))
+    private fun repositoryStoring(lastMix: String, breakMix: String? = null): SoundRepositoryImpl {
+        every { dataStore.preferences } returns flowOf(UserPreferences(lastMix = lastMix, breakMix = breakMix))
         coEvery { dataStore.setLastMix(any()) } returns Unit
+        coEvery { dataStore.setBreakMix(any()) } returns Unit
         return SoundRepositoryImpl(dataStore)
     }
 
@@ -260,5 +262,81 @@ class SoundRepositoryImplTest {
         repositoryStoring("rain").getAllSounds().forEach { sound ->
             assertThat(sound.glow.name).isEqualTo(sound.id.uppercase())
         }
+    }
+
+    @Test
+    fun `the break slot reads the focus mix until it has been edited`() = runTest {
+        val repository = repositoryStoring("rain:1.00,ocean:0.40")
+
+        val breakMix = repository.getActiveMix(MixSlot.BREAK).first()
+
+        assertThat(breakMix.map { it.sound.id }).containsExactly("rain", "ocean").inOrder()
+        assertThat(breakMix.map { it.level }).containsExactly(1.0f, 0.4f).inOrder()
+    }
+
+    @Test
+    fun `a stored break mix wins over the focus mix`() = runTest {
+        val repository = repositoryStoring("rain", breakMix = "cave")
+
+        assertThat(repository.getActiveMix(MixSlot.BREAK).first().map { it.sound.id })
+            .containsExactly("cave")
+        assertThat(repository.getActiveMix(MixSlot.FOCUS).first().map { it.sound.id })
+            .containsExactly("rain")
+    }
+
+    @Test
+    fun `editing the break slot writes the break key and leaves the focus slot alone`() = runTest {
+        val repository = repositoryStoring("rain")
+
+        repository.setSoundActive("cave", active = true, slot = MixSlot.BREAK)
+
+        assertThat(repository.getActiveMix(MixSlot.BREAK).first().map { it.sound.id })
+            .containsExactly("rain", "cave").inOrder()
+        assertThat(repository.getActiveMix(MixSlot.FOCUS).first().map { it.sound.id })
+            .containsExactly("rain")
+        coVerify(exactly = 1) { dataStore.setBreakMix("rain:1.00,cave:1.00") }
+        coVerify(exactly = 0) { dataStore.setLastMix(any()) }
+    }
+
+    @Test
+    fun `a level set on the break slot does not touch the focus slot`() = runTest {
+        val repository = repositoryStoring("rain,ocean")
+
+        repository.setSoundLevel("ocean", 0.3f, slot = MixSlot.BREAK)
+
+        assertThat(repository.getActiveMix(MixSlot.BREAK).first().first { it.sound.id == "ocean" }.level)
+            .isEqualTo(0.3f)
+        assertThat(repository.getActiveMix(MixSlot.FOCUS).first().first { it.sound.id == "ocean" }.level)
+            .isEqualTo(1.0f)
+    }
+
+    @Test
+    fun `the break slot keeps the never-empty invariant`() = runTest {
+        val repository = repositoryStoring("rain")
+
+        repository.setSoundActive("rain", active = false, slot = MixSlot.BREAK)
+
+        assertThat(repository.getActiveMix(MixSlot.BREAK).first().map { it.sound.id })
+            .containsExactly("rain")
+    }
+
+    @Test
+    fun `the break slot keeps the three-sound ceiling`() = runTest {
+        val repository = repositoryStoring("rain,ocean,cave")
+
+        repository.setSoundActive("wind", active = true, slot = MixSlot.BREAK)
+
+        assertThat(repository.getActiveMix(MixSlot.BREAK).first()).hasSize(3)
+    }
+
+    @Test
+    fun `a failed break write rolls back only the break override`() = runTest {
+        val repository = repositoryStoring("rain")
+        coEvery { dataStore.setBreakMix(any()) } throws IOException("disk full")
+
+        runCatching { repository.setSoundActive("cave", active = true, slot = MixSlot.BREAK) }
+
+        assertThat(repository.getActiveMix(MixSlot.BREAK).first().map { it.sound.id })
+            .containsExactly("rain")
     }
 }

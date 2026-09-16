@@ -16,9 +16,11 @@ import androidx.compose.material.icons.filled.WaterDrop
 import com.jbgsoft.ambio.core.data.datastore.PreferencesDataStore
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.MixCodec
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
+import com.jbgsoft.ambio.core.domain.model.UserPreferences
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -151,28 +153,31 @@ class SoundRepositoryImpl @Inject constructor(
 
     private val sounds = SOUND_CATALOGUE
 
-    private val mixOverride = MutableStateFlow<String?>(null)
+    // One optimistic override per slot, see persist().
+    private val overrides: Map<MixSlot, MutableStateFlow<String?>> =
+        MixSlot.entries.associateWith { MutableStateFlow<String?>(null) }
 
     // Serializes the read-modify-write in setSoundActive/setSoundLevel so two
     // overlapping calls (rapid taps, each its own viewModelScope.launch) can't
     // both read the same snapshot and have the second silently drop the first.
+    // One mutex for both slots: the picker edits one at a time anyway.
     private val mutex = Mutex()
 
     override fun getAllSounds(): List<Sound> = sounds
 
     override fun getSoundById(id: String): Sound? = sounds.find { it.id == id }
 
-    override fun getActiveMix(): Flow<List<ActiveSound>> = combine(
-        mixOverride,
+    override fun getActiveMix(slot: MixSlot): Flow<List<ActiveSound>> = combine(
+        overrides.getValue(slot),
         preferencesDataStore.preferences
     ) { override, prefs ->
-        MixCodec.decode(override ?: prefs.lastMix, sounds)
+        MixCodec.decode(override ?: stored(prefs, slot), sounds)
     }
 
-    override suspend fun setSoundActive(soundId: String, active: Boolean) {
+    override suspend fun setSoundActive(soundId: String, active: Boolean, slot: MixSlot) {
         if (getSoundById(soundId) == null) return
         mutex.withLock {
-            val current = currentMix()
+            val current = currentMix(slot)
             val updated = when {
                 active && current.any { it.sound.id == soundId } -> current
                 // The mix never holds more than MAX_ACTIVE_SOUNDS.
@@ -182,15 +187,16 @@ class SoundRepositoryImpl @Inject constructor(
                 current.size == 1 -> return
                 else -> current.filterNot { it.sound.id == soundId }
             }
-            persist(updated)
+            persist(slot, updated)
         }
     }
 
-    override suspend fun setSoundLevel(soundId: String, level: Float) {
+    override suspend fun setSoundLevel(soundId: String, level: Float, slot: MixSlot) {
         mutex.withLock {
-            val current = currentMix()
+            val current = currentMix(slot)
             if (current.none { it.sound.id == soundId }) return
             persist(
+                slot,
                 current.map { active ->
                     if (active.sound.id == soundId) active.copy(level = level.coerceIn(0f, 1f))
                     else active
@@ -199,27 +205,40 @@ class SoundRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun currentMix(): List<ActiveSound> =
-        MixCodec.decode(mixOverride.value ?: preferencesDataStore.preferences.first().lastMix, sounds)
+    /** The BREAK slot falls back to the focus mix so its first edit starts from what the user already has. */
+    private fun stored(prefs: UserPreferences, slot: MixSlot): String = when (slot) {
+        MixSlot.FOCUS -> prefs.lastMix
+        MixSlot.BREAK -> prefs.breakMix ?: prefs.lastMix
+    }
+
+    private suspend fun currentMix(slot: MixSlot): List<ActiveSound> =
+        MixCodec.decode(
+            overrides.getValue(slot).value ?: stored(preferencesDataStore.preferences.first(), slot),
+            sounds
+        )
 
     /**
-     * Updates [mixOverride] optimistically so the caller's own toggle is visible
+     * Updates the slot's override optimistically so the caller's own toggle is visible
      * without waiting a frame for DataStore, but rolls it back if the store write
      * fails — a failed write must never leave the override claiming a mix the
      * store doesn't hold. The exception still propagates to the caller.
      */
-    private suspend fun persist(mix: List<ActiveSound>) {
+    private suspend fun persist(slot: MixSlot, mix: List<ActiveSound>) {
         val encoded = MixCodec.encode(
             // Re-decoding normalises the order before it is written or observed.
             MixCodec.decode(MixCodec.encode(mix, withLevels = true), sounds),
             withLevels = true
         )
-        val previous = mixOverride.value
-        mixOverride.value = encoded
+        val override = overrides.getValue(slot)
+        val previous = override.value
+        override.value = encoded
         try {
-            preferencesDataStore.setLastMix(encoded)
+            when (slot) {
+                MixSlot.FOCUS -> preferencesDataStore.setLastMix(encoded)
+                MixSlot.BREAK -> preferencesDataStore.setBreakMix(encoded)
+            }
         } catch (e: Exception) {
-            mixOverride.value = previous
+            override.value = previous
             throw e
         }
     }
