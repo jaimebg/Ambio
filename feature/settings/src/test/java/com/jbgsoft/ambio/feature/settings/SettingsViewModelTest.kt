@@ -61,4 +61,28 @@ class SettingsViewModelTest {
 
         coVerify(exactly = 1) { preferencesRepository.setHapticsEnabled(false) }
     }
+
+    @Test
+    fun `state reflects the break sound preference`() = runTest {
+        every { preferencesRepository.preferences } returns flowOf(UserPreferences(breakSoundEnabled = true))
+
+        val viewModel = SettingsViewModel(preferencesRepository)
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            assertThat(awaitItem().breakSoundEnabled).isTrue()
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `toggling break sound writes through to the repository`() = runTest {
+        every { preferencesRepository.preferences } returns flowOf(UserPreferences())
+        val viewModel = SettingsViewModel(preferencesRepository)
+
+        viewModel.onBreakSoundChanged(true)
+        advanceUntilIdle()
+
+        coVerify { preferencesRepository.setBreakSoundEnabled(true) }
+    }
 }

@@ -148,6 +148,7 @@ private fun Settings() = SettingsScreen(
     ),
     onHapticsChanged = {},
     onChimeChanged = {},
+    onBreakSoundChanged = {},
     onEffectsChanged = {},
     onNavigateBack = {}
 )

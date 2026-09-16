@@ -8,6 +8,8 @@
     <string name="settings_haptics_summary">Vibrate on taps and timer events</string>
     <string name="settings_chime">Completion chime</string>
     <string name="settings_chime_summary">Play a sound when a focus session ends</string>
+    <string name="settings_break_sound">Sound during breaks</string>
+    <string name="settings_break_sound_summary">Play a separate mix while you rest</string>
     <string name="settings_effects">Ambient effects</string>
     <string name="settings_effects_summary">Animated particles behind the timer</string>
 </resources>
