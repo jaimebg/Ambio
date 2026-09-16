@@ -132,7 +132,13 @@ class HomeViewModel @Inject constructor(
 
     private fun observeSession() {
         sessionRunner.progress
-            .onEach { progress -> _uiState.update { it.copy(sessionProgress = progress) } }
+            .onEach { progress ->
+                _uiState.update { it.copy(sessionProgress = progress) }
+                // No plan in progress means FOCUS again. Left on BREAK, an idle or
+                // ambient screen would wear the break palette and — worse — drop every
+                // focus mix emission as "not the audible slot".
+                if (progress == null) applyAudibility(null)
+            }
             .launchIn(viewModelScope)
 
         sessionRunner.events
@@ -158,10 +164,27 @@ class HomeViewModel @Inject constructor(
                         breakSoundEnabled = prefs.breakSoundEnabled
                     )
                 }
-                // Flipping the toggle mid-break must be audible at once.
-                if (previous.breakSoundEnabled != prefs.breakSoundEnabled) applyAudibility()
+                if (previous.breakSoundEnabled != prefs.breakSoundEnabled) onBreakSoundToggled()
             }
             .launchIn(viewModelScope)
+    }
+
+    /**
+     * Flipping the toggle mid-break must be audible at once — but only while the
+     * session is actually running. Paused or idle there is nothing to make audible:
+     * applying it would restart playback the user had paused. The slot still moves,
+     * so the gradient and mix bar show what the next resume would play, and the
+     * resume itself (which runs [applyAudibility] while the timer is still Paused)
+     * is what turns it into sound.
+     */
+    private fun onBreakSoundToggled() {
+        if (_uiState.value.timerState is TimerState.Running) {
+            applyAudibility()
+        } else {
+            val state = _uiState.value
+            val slot = audibleSlotFor(state.sessionProgress?.step, state.breakSoundEnabled)
+            _uiState.update { it.copy(audibleSlot = slot) }
+        }
     }
 
     fun onEvent(event: HomeEvent) {
@@ -419,17 +442,14 @@ class HomeViewModel @Inject constructor(
 
     /**
      * Decides which slot is audible from the step and the toggle, then makes the
-     * audio match. Called with the step on every StepStarted, and with the step
-     * from progress whenever the toggle flips or a pause is resumed, so a break can
-     * go from silent to sounding without waiting for the next step. Idle resolves to
-     * FOCUS and touches nothing: startPlayback is only issued for a step in progress.
+     * audio match. Called with the step on every StepStarted, and with the step from
+     * progress when a pause is resumed or the toggle flips mid-run, so a break can go
+     * from silent to sounding without waiting for the next step. A null step — nothing
+     * in progress — resolves to FOCUS and issues no audio call at all, which is also
+     * how a finished plan hands the slot back.
      */
     private fun applyAudibility(step: PlanStep? = _uiState.value.sessionProgress?.step) {
-        val slot = if (step is PlanStep.Break && _uiState.value.breakSoundEnabled) {
-            MixSlot.BREAK
-        } else {
-            MixSlot.FOCUS
-        }
+        val slot = audibleSlotFor(step, _uiState.value.breakSoundEnabled)
         _uiState.update { it.copy(audibleSlot = slot) }
         when {
             step == null -> Unit
@@ -438,6 +458,10 @@ class HomeViewModel @Inject constructor(
             else -> audioServiceConnection.stop()
         }
     }
+
+    /** The whole rule: BREAK only during a break the user asked to hear. */
+    private fun audibleSlotFor(step: PlanStep?, breakSoundEnabled: Boolean): MixSlot =
+        if (step is PlanStep.Break && breakSoundEnabled) MixSlot.BREAK else MixSlot.FOCUS
 
     private fun chime(resource: Int) {
         if (_uiState.value.chimeEnabled) chimePlayer.playChime(resource)

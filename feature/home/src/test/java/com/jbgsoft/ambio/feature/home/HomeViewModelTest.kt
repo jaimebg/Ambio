@@ -676,6 +676,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         coVerify { sessionRunner.resume() }
+        verify { audioServiceConnection.stop() }
         verify(exactly = 0) { audioServiceConnection.play() }
     }
 
@@ -1342,6 +1343,7 @@ class HomeViewModelTest {
     fun `enabling break sound during a break starts the break mix`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
+        timerStateFlow.value = TimerState.Running(remainingMs = 300_000, totalMs = 300_000)
         progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
         eventsFlow.emit(breakStarted())
         advanceUntilIdle()
@@ -1359,6 +1361,7 @@ class HomeViewModelTest {
         preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
         val viewModel = createViewModel()
         advanceUntilIdle()
+        timerStateFlow.value = TimerState.Running(remainingMs = 300_000, totalMs = 300_000)
         progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
         eventsFlow.emit(breakStarted())
         advanceUntilIdle()
@@ -1436,5 +1439,65 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+    }
+
+    @Test
+    fun `flipping break sound while paused does not start audio`() = runTest(testDispatcher) {
+        // A toggle flip is not a transport command. Paused, the only thing that may move
+        // is which slot would sound; the audio stays where the user left it.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 0, 0)
+        timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        advanceUntilIdle()
+
+        verify(exactly = 0) { audioServiceConnection.play() }
+        verify(exactly = 0) { audioServiceConnection.stop() }
+    }
+
+    @Test
+    fun `flipping break sound while paused on a break still moves the audible slot`() = runTest(testDispatcher) {
+        // The slot has to follow so the gradient and mix bar show what resuming would
+        // play; the audio itself waits for the resume.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        verify(exactly = 0) { audioServiceConnection.play() }
+    }
+
+    @Test
+    fun `the audible slot returns to focus when the plan ends`() = runTest(testDispatcher) {
+        // Left on BREAK, an idle screen would wear the break palette and, worse, the
+        // next focus mix emission would be dropped as "not the audible slot".
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        clearMocks(audioServiceConnection, answers = false)
+
+        progressFlow.value = null
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+        // A new level, or the StateFlow would hold an equal value and never re-emit.
+        activeMixFlow.value = listOf(ActiveSound(testSound, 0.9f))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.9f)), any()) }
     }
 }
