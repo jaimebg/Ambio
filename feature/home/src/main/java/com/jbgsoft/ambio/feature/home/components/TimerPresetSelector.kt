@@ -30,6 +30,7 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.feature.home.R
 
@@ -49,11 +51,13 @@ fun TimerPresetSelector(
     selectedPreset: TimerPreset,
     customMinutes: Int,
     breakMinutes: Int,
+    sessionPlan: SessionPlan,
     onPresetSelected: (TimerPreset) -> Unit,
     onCustomMinutesChanged: (Int) -> Unit,
     onCustomMinutesChangeFinished: () -> Unit,
     onBreakMinutesChanged: (Int) -> Unit,
     onBreakMinutesChangeFinished: () -> Unit,
+    onEditPlan: () -> Unit,
     modifier: Modifier = Modifier,
     isCompact: Boolean = false
 ) {
@@ -123,48 +127,65 @@ fun TimerPresetSelector(
 
         Spacer(modifier = Modifier.height(sectionSpacing))
 
-        // Break Duration - Filter Chips
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = horizontalPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(R.string.label_break_duration),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(labelSpacing))
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
+        if (selectedPreset == TimerPreset.PLAN) {
+            // The plan carries its own breaks, so the chips would be misleading here.
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                BREAK_OPTIONS.forEach { minutes ->
-                    val isSelected = breakMinutes == minutes
-                    FilterChip(
-                        selected = isSelected,
-                        onClick = {
-                            onBreakMinutesChanged(minutes)
-                            onBreakMinutesChangeFinished()
-                        },
-                        label = { Text(pluralStringResource(R.plurals.duration_minutes, minutes, minutes)) },
-                        leadingIcon = if (isSelected) {
-                            {
-                                Icon(
-                                    imageVector = Icons.Filled.Done,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(FilterChipDefaults.IconSize)
-                                )
-                            }
-                        } else null,
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            selectedLeadingIconColor = MaterialTheme.colorScheme.onTertiaryContainer
+                PlanSummary(plan = sessionPlan)
+                Spacer(modifier = Modifier.width(12.dp))
+                TextButton(onClick = onEditPlan) {
+                    Text(stringResource(R.string.plan_edit))
+                }
+            }
+        } else {
+            // Break Duration - Filter Chips
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(R.string.label_break_duration),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(labelSpacing))
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    BREAK_OPTIONS.forEach { minutes ->
+                        val isSelected = breakMinutes == minutes
+                        FilterChip(
+                            selected = isSelected,
+                            onClick = {
+                                onBreakMinutesChanged(minutes)
+                                onBreakMinutesChangeFinished()
+                            },
+                            label = { Text(pluralStringResource(R.plurals.duration_minutes, minutes, minutes)) },
+                            leadingIcon = if (isSelected) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Done,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                    )
+                                }
+                            } else null,
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                selectedLeadingIconColor = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -172,7 +193,7 @@ fun TimerPresetSelector(
 }
 
 @Composable
-private fun NumberStepper(
+internal fun NumberStepper(
     value: Int,
     onValueChange: (Int) -> Unit,
     onValueChangeFinished: () -> Unit,

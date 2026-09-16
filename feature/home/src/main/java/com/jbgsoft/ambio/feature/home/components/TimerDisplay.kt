@@ -37,6 +37,7 @@ fun TimerDisplay(
     mode: AppMode,
     isPlaying: Boolean,
     selectedMinutes: Int,
+    stepLabel: String? = null,
     modifier: Modifier = Modifier,
     size: Dp = 300.dp
 ) {
@@ -59,6 +60,7 @@ fun TimerDisplay(
 
     val subtitleText = when {
         mode == AppMode.AMBIENT -> stringResource(R.string.state_ambient_mode)
+        stepLabel != null && (timerState is TimerState.Running || timerState is TimerState.Paused) -> stepLabel
         timerState is TimerState.Running && timerState.isBreak -> stringResource(R.string.state_break_time)
         timerState is TimerState.Running -> stringResource(R.string.state_focus)
         timerState is TimerState.Paused -> stringResource(R.string.state_paused)

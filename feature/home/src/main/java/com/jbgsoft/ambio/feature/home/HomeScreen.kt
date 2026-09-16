@@ -55,6 +55,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlin.math.min
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.TimerState
 import com.jbgsoft.ambio.core.domain.model.gradientOf
@@ -337,11 +338,19 @@ private fun HomeContentColumn(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        val progress = uiState.sessionProgress
+                        val stepLabel = progress?.takeIf { it.plan.steps.size > 2 || it.plan.repeat }?.let {
+                            when (it.step) {
+                                is PlanStep.Focus -> stringResource(R.string.timer_step_focus_of, it.focusOrdinal, it.focusCount)
+                                is PlanStep.Break -> stringResource(R.string.timer_step_break)
+                            }
+                        }
                         TimerDisplay(
                             timerState = uiState.timerState,
                             mode = uiState.mode,
                             isPlaying = uiState.isPlaying,
                             selectedMinutes = uiState.selectedMinutes,
+                            stepLabel = stepLabel,
                             size = timerDisplaySize
                         )
 
@@ -357,11 +366,13 @@ private fun HomeContentColumn(
                                 selectedPreset = uiState.selectedPreset,
                                 customMinutes = uiState.customMinutes,
                                 breakMinutes = uiState.breakMinutes,
+                                sessionPlan = uiState.sessionPlan,
                                 onPresetSelected = { onEvent(HomeEvent.SelectPreset(it)) },
                                 onCustomMinutesChanged = { onEvent(HomeEvent.SetCustomMinutes(it)) },
                                 onCustomMinutesChangeFinished = { onEvent(HomeEvent.CustomMinutesChangeFinished) },
                                 onBreakMinutesChanged = { onEvent(HomeEvent.SetBreakMinutes(it)) },
                                 onBreakMinutesChangeFinished = { onEvent(HomeEvent.BreakMinutesChangeFinished) },
+                                onEditPlan = { onEvent(HomeEvent.ShowPlanEditor) },
                                 modifier = Modifier.fillMaxWidth(),
                                 isCompact = isSmallScreen
                             )
