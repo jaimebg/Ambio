@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.google.common.truth.Truth.assertThat
+import com.jbgsoft.ambio.core.domain.model.PlanStep
+import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -69,5 +71,43 @@ class PreferencesDataStoreTest {
     @Test
     fun `the mix defaults to rain when nothing was ever stored`() = runTest {
         assertThat(newPreferencesDataStore().preferences.first().lastMix).isEqualTo("rain")
+    }
+
+    @Test
+    fun `the break mix is absent until it is written`() = runTest {
+        val prefs = newPreferencesDataStore().preferences.first()
+        assertThat(prefs.breakMix).isNull()
+    }
+
+    @Test
+    fun `writing the break mix leaves the focus mix alone`() = runTest {
+        val dataStore = newPreferencesDataStore()
+        dataStore.setLastMix("rain:1.00")
+        dataStore.setBreakMix("ocean:0.50")
+
+        val prefs = dataStore.preferences.first()
+        assertThat(prefs.lastMix).isEqualTo("rain:1.00")
+        assertThat(prefs.breakMix).isEqualTo("ocean:0.50")
+    }
+
+    @Test
+    fun `break sound is off by default and persists when enabled`() = runTest {
+        val dataStore = newPreferencesDataStore()
+        assertThat(dataStore.preferences.first().breakSoundEnabled).isFalse()
+
+        dataStore.setBreakSoundEnabled(true)
+
+        assertThat(dataStore.preferences.first().breakSoundEnabled).isTrue()
+    }
+
+    @Test
+    fun `the session plan defaults and round-trips`() = runTest {
+        val dataStore = newPreferencesDataStore()
+        assertThat(dataStore.preferences.first().sessionPlan).isEqualTo(SessionPlan.DEFAULT)
+
+        val plan = SessionPlan(listOf(PlanStep.Focus(35), PlanStep.Break(15)), repeat = true)
+        dataStore.setSessionPlan(plan)
+
+        assertThat(dataStore.preferences.first().sessionPlan).isEqualTo(plan)
     }
 }
