@@ -60,14 +60,14 @@
     <string name="timer_step_break">Istirahat</string>
     <string name="plan_editor_title">Rencana sesi</string>
     <string name="plan_step_focus">Fokus</string>
-    <string name="plan_step_pause">Jeda</string>
+    <string name="plan_step_pause">Istirahat</string>
     <string name="plan_step_loop">Ulangi dari sini</string>
     <string name="plan_step_end">Akhiri di sini</string>
     <string name="plan_add_step">Tambah langkah</string>
     <string name="plan_done">Selesai</string>
     <string name="plan_needs_focus">Tambahkan setidaknya satu langkah fokus</string>
-    <string name="a11y_decrease_pause">Kurangi durasi jeda</string>
-    <string name="a11y_increase_pause">Tambah durasi jeda</string>
+    <string name="a11y_decrease_pause">Kurangi durasi istirahat</string>
+    <string name="a11y_increase_pause">Tambah durasi istirahat</string>
     <string name="a11y_plan_row_choice">Jenis langkah</string>
     <string name="a11y_plan_row_state">Langkah %1$d: %2$s</string>
     <string name="picker_slot_focus">Fokus</string>

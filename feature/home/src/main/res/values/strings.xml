@@ -64,14 +64,14 @@
     <string name="timer_step_break">Break</string>
     <string name="plan_editor_title">Session plan</string>
     <string name="plan_step_focus">Focus</string>
-    <string name="plan_step_pause">Pause</string>
+    <string name="plan_step_pause">Break</string>
     <string name="plan_step_loop">Loop from here</string>
     <string name="plan_step_end">End here</string>
     <string name="plan_add_step">Add step</string>
     <string name="plan_done">Done</string>
     <string name="plan_needs_focus">Add at least one focus step</string>
-    <string name="a11y_decrease_pause">Decrease pause duration</string>
-    <string name="a11y_increase_pause">Increase pause duration</string>
+    <string name="a11y_decrease_pause">Decrease break duration</string>
+    <string name="a11y_increase_pause">Increase break duration</string>
     <string name="a11y_plan_row_choice">Step type</string>
     <string name="a11y_plan_row_state">Step %1$d: %2$s</string>
 </resources>

@@ -62,14 +62,14 @@
     <string name="timer_step_break">Rus</string>
     <string name="plan_editor_title">Sessieplan</string>
     <string name="plan_step_focus">Fokus</string>
-    <string name="plan_step_pause">Pouse</string>
+    <string name="plan_step_pause">Rus</string>
     <string name="plan_step_loop">Herhaal van hier af</string>
     <string name="plan_step_end">Eindig hier</string>
     <string name="plan_add_step">Voeg stap by</string>
     <string name="plan_done">Klaar</string>
     <string name="plan_needs_focus">Voeg ten minste een fokusstap by</string>
-    <string name="a11y_decrease_pause">Verminder pouseduur</string>
-    <string name="a11y_increase_pause">Vermeerder pouseduur</string>
+    <string name="a11y_decrease_pause">Verminder rusduur</string>
+    <string name="a11y_increase_pause">Vermeerder rusduur</string>
     <string name="a11y_plan_row_choice">Staptipe</string>
     <string name="a11y_plan_row_state">Stap %1$d: %2$s</string>
     <string name="picker_slot_focus">Fokus</string>

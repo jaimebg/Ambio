@@ -66,14 +66,14 @@
     <string name="timer_step_break">Prestávka</string>
     <string name="plan_editor_title">Plán relácie</string>
     <string name="plan_step_focus">Sústredenie</string>
-    <string name="plan_step_pause">Pauza</string>
+    <string name="plan_step_pause">Prestávka</string>
     <string name="plan_step_loop">Opakovať odtiaľto</string>
     <string name="plan_step_end">Skončiť tu</string>
     <string name="plan_add_step">Pridať krok</string>
     <string name="plan_done">Hotovo</string>
     <string name="plan_needs_focus">Pridajte aspoň jeden krok sústredenia</string>
-    <string name="a11y_decrease_pause">Skrátiť dĺžku pauzy</string>
-    <string name="a11y_increase_pause">Predĺžiť dĺžku pauzy</string>
+    <string name="a11y_decrease_pause">Skrátiť dĺžku prestávky</string>
+    <string name="a11y_increase_pause">Predĺžiť dĺžku prestávky</string>
     <string name="a11y_plan_row_choice">Typ kroku</string>
     <string name="a11y_plan_row_state">Krok %1$d: %2$s</string>
     <string name="picker_slot_focus">Sústredenie</string>

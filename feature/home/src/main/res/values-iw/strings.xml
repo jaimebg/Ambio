@@ -64,14 +64,14 @@
     <string name="timer_step_break">הפסקה</string>
     <string name="plan_editor_title">תוכנית הסשן</string>
     <string name="plan_step_focus">מיקוד</string>
-    <string name="plan_step_pause">השהיה</string>
+    <string name="plan_step_pause">הפסקה</string>
     <string name="plan_step_loop">לולאה מכאן</string>
     <string name="plan_step_end">סיום כאן</string>
     <string name="plan_add_step">הוספת שלב</string>
     <string name="plan_done">סיום</string>
     <string name="plan_needs_focus">צריך להוסיף לפחות שלב מיקוד אחד</string>
-    <string name="a11y_decrease_pause">קיצור משך ההשהיה</string>
-    <string name="a11y_increase_pause">הארכת משך ההשהיה</string>
+    <string name="a11y_decrease_pause">קיצור משך ההפסקה</string>
+    <string name="a11y_increase_pause">הארכת משך ההפסקה</string>
     <string name="a11y_plan_row_choice">סוג השלב</string>
     <string name="a11y_plan_row_state">שלב %1$d: %2$s</string>
     <string name="picker_slot_focus">מיקוד</string>

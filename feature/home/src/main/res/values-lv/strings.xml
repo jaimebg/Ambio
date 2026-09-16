@@ -64,14 +64,14 @@
     <string name="timer_step_break">Pārtraukums</string>
     <string name="plan_editor_title">Sesijas plāns</string>
     <string name="plan_step_focus">Koncentrēšanās</string>
-    <string name="plan_step_pause">Pauze</string>
+    <string name="plan_step_pause">Pārtraukums</string>
     <string name="plan_step_loop">Atkārtot no šejienes</string>
     <string name="plan_step_end">Beigt šeit</string>
     <string name="plan_add_step">Pievienot soli</string>
     <string name="plan_done">Gatavs</string>
     <string name="plan_needs_focus">Pievienojiet vismaz vienu koncentrēšanās soli</string>
-    <string name="a11y_decrease_pause">Samazināt pauzes ilgumu</string>
-    <string name="a11y_increase_pause">Palielināt pauzes ilgumu</string>
+    <string name="a11y_decrease_pause">Samazināt pārtraukuma ilgumu</string>
+    <string name="a11y_increase_pause">Palielināt pārtraukuma ilgumu</string>
     <string name="a11y_plan_row_choice">Soļa veids</string>
     <string name="a11y_plan_row_state">%1$d. solis: %2$s</string>
     <string name="picker_slot_focus">Koncentrēšanās</string>

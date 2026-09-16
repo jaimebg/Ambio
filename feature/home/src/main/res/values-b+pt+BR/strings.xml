@@ -64,14 +64,14 @@
     <string name="timer_step_break">Intervalo</string>
     <string name="plan_editor_title">Plano da sessão</string>
     <string name="plan_step_focus">Foco</string>
-    <string name="plan_step_pause">Pausa</string>
+    <string name="plan_step_pause">Intervalo</string>
     <string name="plan_step_loop">Repetir a partir daqui</string>
     <string name="plan_step_end">Terminar aqui</string>
     <string name="plan_add_step">Adicionar etapa</string>
     <string name="plan_done">Concluir</string>
     <string name="plan_needs_focus">Adicione pelo menos uma etapa de foco</string>
-    <string name="a11y_decrease_pause">Diminuir a duração da pausa</string>
-    <string name="a11y_increase_pause">Aumentar a duração da pausa</string>
+    <string name="a11y_decrease_pause">Diminuir a duração do intervalo</string>
+    <string name="a11y_increase_pause">Aumentar a duração do intervalo</string>
     <string name="a11y_plan_row_choice">Tipo de etapa</string>
     <string name="a11y_plan_row_state">Etapa %1$d: %2$s</string>
     <string name="picker_slot_focus">Foco</string>

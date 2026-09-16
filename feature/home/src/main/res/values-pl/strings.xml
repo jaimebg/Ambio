@@ -66,14 +66,14 @@
     <string name="timer_step_break">Przerwa</string>
     <string name="plan_editor_title">Plan sesji</string>
     <string name="plan_step_focus">Skupienie</string>
-    <string name="plan_step_pause">Pauza</string>
+    <string name="plan_step_pause">Przerwa</string>
     <string name="plan_step_loop">Powtarzaj od tego miejsca</string>
     <string name="plan_step_end">Zakończ tutaj</string>
     <string name="plan_add_step">Dodaj krok</string>
     <string name="plan_done">Gotowe</string>
     <string name="plan_needs_focus">Dodaj co najmniej jeden krok skupienia</string>
-    <string name="a11y_decrease_pause">Skróć czas pauzy</string>
-    <string name="a11y_increase_pause">Wydłuż czas pauzy</string>
+    <string name="a11y_decrease_pause">Skróć czas przerwy</string>
+    <string name="a11y_increase_pause">Wydłuż czas przerwy</string>
     <string name="a11y_plan_row_choice">Typ kroku</string>
     <string name="a11y_plan_row_state">Krok %1$d: %2$s</string>
     <string name="picker_slot_focus">Skupienie</string>

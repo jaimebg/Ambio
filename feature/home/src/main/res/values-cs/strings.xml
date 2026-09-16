@@ -66,14 +66,14 @@
     <string name="timer_step_break">Přestávka</string>
     <string name="plan_editor_title">Plán sezení</string>
     <string name="plan_step_focus">Soustředění</string>
-    <string name="plan_step_pause">Pauza</string>
+    <string name="plan_step_pause">Přestávka</string>
     <string name="plan_step_loop">Opakovat odsud</string>
     <string name="plan_step_end">Skončit zde</string>
     <string name="plan_add_step">Přidat krok</string>
     <string name="plan_done">Hotovo</string>
     <string name="plan_needs_focus">Přidejte alespoň jeden krok soustředění</string>
-    <string name="a11y_decrease_pause">Zkrátit délku pauzy</string>
-    <string name="a11y_increase_pause">Prodloužit délku pauzy</string>
+    <string name="a11y_decrease_pause">Zkrátit délku přestávky</string>
+    <string name="a11y_increase_pause">Prodloužit délku přestávky</string>
     <string name="a11y_plan_row_choice">Typ kroku</string>
     <string name="a11y_plan_row_state">Krok %1$d: %2$s</string>
     <string name="picker_slot_focus">Soustředění</string>

@@ -66,14 +66,14 @@
     <string name="timer_step_break">Odmor</string>
     <string name="plan_editor_title">Načrt seje</string>
     <string name="plan_step_focus">Zbranost</string>
-    <string name="plan_step_pause">Premor</string>
+    <string name="plan_step_pause">Odmor</string>
     <string name="plan_step_loop">Ponovi od tu</string>
     <string name="plan_step_end">Končaj tu</string>
     <string name="plan_add_step">Dodaj korak</string>
     <string name="plan_done">Končano</string>
     <string name="plan_needs_focus">Dodajte vsaj en korak zbranosti</string>
-    <string name="a11y_decrease_pause">Skrajšaj trajanje premora</string>
-    <string name="a11y_increase_pause">Podaljšaj trajanje premora</string>
+    <string name="a11y_decrease_pause">Skrajšaj trajanje odmora</string>
+    <string name="a11y_increase_pause">Podaljšaj trajanje odmora</string>
     <string name="a11y_plan_row_choice">Vrsta koraka</string>
     <string name="a11y_plan_row_state">Korak %1$d: %2$s</string>
     <string name="picker_slot_focus">Zbranost</string>

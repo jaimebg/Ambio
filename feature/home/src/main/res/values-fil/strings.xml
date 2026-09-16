@@ -62,14 +62,14 @@
     <string name="timer_step_break">Pahinga</string>
     <string name="plan_editor_title">Plano ng session</string>
     <string name="plan_step_focus">Focus</string>
-    <string name="plan_step_pause">Pause</string>
+    <string name="plan_step_pause">Pahinga</string>
     <string name="plan_step_loop">Ulitin mula rito</string>
     <string name="plan_step_end">Tapusin dito</string>
     <string name="plan_add_step">Magdagdag ng hakbang</string>
     <string name="plan_done">Tapos na</string>
     <string name="plan_needs_focus">Magdagdag ng kahit isang focus na hakbang</string>
-    <string name="a11y_decrease_pause">Bawasan ang tagal ng pause</string>
-    <string name="a11y_increase_pause">Dagdagan ang tagal ng pause</string>
+    <string name="a11y_decrease_pause">Bawasan ang tagal ng pahinga</string>
+    <string name="a11y_increase_pause">Dagdagan ang tagal ng pahinga</string>
     <string name="a11y_plan_row_choice">Uri ng hakbang</string>
     <string name="a11y_plan_row_state">Hakbang %1$d: %2$s</string>
     <string name="picker_slot_focus">Focus</string>

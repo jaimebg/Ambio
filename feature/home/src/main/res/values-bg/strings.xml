@@ -62,14 +62,14 @@
     <string name="timer_step_break">Почивка</string>
     <string name="plan_editor_title">План на сесията</string>
     <string name="plan_step_focus">Фокус</string>
-    <string name="plan_step_pause">Пауза</string>
+    <string name="plan_step_pause">Почивка</string>
     <string name="plan_step_loop">Повтаряне оттук</string>
     <string name="plan_step_end">Край дотук</string>
     <string name="plan_add_step">Добавяне на стъпка</string>
     <string name="plan_done">Готово</string>
     <string name="plan_needs_focus">Добавете поне една стъпка за фокус</string>
-    <string name="a11y_decrease_pause">Намаляване на продължителността на паузата</string>
-    <string name="a11y_increase_pause">Увеличаване на продължителността на паузата</string>
+    <string name="a11y_decrease_pause">Намаляване на продължителността на почивката</string>
+    <string name="a11y_increase_pause">Увеличаване на продължителността на почивката</string>
     <string name="a11y_plan_row_choice">Тип на стъпката</string>
     <string name="a11y_plan_row_state">Стъпка %1$d: %2$s</string>
     <string name="picker_slot_focus">Фокус</string>

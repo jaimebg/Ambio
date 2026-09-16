@@ -60,14 +60,14 @@
     <string name="timer_step_break">休息</string>
     <string name="plan_editor_title">時段計劃</string>
     <string name="plan_step_focus">專注</string>
-    <string name="plan_step_pause">暫停</string>
+    <string name="plan_step_pause">休息</string>
     <string name="plan_step_loop">由此循環</string>
     <string name="plan_step_end">在此結束</string>
     <string name="plan_add_step">新增步驟</string>
     <string name="plan_done">完成</string>
     <string name="plan_needs_focus">至少新增一個專注步驟</string>
-    <string name="a11y_decrease_pause">縮短暫停時長</string>
-    <string name="a11y_increase_pause">延長暫停時長</string>
+    <string name="a11y_decrease_pause">縮短休息時長</string>
+    <string name="a11y_increase_pause">延長休息時長</string>
     <string name="a11y_plan_row_choice">步驟類型</string>
     <string name="a11y_plan_row_state">步驟 %1$d：%2$s</string>
     <string name="picker_slot_focus">專注</string>
