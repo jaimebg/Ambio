@@ -125,6 +125,11 @@ class AudioService : MediaSessionService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val result = super.onStartCommand(intent, flags, startId)
         if (intent?.action == ACTION_PLAY_STORED_MIX) {
+            // The service registers a session only when onGetSession hands it to a binding
+            // controller. Started by a bare action nothing binds, so without this the
+            // notification manager never attaches, startForeground never runs, and the
+            // system kills the service after the deadline.
+            mediaSession?.let { addSession(it) }
             if (player.playbackState == Player.STATE_IDLE) loadStoredMixAndPlay() else player.play()
         }
         return result
