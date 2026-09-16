@@ -10,6 +10,7 @@ import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.MixSlot
+import com.jbgsoft.ambio.core.domain.model.PlanRowChoice
 import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.Sound
@@ -1499,5 +1500,86 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.9f)), any()) }
+    }
+
+    // --- Plan Editor Tests ---
+
+    @Test
+    fun `opening the editor copies the stored plan into the draft`() = runTest(testDispatcher) {
+        val plan = SessionPlan(listOf(PlanStep.Focus(35), PlanStep.Break(15)), repeat = true)
+        preferencesFlow.value = UserPreferences(sessionPlan = plan)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+
+        assertThat(viewModel.uiState.value.planDraft).isEqualTo(plan)
+    }
+
+    @Test
+    fun `closing the editor drops the draft without saving`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+        viewModel.onEvent(HomeEvent.AddPlanStep)
+
+        viewModel.onEvent(HomeEvent.HidePlanEditor)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.planDraft).isNull()
+        coVerify(exactly = 0) { preferencesRepository.setSessionPlan(any()) }
+    }
+
+    @Test
+    fun `row choice, minutes and add step edit the draft`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+
+        viewModel.onEvent(HomeEvent.AddPlanStep)                       // F25 B5 F25
+        viewModel.onEvent(HomeEvent.SetPlanStepMinutes(2, 35))         // F25 B5 F35
+        viewModel.onEvent(HomeEvent.SetPlanRowChoice(3, PlanRowChoice.LOOP))
+
+        assertThat(viewModel.uiState.value.planDraft).isEqualTo(
+            SessionPlan(listOf(PlanStep.Focus(25), PlanStep.Break(5), PlanStep.Focus(35)), repeat = true)
+        )
+    }
+
+    @Test
+    fun `saving a valid draft persists it and closes the editor`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+        viewModel.onEvent(HomeEvent.SetPlanRowChoice(2, PlanRowChoice.LOOP))
+
+        viewModel.onEvent(HomeEvent.SavePlan)
+        advanceUntilIdle()
+
+        coVerify { preferencesRepository.setSessionPlan(SessionPlan.DEFAULT.copy(repeat = true)) }
+        assertThat(viewModel.uiState.value.planDraft).isNull()
+    }
+
+    @Test
+    fun `saving an invalid draft does nothing`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+        viewModel.onEvent(HomeEvent.SetPlanRowChoice(0, PlanRowChoice.END))   // no steps left
+
+        viewModel.onEvent(HomeEvent.SavePlan)
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { preferencesRepository.setSessionPlan(any()) }
+        assertThat(viewModel.uiState.value.planDraft).isNotNull()
+    }
+
+    @Test
+    fun `edits while the editor is closed are ignored`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.AddPlanStep)
+
+        assertThat(viewModel.uiState.value.planDraft).isNull()
     }
 }

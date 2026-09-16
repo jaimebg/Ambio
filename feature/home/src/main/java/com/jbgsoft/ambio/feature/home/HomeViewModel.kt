@@ -10,9 +10,13 @@ import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.MixCodec
 import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.PlanStep
+import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
+import com.jbgsoft.ambio.core.domain.model.withAddedStep
+import com.jbgsoft.ambio.core.domain.model.withRowChoice
+import com.jbgsoft.ambio.core.domain.model.withStepMinutes
 import com.jbgsoft.ambio.core.domain.repository.ChimeRepository
 import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
@@ -205,6 +209,12 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.Reset -> reset()
             is HomeEvent.ShowSoundPicker -> showSoundPicker()
             is HomeEvent.HideSoundPicker -> hideSoundPicker()
+            is HomeEvent.ShowPlanEditor -> showPlanEditor()
+            is HomeEvent.HidePlanEditor -> _uiState.update { it.copy(planDraft = null) }
+            is HomeEvent.SetPlanRowChoice -> editDraft { it.withRowChoice(event.index, event.choice) }
+            is HomeEvent.SetPlanStepMinutes -> editDraft { it.withStepMinutes(event.index, event.minutes) }
+            is HomeEvent.AddPlanStep -> editDraft { it.withAddedStep() }
+            is HomeEvent.SavePlan -> savePlan()
         }
     }
 
@@ -413,6 +423,28 @@ class HomeViewModel @Inject constructor(
 
     private fun hideSoundPicker() {
         _uiState.update { it.copy(showSoundPicker = false) }
+    }
+
+    private fun showPlanEditor() {
+        haptic { click() }
+        _uiState.update { it.copy(planDraft = it.sessionPlan) }
+    }
+
+    /** Edits apply to the draft only; the stored plan changes on SavePlan. */
+    private fun editDraft(edit: (SessionPlan) -> SessionPlan) {
+        haptic { tick() }
+        _uiState.update { state ->
+            val draft = state.planDraft ?: return@update state
+            state.copy(planDraft = edit(draft))
+        }
+    }
+
+    private fun savePlan() {
+        val draft = _uiState.value.planDraft ?: return
+        if (!draft.isValid) return
+        haptic { click() }
+        viewModelScope.launch { preferencesRepository.setSessionPlan(draft) }
+        _uiState.update { it.copy(planDraft = null) }
     }
 
     /**

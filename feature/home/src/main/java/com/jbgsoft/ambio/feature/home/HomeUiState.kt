@@ -24,6 +24,7 @@ data class HomeUiState(
     val customMinutes: Int = 25,
     val breakMinutes: Int = 5,
     val sessionPlan: SessionPlan = SessionPlan.DEFAULT,
+    val planDraft: SessionPlan? = null,
     val volume: Float = 0.7f,
     val isPlaying: Boolean = false,
     val showSoundPicker: Boolean = false,

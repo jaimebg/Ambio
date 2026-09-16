@@ -2,6 +2,7 @@ package com.jbgsoft.ambio.feature.home
 
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.MixSlot
+import com.jbgsoft.ambio.core.domain.model.PlanRowChoice
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 
@@ -22,4 +23,10 @@ sealed class HomeEvent {
     data object Reset : HomeEvent()
     data object ShowSoundPicker : HomeEvent()
     data object HideSoundPicker : HomeEvent()
+    data object ShowPlanEditor : HomeEvent()
+    data object HidePlanEditor : HomeEvent()
+    data class SetPlanRowChoice(val index: Int, val choice: PlanRowChoice) : HomeEvent()
+    data class SetPlanStepMinutes(val index: Int, val minutes: Int) : HomeEvent()
+    data object AddPlanStep : HomeEvent()
+    data object SavePlan : HomeEvent()
 }
