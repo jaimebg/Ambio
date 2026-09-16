@@ -122,6 +122,14 @@ class AudioService : MediaSessionService() {
             .build()
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val result = super.onStartCommand(intent, flags, startId)
+        if (intent?.action == ACTION_PLAY_STORED_MIX) {
+            if (player.playbackState == Player.STATE_IDLE) loadStoredMixAndPlay() else player.play()
+        }
+        return result
+    }
+
     /**
      * Called when something asks this service to play while it holds no sounds — the
      * Quick Settings tile with the app closed, in practice.
@@ -261,5 +269,9 @@ class AudioService : MediaSessionService() {
          */
         const val ACTION_PLAYBACK_CHANGED = "com.jbgsoft.ambio.PLAYBACK_CHANGED"
         const val EXTRA_IS_PLAYING = "is_playing"
+
+        // The tile's cold-start path; a media-button intent cannot do this because Media3
+        // intercepts play on an empty player before it reaches MixPlayer.
+        const val ACTION_PLAY_STORED_MIX = "com.jbgsoft.ambio.PLAY_STORED_MIX"
     }
 }

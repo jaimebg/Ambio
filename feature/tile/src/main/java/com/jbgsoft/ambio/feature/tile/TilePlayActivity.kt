@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.core.content.ContextCompat
 import com.jbgsoft.ambio.media.AudioService
 
@@ -18,10 +17,12 @@ import com.jbgsoft.ambio.media.AudioService
  * (issue #13). Being started from a tile makes the app user-visible for the
  * one call that matters.
  *
- * The intent is a media button rather than a custom action so that nothing new
- * is needed on the service side: MediaSessionService handles ACTION_MEDIA_BUTTON
- * in onStartCommand, play on an empty mix runs AudioService's stored-mix load,
- * and that load is what meets the startForeground deadline.
+ * The intent carries [AudioService.ACTION_PLAY_STORED_MIX], an explicit service action
+ * that [AudioService]'s onStartCommand handles directly. A media-button intent was
+ * tried first and rejected: Media3 1.10.1 intercepts a play key before it ever reaches
+ * the player when that player holds no media item, so on the cold-start empty player
+ * the stored-mix load never runs, startForeground() never happens, and the system
+ * kills the service with ForegroundServiceDidNotStartInTimeException.
  */
 class TilePlayActivity : Activity() {
 
@@ -32,12 +33,6 @@ class TilePlayActivity : Activity() {
     }
 }
 
-/** A KEYCODE_MEDIA_PLAY media-button intent aimed straight at [AudioService]. */
+/** An explicit [AudioService.ACTION_PLAY_STORED_MIX] service intent aimed at [AudioService]. */
 fun playIntent(context: Context): Intent =
-    Intent(Intent.ACTION_MEDIA_BUTTON).apply {
-        setClass(context, AudioService::class.java)
-        putExtra(
-            Intent.EXTRA_KEY_EVENT,
-            KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY)
-        )
-    }
+    Intent(context, AudioService::class.java).setAction(AudioService.ACTION_PLAY_STORED_MIX)
