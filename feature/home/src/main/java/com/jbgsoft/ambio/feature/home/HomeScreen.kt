@@ -56,7 +56,6 @@ import kotlin.math.min
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
-import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
 import com.jbgsoft.ambio.core.domain.model.gradientOf
 import com.jbgsoft.ambio.feature.home.components.CurrentSoundBar
@@ -342,11 +341,7 @@ private fun HomeContentColumn(
                             timerState = uiState.timerState,
                             mode = uiState.mode,
                             isPlaying = uiState.isPlaying,
-                            selectedMinutes = when (uiState.selectedPreset) {
-                                TimerPreset.FOCUS_25 -> 25
-                                TimerPreset.FOCUS_50 -> 50
-                                TimerPreset.CUSTOM -> uiState.customMinutes
-                            },
+                            selectedMinutes = uiState.selectedMinutes,
                             size = timerDisplaySize
                         )
 

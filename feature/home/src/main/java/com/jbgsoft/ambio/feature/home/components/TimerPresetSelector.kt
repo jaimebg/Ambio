@@ -252,5 +252,6 @@ private fun TimerPreset.label(): String = stringResource(
         TimerPreset.FOCUS_25 -> R.string.preset_25_min
         TimerPreset.FOCUS_50 -> R.string.preset_50_min
         TimerPreset.CUSTOM -> R.string.preset_custom
+        TimerPreset.PLAN -> R.string.preset_plan
     }
 )

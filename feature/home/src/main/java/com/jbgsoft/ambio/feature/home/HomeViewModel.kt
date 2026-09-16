@@ -8,6 +8,7 @@ import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.MixCodec
+import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
@@ -15,6 +16,8 @@ import com.jbgsoft.ambio.core.domain.repository.ChimeRepository
 import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
+import com.jbgsoft.ambio.core.domain.session.SessionEvent
+import com.jbgsoft.ambio.core.domain.session.SessionRunner
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
 import com.jbgsoft.ambio.media.AudioServiceConnection
 import com.jbgsoft.ambio.media.MixEntry
@@ -32,6 +35,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val soundRepository: SoundRepository,
     private val timerRepository: TimerRepository,
+    private val sessionRunner: SessionRunner,
     private val preferencesRepository: PreferencesRepository,
     private val saveSessionUseCase: SaveSessionUseCase,
     private val hapticManager: HapticManager,
@@ -48,6 +52,7 @@ class HomeViewModel @Inject constructor(
         connectAudioService()
         loadInitialData()
         observeTimerState()
+        observeSession()
         observePreferences()
         observeAudioServiceState()
     }
@@ -111,12 +116,17 @@ class HomeViewModel @Inject constructor(
 
     private fun observeTimerState() {
         timerRepository.timerState
-            .onEach { state ->
-                _uiState.update { it.copy(timerState = state) }
-                if (state is TimerState.Completed) {
-                    onTimerCompleted(wasBreak = state.wasBreak)
-                }
-            }
+            .onEach { state -> _uiState.update { it.copy(timerState = state) } }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeSession() {
+        sessionRunner.progress
+            .onEach { progress -> _uiState.update { it.copy(sessionProgress = progress) } }
+            .launchIn(viewModelScope)
+
+        sessionRunner.events
+            .onEach { event -> onSessionEvent(event) }
             .launchIn(viewModelScope)
     }
 
@@ -130,6 +140,7 @@ class HomeViewModel @Inject constructor(
                         customMinutes = prefs.lastTimerMinutes.takeIf { it !in listOf(25, 50) }
                             ?: state.customMinutes,
                         breakMinutes = prefs.breakMinutes,
+                        sessionPlan = prefs.sessionPlan,
                         hapticsEnabled = prefs.hapticsEnabled,
                         chimeEnabled = prefs.chimeEnabled,
                         effectsEnabled = prefs.effectsEnabled
@@ -156,21 +167,15 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.Reset -> reset()
             is HomeEvent.ShowSoundPicker -> showSoundPicker()
             is HomeEvent.HideSoundPicker -> hideSoundPicker()
-            is HomeEvent.TimerCompleted -> onTimerCompleted(wasBreak = false)
         }
     }
 
     private fun setMode(mode: AppMode) {
         haptic { click() }
 
-        // Reset timer when switching to Ambient mode if timer is active
-        if (mode == AppMode.AMBIENT) {
-            val timerState = _uiState.value.timerState
-            if (timerState is TimerState.Running || timerState is TimerState.Paused) {
-                viewModelScope.launch {
-                    timerRepository.resetTimer()
-                }
-            }
+        // Abandon a running plan when switching to Ambient mode
+        if (mode == AppMode.AMBIENT && _uiState.value.sessionProgress != null) {
+            viewModelScope.launch { sessionRunner.stop() }
         }
 
         // Stop audio when switching to Timer mode so button shows "play"
@@ -261,7 +266,9 @@ class HomeViewModel @Inject constructor(
     private fun selectPreset(preset: TimerPreset) {
         haptic { click() }
         _uiState.update { it.copy(selectedPreset = preset) }
-        if (preset != TimerPreset.CUSTOM) {
+        // CUSTOM and PLAN both report 0 focus minutes: neither has a preset
+        // duration to remember, and persisting 0 would leave an invalid plan.
+        if (preset.focusMinutes > 0) {
             viewModelScope.launch {
                 preferencesRepository.setLastTimerMinutes(preset.focusMinutes)
             }
@@ -326,25 +333,17 @@ class HomeViewModel @Inject constructor(
                     }
                 }
                 state.timerState is TimerState.Running -> {
-                    // Pause both timer and audio
-                    timerRepository.pauseTimer()
+                    sessionRunner.pause()
                     audioServiceConnection.pause()
                 }
                 state.timerState is TimerState.Paused -> {
-                    // Resume both timer and audio
-                    timerRepository.resumeTimer()
+                    sessionRunner.resume()
                     audioServiceConnection.play()
                 }
                 else -> {
-                    // Start timer and play sound
-                    val minutes = when (state.selectedPreset) {
-                        TimerPreset.FOCUS_25 -> 25
-                        TimerPreset.FOCUS_50 -> 50
-                        TimerPreset.CUSTOM -> state.customMinutes
-                    }
-                    val durationMs = minutes * 60 * 1000L
-                    timerRepository.startTimer(durationMs)
-                    startPlayback()
+                    // Audio starts when the runner reports the first step, so the
+                    // first step and every later one go through the same path.
+                    sessionRunner.start(state.planForStart)
                 }
             }
         }
@@ -353,7 +352,7 @@ class HomeViewModel @Inject constructor(
     private fun reset() {
         haptic { click() }
         viewModelScope.launch {
-            timerRepository.resetTimer()
+            sessionRunner.stop()
             audioServiceConnection.stop()
         }
     }
@@ -367,45 +366,51 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(showSoundPicker = false) }
     }
 
-    private fun onTimerCompleted(wasBreak: Boolean) {
-        val state = _uiState.value
-
-        // Stop the ambient sound when timer completes
-        audioServiceConnection.stop()
-
-        // Play timer completion chime and haptic feedback
-        if (_uiState.value.chimeEnabled) {
-            chimePlayer.playChime(chimeRepository.getTimerChimeResource())
-        }
-        haptic { timerComplete() }
-
-        if (wasBreak) {
-            // Break finished - reset to idle state, don't start another break
-            viewModelScope.launch {
-                timerRepository.resetTimer()
+    /**
+     * The runner decides what happens next; this only makes it audible and
+     * records it. A step end always stops the audio: a silent break stays
+     * stopped, a sounding one is restarted by the StepStarted that follows.
+     */
+    private fun onSessionEvent(event: SessionEvent) {
+        when (event) {
+            is SessionEvent.StepStarted -> onStepStarted(event.step)
+            is SessionEvent.StepCompleted -> {
+                audioServiceConnection.stop()
+                chime(chimeRepository.getTimerChimeResource())
+                haptic { timerComplete() }
+                recordIfFocus(event.step)
             }
-            return
+            is SessionEvent.PlanCompleted -> {
+                audioServiceConnection.stop()
+                chime(chimeRepository.getSuccessChimeResource())
+                haptic { timerComplete() }
+                recordIfFocus(event.lastStep)
+            }
         }
+    }
 
-        // Focus session completed
+    private fun onStepStarted(step: PlanStep) {
+        when (step) {
+            is PlanStep.Focus -> startPlayback()
+            is PlanStep.Break -> audioServiceConnection.stop()
+        }
+    }
+
+    private fun chime(resource: Int) {
+        if (_uiState.value.chimeEnabled) chimePlayer.playChime(resource)
+    }
+
+    /** A completed focus step is a session against the whole mix, as before. */
+    private fun recordIfFocus(step: PlanStep) {
+        if (step !is PlanStep.Focus) return
+        val mix = _uiState.value.activeMix
+        if (mix.isEmpty()) return
         viewModelScope.launch {
-            // Save the completed session against the whole mix, not one sound
-            val mix = state.activeMix
-            if (mix.isNotEmpty()) {
-                val minutes = when (state.selectedPreset) {
-                    TimerPreset.FOCUS_25 -> 25
-                    TimerPreset.FOCUS_50 -> 50
-                    TimerPreset.CUSTOM -> state.customMinutes
-                }
-                saveSessionUseCase(
-                    soundId = MixCodec.encode(mix, withLevels = false),
-                    durationMinutes = minutes,
-                    wasCompleted = true
-                )
-            }
-
-            // Start break timer
-            timerRepository.startBreak(state.breakMinutes * 60 * 1000L)
+            saveSessionUseCase(
+                soundId = MixCodec.encode(mix, withLevels = false),
+                durationMinutes = step.minutes,
+                wasCompleted = true
+            )
         }
     }
 

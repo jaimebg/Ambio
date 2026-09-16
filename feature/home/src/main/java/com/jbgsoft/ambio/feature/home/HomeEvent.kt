@@ -20,5 +20,4 @@ sealed class HomeEvent {
     data object Reset : HomeEvent()
     data object ShowSoundPicker : HomeEvent()
     data object HideSoundPicker : HomeEvent()
-    data object TimerCompleted : HomeEvent()
 }
