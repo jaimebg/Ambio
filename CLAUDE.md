@@ -15,6 +15,7 @@ Clean and build:
 - Build: `./gradlew assembleDebug`
 - Lint: `./gradlew lint`
 - Tests: `./gradlew test`
+- Translations: tools/check-translations.sh
 
 ## Operational Notes
 
