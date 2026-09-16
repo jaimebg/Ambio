@@ -137,11 +137,28 @@ class HomeViewModel @Inject constructor(
     private fun observeSession() {
         sessionRunner.progress
             .onEach { progress ->
+                val wasAudible = _uiState.value.audibleSlot
                 _uiState.update { it.copy(sessionProgress = progress) }
-                // No plan in progress means FOCUS again. Left on BREAK, an idle or
-                // ambient screen would wear the break palette and — worse — drop every
-                // focus mix emission as "not the audible slot".
-                if (progress == null) applyAudibility(null)
+                if (progress == null) {
+                    // No plan in progress means FOCUS again. Left on BREAK, an idle or
+                    // ambient screen would wear the break palette and — worse — drop every
+                    // focus mix emission as "not the audible slot".
+                    //
+                    // A plan abandoned mid-break is the one path where the slot moves with
+                    // no step event behind it: the runner just stops, so nothing else would
+                    // ever tell the service to drop the break tracks and they would keep
+                    // playing under a screen already showing the focus mix.
+                    if (wasAudible == MixSlot.BREAK) audioServiceConnection.stop()
+                    applyAudibility(null)
+                } else {
+                    // A ViewModel recreated over a plan already in progress learns the step
+                    // from here, not from a StepStarted it missed. The slot has to follow so
+                    // the gradient and the mix bar match what is already playing — but the
+                    // audio is the service's and is untouched.
+                    _uiState.update {
+                        it.copy(audibleSlot = audibleSlotFor(progress.step, it.breakSoundEnabled))
+                    }
+                }
             }
             .launchIn(viewModelScope)
 

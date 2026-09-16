@@ -1502,6 +1502,64 @@ class HomeViewModelTest {
         verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.9f)), any()) }
     }
 
+    @Test
+    fun `switching to ambient during a sounding break stops the audio`() = runTest(testDispatcher) {
+        // Abandoning a plan mid-break is the one path with no step event behind it:
+        // the runner just stops. Without an explicit stop the service keeps playing
+        // the break tracks under a screen that has already gone back to the focus mix.
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        clearMocks(audioServiceConnection, answers = false)
+
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
+        advanceUntilIdle()
+        // The runner is mocked, so its progress is nulled here the way a real stop would.
+        progressFlow.value = null
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
+    @Test
+    fun `a restored plan in progress recomputes the audible slot without touching audio`() =
+        runTest(testDispatcher) {
+            // A ViewModel recreated over a running plan never sees the StepStarted that
+            // opened the break: progress is where it learns the step. The slot has to
+            // follow so the gradient matches what the service is already playing — and
+            // only the slot, because the audio is not this ViewModel's to restart.
+            preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+            progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+            verify(exactly = 0) { audioServiceConnection.play() }
+        }
+
+    @Test
+    fun `a break arriving only through progress still moves the audible slot`() = runTest(testDispatcher) {
+        // The same restore, with the toggle already settled before the step arrives:
+        // nothing flips breakSoundEnabled here, so the slot can only come from progress.
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        verify(exactly = 0) { audioServiceConnection.play() }
+        verify(exactly = 0) { audioServiceConnection.stop() }
+    }
+
     // --- Plan Editor Tests ---
 
     @Test
