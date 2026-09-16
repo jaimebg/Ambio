@@ -9,6 +9,7 @@ import com.jbgsoft.ambio.core.common.haptics.HapticManager
 import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.Sound
@@ -88,6 +89,7 @@ class HomeViewModelTest {
     // Flows for controlling state
     private lateinit var timerStateFlow: MutableStateFlow<TimerState>
     private lateinit var activeMixFlow: MutableStateFlow<List<ActiveSound>>
+    private lateinit var breakMixFlow: MutableStateFlow<List<ActiveSound>>
     private lateinit var preferencesFlow: MutableStateFlow<UserPreferences>
     private lateinit var isConnectedFlow: MutableStateFlow<Boolean>
     private lateinit var isPlayingFlow: MutableStateFlow<Boolean>
@@ -122,6 +124,7 @@ class HomeViewModelTest {
         // Initialize flows
         timerStateFlow = MutableStateFlow(TimerState.Idle)
         activeMixFlow = MutableStateFlow(listOf(ActiveSound(testSound, 1.0f)))
+        breakMixFlow = MutableStateFlow(listOf(ActiveSound(testSoundForest, 0.5f)))
         preferencesFlow = MutableStateFlow(UserPreferences())
         isConnectedFlow = MutableStateFlow(false)
         isPlayingFlow = MutableStateFlow(false)
@@ -129,9 +132,10 @@ class HomeViewModelTest {
         // Create mocks
         soundRepository = mockk {
             every { getAllSounds() } returns testSounds
-            every { getActiveMix() } returns activeMixFlow
-            coEvery { setSoundActive(any(), any()) } just Runs
-            coEvery { setSoundLevel(any(), any()) } just Runs
+            every { getActiveMix(MixSlot.FOCUS) } returns activeMixFlow
+            every { getActiveMix(MixSlot.BREAK) } returns breakMixFlow
+            coEvery { setSoundActive(any(), any(), any()) } just Runs
+            coEvery { setSoundLevel(any(), any(), any()) } just Runs
         }
 
         timerRepository = mockk {
@@ -645,6 +649,9 @@ class HomeViewModelTest {
     fun `playPause in timer mode resumes the runner and the audio when paused`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
+        // A focus step is in progress: resume re-applies audibility, and with no step
+        // at all it would (correctly) leave the audio alone and this would prove nothing.
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 0, 0)
         timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
         advanceUntilIdle()
 
@@ -653,6 +660,23 @@ class HomeViewModelTest {
 
         coVerify { sessionRunner.resume() }
         verify { audioServiceConnection.play() }
+    }
+
+    @Test
+    fun `resuming during a silent break does not start audio`() = runTest(testDispatcher) {
+        // Resume must go through the same audibility decision as a step start, or a
+        // pause taken during a silent break comes back playing the focus mix.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        coVerify { sessionRunner.resume() }
+        verify(exactly = 0) { audioServiceConnection.play() }
     }
 
     @Test
@@ -1039,7 +1063,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
-        coVerify { soundRepository.setSoundActive("forest", true) }
+        coVerify { soundRepository.setSoundActive("forest", true, MixSlot.FOCUS) }
         // The service hears about it through getActiveMix, never from the event: two
         // writers would be two sources of truth that can disagree.
         verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
@@ -1055,7 +1079,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
-        coVerify { soundRepository.setSoundActive("forest", false) }
+        coVerify { soundRepository.setSoundActive("forest", false, MixSlot.FOCUS) }
         verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 
@@ -1070,7 +1094,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.ToggleSound(testSound))
         advanceUntilIdle()
 
-        coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false) }
+        coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false, MixSlot.FOCUS) }
         verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 
@@ -1106,7 +1130,7 @@ class HomeViewModelTest {
         verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.3f)), any()) }
         // But no write: the repository's setSoundLevel is a DataStore edit behind a
         // mutex, and a drag would queue one per frame.
-        coVerify(exactly = 0) { soundRepository.setSoundLevel(any(), any()) }
+        coVerify(exactly = 0) { soundRepository.setSoundLevel(any(), any(), any()) }
     }
 
     @Test
@@ -1164,7 +1188,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.SoundLevelChangeFinished("rain"))
         advanceUntilIdle()
 
-        coVerify(exactly = 1) { soundRepository.setSoundLevel("rain", 0.6f) }
+        coVerify(exactly = 1) { soundRepository.setSoundLevel("rain", 0.6f, MixSlot.FOCUS) }
     }
 
     @Test
@@ -1261,5 +1285,156 @@ class HomeViewModelTest {
                 wasCompleted = true
             )
         }
+    }
+
+    // --- Break mix tests ---
+    //
+    // Two stored mixes, two independent slots: which one sounds is decided by the step
+    // and the break-sound toggle, which one the picker edits is decided by the user.
+
+    private fun breakStarted() = SessionEvent.StepStarted(PlanStep.Break(5), 1)
+
+    @Test
+    fun `a break with break sound off stops the audio`() = runTest(testDispatcher) {
+        createViewModel()
+        advanceUntilIdle()
+
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        verify(exactly = 0) { audioServiceConnection.play() }
+    }
+
+    @Test
+    fun `a break with break sound on plays the break mix`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.5f)), any()) }
+        verify { audioServiceConnection.play() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        assertThat(viewModel.uiState.value.activeMix.map { it.sound.id }).containsExactly("forest")
+    }
+
+    @Test
+    fun `the next focus step returns to the focus mix`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        eventsFlow.emit(SessionEvent.StepStarted(PlanStep.Focus(25), 2))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1.0f)), any()) }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
+    @Test
+    fun `enabling break sound during a break starts the break mix`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+    }
+
+    @Test
+    fun `disabling break sound during a break stops the audio`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = false)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
+    @Test
+    fun `the picker edits the slot it is set to`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        viewModel.onEvent(HomeEvent.ToggleSound(testSound))
+        advanceUntilIdle()
+
+        coVerify { soundRepository.setSoundActive("rain", true, MixSlot.BREAK) }
+        assertThat(viewModel.uiState.value.pickerMix.map { it.sound.id }).containsExactly("forest")
+    }
+
+    @Test
+    fun `dragging a level on the slot that is not audible does not reach the service`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        clearMocks(audioServiceConnection, answers = false)
+
+        viewModel.onEvent(HomeEvent.SetSoundLevel("forest", 0.2f))
+
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        assertThat(viewModel.uiState.value.breakMix.single().level).isEqualTo(0.2f)
+        assertThat(viewModel.uiState.value.focusMix.single().level).isEqualTo(1.0f)
+    }
+
+    @Test
+    fun `letting go of a break level persists it on the break slot`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        viewModel.onEvent(HomeEvent.SetSoundLevel("forest", 0.2f))
+
+        viewModel.onEvent(HomeEvent.SoundLevelChangeFinished("forest"))
+        advanceUntilIdle()
+
+        coVerify { soundRepository.setSoundLevel("forest", 0.2f, MixSlot.BREAK) }
+    }
+
+    @Test
+    fun `a break mix emission while a break sounds is pushed to the service`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        createViewModel()
+        advanceUntilIdle()
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        breakMixFlow.value = listOf(ActiveSound(testSoundForest, 0.9f))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.9f)), any()) }
+    }
+
+    @Test
+    fun `a break mix emission while focus sounds is not pushed`() = runTest(testDispatcher) {
+        createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        breakMixFlow.value = listOf(ActiveSound(testSoundForest, 0.9f))
+        advanceUntilIdle()
+
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 }

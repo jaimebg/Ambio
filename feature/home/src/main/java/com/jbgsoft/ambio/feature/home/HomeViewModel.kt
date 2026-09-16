@@ -8,6 +8,7 @@ import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.MixCodec
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
@@ -89,12 +90,21 @@ class HomeViewModel @Inject constructor(
         val sounds = soundRepository.getAllSounds()
         _uiState.update { it.copy(availableSounds = sounds) }
 
-        soundRepository.getActiveMix()
-            .onEach { mix ->
-                _uiState.update { it.copy(activeMix = mix) }
-                pushMix(mix)
-            }
+        soundRepository.getActiveMix(MixSlot.FOCUS)
+            .onEach { mix -> onMixEmitted(MixSlot.FOCUS, mix) }
             .launchIn(viewModelScope)
+
+        soundRepository.getActiveMix(MixSlot.BREAK)
+            .onEach { mix -> onMixEmitted(MixSlot.BREAK, mix) }
+            .launchIn(viewModelScope)
+    }
+
+    /** Only the audible slot's emissions reach the service; the other one just lands in state. */
+    private fun onMixEmitted(slot: MixSlot, mix: List<ActiveSound>) {
+        _uiState.update { state ->
+            if (slot == MixSlot.BREAK) state.copy(breakMix = mix) else state.copy(focusMix = mix)
+        }
+        if (_uiState.value.audibleSlot == slot) pushMix()
     }
 
     /**
@@ -133,6 +143,7 @@ class HomeViewModel @Inject constructor(
     private fun observePreferences() {
         preferencesRepository.preferences
             .onEach { prefs ->
+                val previous = _uiState.value
                 _uiState.update { state ->
                     state.copy(
                         volume = prefs.volume,
@@ -143,9 +154,12 @@ class HomeViewModel @Inject constructor(
                         sessionPlan = prefs.sessionPlan,
                         hapticsEnabled = prefs.hapticsEnabled,
                         chimeEnabled = prefs.chimeEnabled,
-                        effectsEnabled = prefs.effectsEnabled
+                        effectsEnabled = prefs.effectsEnabled,
+                        breakSoundEnabled = prefs.breakSoundEnabled
                     )
                 }
+                // Flipping the toggle mid-break must be audible at once.
+                if (previous.breakSoundEnabled != prefs.breakSoundEnabled) applyAudibility()
             }
             .launchIn(viewModelScope)
     }
@@ -156,6 +170,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.ToggleSound -> toggleSound(event.sound)
             is HomeEvent.SetSoundLevel -> setSoundLevel(event.soundId, event.level)
             is HomeEvent.SoundLevelChangeFinished -> persistSoundLevel(event.soundId)
+            is HomeEvent.SetPickerSlot -> setPickerSlot(event.slot)
             is HomeEvent.SelectPreset -> selectPreset(event.preset)
             is HomeEvent.SetCustomMinutes -> setCustomMinutes(event.minutes)
             is HomeEvent.CustomMinutesChangeFinished -> persistCustomMinutes()
@@ -199,11 +214,13 @@ class HomeViewModel @Inject constructor(
      * buzz for a tap the repository would reject — not a correctness guarantee.
      */
     private fun toggleSound(sound: Sound) {
-        val isActive = _uiState.value.activeMix.any { it.sound.id == sound.id }
-        if (isActive && _uiState.value.activeMix.size == 1) return
+        val slot = _uiState.value.pickerSlot
+        val mix = _uiState.value.pickerMix
+        val isActive = mix.any { it.sound.id == sound.id }
+        if (isActive && mix.size == 1) return
         haptic { heavyClick() }
         viewModelScope.launch {
-            soundRepository.setSoundActive(sound.id, active = !isActive)
+            soundRepository.setSoundActive(sound.id, active = !isActive, slot = slot)
         }
     }
 
@@ -227,22 +244,29 @@ class HomeViewModel @Inject constructor(
      */
     private fun setSoundLevel(soundId: String, level: Float) {
         val clampedLevel = level.coerceIn(0f, 1f)
+        val slot = _uiState.value.pickerSlot
         _uiState.update { state ->
-            state.copy(
-                activeMix = state.activeMix.map { active ->
-                    if (active.sound.id == soundId) active.copy(level = clampedLevel) else active
-                }
-            )
+            val updated = state.mixFor(slot).map { active ->
+                if (active.sound.id == soundId) active.copy(level = clampedLevel) else active
+            }
+            if (slot == MixSlot.BREAK) state.copy(breakMix = updated) else state.copy(focusMix = updated)
         }
-        pushMix()
+        // A level dragged on the slot that is not sounding must not change the audio.
+        if (slot == _uiState.value.audibleSlot) pushMix()
     }
 
     private fun persistSoundLevel(soundId: String) {
-        val level = _uiState.value.activeMix
+        val slot = _uiState.value.pickerSlot
+        val level = _uiState.value.mixFor(slot)
             .firstOrNull { it.sound.id == soundId }
             ?.level
             ?: return
-        viewModelScope.launch { soundRepository.setSoundLevel(soundId, level) }
+        viewModelScope.launch { soundRepository.setSoundLevel(soundId, level, slot) }
+    }
+
+    private fun setPickerSlot(slot: MixSlot) {
+        haptic { click() }
+        _uiState.update { it.copy(pickerSlot = slot) }
     }
 
     private fun mixTitle(mix: List<ActiveSound>): String =
@@ -338,7 +362,9 @@ class HomeViewModel @Inject constructor(
                 }
                 state.timerState is TimerState.Paused -> {
                     sessionRunner.resume()
-                    audioServiceConnection.play()
+                    // Not a bare play(): resuming inside a silent break would otherwise
+                    // come back playing the focus mix.
+                    applyAudibility()
                 }
                 else -> {
                     // Audio starts when the runner reports the first step, so the
@@ -389,10 +415,27 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onStepStarted(step: PlanStep) {
-        when (step) {
-            is PlanStep.Focus -> startPlayback()
-            is PlanStep.Break -> audioServiceConnection.stop()
+    private fun onStepStarted(step: PlanStep) = applyAudibility(step)
+
+    /**
+     * Decides which slot is audible from the step and the toggle, then makes the
+     * audio match. Called with the step on every StepStarted, and with the step
+     * from progress whenever the toggle flips or a pause is resumed, so a break can
+     * go from silent to sounding without waiting for the next step. Idle resolves to
+     * FOCUS and touches nothing: startPlayback is only issued for a step in progress.
+     */
+    private fun applyAudibility(step: PlanStep? = _uiState.value.sessionProgress?.step) {
+        val slot = if (step is PlanStep.Break && _uiState.value.breakSoundEnabled) {
+            MixSlot.BREAK
+        } else {
+            MixSlot.FOCUS
+        }
+        _uiState.update { it.copy(audibleSlot = slot) }
+        when {
+            step == null -> Unit
+            step is PlanStep.Focus -> startPlayback()
+            slot == MixSlot.BREAK -> startPlayback()
+            else -> audioServiceConnection.stop()
         }
     }
 
@@ -403,7 +446,7 @@ class HomeViewModel @Inject constructor(
     /** A completed focus step is a session against the whole mix, as before. */
     private fun recordIfFocus(step: PlanStep) {
         if (step !is PlanStep.Focus) return
-        val mix = _uiState.value.activeMix
+        val mix = _uiState.value.focusMix
         if (mix.isEmpty()) return
         viewModelScope.launch {
             saveSessionUseCase(

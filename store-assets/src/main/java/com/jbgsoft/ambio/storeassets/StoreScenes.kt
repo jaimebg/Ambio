@@ -90,7 +90,7 @@ private fun mixOf(vararg parts: Pair<String, Float>): List<ActiveSound> =
 private fun sound(id: String) = SOUND_CATALOGUE.first { it.id == id }
 
 private fun homeState(mix: List<ActiveSound>) = HomeUiState(
-    activeMix = mix,
+    focusMix = mix,
     availableSounds = SOUND_CATALOGUE,
     volume = 0.7f,
     effectsEnabled = true

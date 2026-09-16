@@ -48,7 +48,7 @@ class HomeScreenLayoutTest {
     )
 
     private val state = HomeUiState(
-        activeMix = listOf(ActiveSound(rain, 1f)),
+        focusMix = listOf(ActiveSound(rain, 1f)),
         availableSounds = listOf(rain),
         effectsEnabled = false
     )

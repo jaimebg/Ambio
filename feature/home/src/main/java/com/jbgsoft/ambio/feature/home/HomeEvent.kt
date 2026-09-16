@@ -1,6 +1,7 @@
 package com.jbgsoft.ambio.feature.home
 
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 
@@ -9,6 +10,7 @@ sealed class HomeEvent {
     data class ToggleSound(val sound: Sound) : HomeEvent()
     data class SetSoundLevel(val soundId: String, val level: Float) : HomeEvent()
     data class SoundLevelChangeFinished(val soundId: String) : HomeEvent()
+    data class SetPickerSlot(val slot: MixSlot) : HomeEvent()
     data class SelectPreset(val preset: TimerPreset) : HomeEvent()
     data class SetCustomMinutes(val minutes: Int) : HomeEvent()
     data object CustomMinutesChangeFinished : HomeEvent()
