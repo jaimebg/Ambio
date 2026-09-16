@@ -17,7 +17,10 @@ object PlanCodec {
 
     fun encode(plan: SessionPlan): String {
         val body = plan.steps.joinToString(",") { step ->
-            val letter = if (step is PlanStep.Focus) 'F' else 'B'
+            val letter = when (step) {
+                is PlanStep.Focus -> 'F'
+                is PlanStep.Break -> 'B'
+            }
             "$letter${step.minutes}"
         }
         return "$body;${if (plan.repeat) LOOP else END}"

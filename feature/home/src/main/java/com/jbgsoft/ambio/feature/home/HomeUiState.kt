@@ -3,6 +3,7 @@ package com.jbgsoft.ambio.feature.home
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
 import com.jbgsoft.ambio.core.domain.model.MixSlot
+import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
@@ -46,12 +47,13 @@ data class HomeUiState(
     /** What pressing play would run: the quick presets are two-step plans, PLAN is the stored one. */
     val planForStart: SessionPlan
         get() = when (selectedPreset) {
-            TimerPreset.FOCUS_25 -> SessionPlan.quick(25, breakMinutes)
-            TimerPreset.FOCUS_50 -> SessionPlan.quick(50, breakMinutes)
+            TimerPreset.FOCUS_25 -> SessionPlan.quick(TimerPreset.FOCUS_25.focusMinutes, breakMinutes)
+            TimerPreset.FOCUS_50 -> SessionPlan.quick(TimerPreset.FOCUS_50.focusMinutes, breakMinutes)
             TimerPreset.CUSTOM -> SessionPlan.quick(customMinutes, breakMinutes)
             TimerPreset.PLAN -> sessionPlan
         }
 
     /** The minutes the dial shows while idle: the first step of what would start. */
-    val selectedMinutes: Int get() = planForStart.steps.first().minutes
+    val selectedMinutes: Int
+        get() = planForStart.steps.firstOrNull()?.minutes ?: PlanStep.DEFAULT_FOCUS_MINUTES
 }

@@ -120,7 +120,8 @@ class HomeViewModel @Inject constructor(
      * every emission, on every reconnect, and before every play() — stop() releases
      * the service's tracks, so playing again has to re-declare them.
      */
-    private fun pushMix(mix: List<ActiveSound> = _uiState.value.activeMix) {
+    private fun pushMix() {
+        val mix = _uiState.value.activeMix
         if (mix.isEmpty()) return
         audioServiceConnection.setMix(
             mix.map { MixEntry(it.sound.id, it.sound.audioRes, it.level) },
@@ -455,6 +456,8 @@ class HomeViewModel @Inject constructor(
 
     /** Edits apply to the draft only; the stored plan changes on SavePlan. */
     private fun editDraft(edit: (SessionPlan) -> SessionPlan) {
+        // No draft, no edit — and so no buzz for something that did not happen.
+        if (_uiState.value.planDraft == null) return
         haptic { tick() }
         _uiState.update { state ->
             val draft = state.planDraft ?: return@update state
