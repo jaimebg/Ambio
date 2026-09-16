@@ -11,4 +11,7 @@ class ChimeRepositoryImpl @Inject constructor() : ChimeRepository {
 
     @RawRes
     override fun getTimerChimeResource(): Int = R.raw.timer_chime
+
+    @RawRes
+    override fun getSuccessChimeResource(): Int = R.raw.success_chime
 }

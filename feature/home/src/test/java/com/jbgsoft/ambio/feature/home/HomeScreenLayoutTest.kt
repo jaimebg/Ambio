@@ -13,13 +13,19 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
+import com.jbgsoft.ambio.core.domain.model.PlanStep
+import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
+import com.jbgsoft.ambio.core.domain.model.TimerPreset
+import com.jbgsoft.ambio.core.domain.model.TimerState
+import com.jbgsoft.ambio.core.domain.session.SessionProgress
 import com.jbgsoft.ambio.feature.home.test.R as TestR
 import org.junit.Rule
 import org.junit.Test
@@ -48,7 +54,7 @@ class HomeScreenLayoutTest {
     )
 
     private val state = HomeUiState(
-        activeMix = listOf(ActiveSound(rain, 1f)),
+        focusMix = listOf(ActiveSound(rain, 1f)),
         availableSounds = listOf(rain),
         effectsEnabled = false
     )
@@ -208,5 +214,122 @@ class HomeScreenLayoutTest {
         compose.onNodeWithText(
             context.getString(R.string.action_change_sound)
         ).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w360dp-h740dp")
+    fun `the preset row shows four segments at 360dp`() {
+        compose.setContent {
+            Box(Modifier.size(360.dp, 740.dp)) {
+                HomeScreen(uiState = state, onEvent = {}, onNavigateToSettings = {}, onNavigateToStats = {})
+            }
+        }
+
+        // 360x740 is not tall enough to hold the dial and the presets at once, so
+        // the row starts a couple of px below the scroll fold — it has ever since
+        // the transport was pinned, and it has nothing to do with how many
+        // segments the row holds. Scroll it in first; what this test is about is
+        // whether four segments still fit across 360dp of width, and a label that
+        // wrapped or was clipped away would fail assertIsDisplayed all the same.
+        compose.onNodeWithText(context.getString(R.string.preset_plan)).performScrollTo()
+
+        compose.onNodeWithText(context.getString(R.string.preset_25_min)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.preset_50_min)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.preset_custom)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.preset_plan)).assertIsDisplayed()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    fun `with the plan preset the break chips give way to the summary and edit`() {
+        compose.setContent {
+            Box(Modifier.size(411.dp, 891.dp)) {
+                HomeScreen(
+                    uiState = state.copy(selectedPreset = TimerPreset.PLAN),
+                    onEvent = {}, onNavigateToSettings = {}, onNavigateToStats = {}
+                )
+            }
+        }
+
+        compose.onNodeWithText(context.getString(R.string.label_break_duration)).assertDoesNotExist()
+        compose.onNodeWithText("25 · 5 ✓").assertExists()
+        compose.onNodeWithText(context.getString(R.string.plan_edit)).assertExists()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    fun `the dial names the focus step during a plan of more than two steps`() {
+        val plan = SessionPlan(
+            listOf(PlanStep.Focus(25), PlanStep.Break(5), PlanStep.Focus(25)),
+            repeat = false
+        )
+        compose.setContent {
+            Box(Modifier.size(411.dp, 891.dp)) {
+                HomeScreen(
+                    uiState = state.copy(
+                        selectedPreset = TimerPreset.PLAN,
+                        sessionPlan = plan,
+                        sessionProgress = SessionProgress(plan, 2, 0),
+                        timerState = TimerState.Running(remainingMs = 1000, totalMs = 1500)
+                    ),
+                    onEvent = {}, onNavigateToSettings = {}, onNavigateToStats = {}
+                )
+            }
+        }
+
+        compose.onNodeWithText(context.getString(R.string.timer_step_focus_of, 2, 2)).assertExists()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    fun `a paused plan says paused, not which step it stopped on`() {
+        val plan = SessionPlan(
+            listOf(PlanStep.Focus(25), PlanStep.Break(5), PlanStep.Focus(25)),
+            repeat = false
+        )
+        compose.setContent {
+            Box(Modifier.size(411.dp, 891.dp)) {
+                HomeScreen(
+                    uiState = state.copy(
+                        selectedPreset = TimerPreset.PLAN,
+                        sessionPlan = plan,
+                        sessionProgress = SessionProgress(plan, 2, 0),
+                        timerState = TimerState.Paused(remainingMs = 1000, totalMs = 1500)
+                    ),
+                    onEvent = {}, onNavigateToSettings = {}, onNavigateToStats = {}
+                )
+            }
+        }
+
+        // The dial's subtitle is the only place a pause is spelled out, so the
+        // step label must not take it over: a plan tells you where it is while it
+        // runs, and that it has stopped when it has.
+        compose.onNodeWithText(context.getString(R.string.state_paused)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.timer_step_focus_of, 2, 2)).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w360dp-h740dp")
+    fun `a full-length plan does not push the edit button off the row`() {
+        compose.setContent {
+            Box(Modifier.size(360.dp, 740.dp)) {
+                HomeScreen(
+                    uiState = state.copy(
+                        selectedPreset = TimerPreset.PLAN,
+                        sessionPlan = SessionPlan(
+                            List(12) { if (it % 2 == 0) PlanStep.Focus(120) else PlanStep.Break(60) },
+                            repeat = true
+                        )
+                    ),
+                    onEvent = {}, onNavigateToSettings = {}, onNavigateToStats = {}
+                )
+            }
+        }
+
+        // The longest plan the domain allows, at the narrowest width: the summary
+        // has to give way to the button rather than the other way round, or the
+        // only way back into the editor is gone.
+        compose.onNodeWithText(context.getString(R.string.plan_edit)).performScrollTo()
+        compose.onNodeWithText(context.getString(R.string.plan_edit)).assertIsDisplayed()
     }
 }

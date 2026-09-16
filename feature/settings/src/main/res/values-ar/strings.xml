@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">تشغيل صوت عند انتهاء جلسة تركيز</string>
     <string name="settings_effects">التأثيرات المحيطة</string>
     <string name="settings_effects_summary">جسيمات متحركة خلف المؤقت</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">الصوت أثناء الاستراحة</string>
+    <string name="settings_break_sound_summary">تشغيل مزيج منفصل أثناء الراحة</string>
 </resources>

@@ -24,7 +24,8 @@ class SettingsViewModel @Inject constructor(
                 _uiState.value = SettingsUiState(
                     hapticsEnabled = prefs.hapticsEnabled,
                     chimeEnabled = prefs.chimeEnabled,
-                    effectsEnabled = prefs.effectsEnabled
+                    effectsEnabled = prefs.effectsEnabled,
+                    breakSoundEnabled = prefs.breakSoundEnabled
                 )
             }
         }
@@ -40,5 +41,9 @@ class SettingsViewModel @Inject constructor(
 
     fun onEffectsChanged(enabled: Boolean) {
         viewModelScope.launch { preferencesRepository.setEffectsEnabled(enabled) }
+    }
+
+    fun onBreakSoundChanged(enabled: Boolean) {
+        viewModelScope.launch { preferencesRepository.setBreakSoundEnabled(enabled) }
     }
 }

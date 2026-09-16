@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Speelt een geluid af als een focussessie eindigt</string>
     <string name="settings_effects">Sfeereffecten</string>
     <string name="settings_effects_summary">Geanimeerde deeltjes achter de timer</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Geluid tijdens pauzes</string>
+    <string name="settings_break_sound_summary">Speelt een aparte mix af terwijl je rust</string>
 </resources>

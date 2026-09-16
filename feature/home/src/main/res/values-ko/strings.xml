@@ -48,8 +48,33 @@
     <string name="label_focus_duration">집중 시간</string>
     <string name="label_break_duration">휴식 시간</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">다음 시간 후 정지</string>
+    <string name="sleep_timer_off">끄기</string>
+    <string name="state_sleep_timer">취침 타이머</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">집중 시간 줄이기</string>
     <string name="a11y_increase_focus">집중 시간 늘리기</string>
     <string name="a11y_volume_slider">음량</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">플랜</string>
+    <string name="plan_edit">수정</string>
+    <string name="timer_step_focus_of">집중 %1$d/%2$d</string>
+    <string name="timer_step_break">휴식</string>
+    <string name="plan_editor_title">세션 플랜</string>
+    <string name="plan_step_focus">집중</string>
+    <string name="plan_step_pause">휴식</string>
+    <string name="plan_step_loop">여기부터 반복</string>
+    <string name="plan_step_end">여기서 종료</string>
+    <string name="plan_add_step">단계 추가</string>
+    <string name="plan_done">완료</string>
+    <string name="plan_needs_focus">집중 단계를 하나 이상 추가하세요</string>
+    <string name="a11y_decrease_pause">휴식 시간 줄이기</string>
+    <string name="a11y_increase_pause">휴식 시간 늘리기</string>
+    <string name="a11y_plan_row_choice">단계 유형</string>
+    <string name="a11y_plan_row_state">%1$d단계: %2$s</string>
+    <string name="picker_slot_focus">집중</string>
+    <string name="picker_slot_break">휴식</string>
 </resources>

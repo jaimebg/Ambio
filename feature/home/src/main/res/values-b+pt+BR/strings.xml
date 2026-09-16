@@ -52,8 +52,33 @@
     <string name="label_focus_duration">Duração do foco</string>
     <string name="label_break_duration">Duração do intervalo</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Parar após</string>
+    <string name="sleep_timer_off">Desligado</string>
+    <string name="state_sleep_timer">Temporizador de sono</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Diminuir a duração do foco</string>
     <string name="a11y_increase_focus">Aumentar a duração do foco</string>
     <string name="a11y_volume_slider">Volume</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plano</string>
+    <string name="plan_edit">Editar</string>
+    <string name="timer_step_focus_of">Foco %1$d de %2$d</string>
+    <string name="timer_step_break">Intervalo</string>
+    <string name="plan_editor_title">Plano da sessão</string>
+    <string name="plan_step_focus">Foco</string>
+    <string name="plan_step_pause">Intervalo</string>
+    <string name="plan_step_loop">Repetir a partir daqui</string>
+    <string name="plan_step_end">Terminar aqui</string>
+    <string name="plan_add_step">Adicionar etapa</string>
+    <string name="plan_done">Concluir</string>
+    <string name="plan_needs_focus">Adicione pelo menos uma etapa de foco</string>
+    <string name="a11y_decrease_pause">Diminuir a duração do intervalo</string>
+    <string name="a11y_increase_pause">Aumentar a duração do intervalo</string>
+    <string name="a11y_plan_row_choice">Tipo de etapa</string>
+    <string name="a11y_plan_row_state">Etapa %1$d: %2$s</string>
+    <string name="picker_slot_focus">Foco</string>
+    <string name="picker_slot_break">Intervalo</string>
 </resources>

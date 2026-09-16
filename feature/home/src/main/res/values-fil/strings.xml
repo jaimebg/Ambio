@@ -50,8 +50,33 @@
     <string name="label_focus_duration">Tagal ng focus</string>
     <string name="label_break_duration">Tagal ng pahinga</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Ihinto pagkatapos ng</string>
+    <string name="sleep_timer_off">Naka-off</string>
+    <string name="state_sleep_timer">Sleep timer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Bawasan ang tagal ng focus</string>
     <string name="a11y_increase_focus">Dagdagan ang tagal ng focus</string>
     <string name="a11y_volume_slider">Lakas ng tunog</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plano</string>
+    <string name="plan_edit">I-edit</string>
+    <string name="timer_step_focus_of">Focus %1$d sa %2$d</string>
+    <string name="timer_step_break">Pahinga</string>
+    <string name="plan_editor_title">Plano ng session</string>
+    <string name="plan_step_focus">Focus</string>
+    <string name="plan_step_pause">Pahinga</string>
+    <string name="plan_step_loop">Ulitin mula rito</string>
+    <string name="plan_step_end">Tapusin dito</string>
+    <string name="plan_add_step">Magdagdag ng hakbang</string>
+    <string name="plan_done">Tapos na</string>
+    <string name="plan_needs_focus">Magdagdag ng kahit isang focus na hakbang</string>
+    <string name="a11y_decrease_pause">Bawasan ang tagal ng pahinga</string>
+    <string name="a11y_increase_pause">Dagdagan ang tagal ng pahinga</string>
+    <string name="a11y_plan_row_choice">Uri ng hakbang</string>
+    <string name="a11y_plan_row_state">Hakbang %1$d: %2$s</string>
+    <string name="picker_slot_focus">Focus</string>
+    <string name="picker_slot_break">Pahinga</string>
 </resources>

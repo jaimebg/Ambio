@@ -52,8 +52,33 @@
     <string name="label_focus_duration">Durada de la concentració</string>
     <string name="label_break_duration">Durada del descans</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Atura després de</string>
+    <string name="sleep_timer_off">Desactivat</string>
+    <string name="state_sleep_timer">Temporitzador de son</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Redueix la durada de la concentració</string>
     <string name="a11y_increase_focus">Augmenta la durada de la concentració</string>
     <string name="a11y_volume_slider">Volum</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Pla</string>
+    <string name="plan_edit">Edita</string>
+    <string name="timer_step_focus_of">Concentració %1$d de %2$d</string>
+    <string name="timer_step_break">Descans</string>
+    <string name="plan_editor_title">Pla de la sessió</string>
+    <string name="plan_step_focus">Concentració</string>
+    <string name="plan_step_pause">Descans</string>
+    <string name="plan_step_loop">Repeteix des d\'aquí</string>
+    <string name="plan_step_end">Acaba aquí</string>
+    <string name="plan_add_step">Afegeix un pas</string>
+    <string name="plan_done">Fet</string>
+    <string name="plan_needs_focus">Afegeix com a mínim un pas de concentració</string>
+    <string name="a11y_decrease_pause">Redueix la durada del descans</string>
+    <string name="a11y_increase_pause">Augmenta la durada del descans</string>
+    <string name="a11y_plan_row_choice">Tipus de pas</string>
+    <string name="a11y_plan_row_state">Pas %1$d: %2$s</string>
+    <string name="picker_slot_focus">Concentració</string>
+    <string name="picker_slot_break">Descans</string>
 </resources>

@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">เล่นเสียงเมื่อเซสชันโฟกัสสิ้นสุด</string>
     <string name="settings_effects">เอฟเฟกต์บรรยากาศ</string>
     <string name="settings_effects_summary">อนุภาคเคลื่อนไหวด้านหลังตัวจับเวลา</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">เสียงระหว่างพัก</string>
+    <string name="settings_break_sound_summary">เล่นมิกซ์แยกต่างหากขณะพัก</string>
 </resources>

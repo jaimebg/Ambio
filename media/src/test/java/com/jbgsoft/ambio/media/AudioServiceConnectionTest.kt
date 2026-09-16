@@ -172,6 +172,26 @@ class AudioServiceConnectionTest {
     }
 
     @Test
+    fun `play after stop reports playing even before the controller confirms`() {
+        val connection = connection()
+        val controller = mockk<MediaController>(relaxed = true)
+        every { controller.isPlaying } returns true
+
+        connection.connect()
+        futures[0].completeWith(controller)
+        futures[0].dispatch()
+
+        // stop() starts a fade-out coroutine that would eventually call
+        // controller.stop(), but it is never run here (that needs the main looper to
+        // be idled) — mirroring a play() that lands before the fade gets there and
+        // cancels it, leaving the controller still playing under the hood.
+        connection.stop()
+        connection.play()
+
+        assertThat(connection.isPlaying.value).isTrue()
+    }
+
+    @Test
     fun `a failed attempt leaves nothing behind that would block the next connect`() {
         val connection = connection()
         val controller = mockk<MediaController>(relaxed = true)

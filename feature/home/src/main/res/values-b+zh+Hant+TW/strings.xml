@@ -48,8 +48,33 @@
     <string name="label_focus_duration">專注時長</string>
     <string name="label_break_duration">休息時長</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">定時停止</string>
+    <string name="sleep_timer_off">關閉</string>
+    <string name="state_sleep_timer">睡眠計時器</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">縮短專注時長</string>
     <string name="a11y_increase_focus">延長專注時長</string>
     <string name="a11y_volume_slider">音量</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">計畫</string>
+    <string name="plan_edit">編輯</string>
+    <string name="timer_step_focus_of">專注 %1$d/%2$d</string>
+    <string name="timer_step_break">休息</string>
+    <string name="plan_editor_title">時段計畫</string>
+    <string name="plan_step_focus">專注</string>
+    <string name="plan_step_pause">休息</string>
+    <string name="plan_step_loop">從這裡循環</string>
+    <string name="plan_step_end">在此結束</string>
+    <string name="plan_add_step">新增步驟</string>
+    <string name="plan_done">完成</string>
+    <string name="plan_needs_focus">至少新增一個專注步驟</string>
+    <string name="a11y_decrease_pause">縮短休息時長</string>
+    <string name="a11y_increase_pause">延長休息時長</string>
+    <string name="a11y_plan_row_choice">步驟類型</string>
+    <string name="a11y_plan_row_state">步驟 %1$d：%2$s</string>
+    <string name="picker_slot_focus">專注</string>
+    <string name="picker_slot_break">休息</string>
 </resources>

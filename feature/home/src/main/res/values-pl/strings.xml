@@ -54,8 +54,33 @@
     <string name="label_focus_duration">Czas skupienia</string>
     <string name="label_break_duration">Czas przerwy</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Zatrzymaj po</string>
+    <string name="sleep_timer_off">Wył.</string>
+    <string name="state_sleep_timer">Wyłącznik czasowy</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Skróć czas skupienia</string>
     <string name="a11y_increase_focus">Wydłuż czas skupienia</string>
     <string name="a11y_volume_slider">Głośność</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Edytuj</string>
+    <string name="timer_step_focus_of">Skupienie %1$d z %2$d</string>
+    <string name="timer_step_break">Przerwa</string>
+    <string name="plan_editor_title">Plan sesji</string>
+    <string name="plan_step_focus">Skupienie</string>
+    <string name="plan_step_pause">Przerwa</string>
+    <string name="plan_step_loop">Powtarzaj od tego miejsca</string>
+    <string name="plan_step_end">Zakończ tutaj</string>
+    <string name="plan_add_step">Dodaj krok</string>
+    <string name="plan_done">Gotowe</string>
+    <string name="plan_needs_focus">Dodaj co najmniej jeden krok skupienia</string>
+    <string name="a11y_decrease_pause">Skróć czas przerwy</string>
+    <string name="a11y_increase_pause">Wydłuż czas przerwy</string>
+    <string name="a11y_plan_row_choice">Typ kroku</string>
+    <string name="a11y_plan_row_state">Krok %1$d: %2$s</string>
+    <string name="picker_slot_focus">Skupienie</string>
+    <string name="picker_slot_break">Przerwa</string>
 </resources>

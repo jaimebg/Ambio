@@ -50,8 +50,33 @@
     <string name="label_focus_duration">Focus Duration</string>
     <string name="label_break_duration">Break Duration</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Stop after</string>
+    <string name="sleep_timer_off">Off</string>
+    <string name="state_sleep_timer">Sleep timer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Decrease focus duration</string>
     <string name="a11y_increase_focus">Increase focus duration</string>
     <string name="a11y_volume_slider">Volume</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Edit</string>
+    <string name="timer_step_focus_of">Focus %1$d of %2$d</string>
+    <string name="timer_step_break">Break</string>
+    <string name="plan_editor_title">Session plan</string>
+    <string name="plan_step_focus">Focus</string>
+    <string name="plan_step_pause">Break</string>
+    <string name="plan_step_loop">Loop from here</string>
+    <string name="plan_step_end">End here</string>
+    <string name="plan_add_step">Add step</string>
+    <string name="plan_done">Done</string>
+    <string name="plan_needs_focus">Add at least one focus step</string>
+    <string name="a11y_decrease_pause">Decrease break duration</string>
+    <string name="a11y_increase_pause">Increase break duration</string>
+    <string name="a11y_plan_row_choice">Step type</string>
+    <string name="a11y_plan_row_state">Step %1$d: %2$s</string>
+    <string name="picker_slot_focus">Focus</string>
+    <string name="picker_slot_break">Break</string>
 </resources>

@@ -50,8 +50,33 @@
     <string name="label_focus_duration">Odaklanma süresi</string>
     <string name="label_break_duration">Mola süresi</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Şu süre sonra durdur</string>
+    <string name="sleep_timer_off">Kapalı</string>
+    <string name="state_sleep_timer">Uyku zamanlayıcısı</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Odaklanma süresini azalt</string>
     <string name="a11y_increase_focus">Odaklanma süresini artır</string>
     <string name="a11y_volume_slider">Ses düzeyi</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Düzenle</string>
+    <string name="timer_step_focus_of">Odaklanma %1$d/%2$d</string>
+    <string name="timer_step_break">Mola</string>
+    <string name="plan_editor_title">Oturum planı</string>
+    <string name="plan_step_focus">Odaklanma</string>
+    <string name="plan_step_pause">Mola</string>
+    <string name="plan_step_loop">Buradan tekrarla</string>
+    <string name="plan_step_end">Burada bitir</string>
+    <string name="plan_add_step">Adım ekle</string>
+    <string name="plan_done">Bitti</string>
+    <string name="plan_needs_focus">En az bir odaklanma adımı ekleyin</string>
+    <string name="a11y_decrease_pause">Mola süresini azalt</string>
+    <string name="a11y_increase_pause">Mola süresini artır</string>
+    <string name="a11y_plan_row_choice">Adım türü</string>
+    <string name="a11y_plan_row_state">Adım %1$d: %2$s</string>
+    <string name="picker_slot_focus">Odaklanma</string>
+    <string name="picker_slot_break">Mola</string>
 </resources>

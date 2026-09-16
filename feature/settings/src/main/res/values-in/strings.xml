@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Memutar suara saat sesi fokus berakhir</string>
     <string name="settings_effects">Efek suasana</string>
     <string name="settings_effects_summary">Partikel animasi di belakang timer</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Suara saat istirahat</string>
+    <string name="settings_break_sound_summary">Memutar mix terpisah saat Anda beristirahat</string>
 </resources>

@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Spiller en lyd når en fokusøkt er ferdig</string>
     <string name="settings_effects">Stemningseffekter</string>
     <string name="settings_effects_summary">Animerte partikler bak tidtakeren</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Lyd i pauser</string>
+    <string name="settings_break_sound_summary">Spiller en egen miks mens du hviler</string>
 </resources>

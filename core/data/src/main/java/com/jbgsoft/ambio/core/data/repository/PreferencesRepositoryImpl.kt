@@ -2,6 +2,7 @@ package com.jbgsoft.ambio.core.data.repository
 
 import com.jbgsoft.ambio.core.data.datastore.PreferencesDataStore
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.UserPreferences
 import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.Flow
@@ -29,9 +30,16 @@ class PreferencesRepositoryImpl @Inject constructor(
         preferencesDataStore.setLastMode(mode)
     }
 
+    override suspend fun setSleepMinutes(minutes: Int) = preferencesDataStore.setSleepMinutes(minutes)
+
     override suspend fun setBreakMinutes(minutes: Int) {
         preferencesDataStore.setBreakMinutes(minutes)
     }
+
+    override suspend fun setBreakMix(encoded: String) = preferencesDataStore.setBreakMix(encoded)
+    override suspend fun setSessionPlan(plan: SessionPlan) = preferencesDataStore.setSessionPlan(plan)
+    override suspend fun setBreakSoundEnabled(enabled: Boolean) =
+        preferencesDataStore.setBreakSoundEnabled(enabled)
 
     override suspend fun setHapticsEnabled(enabled: Boolean) =
         preferencesDataStore.setHapticsEnabled(enabled)

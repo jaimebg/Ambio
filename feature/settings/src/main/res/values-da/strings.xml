@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Afspiller en lyd, når en fokussession slutter</string>
     <string name="settings_effects">Stemningseffekter</string>
     <string name="settings_effects_summary">Animerede partikler bag timeren</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Lyd under pauser</string>
+    <string name="settings_break_sound_summary">Afspiller et separat miks, mens du holder pause</string>
 </resources>

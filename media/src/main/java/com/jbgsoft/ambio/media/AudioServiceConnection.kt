@@ -169,6 +169,10 @@ class AudioServiceConnection @Inject constructor(
         fadeJob?.cancel()
         Log.d(TAG, "Play requested")
         controller?.apply {
+            // A stop() right before this may have cancelled its own fade-out above,
+            // before that fade reached controller.stop() — the controller was never
+            // actually stopped, so onIsPlayingChanged will not fire for it.
+            _isPlaying.value = true  // Update UI immediately
             volume = 0f
             play()
             fadeIn(targetVolume)

@@ -48,8 +48,33 @@
     <string name="label_focus_duration">集中時間</string>
     <string name="label_break_duration">休憩時間</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">停止までの時間</string>
+    <string name="sleep_timer_off">オフ</string>
+    <string name="state_sleep_timer">スリープタイマー</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">集中時間を減らす</string>
     <string name="a11y_increase_focus">集中時間を増やす</string>
     <string name="a11y_volume_slider">音量</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">プラン</string>
+    <string name="plan_edit">編集</string>
+    <string name="timer_step_focus_of">集中 %1$d/%2$d</string>
+    <string name="timer_step_break">休憩</string>
+    <string name="plan_editor_title">セッションプラン</string>
+    <string name="plan_step_focus">集中</string>
+    <string name="plan_step_pause">休憩</string>
+    <string name="plan_step_loop">ここから繰り返す</string>
+    <string name="plan_step_end">ここで終了</string>
+    <string name="plan_add_step">ステップを追加</string>
+    <string name="plan_done">完了</string>
+    <string name="plan_needs_focus">集中ステップを1つ以上追加してください</string>
+    <string name="a11y_decrease_pause">休憩時間を減らす</string>
+    <string name="a11y_increase_pause">休憩時間を増やす</string>
+    <string name="a11y_plan_row_choice">ステップの種類</string>
+    <string name="a11y_plan_row_state">ステップ %1$d：%2$s</string>
+    <string name="picker_slot_focus">集中</string>
+    <string name="picker_slot_break">休憩</string>
 </resources>

@@ -55,13 +55,17 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlin.math.min
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.PlanRowChoice
+import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
-import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
 import com.jbgsoft.ambio.core.domain.model.gradientOf
 import com.jbgsoft.ambio.feature.home.components.CurrentSoundBar
 import com.jbgsoft.ambio.feature.home.components.ModeToggle
+import com.jbgsoft.ambio.feature.home.components.PlanEditorDialog
+import com.jbgsoft.ambio.feature.home.components.PlanEditorSheet
 import com.jbgsoft.ambio.feature.home.components.PlayPauseButton
+import com.jbgsoft.ambio.feature.home.components.SleepTimerSelector
 import com.jbgsoft.ambio.feature.home.components.SoundBottomSheet
 import com.jbgsoft.ambio.feature.home.components.SoundPickerContent
 import com.jbgsoft.ambio.feature.home.components.TimerDisplay
@@ -176,10 +180,13 @@ fun HomeScreen(
                         // parent would measure it with an unbounded height.
                         SoundPickerContent(
                             sounds = uiState.availableSounds,
-                            activeMix = uiState.activeMix,
+                            activeMix = uiState.pickerMix,
                             onToggleSound = { onEvent(HomeEvent.ToggleSound(it)) },
                             onLevelChange = { id, level -> onEvent(HomeEvent.SetSoundLevel(id, level)) },
                             onLevelChangeFinished = { id -> onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
+                            slot = uiState.pickerSlot,
+                            showSlotSwitch = uiState.breakSoundEnabled,
+                            onSlotChange = { onEvent(HomeEvent.SetPickerSlot(it)) },
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
@@ -207,17 +214,57 @@ fun HomeScreen(
                     SoundBottomSheet(
                         showSheet = uiState.showSoundPicker,
                         sounds = uiState.availableSounds,
-                        activeMix = uiState.activeMix,
+                        activeMix = uiState.pickerMix,
                         onToggleSound = { onEvent(HomeEvent.ToggleSound(it)) },
                         onLevelChange = { id, level -> onEvent(HomeEvent.SetSoundLevel(id, level)) },
                         onLevelChangeFinished = { id -> onEvent(HomeEvent.SoundLevelChangeFinished(id)) },
-                        onDismiss = { onEvent(HomeEvent.HideSoundPicker) }
+                        onDismiss = { onEvent(HomeEvent.HideSoundPicker) },
+                        slot = uiState.pickerSlot,
+                        showSlotSwitch = uiState.breakSoundEnabled,
+                        onSlotChange = { onEvent(HomeEvent.SetPickerSlot(it)) }
+                    )
+                }
+
+                val editorCallbacks = remember(onEvent) {
+                    PlanEditorCallbacks(
+                        onRowChoice = { index, choice -> onEvent(HomeEvent.SetPlanRowChoice(index, choice)) },
+                        onStepMinutes = { index, minutes -> onEvent(HomeEvent.SetPlanStepMinutes(index, minutes)) },
+                        onAddStep = { onEvent(HomeEvent.AddPlanStep) },
+                        onSave = { onEvent(HomeEvent.SavePlan) },
+                        onDismiss = { onEvent(HomeEvent.HidePlanEditor) }
+                    )
+                }
+                if (isExpanded) {
+                    PlanEditorDialog(
+                        draft = uiState.planDraft,
+                        onRowChoice = editorCallbacks.onRowChoice,
+                        onStepMinutes = editorCallbacks.onStepMinutes,
+                        onAddStep = editorCallbacks.onAddStep,
+                        onSave = editorCallbacks.onSave,
+                        onDismiss = editorCallbacks.onDismiss
+                    )
+                } else {
+                    PlanEditorSheet(
+                        draft = uiState.planDraft,
+                        onRowChoice = editorCallbacks.onRowChoice,
+                        onStepMinutes = editorCallbacks.onStepMinutes,
+                        onAddStep = editorCallbacks.onAddStep,
+                        onSave = editorCallbacks.onSave,
+                        onDismiss = editorCallbacks.onDismiss
                     )
                 }
             }
         }
     }
 }
+
+private class PlanEditorCallbacks(
+    val onRowChoice: (Int, PlanRowChoice) -> Unit,
+    val onStepMinutes: (Int, Int) -> Unit,
+    val onAddStep: () -> Unit,
+    val onSave: () -> Unit,
+    val onDismiss: () -> Unit
+)
 
 /**
  * The timer half of Home: mode toggle, timer, transport controls and the bar
@@ -338,15 +385,19 @@ private fun HomeContentColumn(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        val progress = uiState.sessionProgress
+                        val stepLabel = progress?.takeIf { it.plan.steps.size > 2 || it.plan.repeat }?.let {
+                            when (it.step) {
+                                is PlanStep.Focus -> stringResource(R.string.timer_step_focus_of, it.focusOrdinal, it.focusCount)
+                                is PlanStep.Break -> stringResource(R.string.timer_step_break)
+                            }
+                        }
                         TimerDisplay(
                             timerState = uiState.timerState,
                             mode = uiState.mode,
                             isPlaying = uiState.isPlaying,
-                            selectedMinutes = when (uiState.selectedPreset) {
-                                TimerPreset.FOCUS_25 -> 25
-                                TimerPreset.FOCUS_50 -> 50
-                                TimerPreset.CUSTOM -> uiState.customMinutes
-                            },
+                            selectedMinutes = uiState.selectedMinutes,
+                            stepLabel = stepLabel,
                             size = timerDisplaySize
                         )
 
@@ -362,11 +413,27 @@ private fun HomeContentColumn(
                                 selectedPreset = uiState.selectedPreset,
                                 customMinutes = uiState.customMinutes,
                                 breakMinutes = uiState.breakMinutes,
+                                sessionPlan = uiState.sessionPlan,
                                 onPresetSelected = { onEvent(HomeEvent.SelectPreset(it)) },
                                 onCustomMinutesChanged = { onEvent(HomeEvent.SetCustomMinutes(it)) },
                                 onCustomMinutesChangeFinished = { onEvent(HomeEvent.CustomMinutesChangeFinished) },
                                 onBreakMinutesChanged = { onEvent(HomeEvent.SetBreakMinutes(it)) },
                                 onBreakMinutesChangeFinished = { onEvent(HomeEvent.BreakMinutesChangeFinished) },
+                                onEditPlan = { onEvent(HomeEvent.ShowPlanEditor) },
+                                modifier = Modifier.fillMaxWidth(),
+                                isCompact = isSmallScreen
+                            )
+                        }
+
+                        // Sleep timer (only in Ambient mode), in the presets' place
+                        AnimatedVisibility(
+                            visible = uiState.mode == AppMode.AMBIENT,
+                            enter = fadeIn(tween(300)) + expandVertically(tween(300)),
+                            exit = fadeOut(tween(300)) + shrinkVertically(tween(300))
+                        ) {
+                            SleepTimerSelector(
+                                sleepMinutes = uiState.sleepMinutes,
+                                onSleepMinutesSelected = { onEvent(HomeEvent.SetSleepMinutes(it)) },
                                 modifier = Modifier.fillMaxWidth(),
                                 isCompact = isSmallScreen
                             )

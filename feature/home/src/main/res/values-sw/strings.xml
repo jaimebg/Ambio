@@ -50,8 +50,33 @@
     <string name="label_focus_duration">Muda wa umakini</string>
     <string name="label_break_duration">Muda wa mapumziko</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Simamisha baada ya</string>
+    <string name="sleep_timer_off">Imezimwa</string>
+    <string name="state_sleep_timer">Kipima muda cha kulala</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Punguza muda wa umakini</string>
     <string name="a11y_increase_focus">Ongeza muda wa umakini</string>
     <string name="a11y_volume_slider">Kiwango cha sauti</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Mpango</string>
+    <string name="plan_edit">Hariri</string>
+    <string name="timer_step_focus_of">Umakini %1$d kati ya %2$d</string>
+    <string name="timer_step_break">Mapumziko</string>
+    <string name="plan_editor_title">Mpango wa kipindi</string>
+    <string name="plan_step_focus">Umakini</string>
+    <string name="plan_step_pause">Mapumziko</string>
+    <string name="plan_step_loop">Rudia kuanzia hapa</string>
+    <string name="plan_step_end">Maliza hapa</string>
+    <string name="plan_add_step">Ongeza hatua</string>
+    <string name="plan_done">Nimemaliza</string>
+    <string name="plan_needs_focus">Ongeza angalau hatua moja ya umakini</string>
+    <string name="a11y_decrease_pause">Punguza muda wa mapumziko</string>
+    <string name="a11y_increase_pause">Ongeza muda wa mapumziko</string>
+    <string name="a11y_plan_row_choice">Aina ya hatua</string>
+    <string name="a11y_plan_row_state">Hatua %1$d: %2$s</string>
+    <string name="picker_slot_focus">Umakini</string>
+    <string name="picker_slot_break">Mapumziko</string>
 </resources>

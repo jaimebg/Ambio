@@ -52,8 +52,33 @@
     <string name="label_focus_duration">Durée de concentration</string>
     <string name="label_break_duration">Durée de pause</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Arrêter après</string>
+    <string name="sleep_timer_off">Désactivé</string>
+    <string name="state_sleep_timer">Minuterie de sommeil</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Réduire la durée de concentration</string>
     <string name="a11y_increase_focus">Augmenter la durée de concentration</string>
     <string name="a11y_volume_slider">Volume</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Modifier</string>
+    <string name="timer_step_focus_of">Concentration %1$d sur %2$d</string>
+    <string name="timer_step_break">Pause</string>
+    <string name="plan_editor_title">Plan de séance</string>
+    <string name="plan_step_focus">Concentration</string>
+    <string name="plan_step_pause">Pause</string>
+    <string name="plan_step_loop">Répéter à partir d\'ici</string>
+    <string name="plan_step_end">Terminer ici</string>
+    <string name="plan_add_step">Ajouter une étape</string>
+    <string name="plan_done">Terminé</string>
+    <string name="plan_needs_focus">Ajoutez au moins une étape de concentration</string>
+    <string name="a11y_decrease_pause">Réduire la durée de pause</string>
+    <string name="a11y_increase_pause">Augmenter la durée de pause</string>
+    <string name="a11y_plan_row_choice">Type d\'étape</string>
+    <string name="a11y_plan_row_state">Étape %1$d : %2$s</string>
+    <string name="picker_slot_focus">Concentration</string>
+    <string name="picker_slot_break">Pause</string>
 </resources>

@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Memainkan bunyi apabila sesi fokus tamat</string>
     <string name="settings_effects">Kesan suasana</string>
     <string name="settings_effects_summary">Zarah beranimasi di belakang pemasa</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Bunyi semasa rehat</string>
+    <string name="settings_break_sound_summary">Memainkan campuran berasingan semasa anda berehat</string>
 </resources>

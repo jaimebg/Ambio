@@ -8,14 +8,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.MixCodec
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.feature.home.R
 
@@ -26,6 +33,7 @@ import com.jbgsoft.ambio.feature.home.R
  * directly as the right pane. Keeping one composable is deliberate — two
  * pickers would drift apart in both mix rules and translations.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SoundPickerContent(
     sounds: List<Sound>,
@@ -34,6 +42,9 @@ fun SoundPickerContent(
     onLevelChange: (String, Float) -> Unit,
     onLevelChangeFinished: (String) -> Unit,
     modifier: Modifier = Modifier,
+    slot: MixSlot = MixSlot.FOCUS,
+    showSlotSwitch: Boolean = false,
+    onSlotChange: (MixSlot) -> Unit = {},
     columns: Int = 3
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -43,6 +54,37 @@ fun SoundPickerContent(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
+
+        if (showSlotSwitch) {
+            SingleChoiceSegmentedButtonRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+            ) {
+                MixSlot.entries.forEachIndexed { index, candidate ->
+                    SegmentedButton(
+                        shape = SegmentedButtonDefaults.itemShape(index = index, count = MixSlot.entries.size),
+                        onClick = { onSlotChange(candidate) },
+                        selected = slot == candidate,
+                        label = {
+                            Text(
+                                text = stringResource(
+                                    if (candidate == MixSlot.FOCUS) R.string.picker_slot_focus
+                                    else R.string.picker_slot_break
+                                ),
+                                maxLines = 1,
+                                softWrap = false,
+                                autoSize = TextAutoSize.StepBased(
+                                    minFontSize = 10.sp,
+                                    maxFontSize = 14.sp,
+                                    stepSize = 1.sp
+                                )
+                            )
+                        }
+                    )
+                }
+            }
+        }
 
         // Three columns is the default for a twelve-sound catalogue on full width:
         // at two, only four tiles would be visible and most options would be below

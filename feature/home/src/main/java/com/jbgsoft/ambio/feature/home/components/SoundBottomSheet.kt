@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
+import com.jbgsoft.ambio.core.domain.model.MixSlot
 import com.jbgsoft.ambio.core.domain.model.Sound
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,7 +21,10 @@ fun SoundBottomSheet(
     onToggleSound: (Sound) -> Unit,
     onLevelChange: (String, Float) -> Unit,
     onLevelChangeFinished: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    slot: MixSlot = MixSlot.FOCUS,
+    showSlotSwitch: Boolean = false,
+    onSlotChange: (MixSlot) -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState()
 
@@ -36,6 +40,9 @@ fun SoundBottomSheet(
                 onToggleSound = onToggleSound,
                 onLevelChange = onLevelChange,
                 onLevelChangeFinished = onLevelChangeFinished,
+                slot = slot,
+                showSlotSwitch = showSlotSwitch,
+                onSlotChange = onSlotChange,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
         }

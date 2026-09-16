@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Phát âm thanh khi phiên tập trung kết thúc</string>
     <string name="settings_effects">Hiệu ứng nền</string>
     <string name="settings_effects_summary">Các hạt chuyển động phía sau bộ hẹn giờ</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Âm thanh trong giờ nghỉ</string>
+    <string name="settings_break_sound_summary">Phát một bản phối riêng khi bạn nghỉ</string>
 </resources>

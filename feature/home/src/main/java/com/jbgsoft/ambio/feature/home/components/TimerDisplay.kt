@@ -38,6 +38,7 @@ fun TimerDisplay(
     isPlaying: Boolean,
     selectedMinutes: Int,
     modifier: Modifier = Modifier,
+    stepLabel: String? = null,
     size: Dp = 300.dp
 ) {
     val progress = when (timerState) {
@@ -49,7 +50,11 @@ fun TimerDisplay(
 
     val isAnimating = timerState is TimerState.Running && isPlaying
 
+    // In Ambient mode the only timer is the sleep countdown, and it shows while it
+    // runs or waits; with none, the mode has no end and the dial says so.
     val displayText = when {
+        mode == AppMode.AMBIENT && timerState is TimerState.Running -> formatTime(timerState.remainingMs)
+        mode == AppMode.AMBIENT && timerState is TimerState.Paused -> formatTime(timerState.remainingMs)
         mode == AppMode.AMBIENT -> "∞"
         timerState is TimerState.Running -> formatTime(timerState.remainingMs)
         timerState is TimerState.Paused -> formatTime(timerState.remainingMs)
@@ -58,7 +63,12 @@ fun TimerDisplay(
     }
 
     val subtitleText = when {
+        mode == AppMode.AMBIENT && timerState is TimerState.Running -> stringResource(R.string.state_sleep_timer)
+        mode == AppMode.AMBIENT && timerState is TimerState.Paused -> stringResource(R.string.state_paused)
         mode == AppMode.AMBIENT -> stringResource(R.string.state_ambient_mode)
+        // Running only: a paused plan has to say so, and this is the only place
+        // the dial spells that out.
+        stepLabel != null && timerState is TimerState.Running -> stepLabel
         timerState is TimerState.Running && timerState.isBreak -> stringResource(R.string.state_break_time)
         timerState is TimerState.Running -> stringResource(R.string.state_focus)
         timerState is TimerState.Paused -> stringResource(R.string.state_paused)

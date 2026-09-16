@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Atskaņo skaņu, kad beidzas koncentrēšanās sesija</string>
     <string name="settings_effects">Vides efekti</string>
     <string name="settings_effects_summary">Animētas daļiņas aiz taimera</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Skaņa pārtraukumos</string>
+    <string name="settings_break_sound_summary">Atpūtas laikā atskaņo atsevišķu miksu</string>
 </resources>

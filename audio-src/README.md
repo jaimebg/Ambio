@@ -24,7 +24,8 @@ window to cut from it. Storing ~26MB of FLAC in git bought nothing that the
 manifest does not, since these files are still on Freesound.
 
 **Generated, not stored at all.** `white_noise` and `brown_noise`, produced by
-`tools/synth-noise.sh` from fixed seeds.
+`tools/synth-noise.sh` from fixed seeds, and `success_chime`, produced by
+`tools/synth-success-chime.sh` from three fixed sine notes.
 
 ## Rebuilding the non-committed sources
 
@@ -32,11 +33,16 @@ manifest does not, since these files are still on Freesound.
 export FREESOUND_TOKEN=...        # see below
 tools/fetch-sources.sh            # downloads, verifies sha256, cuts the windows
 tools/synth-noise.sh              # generates the two noise beds
+tools/synth-success-chime.sh      # generates the end-of-plan chime
 tools/process-audio.sh            # -> build/processed-audio
 cp build/processed-audio/*.ogg core/data/src/main/res/raw/
 ```
 
 Both scripts write to `build/audio-src-fetched/`, which is gitignored.
+
+To regenerate just the success chime without the Freesound sources on disk, run
+`ONLY=success_chime tools/process-audio.sh` — it restricts the pipeline to that
+one file.
 
 ### The credential requirement
 

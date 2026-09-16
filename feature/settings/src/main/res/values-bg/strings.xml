@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Възпроизвежда звук в края на сесия за фокусиране</string>
     <string name="settings_effects">Атмосферни ефекти</string>
     <string name="settings_effects_summary">Анимирани частици зад таймера</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Звук по време на почивка</string>
+    <string name="settings_break_sound_summary">Възпроизвежда отделен микс, докато почивате</string>
 </resources>

@@ -34,6 +34,7 @@ class SettingsScreenTest {
     fun `each toggle reports through its own callback`() {
         var haptics: Boolean? = null
         var chime: Boolean? = null
+        var breakSound: Boolean? = null
         var effects: Boolean? = null
 
         compose.setContent {
@@ -41,27 +42,31 @@ class SettingsScreenTest {
                 uiState = SettingsUiState(
                     hapticsEnabled = false,
                     chimeEnabled = false,
+                    breakSoundEnabled = false,
                     effectsEnabled = false
                 ),
                 onHapticsChanged = { haptics = it },
                 onChimeChanged = { chime = it },
+                onBreakSoundChanged = { breakSound = it },
                 onEffectsChanged = { effects = it },
                 onNavigateBack = {}
             )
         }
 
         // SettingRow puts onCheckedChange on the Switch, not on the Row — tapping
-        // the title text does nothing. The three switches appear in declaration
-        // order: haptics, chime, effects.
+        // the title text does nothing. The four switches appear in declaration
+        // order: haptics, chime, break sound, effects.
         val switches = compose.onAllNodes(isToggleable())
         switches[0].performClick()
         switches[1].performClick()
         switches[2].performClick()
+        switches[3].performClick()
 
         // Each callback must receive the toggled value, and no callback may be
         // wired to the wrong row — the mistake this test exists to catch.
         assertThat(haptics).isTrue()
         assertThat(chime).isTrue()
+        assertThat(breakSound).isTrue()
         assertThat(effects).isTrue()
     }
 
@@ -72,6 +77,7 @@ class SettingsScreenTest {
                 uiState = SettingsUiState(),
                 onHapticsChanged = {},
                 onChimeChanged = {},
+                onBreakSoundChanged = {},
                 onEffectsChanged = {},
                 onNavigateBack = {}
             )
@@ -79,6 +85,7 @@ class SettingsScreenTest {
 
         compose.onNodeWithText(context.getString(R.string.settings_haptics)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_chime)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.settings_break_sound)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_effects)).assertExists()
 
         // The summaries matter as much as the titles: SettingRow takes both as
@@ -86,6 +93,7 @@ class SettingsScreenTest {
         // wrong explanation and still look correct from the titles alone.
         compose.onNodeWithText(context.getString(R.string.settings_haptics_summary)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_chime_summary)).assertExists()
+        compose.onNodeWithText(context.getString(R.string.settings_break_sound_summary)).assertExists()
         compose.onNodeWithText(context.getString(R.string.settings_effects_summary)).assertExists()
     }
 
@@ -97,6 +105,7 @@ class SettingsScreenTest {
                 uiState = SettingsUiState(),
                 onHapticsChanged = {},
                 onChimeChanged = {},
+                onBreakSoundChanged = {},
                 onEffectsChanged = {},
                 onNavigateBack = {}
             )
@@ -117,6 +126,7 @@ class SettingsScreenTest {
                 uiState = SettingsUiState(),
                 onHapticsChanged = {},
                 onChimeChanged = {},
+                onBreakSoundChanged = {},
                 onEffectsChanged = {},
                 onNavigateBack = {}
             )
@@ -134,6 +144,7 @@ class SettingsScreenTest {
                 uiState = SettingsUiState(),
                 onHapticsChanged = {},
                 onChimeChanged = {},
+                onBreakSoundChanged = {},
                 onEffectsChanged = {},
                 onNavigateBack = {}
             )

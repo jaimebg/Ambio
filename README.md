@@ -64,7 +64,7 @@ the mix, not just one of them.
 - **Dynamic Theming** — The palette is mixed from every sound in the mix, not just one
 - **Ambient Visuals** — A particle field behind the timer that answers the whole mix, and can be switched off
 - **Pomodoro Timer** — 25-min and 50-min presets, or your own focus and break lengths
-- **Ambient Mode** — Continuous playback without a timer, for relaxation or sleep
+- **Ambient Mode** — Continuous playback for relaxation or sleep, with a sleep timer that stops it for you
 - **Session History** — Statistics for the hours you actually put in
 - **Adaptive Tablet Layout** — Two panes, the mixer permanently beside the timer past 840dp
 - **47 Languages** — The app itself, with per-app language selection on Android 13+

@@ -48,8 +48,33 @@
     <string name="label_focus_duration">Tempoh fokus</string>
     <string name="label_break_duration">Tempoh rehat</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Berhenti selepas</string>
+    <string name="sleep_timer_off">Mati</string>
+    <string name="state_sleep_timer">Pemasa tidur</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Kurangkan tempoh fokus</string>
     <string name="a11y_increase_focus">Tambahkan tempoh fokus</string>
     <string name="a11y_volume_slider">Kelantangan</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Pelan</string>
+    <string name="plan_edit">Edit</string>
+    <string name="timer_step_focus_of">Fokus %1$d daripada %2$d</string>
+    <string name="timer_step_break">Rehat</string>
+    <string name="plan_editor_title">Pelan sesi</string>
+    <string name="plan_step_focus">Fokus</string>
+    <string name="plan_step_pause">Rehat</string>
+    <string name="plan_step_loop">Ulang dari sini</string>
+    <string name="plan_step_end">Tamat di sini</string>
+    <string name="plan_add_step">Tambah langkah</string>
+    <string name="plan_done">Selesai</string>
+    <string name="plan_needs_focus">Tambah sekurang-kurangnya satu langkah fokus</string>
+    <string name="a11y_decrease_pause">Kurangkan tempoh rehat</string>
+    <string name="a11y_increase_pause">Tambahkan tempoh rehat</string>
+    <string name="a11y_plan_row_choice">Jenis langkah</string>
+    <string name="a11y_plan_row_state">Langkah %1$d: %2$s</string>
+    <string name="picker_slot_focus">Fokus</string>
+    <string name="picker_slot_break">Rehat</string>
 </resources>

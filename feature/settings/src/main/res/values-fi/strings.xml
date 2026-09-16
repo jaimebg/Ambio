@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Toistaa äänen, kun keskittymisjakso päättyy</string>
     <string name="settings_effects">Tunnelmatehosteet</string>
     <string name="settings_effects_summary">Animoituja hiukkasia ajastimen takana</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Ääni taukojen aikana</string>
+    <string name="settings_break_sound_summary">Toistaa erillisen miksauksen levon aikana</string>
 </resources>

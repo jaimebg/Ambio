@@ -12,4 +12,10 @@ interface ChimeRepository {
      */
     @RawRes
     fun getTimerChimeResource(): Int
+
+    /**
+     * Get the raw resource ID for the sound played when a whole session plan ends.
+     */
+    @RawRes
+    fun getSuccessChimeResource(): Int
 }

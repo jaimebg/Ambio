@@ -50,8 +50,33 @@
     <string name="label_focus_duration">ফোকাসের সময়কাল</string>
     <string name="label_break_duration">বিরতির সময়কাল</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">এর পরে থামুন</string>
+    <string name="sleep_timer_off">বন্ধ</string>
+    <string name="state_sleep_timer">ঘুমের টাইমার</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">ফোকাসের সময়কাল কমান</string>
     <string name="a11y_increase_focus">ফোকাসের সময়কাল বাড়ান</string>
     <string name="a11y_volume_slider">ভলিউম</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">প্ল্যান</string>
+    <string name="plan_edit">সম্পাদনা</string>
+    <string name="timer_step_focus_of">%2$d-এর মধ্যে ফোকাস %1$d</string>
+    <string name="timer_step_break">বিরতি</string>
+    <string name="plan_editor_title">সেশনের পরিকল্পনা</string>
+    <string name="plan_step_focus">ফোকাস</string>
+    <string name="plan_step_pause">বিরতি</string>
+    <string name="plan_step_loop">এখান থেকে পুনরাবৃত্তি</string>
+    <string name="plan_step_end">এখানে শেষ</string>
+    <string name="plan_add_step">ধাপ যোগ করুন</string>
+    <string name="plan_done">সম্পন্ন</string>
+    <string name="plan_needs_focus">অন্তত একটি ফোকাস ধাপ যোগ করুন</string>
+    <string name="a11y_decrease_pause">বিরতির সময়কাল কমান</string>
+    <string name="a11y_increase_pause">বিরতির সময়কাল বাড়ান</string>
+    <string name="a11y_plan_row_choice">ধাপের ধরন</string>
+    <string name="a11y_plan_row_state">ধাপ %1$d: %2$s</string>
+    <string name="picker_slot_focus">ফোকাস</string>
+    <string name="picker_slot_break">বিরতি</string>
 </resources>

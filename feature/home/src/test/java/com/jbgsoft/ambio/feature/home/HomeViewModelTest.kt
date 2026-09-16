@@ -9,6 +9,10 @@ import com.jbgsoft.ambio.core.common.haptics.HapticManager
 import com.jbgsoft.ambio.core.common.resources.StringProvider
 import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.MixSlot
+import com.jbgsoft.ambio.core.domain.model.PlanRowChoice
+import com.jbgsoft.ambio.core.domain.model.PlanStep
+import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
@@ -19,6 +23,9 @@ import com.jbgsoft.ambio.core.domain.repository.ChimeRepository
 import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
+import com.jbgsoft.ambio.core.domain.session.SessionEvent
+import com.jbgsoft.ambio.core.domain.session.SessionProgress
+import com.jbgsoft.ambio.core.domain.session.SessionRunner
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
 import com.jbgsoft.ambio.media.AudioServiceConnection
 import com.jbgsoft.ambio.media.MixEntry
@@ -33,6 +40,7 @@ import io.mockk.verify
 import io.mockk.verifyOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -66,6 +74,7 @@ class HomeViewModelTest {
     // Mocks
     private lateinit var soundRepository: SoundRepository
     private lateinit var timerRepository: TimerRepository
+    private lateinit var sessionRunner: SessionRunner
     private lateinit var preferencesRepository: PreferencesRepository
     private lateinit var saveSessionUseCase: SaveSessionUseCase
     private lateinit var hapticManager: HapticManager
@@ -81,9 +90,12 @@ class HomeViewModelTest {
     // Flows for controlling state
     private lateinit var timerStateFlow: MutableStateFlow<TimerState>
     private lateinit var activeMixFlow: MutableStateFlow<List<ActiveSound>>
+    private lateinit var breakMixFlow: MutableStateFlow<List<ActiveSound>>
     private lateinit var preferencesFlow: MutableStateFlow<UserPreferences>
     private lateinit var isConnectedFlow: MutableStateFlow<Boolean>
     private lateinit var isPlayingFlow: MutableStateFlow<Boolean>
+    private lateinit var progressFlow: MutableStateFlow<SessionProgress?>
+    private lateinit var eventsFlow: MutableSharedFlow<SessionEvent>
 
     // Test data
     private val testSound = Sound(
@@ -113,6 +125,7 @@ class HomeViewModelTest {
         // Initialize flows
         timerStateFlow = MutableStateFlow(TimerState.Idle)
         activeMixFlow = MutableStateFlow(listOf(ActiveSound(testSound, 1.0f)))
+        breakMixFlow = MutableStateFlow(listOf(ActiveSound(testSoundForest, 0.5f)))
         preferencesFlow = MutableStateFlow(UserPreferences())
         isConnectedFlow = MutableStateFlow(false)
         isPlayingFlow = MutableStateFlow(false)
@@ -120,9 +133,10 @@ class HomeViewModelTest {
         // Create mocks
         soundRepository = mockk {
             every { getAllSounds() } returns testSounds
-            every { getActiveMix() } returns activeMixFlow
-            coEvery { setSoundActive(any(), any()) } just Runs
-            coEvery { setSoundLevel(any(), any()) } just Runs
+            every { getActiveMix(MixSlot.FOCUS) } returns activeMixFlow
+            every { getActiveMix(MixSlot.BREAK) } returns breakMixFlow
+            coEvery { setSoundActive(any(), any(), any()) } just Runs
+            coEvery { setSoundLevel(any(), any(), any()) } just Runs
         }
 
         timerRepository = mockk {
@@ -134,12 +148,26 @@ class HomeViewModelTest {
             coEvery { startBreak(any()) } just Runs
         }
 
+        progressFlow = MutableStateFlow(null)
+        eventsFlow = MutableSharedFlow(extraBufferCapacity = 16)
+        sessionRunner = mockk {
+            every { progress } returns progressFlow
+            every { events } returns eventsFlow
+            coEvery { start(any()) } just Runs
+            coEvery { pause() } just Runs
+            coEvery { resume() } just Runs
+            coEvery { stop() } just Runs
+        }
+
         preferencesRepository = mockk {
             every { preferences } returns preferencesFlow
             coEvery { setLastMix(any()) } just Runs
             coEvery { setVolume(any()) } just Runs
             coEvery { setLastTimerMinutes(any()) } just Runs
+            coEvery { setBreakMinutes(any()) } just Runs
+            coEvery { setSessionPlan(any()) } just Runs
             coEvery { setLastMode(any()) } just Runs
+            coEvery { setSleepMinutes(any()) } just Runs
         }
 
         saveSessionUseCase = mockk()
@@ -176,6 +204,7 @@ class HomeViewModelTest {
 
         chimeRepository = mockk {
             every { getTimerChimeResource() } returns 100 // Dummy resource ID
+            every { getSuccessChimeResource() } returns 200
         }
     }
 
@@ -188,6 +217,7 @@ class HomeViewModelTest {
         return HomeViewModel(
             soundRepository = soundRepository,
             timerRepository = timerRepository,
+            sessionRunner = sessionRunner,
             preferencesRepository = preferencesRepository,
             saveSessionUseCase = saveSessionUseCase,
             hapticManager = hapticManager,
@@ -373,7 +403,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `selectPreset saves minutes for non-custom presets`() = runTest(testDispatcher) {
+    fun `selectPreset saves minutes for the fixed-duration presets`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
@@ -389,6 +419,20 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.CUSTOM))
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { preferencesRepository.setLastTimerMinutes(any()) }
+    }
+
+    @Test
+    fun `selectPreset does not save minutes for the plan preset`() = runTest(testDispatcher) {
+        // PLAN has no duration of its own. Persisting its 0 focus minutes would land
+        // in customMinutes and make the next Custom plan invalid, which the runner
+        // refuses to start.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.PLAN))
         advanceUntilIdle()
 
         coVerify(exactly = 0) { preferencesRepository.setLastTimerMinutes(any()) }
@@ -512,60 +556,130 @@ class HomeViewModelTest {
     // --- Play/Pause Tests (Timer Mode) ---
 
     @Test
-    fun `playPause in timer mode starts timer when idle`() = runTest(testDispatcher) {
+    fun `playPause in timer mode starts the preset's two-step plan when idle`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        // 25 minutes in milliseconds
-        coVerify { timerRepository.startTimer(25 * 60 * 1000L) }
+        coVerify { sessionRunner.start(SessionPlan.quick(25, 5)) }
+        coVerify(exactly = 0) { timerRepository.startTimer(any()) }
     }
 
     @Test
-    fun `playPause in timer mode starts audio when idle`() = runTest(testDispatcher) {
+    fun `the 50 minute preset starts a 50 and break plan`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.FOCUS_50))
+        viewModel.onEvent(HomeEvent.SetBreakMinutes(10))
 
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        // The mix already reached the service; starting it is volume plus the fade-in.
-        verify { audioServiceConnection.setVolume(0.7f) }
-        verify { audioServiceConnection.play() }
+        coVerify { sessionRunner.start(SessionPlan.quick(50, 10)) }
     }
 
     @Test
-    fun `playPause in timer mode pauses when running`() = runTest(testDispatcher) {
-        timerStateFlow.value = TimerState.Running(
-            remainingMs = 1000000L,
-            totalMs = 1500000L
-        )
+    fun `the custom preset uses the custom minutes`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.CUSTOM))
+        viewModel.onEvent(HomeEvent.SetCustomMinutes(40))
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        coVerify { sessionRunner.start(SessionPlan.quick(40, 5)) }
+    }
+
+    @Test
+    fun `the plan preset starts the stored plan`() = runTest(testDispatcher) {
+        val plan = SessionPlan(listOf(PlanStep.Focus(35), PlanStep.Break(15)), repeat = true)
+        preferencesFlow.value = UserPreferences(sessionPlan = plan)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.PLAN))
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        coVerify { sessionRunner.start(plan) }
+    }
+
+    @Test
+    fun `a started step plays the mix`() = runTest(testDispatcher) {
+        createViewModel()
+        advanceUntilIdle()
+
+        eventsFlow.emit(SessionEvent.StepStarted(PlanStep.Focus(25), 0))
+        advanceUntilIdle()
+
+        verifyOrder {
+            audioServiceConnection.setMix(any(), any())
+            audioServiceConnection.play()
+        }
+    }
+
+    @Test
+    fun `a started break step stops the audio`() = runTest(testDispatcher) {
+        createViewModel()
+        advanceUntilIdle()
+
+        eventsFlow.emit(SessionEvent.StepStarted(PlanStep.Break(5), 1))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        verify(exactly = 0) { audioServiceConnection.play() }
+    }
+
+    @Test
+    fun `playPause in timer mode pauses the runner and the audio when running`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        timerStateFlow.value = TimerState.Running(remainingMs = 60_000, totalMs = 60_000)
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        coVerify { timerRepository.pauseTimer() }
+        coVerify { sessionRunner.pause() }
         verify { audioServiceConnection.pause() }
     }
 
     @Test
-    fun `playPause in timer mode resumes when paused`() = runTest(testDispatcher) {
-        timerStateFlow.value = TimerState.Paused(
-            remainingMs = 500000L,
-            totalMs = 1500000L
-        )
+    fun `playPause in timer mode resumes the runner and the audio when paused`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
+        advanceUntilIdle()
+        // A focus step is in progress: resume re-applies audibility, and with no step
+        // at all it would (correctly) leave the audio alone and this would prove nothing.
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 0, 0)
+        timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
 
-        coVerify { timerRepository.resumeTimer() }
+        coVerify { sessionRunner.resume() }
         verify { audioServiceConnection.play() }
+    }
+
+    @Test
+    fun `resuming during a silent break does not start audio`() = runTest(testDispatcher) {
+        // Resume must go through the same audibility decision as a step start, or a
+        // pause taken during a silent break comes back playing the focus mix.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        coVerify { sessionRunner.resume() }
+        verify { audioServiceConnection.stop() }
+        verify(exactly = 0) { audioServiceConnection.play() }
     }
 
     @Test
@@ -577,37 +691,6 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         verify { hapticManager.heavyClick() }
-    }
-
-    @Test
-    fun `playPause with 50 min preset starts correct duration`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.FOCUS_50))
-        advanceUntilIdle()
-
-        viewModel.onEvent(HomeEvent.PlayPause)
-        advanceUntilIdle()
-
-        // 50 minutes in milliseconds
-        coVerify { timerRepository.startTimer(50 * 60 * 1000L) }
-    }
-
-    @Test
-    fun `playPause with custom preset uses custom minutes`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.CUSTOM))
-        viewModel.onEvent(HomeEvent.SetCustomMinutes(30))
-        advanceUntilIdle()
-
-        viewModel.onEvent(HomeEvent.PlayPause)
-        advanceUntilIdle()
-
-        // 30 minutes in milliseconds
-        coVerify { timerRepository.startTimer(30 * 60 * 1000L) }
     }
 
     // --- Play/Pause Tests (Ambient Mode) ---
@@ -641,17 +724,159 @@ class HomeViewModelTest {
         verify { audioServiceConnection.pause() }
     }
 
+    // --- Sleep timer (Ambient mode) ---
+
+    private fun ambientViewModel(sleepMinutes: Int): HomeViewModel {
+        preferencesFlow.value = UserPreferences(lastMode = AppMode.AMBIENT, sleepMinutes = sleepMinutes)
+        val viewModel = createViewModel()
+        return viewModel
+    }
+
+    @Test
+    fun `ambient play with a sleep timer set starts a countdown of that length`() = runTest(testDispatcher) {
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        coVerify { timerRepository.startTimer(30 * 60_000L) }
+    }
+
+    @Test
+    fun `ambient play with the sleep timer off starts no countdown`() = runTest(testDispatcher) {
+        val viewModel = ambientViewModel(sleepMinutes = 0)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        coVerify(exactly = 0) { timerRepository.startTimer(any()) }
+    }
+
+    @Test
+    fun `a finished sleep timer stops the audio with no chime and no session`() = runTest(testDispatcher) {
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 1_000L, totalMs = 30 * 60_000L)
+        advanceUntilIdle()
+
+        timerStateFlow.value = TimerState.Completed()
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        coVerify { timerRepository.resetTimer() }
+        verify(exactly = 0) { chimePlayer.playChime(any()) }
+        verify(exactly = 0) { hapticManager.timerComplete() }
+        coVerify(exactly = 0) { saveSessionUseCase(any(), any(), any()) }
+    }
+
+    @Test
+    fun `a timer completing inside a plan is left to the runner`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 0, 0)
+        timerStateFlow.value = TimerState.Running(remainingMs = 1_000L, totalMs = 25 * 60_000L)
+        advanceUntilIdle()
+
+        timerStateFlow.value = TimerState.Completed()
+        advanceUntilIdle()
+
+        // The runner emits StepCompleted for this; the ViewModel must not stop
+        // the audio on its own or the break that follows would start from a
+        // second stop.
+        verify(exactly = 0) { audioServiceConnection.stop() }
+        coVerify(exactly = 0) { timerRepository.resetTimer() }
+        assertThat(viewModel.uiState.value.sessionProgress).isNotNull()
+    }
+
+    @Test
+    fun `pausing ambient playback pauses the sleep countdown`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 30 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.pause() }
+        coVerify { timerRepository.pauseTimer() }
+    }
+
+    @Test
+    fun `resuming ambient playback resumes the paused countdown rather than restarting it`() = runTest(testDispatcher) {
+        timerStateFlow.value = TimerState.Paused(remainingMs = 10_000L, totalMs = 30 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        coVerify { timerRepository.resumeTimer() }
+        coVerify(exactly = 0) { timerRepository.startTimer(any()) }
+    }
+
+    @Test
+    fun `switching to timer mode drops a sleep countdown`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 30 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.TIMER))
+        advanceUntilIdle()
+
+        coVerify { timerRepository.resetTimer() }
+    }
+
+    @Test
+    fun `choosing a sleep duration persists it and restarts a running countdown`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 15 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 15)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetSleepMinutes(45))
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.sleepMinutes).isEqualTo(45)
+        coVerify { preferencesRepository.setSleepMinutes(45) }
+        coVerify { timerRepository.startTimer(45 * 60_000L) }
+    }
+
+    @Test
+    fun `turning the sleep timer off while playing drops the countdown and keeps playing`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 15 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 15)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetSleepMinutes(0))
+        advanceUntilIdle()
+
+        coVerify { timerRepository.resetTimer() }
+        verify(exactly = 0) { audioServiceConnection.stop() }
+        verify(exactly = 0) { audioServiceConnection.pause() }
+    }
+
     // --- Reset Tests ---
 
     @Test
-    fun `reset stops timer and audio`() = runTest(testDispatcher) {
+    fun `reset stops the runner and the audio`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
         viewModel.onEvent(HomeEvent.Reset)
         advanceUntilIdle()
 
-        coVerify { timerRepository.resetTimer() }
+        coVerify { sessionRunner.stop() }
         verify { audioServiceConnection.stop() }
     }
 
@@ -664,6 +889,32 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         verify { hapticManager.click() }
+    }
+
+    @Test
+    fun `switching to ambient mode stops a running plan`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 0, 0)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
+        advanceUntilIdle()
+
+        coVerify { sessionRunner.stop() }
+    }
+
+    @Test
+    fun `switching to ambient mode with no plan in progress stops nothing`() = runTest(testDispatcher) {
+        // progressFlow stays null: there is no plan to abandon, so the runner is
+        // left alone rather than being told to stop on every mode toggle.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { sessionRunner.stop() }
     }
 
     // --- Sound Picker Tests ---
@@ -712,97 +963,82 @@ class HomeViewModelTest {
         verify { hapticManager.click() }
     }
 
-    // --- Timer Completion Tests ---
+    // --- Session Event Tests ---
 
     @Test
-    fun `timer completion stops audio`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
+    fun `a completed focus step stops audio, chimes, buzzes and saves the session`() = runTest(testDispatcher) {
+        createViewModel()
         advanceUntilIdle()
 
-        // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed(wasBreak = false)
+        eventsFlow.emit(SessionEvent.StepCompleted(PlanStep.Focus(25), 0))
         advanceUntilIdle()
 
         verify { audioServiceConnection.stop() }
+        verify { chimePlayer.playChime(100) }
+        verify { hapticManager.timerComplete() }
+        coVerify { saveSessionUseCase(soundId = "rain", durationMinutes = 25, wasCompleted = true) }
     }
 
     @Test
-    fun `timer completion plays chime`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
+    fun `a completed break step chimes but saves nothing`() = runTest(testDispatcher) {
+        createViewModel()
         advanceUntilIdle()
 
-        // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed(wasBreak = false)
+        eventsFlow.emit(SessionEvent.StepCompleted(PlanStep.Break(5), 1))
         advanceUntilIdle()
 
         verify { chimePlayer.playChime(100) }
+        coVerify(exactly = 0) { saveSessionUseCase(any(), any(), any()) }
     }
 
     @Test
-    fun `timer completion triggers haptic`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
+    fun `a completed plan plays the success chime instead of the step chime`() = runTest(testDispatcher) {
+        createViewModel()
         advanceUntilIdle()
 
-        // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed(wasBreak = false)
+        eventsFlow.emit(SessionEvent.PlanCompleted(PlanStep.Break(5)))
         advanceUntilIdle()
 
+        verify { audioServiceConnection.stop() }
+        verify { chimePlayer.playChime(200) }
+        verify(exactly = 0) { chimePlayer.playChime(100) }
         verify { hapticManager.timerComplete() }
     }
 
     @Test
-    fun `timer completion saves session`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
+    fun `a plan that ends on a focus step still saves that session`() = runTest(testDispatcher) {
+        createViewModel()
         advanceUntilIdle()
 
-        // Simulate timer completion
-        timerStateFlow.value = TimerState.Completed(wasBreak = false)
+        eventsFlow.emit(SessionEvent.PlanCompleted(PlanStep.Focus(35)))
         advanceUntilIdle()
 
-        coVerify { saveSessionUseCase.invoke("rain", 25, true) }
+        coVerify { saveSessionUseCase(soundId = "rain", durationMinutes = 35, wasCompleted = true) }
     }
 
     @Test
-    fun `timer completion starts break for 25 min preset`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
+    fun `no chime plays when the chime is disabled`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(chimeEnabled = false)
+        createViewModel()
         advanceUntilIdle()
 
-        // Simulate timer completion with 25 min preset (default)
-        timerStateFlow.value = TimerState.Completed(wasBreak = false)
+        eventsFlow.emit(SessionEvent.StepCompleted(PlanStep.Focus(25), 0))
+        eventsFlow.emit(SessionEvent.PlanCompleted(PlanStep.Break(5)))
         advanceUntilIdle()
 
-        // 5 minute break
-        coVerify { timerRepository.startBreak(5 * 60 * 1000L) }
+        verify(exactly = 0) { chimePlayer.playChime(any()) }
     }
 
     @Test
-    fun `timer completion starts break with configured break minutes`() = runTest(testDispatcher) {
+    fun `session progress lands in state`() = runTest(testDispatcher) {
         val viewModel = createViewModel()
         advanceUntilIdle()
+        val progress = SessionProgress(SessionPlan.DEFAULT, 1, 0)
 
-        viewModel.onEvent(HomeEvent.SelectPreset(TimerPreset.FOCUS_50))
+        progressFlow.value = progress
         advanceUntilIdle()
 
-        // Simulate timer completion (uses breakMinutes which defaults to 5)
-        timerStateFlow.value = TimerState.Completed(wasBreak = false)
-        advanceUntilIdle()
-
-        // Default 5 minute break
-        coVerify { timerRepository.startBreak(5 * 60 * 1000L) }
-    }
-
-    @Test
-    fun `break completion resets timer instead of starting another break`() = runTest(testDispatcher) {
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        // Simulate break completion (wasBreak = true)
-        timerStateFlow.value = TimerState.Completed(wasBreak = true)
-        advanceUntilIdle()
-
-        // Should reset timer, not start another break
-        coVerify { timerRepository.resetTimer() }
-        coVerify(exactly = 0) { timerRepository.startBreak(any()) }
+        assertThat(viewModel.uiState.value.sessionProgress).isEqualTo(progress)
     }
 
     // --- Audio Service Connection State Tests ---
@@ -972,7 +1208,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
-        coVerify { soundRepository.setSoundActive("forest", true) }
+        coVerify { soundRepository.setSoundActive("forest", true, MixSlot.FOCUS) }
         // The service hears about it through getActiveMix, never from the event: two
         // writers would be two sources of truth that can disagree.
         verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
@@ -988,7 +1224,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.ToggleSound(testSoundForest))
         advanceUntilIdle()
 
-        coVerify { soundRepository.setSoundActive("forest", false) }
+        coVerify { soundRepository.setSoundActive("forest", false, MixSlot.FOCUS) }
         verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 
@@ -1003,7 +1239,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.ToggleSound(testSound))
         advanceUntilIdle()
 
-        coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false) }
+        coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false, MixSlot.FOCUS) }
         verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
     }
 
@@ -1039,7 +1275,7 @@ class HomeViewModelTest {
         verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.3f)), any()) }
         // But no write: the repository's setSoundLevel is a DataStore edit behind a
         // mutex, and a drag would queue one per frame.
-        coVerify(exactly = 0) { soundRepository.setSoundLevel(any(), any()) }
+        coVerify(exactly = 0) { soundRepository.setSoundLevel(any(), any(), any()) }
     }
 
     @Test
@@ -1097,7 +1333,7 @@ class HomeViewModelTest {
         viewModel.onEvent(HomeEvent.SoundLevelChangeFinished("rain"))
         advanceUntilIdle()
 
-        coVerify(exactly = 1) { soundRepository.setSoundLevel("rain", 0.6f) }
+        coVerify(exactly = 1) { soundRepository.setSoundLevel("rain", 0.6f, MixSlot.FOCUS) }
     }
 
     @Test
@@ -1167,6 +1403,10 @@ class HomeViewModelTest {
 
         viewModel.onEvent(HomeEvent.PlayPause)
         advanceUntilIdle()
+        // The runner, not playPause, starts the audio now: the step it reports is
+        // what re-declares the mix.
+        eventsFlow.emit(SessionEvent.StepStarted(PlanStep.Focus(25), 0))
+        advanceUntilIdle()
 
         verifyOrder {
             audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any())
@@ -1180,7 +1420,7 @@ class HomeViewModelTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
-        timerStateFlow.value = TimerState.Completed(wasBreak = false)
+        eventsFlow.emit(SessionEvent.StepCompleted(PlanStep.Focus(25), 0))
         advanceUntilIdle()
 
         coVerify {
@@ -1190,5 +1430,375 @@ class HomeViewModelTest {
                 wasCompleted = true
             )
         }
+    }
+
+    // --- Break mix tests ---
+    //
+    // Two stored mixes, two independent slots: which one sounds is decided by the step
+    // and the break-sound toggle, which one the picker edits is decided by the user.
+
+    private fun breakStarted() = SessionEvent.StepStarted(PlanStep.Break(5), 1)
+
+    @Test
+    fun `a break with break sound off stops the audio`() = runTest(testDispatcher) {
+        createViewModel()
+        advanceUntilIdle()
+
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        verify(exactly = 0) { audioServiceConnection.play() }
+    }
+
+    @Test
+    fun `a break with break sound on plays the break mix`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.5f)), any()) }
+        verify { audioServiceConnection.play() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        assertThat(viewModel.uiState.value.activeMix.map { it.sound.id }).containsExactly("forest")
+    }
+
+    @Test
+    fun `the next focus step returns to the focus mix`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        eventsFlow.emit(SessionEvent.StepStarted(PlanStep.Focus(25), 2))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1.0f)), any()) }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
+    @Test
+    fun `enabling break sound during a break starts the break mix`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        timerStateFlow.value = TimerState.Running(remainingMs = 300_000, totalMs = 300_000)
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+    }
+
+    @Test
+    fun `disabling break sound during a break stops the audio`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        timerStateFlow.value = TimerState.Running(remainingMs = 300_000, totalMs = 300_000)
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = false)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
+    @Test
+    fun `the picker edits the slot it is set to`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        viewModel.onEvent(HomeEvent.ToggleSound(testSound))
+        advanceUntilIdle()
+
+        coVerify { soundRepository.setSoundActive("rain", true, MixSlot.BREAK) }
+        assertThat(viewModel.uiState.value.pickerMix.map { it.sound.id }).containsExactly("forest")
+    }
+
+    @Test
+    fun `dragging a level on the slot that is not audible does not reach the service`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        clearMocks(audioServiceConnection, answers = false)
+
+        viewModel.onEvent(HomeEvent.SetSoundLevel("forest", 0.2f))
+
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        assertThat(viewModel.uiState.value.breakMix.single().level).isEqualTo(0.2f)
+        assertThat(viewModel.uiState.value.focusMix.single().level).isEqualTo(1.0f)
+    }
+
+    @Test
+    fun `letting go of a break level persists it on the break slot`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        viewModel.onEvent(HomeEvent.SetSoundLevel("forest", 0.2f))
+
+        viewModel.onEvent(HomeEvent.SoundLevelChangeFinished("forest"))
+        advanceUntilIdle()
+
+        coVerify { soundRepository.setSoundLevel("forest", 0.2f, MixSlot.BREAK) }
+    }
+
+    @Test
+    fun `a break mix emission while a break sounds is pushed to the service`() = runTest(testDispatcher) {
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        createViewModel()
+        advanceUntilIdle()
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        breakMixFlow.value = listOf(ActiveSound(testSoundForest, 0.9f))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.9f)), any()) }
+    }
+
+    @Test
+    fun `a break mix emission while focus sounds is not pushed`() = runTest(testDispatcher) {
+        createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        breakMixFlow.value = listOf(ActiveSound(testSoundForest, 0.9f))
+        advanceUntilIdle()
+
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+    }
+
+    @Test
+    fun `flipping break sound while paused does not start audio`() = runTest(testDispatcher) {
+        // A toggle flip is not a transport command. Paused, the only thing that may move
+        // is which slot would sound; the audio stays where the user left it.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 0, 0)
+        timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        advanceUntilIdle()
+
+        verify(exactly = 0) { audioServiceConnection.play() }
+        verify(exactly = 0) { audioServiceConnection.stop() }
+    }
+
+    @Test
+    fun `flipping break sound while paused on a break still moves the audible slot`() = runTest(testDispatcher) {
+        // The slot has to follow so the gradient and mix bar show what resuming would
+        // play; the audio itself waits for the resume.
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        timerStateFlow.value = TimerState.Paused(remainingMs = 30_000, totalMs = 60_000)
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        verify(exactly = 0) { audioServiceConnection.play() }
+    }
+
+    @Test
+    fun `the audible slot returns to focus when the plan ends`() = runTest(testDispatcher) {
+        // Left on BREAK, an idle screen would wear the break palette and, worse, the
+        // next focus mix emission would be dropped as "not the audible slot".
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        clearMocks(audioServiceConnection, answers = false)
+
+        progressFlow.value = null
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+        // A new level, or the StateFlow would hold an equal value and never re-emit.
+        activeMixFlow.value = listOf(ActiveSound(testSound, 0.9f))
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.9f)), any()) }
+    }
+
+    @Test
+    fun `switching to ambient during a sounding break stops the audio`() = runTest(testDispatcher) {
+        // Abandoning a plan mid-break is the one path with no step event behind it:
+        // the runner just stops. Without an explicit stop the service keeps playing
+        // the break tracks under a screen that has already gone back to the focus mix.
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        eventsFlow.emit(breakStarted())
+        advanceUntilIdle()
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        clearMocks(audioServiceConnection, answers = false)
+
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.AMBIENT))
+        advanceUntilIdle()
+        // The runner is mocked, so its progress is nulled here the way a real stop would.
+        progressFlow.value = null
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
+    @Test
+    fun `a restored plan in progress recomputes the audible slot without touching audio`() =
+        runTest(testDispatcher) {
+            // A ViewModel recreated over a running plan never sees the StepStarted that
+            // opened the break: progress is where it learns the step. The slot has to
+            // follow so the gradient matches what the service is already playing — and
+            // only the slot, because the audio is not this ViewModel's to restart.
+            preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+            progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+            verify(exactly = 0) { audioServiceConnection.play() }
+        }
+
+    @Test
+    fun `a break arriving only through progress still moves the audible slot`() = runTest(testDispatcher) {
+        // The same restore, with the toggle already settled before the step arrives:
+        // nothing flips breakSoundEnabled here, so the slot can only come from progress.
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 1, 0)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
+        verify(exactly = 0) { audioServiceConnection.play() }
+        verify(exactly = 0) { audioServiceConnection.stop() }
+    }
+
+    @Test
+    fun `turning break sound off returns the picker to the focus slot`() = runTest(testDispatcher) {
+        // The slot switch is only drawn while break sound is on. Left on BREAK, the
+        // picker would edit a mix that can no longer play, with nothing on screen to
+        // say so and no way back.
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = true)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.SetPickerSlot(MixSlot.BREAK))
+        advanceUntilIdle()
+        assertThat(viewModel.uiState.value.pickerSlot).isEqualTo(MixSlot.BREAK)
+
+        preferencesFlow.value = UserPreferences(breakSoundEnabled = false)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.pickerSlot).isEqualTo(MixSlot.FOCUS)
+    }
+
+    // --- Plan Editor Tests ---
+
+    @Test
+    fun `opening the editor copies the stored plan into the draft`() = runTest(testDispatcher) {
+        val plan = SessionPlan(listOf(PlanStep.Focus(35), PlanStep.Break(15)), repeat = true)
+        preferencesFlow.value = UserPreferences(sessionPlan = plan)
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+
+        assertThat(viewModel.uiState.value.planDraft).isEqualTo(plan)
+    }
+
+    @Test
+    fun `closing the editor drops the draft without saving`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+        viewModel.onEvent(HomeEvent.AddPlanStep)
+
+        viewModel.onEvent(HomeEvent.HidePlanEditor)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.planDraft).isNull()
+        coVerify(exactly = 0) { preferencesRepository.setSessionPlan(any()) }
+    }
+
+    @Test
+    fun `row choice, minutes and add step edit the draft`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+
+        viewModel.onEvent(HomeEvent.AddPlanStep)                       // F25 B5 F25
+        viewModel.onEvent(HomeEvent.SetPlanStepMinutes(2, 35))         // F25 B5 F35
+        viewModel.onEvent(HomeEvent.SetPlanRowChoice(3, PlanRowChoice.LOOP))
+
+        assertThat(viewModel.uiState.value.planDraft).isEqualTo(
+            SessionPlan(listOf(PlanStep.Focus(25), PlanStep.Break(5), PlanStep.Focus(35)), repeat = true)
+        )
+    }
+
+    @Test
+    fun `saving a valid draft persists it and closes the editor`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+        viewModel.onEvent(HomeEvent.SetPlanRowChoice(2, PlanRowChoice.LOOP))
+
+        viewModel.onEvent(HomeEvent.SavePlan)
+        advanceUntilIdle()
+
+        coVerify { preferencesRepository.setSessionPlan(SessionPlan.DEFAULT.copy(repeat = true)) }
+        assertThat(viewModel.uiState.value.planDraft).isNull()
+    }
+
+    @Test
+    fun `saving an invalid draft does nothing`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.ShowPlanEditor)
+        viewModel.onEvent(HomeEvent.SetPlanRowChoice(0, PlanRowChoice.END))   // no steps left
+
+        viewModel.onEvent(HomeEvent.SavePlan)
+        advanceUntilIdle()
+
+        coVerify(exactly = 0) { preferencesRepository.setSessionPlan(any()) }
+        assertThat(viewModel.uiState.value.planDraft).isNotNull()
+    }
+
+    @Test
+    fun `edits while the editor is closed are ignored`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.AddPlanStep)
+
+        assertThat(viewModel.uiState.value.planDraft).isNull()
     }
 }

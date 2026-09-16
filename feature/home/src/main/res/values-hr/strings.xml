@@ -52,8 +52,33 @@
     <string name="label_focus_duration">Trajanje fokusiranja</string>
     <string name="label_break_duration">Trajanje pauze</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Zaustavi nakon</string>
+    <string name="sleep_timer_off">Isključeno</string>
+    <string name="state_sleep_timer">Mjerač vremena za spavanje</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Smanji trajanje fokusiranja</string>
     <string name="a11y_increase_focus">Povećaj trajanje fokusiranja</string>
     <string name="a11y_volume_slider">Glasnoća</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Uredi</string>
+    <string name="timer_step_focus_of">Fokusiranje %1$d od %2$d</string>
+    <string name="timer_step_break">Pauza</string>
+    <string name="plan_editor_title">Plan sesije</string>
+    <string name="plan_step_focus">Fokusiranje</string>
+    <string name="plan_step_pause">Pauza</string>
+    <string name="plan_step_loop">Ponovi odavde</string>
+    <string name="plan_step_end">Završi ovdje</string>
+    <string name="plan_add_step">Dodaj korak</string>
+    <string name="plan_done">Gotovo</string>
+    <string name="plan_needs_focus">Dodajte barem jedan korak fokusiranja</string>
+    <string name="a11y_decrease_pause">Smanji trajanje pauze</string>
+    <string name="a11y_increase_pause">Povećaj trajanje pauze</string>
+    <string name="a11y_plan_row_choice">Vrsta koraka</string>
+    <string name="a11y_plan_row_state">Korak %1$d: %2$s</string>
+    <string name="picker_slot_focus">Fokusiranje</string>
+    <string name="picker_slot_break">Pauza</string>
 </resources>

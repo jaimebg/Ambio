@@ -54,8 +54,33 @@
     <string name="label_focus_duration">Dĺžka sústredenia</string>
     <string name="label_break_duration">Dĺžka prestávky</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Zastaviť po</string>
+    <string name="sleep_timer_off">Vypnuté</string>
+    <string name="state_sleep_timer">Časovač spánku</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Skrátiť dĺžku sústredenia</string>
     <string name="a11y_increase_focus">Predĺžiť dĺžku sústredenia</string>
     <string name="a11y_volume_slider">Hlasitosť</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plán</string>
+    <string name="plan_edit">Upraviť</string>
+    <string name="timer_step_focus_of">Sústredenie %1$d z %2$d</string>
+    <string name="timer_step_break">Prestávka</string>
+    <string name="plan_editor_title">Plán relácie</string>
+    <string name="plan_step_focus">Sústredenie</string>
+    <string name="plan_step_pause">Prestávka</string>
+    <string name="plan_step_loop">Opakovať odtiaľto</string>
+    <string name="plan_step_end">Skončiť tu</string>
+    <string name="plan_add_step">Pridať krok</string>
+    <string name="plan_done">Hotovo</string>
+    <string name="plan_needs_focus">Pridajte aspoň jeden krok sústredenia</string>
+    <string name="a11y_decrease_pause">Skrátiť dĺžku prestávky</string>
+    <string name="a11y_increase_pause">Predĺžiť dĺžku prestávky</string>
+    <string name="a11y_plan_row_choice">Typ kroku</string>
+    <string name="a11y_plan_row_state">Krok %1$d: %2$s</string>
+    <string name="picker_slot_focus">Sústredenie</string>
+    <string name="picker_slot_break">Prestávka</string>
 </resources>

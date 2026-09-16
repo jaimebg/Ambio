@@ -50,8 +50,33 @@
     <string name="label_focus_duration">Fokuslängd</string>
     <string name="label_break_duration">Rastlängd</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Stoppa efter</string>
+    <string name="sleep_timer_off">Av</string>
+    <string name="state_sleep_timer">Sovtimer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Minska fokuslängden</string>
     <string name="a11y_increase_focus">Öka fokuslängden</string>
     <string name="a11y_volume_slider">Volym</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plan</string>
+    <string name="plan_edit">Redigera</string>
+    <string name="timer_step_focus_of">Fokus %1$d av %2$d</string>
+    <string name="timer_step_break">Rast</string>
+    <string name="plan_editor_title">Passplan</string>
+    <string name="plan_step_focus">Fokus</string>
+    <string name="plan_step_pause">Rast</string>
+    <string name="plan_step_loop">Upprepa härifrån</string>
+    <string name="plan_step_end">Sluta här</string>
+    <string name="plan_add_step">Lägg till steg</string>
+    <string name="plan_done">Klar</string>
+    <string name="plan_needs_focus">Lägg till minst ett fokussteg</string>
+    <string name="a11y_decrease_pause">Minska rastlängden</string>
+    <string name="a11y_increase_pause">Öka rastlängden</string>
+    <string name="a11y_plan_row_choice">Stegtyp</string>
+    <string name="a11y_plan_row_state">Steg %1$d: %2$s</string>
+    <string name="picker_slot_focus">Fokus</string>
+    <string name="picker_slot_break">Rast</string>
 </resources>

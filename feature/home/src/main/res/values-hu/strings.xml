@@ -50,8 +50,33 @@
     <string name="label_focus_duration">Fókusz hossza</string>
     <string name="label_break_duration">Szünet hossza</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Leállítás ennyi után</string>
+    <string name="sleep_timer_off">Ki</string>
+    <string name="state_sleep_timer">Alvásidőzítő</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Fókuszidő csökkentése</string>
     <string name="a11y_increase_focus">Fókuszidő növelése</string>
     <string name="a11y_volume_slider">Hangerő</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Terv</string>
+    <string name="plan_edit">Szerkesztés</string>
+    <string name="timer_step_focus_of">Fókusz %1$d/%2$d</string>
+    <string name="timer_step_break">Szünet</string>
+    <string name="plan_editor_title">Munkamenet terve</string>
+    <string name="plan_step_focus">Fókusz</string>
+    <string name="plan_step_pause">Szünet</string>
+    <string name="plan_step_loop">Ismétlés innen</string>
+    <string name="plan_step_end">Befejezés itt</string>
+    <string name="plan_add_step">Lépés hozzáadása</string>
+    <string name="plan_done">Kész</string>
+    <string name="plan_needs_focus">Adj hozzá legalább egy fókuszlépést</string>
+    <string name="a11y_decrease_pause">Szünetidő csökkentése</string>
+    <string name="a11y_increase_pause">Szünetidő növelése</string>
+    <string name="a11y_plan_row_choice">Lépés típusa</string>
+    <string name="a11y_plan_row_state">%1$d. lépés: %2$s</string>
+    <string name="picker_slot_focus">Fókusz</string>
+    <string name="picker_slot_break">Szünet</string>
 </resources>

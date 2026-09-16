@@ -38,6 +38,7 @@ fun SettingsScreen(
         uiState = uiState,
         onHapticsChanged = viewModel::onHapticsChanged,
         onChimeChanged = viewModel::onChimeChanged,
+        onBreakSoundChanged = viewModel::onBreakSoundChanged,
         onEffectsChanged = viewModel::onEffectsChanged,
         onNavigateBack = onNavigateBack
     )
@@ -48,6 +49,7 @@ fun SettingsScreen(
     uiState: SettingsUiState,
     onHapticsChanged: (Boolean) -> Unit,
     onChimeChanged: (Boolean) -> Unit,
+    onBreakSoundChanged: (Boolean) -> Unit,
     onEffectsChanged: (Boolean) -> Unit,
     onNavigateBack: () -> Unit
 ) {
@@ -93,6 +95,12 @@ fun SettingsScreen(
                     summary = stringResource(R.string.settings_chime_summary),
                     checked = uiState.chimeEnabled,
                     onCheckedChange = onChimeChanged
+                )
+                SettingRow(
+                    title = stringResource(R.string.settings_break_sound),
+                    summary = stringResource(R.string.settings_break_sound_summary),
+                    checked = uiState.breakSoundEnabled,
+                    onCheckedChange = onBreakSoundChanged
                 )
                 SettingRow(
                     title = stringResource(R.string.settings_effects),

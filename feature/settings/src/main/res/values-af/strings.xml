@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Speel \'n klank wanneer \'n fokussessie eindig</string>
     <string name="settings_effects">Omgewingseffekte</string>
     <string name="settings_effects_summary">Geanimeerde deeltjies agter die tydhouer</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Klank tydens rus</string>
+    <string name="settings_break_sound_summary">Speel \'n aparte mengsel terwyl jy rus</string>
 </resources>

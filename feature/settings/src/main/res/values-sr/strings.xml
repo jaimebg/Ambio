@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Пушта звук када се сесија фокусирања заврши</string>
     <string name="settings_effects">Амбијентални ефекти</string>
     <string name="settings_effects_summary">Анимиране честице иза тајмера</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Звук током паузе</string>
+    <string name="settings_break_sound_summary">Пушта посебан микс док се одмарате</string>
 </resources>

@@ -50,8 +50,33 @@
     <string name="label_focus_duration">Keskendumise kestus</string>
     <string name="label_break_duration">Pausi kestus</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Peata pärast</string>
+    <string name="sleep_timer_off">Väljas</string>
+    <string name="state_sleep_timer">Unetaimer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Vähenda keskendumise kestust</string>
     <string name="a11y_increase_focus">Suurenda keskendumise kestust</string>
     <string name="a11y_volume_slider">Helitugevus</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Plaan</string>
+    <string name="plan_edit">Muuda</string>
+    <string name="timer_step_focus_of">Keskendumine %1$d/%2$d</string>
+    <string name="timer_step_break">Paus</string>
+    <string name="plan_editor_title">Seansi plaan</string>
+    <string name="plan_step_focus">Keskendumine</string>
+    <string name="plan_step_pause">Paus</string>
+    <string name="plan_step_loop">Korda siit</string>
+    <string name="plan_step_end">Lõpeta siin</string>
+    <string name="plan_add_step">Lisa samm</string>
+    <string name="plan_done">Valmis</string>
+    <string name="plan_needs_focus">Lisa vähemalt üks keskendumise samm</string>
+    <string name="a11y_decrease_pause">Vähenda pausi kestust</string>
+    <string name="a11y_increase_pause">Suurenda pausi kestust</string>
+    <string name="a11y_plan_row_choice">Sammu tüüp</string>
+    <string name="a11y_plan_row_state">Samm %1$d: %2$s</string>
+    <string name="picker_slot_focus">Keskendumine</string>
+    <string name="picker_slot_break">Paus</string>
 </resources>

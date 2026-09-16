@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">ফোকাস সেশন শেষ হলে একটি শব্দ বাজায়</string>
     <string name="settings_effects">অ্যাম্বিয়েন্ট ইফেক্ট</string>
     <string name="settings_effects_summary">টাইমারের পিছনে অ্যানিমেটেড কণা</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">বিরতির সময় শব্দ</string>
+    <string name="settings_break_sound_summary">বিশ্রামের সময় আলাদা একটি মিক্স বাজায়</string>
 </resources>

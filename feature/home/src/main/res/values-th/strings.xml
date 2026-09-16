@@ -48,8 +48,33 @@
     <string name="label_focus_duration">ระยะเวลาโฟกัส</string>
     <string name="label_break_duration">ระยะเวลาพัก</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">หยุดหลังจาก</string>
+    <string name="sleep_timer_off">ปิด</string>
+    <string name="state_sleep_timer">ตัวตั้งเวลานอน</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">ลดระยะเวลาโฟกัส</string>
     <string name="a11y_increase_focus">เพิ่มระยะเวลาโฟกัส</string>
     <string name="a11y_volume_slider">ระดับเสียง</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">แผน</string>
+    <string name="plan_edit">แก้ไข</string>
+    <string name="timer_step_focus_of">โฟกัส %1$d จาก %2$d</string>
+    <string name="timer_step_break">พัก</string>
+    <string name="plan_editor_title">แผนเซสชัน</string>
+    <string name="plan_step_focus">โฟกัส</string>
+    <string name="plan_step_pause">พัก</string>
+    <string name="plan_step_loop">วนซ้ำจากตรงนี้</string>
+    <string name="plan_step_end">จบตรงนี้</string>
+    <string name="plan_add_step">เพิ่มขั้นตอน</string>
+    <string name="plan_done">เสร็จสิ้น</string>
+    <string name="plan_needs_focus">เพิ่มขั้นตอนโฟกัสอย่างน้อยหนึ่งขั้น</string>
+    <string name="a11y_decrease_pause">ลดระยะเวลาพัก</string>
+    <string name="a11y_increase_pause">เพิ่มระยะเวลาพัก</string>
+    <string name="a11y_plan_row_choice">ประเภทขั้นตอน</string>
+    <string name="a11y_plan_row_state">ขั้นตอนที่ %1$d: %2$s</string>
+    <string name="picker_slot_focus">โฟกัส</string>
+    <string name="picker_slot_break">พัก</string>
 </resources>

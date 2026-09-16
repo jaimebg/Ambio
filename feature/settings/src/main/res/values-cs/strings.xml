@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Přehraje zvuk na konci soustředění</string>
     <string name="settings_effects">Atmosférické efekty</string>
     <string name="settings_effects_summary">Animované částice za časovačem</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Zvuk během přestávek</string>
+    <string name="settings_break_sound_summary">Přehraje během odpočinku samostatný mix</string>
 </resources>

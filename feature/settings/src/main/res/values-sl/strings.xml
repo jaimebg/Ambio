@@ -10,4 +10,8 @@
     <string name="settings_chime_summary">Predvaja zvok, ko se seja zbranosti konča</string>
     <string name="settings_effects">Učinki vzdušja</string>
     <string name="settings_effects_summary">Animirani delci za časovnikom</string>
+
+    <!-- Break sound -->
+    <string name="settings_break_sound">Zvok med odmori</string>
+    <string name="settings_break_sound_summary">Med počitkom predvaja ločeno mešanico</string>
 </resources>

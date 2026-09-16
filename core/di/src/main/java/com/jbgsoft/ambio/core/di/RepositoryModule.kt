@@ -5,11 +5,13 @@ import com.jbgsoft.ambio.core.data.repository.PreferencesRepositoryImpl
 import com.jbgsoft.ambio.core.data.repository.SessionRepositoryImpl
 import com.jbgsoft.ambio.core.data.repository.SoundRepositoryImpl
 import com.jbgsoft.ambio.core.data.repository.TimerRepositoryImpl
+import com.jbgsoft.ambio.core.data.session.SessionRunnerImpl
 import com.jbgsoft.ambio.core.domain.repository.ChimeRepository
 import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import com.jbgsoft.ambio.core.domain.repository.SessionRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
 import com.jbgsoft.ambio.core.domain.repository.TimerRepository
+import com.jbgsoft.ambio.core.domain.session.SessionRunner
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,4 +41,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindChimeRepository(impl: ChimeRepositoryImpl): ChimeRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSessionRunner(impl: SessionRunnerImpl): SessionRunner
 }

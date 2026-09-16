@@ -8,6 +8,8 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.PlanCodec
+import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -29,20 +31,29 @@ class PreferencesDataStore @Inject constructor(
         val HAPTICS_ENABLED = booleanPreferencesKey("haptics_enabled")
         val CHIME_ENABLED = booleanPreferencesKey("chime_enabled")
         val EFFECTS_ENABLED = booleanPreferencesKey("effects_enabled")
+        val BREAK_MIX = stringPreferencesKey("break_mix")
+        val SESSION_PLAN = stringPreferencesKey("session_plan")
+        val BREAK_SOUND_ENABLED = booleanPreferencesKey("break_sound_enabled")
+        val SLEEP_MINUTES = intPreferencesKey("sleep_minutes")
     }
 
     val preferences: Flow<UserPreferences> = dataStore.data.map { prefs ->
         UserPreferences(
             lastMix = prefs[PreferencesKeys.LAST_SOUND_ID] ?: "rain",
+            breakMix = prefs[PreferencesKeys.BREAK_MIX],
             volume = prefs[PreferencesKeys.VOLUME] ?: 0.7f,
             lastTimerMinutes = prefs[PreferencesKeys.LAST_TIMER_MINUTES] ?: 25,
             breakMinutes = prefs[PreferencesKeys.BREAK_MINUTES] ?: 5,
+            sessionPlan = prefs[PreferencesKeys.SESSION_PLAN]?.let(PlanCodec::decode)
+                ?: SessionPlan.DEFAULT,
             lastMode = prefs[PreferencesKeys.LAST_MODE]?.let {
                 AppMode.valueOf(it)
             } ?: AppMode.TIMER,
+            sleepMinutes = prefs[PreferencesKeys.SLEEP_MINUTES] ?: 0,
             hapticsEnabled = prefs[PreferencesKeys.HAPTICS_ENABLED] ?: true,
             chimeEnabled = prefs[PreferencesKeys.CHIME_ENABLED] ?: true,
-            effectsEnabled = prefs[PreferencesKeys.EFFECTS_ENABLED] ?: true
+            effectsEnabled = prefs[PreferencesKeys.EFFECTS_ENABLED] ?: true,
+            breakSoundEnabled = prefs[PreferencesKeys.BREAK_SOUND_ENABLED] ?: false
         )
     }
 
@@ -92,5 +103,21 @@ class PreferencesDataStore @Inject constructor(
         dataStore.edit { prefs ->
             prefs[PreferencesKeys.EFFECTS_ENABLED] = enabled
         }
+    }
+
+    suspend fun setBreakMix(encoded: String) {
+        dataStore.edit { prefs -> prefs[PreferencesKeys.BREAK_MIX] = encoded }
+    }
+
+    suspend fun setSessionPlan(plan: SessionPlan) {
+        dataStore.edit { prefs -> prefs[PreferencesKeys.SESSION_PLAN] = PlanCodec.encode(plan) }
+    }
+
+    suspend fun setBreakSoundEnabled(enabled: Boolean) {
+        dataStore.edit { prefs -> prefs[PreferencesKeys.BREAK_SOUND_ENABLED] = enabled }
+    }
+
+    suspend fun setSleepMinutes(minutes: Int) {
+        dataStore.edit { prefs -> prefs[PreferencesKeys.SLEEP_MINUTES] = minutes }
     }
 }

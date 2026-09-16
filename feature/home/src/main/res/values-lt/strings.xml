@@ -54,8 +54,33 @@
     <string name="label_focus_duration">Susikaupimo trukmė</string>
     <string name="label_break_duration">Pertraukos trukmė</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Sustabdyti po</string>
+    <string name="sleep_timer_off">Išjungta</string>
+    <string name="state_sleep_timer">Miego laikmatis</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Sumažinti susikaupimo trukmę</string>
     <string name="a11y_increase_focus">Padidinti susikaupimo trukmę</string>
     <string name="a11y_volume_slider">Garsumas</string>
+
+    <!-- Session plan -->
+    <string name="preset_plan">Planas</string>
+    <string name="plan_edit">Redaguoti</string>
+    <string name="timer_step_focus_of">Susikaupimas %1$d iš %2$d</string>
+    <string name="timer_step_break">Pertrauka</string>
+    <string name="plan_editor_title">Sesijos planas</string>
+    <string name="plan_step_focus">Susikaupimas</string>
+    <string name="plan_step_pause">Pertrauka</string>
+    <string name="plan_step_loop">Kartoti nuo čia</string>
+    <string name="plan_step_end">Baigti čia</string>
+    <string name="plan_add_step">Pridėti žingsnį</string>
+    <string name="plan_done">Atlikta</string>
+    <string name="plan_needs_focus">Pridėkite bent vieną susikaupimo žingsnį</string>
+    <string name="a11y_decrease_pause">Sumažinti pertraukos trukmę</string>
+    <string name="a11y_increase_pause">Padidinti pertraukos trukmę</string>
+    <string name="a11y_plan_row_choice">Žingsnio tipas</string>
+    <string name="a11y_plan_row_state">Žingsnis %1$d: %2$s</string>
+    <string name="picker_slot_focus">Susikaupimas</string>
+    <string name="picker_slot_break">Pertrauka</string>
 </resources>
