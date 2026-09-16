@@ -8,13 +8,14 @@
 #
 #   1. optional high-pass   (forest only -- see HIGHPASS below)
 #   2. seamless loop bake   (tail crossfaded over head, output trimmed by XFADE)
-#   3. loudness match       (linear gain to TARGET_I, no dynamic compression)
+#   3. loudness match       (linear gain to TARGET_I, then a peak limiter that
+#      only touches samples that would cross LIMIT_DB -- see normalise_and_encode)
 #      + resample to 48k, then a single Opus encode.
 #
-# One-shots (the timer chime) skip 1 and 2 and get only the loudness match. They
-# still need it: with the ambience at -30 LUFS the chime was 7.4dB hotter than
-# the bed it plays over, and ChimePlayer uses its own MediaPlayer outside the
-# master volume, so at half volume the gap was closer to 13dB.
+# One-shots (the chimes) skip 1 and 2 and get only the loudness match. They
+# still need it: matched to the bed, the chime plays at the level the user set
+# for the ambience -- ChimePlayer uses its own MediaPlayer outside the master
+# volume, so an unmatched chime at half volume was 13dB hotter than the bed.
 #
 # Opus rather than Vorbis: Homebrew's ffmpeg ships no libvorbis, only FFmpeg's
 # markedly worse native encoder, and spending the one unavoidable lossy
@@ -48,8 +49,31 @@ OUT="${2:-build/processed-audio}"
 FETCHED="${3:-build/audio-src-fetched}"
 
 XFADE=4                # seconds of loop crossfade, also how much shorter the output is
-TARGET_I=-30           # LUFS. Set by cave: it peaks at -3.1dB and cannot go up.
-TARGET_TP=-3           # dBTP
+
+# Loudness target. -30 LUFS was the level every loop could reach as pure gain
+# (cave peaked at -3.1dB and could not go up), and it shipped in 2.0. It also
+# sits 14-16dB under what any music app plays at (-14 to -16 LUFS), and users
+# reported having to run the phone near maximum to hear the app at all
+# (GitHub issue #12). -20 LUFS is about twice as loud and still leaves the
+# equal-power bus in MixPlayer, which keeps a five-sound mix at the same level
+# as one sound, well clear of full scale.
+#
+# What -20 costs: two files no longer fit as pure gain. cave and fireplace peak
+# 25dB above their loudness on a handful of drips and crackles (five transients
+# in cave covering 0.014% of its samples, two in fireplace covering 0.001%). A
+# lookahead limiter holds those at the ceiling, about 7dB down; birds, stream
+# and forest lose 1.3, 0.7 and 0.1dB on their single loudest peaks, and the
+# other nine files are untouched. Every other sample everywhere is still pure
+# gain. That is not the dynamic compression loudnorm falls back to, which the
+# check below still rejects: the limiter has no effect on a signal that stays
+# under the ceiling, and it does not pump.
+TARGET_I=-20           # LUFS
+TARGET_TP=-1           # dBTP, what loudnorm verifies after the limiter
+# dB sample peak the limiter holds. alimiter sees samples, loudnorm verifies
+# true peak, and fireplace's crackles carry inter-sample peaks 1.05dB above
+# their sample peak: with a 0.5dB margin that file measured -0.45 dBTP and
+# loudnorm fell back to dynamic mode. 1.5dB covers it.
+LIMIT_DB=-2.5
 
 # Target loudness range, in LU. loudnorm only stays in linear mode while the
 # measured LRA fits the target; past that it silently switches to dynamic
@@ -137,18 +161,50 @@ failed=0
 # Loudness-match a lossless intermediate and encode it once. Shared by both
 # paths because the only difference between a loop and a one-shot is what
 # happened before this point.
+# loudnorm's first pass, as five numbers. Used twice: once on the raw
+# intermediate to decide the gain, once on the limited one to check it.
+measure() {
+  local m
+  m=$(ffmpeg -hide_banner -nostats -i "$1" \
+        -af "loudnorm=I=$TARGET_I:TP=$TARGET_TP:LRA=$TARGET_LRA:print_format=json" \
+        -f null - 2>&1 | sed -n '/{/,/}/p')
+  python3 -c "
+import json
+j=json.loads('''$m''')
+print(j['input_i'],j['input_tp'],j['input_lra'],j['input_thresh'],j['target_offset'])"
+}
+
 normalise_and_encode() {
   local pre="$1" out="$2" bitrate="$3"
 
-  local m
-  m=$(ffmpeg -hide_banner -nostats -i "$pre" \
-        -af "loudnorm=I=$TARGET_I:TP=$TARGET_TP:LRA=$TARGET_LRA:print_format=json" \
-        -f null - 2>&1 | sed -n '/{/,/}/p')
   local mi mtp mlra mthresh moff
-  read -r mi mtp mlra mthresh moff <<<"$(python3 -c "
-import json
-j=json.loads('''$m''')
-print(j['input_i'],j['input_tp'],j['input_lra'],j['input_thresh'],j['target_offset'])")"
+  read -r mi mtp mlra mthresh moff <<<"$(measure "$pre")"
+  local gain
+  gain=$(python3 -c "print(f'{$TARGET_I-($mi):.2f}')")
+  echo "    measured    I=$mi  TP=$mtp  LRA=$mlra   gain ${gain} dB"
+
+  # Gain first, then the limiter at the shipped level. The limiter is a
+  # lookahead one (5ms attack, 50ms release, latency compensated so the sample
+  # count is untouched -- verify-loop.py compares lengths against this file).
+  # level=false, or it would re-normalise its output to the ceiling and undo
+  # the gain it was given. Written over $pre so the encode below and the loop
+  # verification both see the limited signal, not the raw one.
+  local over
+  over=$(python3 -c "print(f'{max(0.0, $mtp + ($gain) - ($LIMIT_DB)):.1f}')")
+  ffmpeg -hide_banner -loglevel error -y -i "$pre" -af \
+    "volume=${gain}dB,alimiter=limit=$(python3 -c "print(10**($LIMIT_DB/20))"):\
+attack=5:release=50:level=false:latency=true" \
+    -c:a pcm_f32le "$pre.limited.wav"
+  mv "$pre.limited.wav" "$pre"
+  if [ "$over" != "0.0" ]; then
+    echo "    limited     peaks reached ${over} dB over ${LIMIT_DB} dB and were held there"
+  else
+    echo "    limited     nothing: every peak already under ${LIMIT_DB} dB"
+  fi
+
+  # Re-measure the limited file. The gain left to apply is now within a few
+  # tenths of a dB, and the TP check is against what the limiter actually did.
+  read -r mi mtp mlra mthresh moff <<<"$(measure "$pre")"
   # A perfectly stationary signal measures LRA exactly 0, which is a correct
   # measurement that loudnorm cannot always consume: for some parameter sets it
   # then refuses linear mode and silently switches to dynamic compression. The
@@ -158,7 +214,7 @@ print(j['input_i'],j['input_tp'],j['input_lra'],j['input_thresh'],j['target_offs
   # path deterministic rather than dependent on the rest of the measurement.
   mlra=$(python3 -c "print(f'{max(float(\"$mlra\"), 0.1):.2f}')")
 
-  echo "    measured    I=$mi  TP=$mtp  LRA=$mlra   gain $(python3 -c "print(f'{$TARGET_I-($mi):+.1f}')") dB"
+  echo "    limited     I=$mi  TP=$mtp  LRA=$mlra   residual $(python3 -c "print(f'{$TARGET_I-($mi):+.1f}')") dB"
 
   # linear=true is the point: a pumping ambience is worse than an uneven one.
   local log
