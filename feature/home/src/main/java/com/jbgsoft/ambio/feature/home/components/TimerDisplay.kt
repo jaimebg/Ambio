@@ -37,8 +37,8 @@ fun TimerDisplay(
     mode: AppMode,
     isPlaying: Boolean,
     selectedMinutes: Int,
-    stepLabel: String? = null,
     modifier: Modifier = Modifier,
+    stepLabel: String? = null,
     size: Dp = 300.dp
 ) {
     val progress = when (timerState) {

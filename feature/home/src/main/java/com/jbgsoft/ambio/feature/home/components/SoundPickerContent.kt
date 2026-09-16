@@ -39,10 +39,10 @@ fun SoundPickerContent(
     onToggleSound: (Sound) -> Unit,
     onLevelChange: (String, Float) -> Unit,
     onLevelChangeFinished: (String) -> Unit,
+    modifier: Modifier = Modifier,
     slot: MixSlot = MixSlot.FOCUS,
     showSlotSwitch: Boolean = false,
     onSlotChange: (MixSlot) -> Unit = {},
-    modifier: Modifier = Modifier,
     columns: Int = 3
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
