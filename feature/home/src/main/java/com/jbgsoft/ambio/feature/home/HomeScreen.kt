@@ -55,12 +55,15 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlin.math.min
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jbgsoft.ambio.core.domain.model.AppMode
+import com.jbgsoft.ambio.core.domain.model.PlanRowChoice
 import com.jbgsoft.ambio.core.domain.model.PlanStep
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.TimerState
 import com.jbgsoft.ambio.core.domain.model.gradientOf
 import com.jbgsoft.ambio.feature.home.components.CurrentSoundBar
 import com.jbgsoft.ambio.feature.home.components.ModeToggle
+import com.jbgsoft.ambio.feature.home.components.PlanEditorDialog
+import com.jbgsoft.ambio.feature.home.components.PlanEditorSheet
 import com.jbgsoft.ambio.feature.home.components.PlayPauseButton
 import com.jbgsoft.ambio.feature.home.components.SoundBottomSheet
 import com.jbgsoft.ambio.feature.home.components.SoundPickerContent
@@ -214,10 +217,47 @@ fun HomeScreen(
                         onDismiss = { onEvent(HomeEvent.HideSoundPicker) }
                     )
                 }
+
+                val editorCallbacks = remember(onEvent) {
+                    PlanEditorCallbacks(
+                        onRowChoice = { index, choice -> onEvent(HomeEvent.SetPlanRowChoice(index, choice)) },
+                        onStepMinutes = { index, minutes -> onEvent(HomeEvent.SetPlanStepMinutes(index, minutes)) },
+                        onAddStep = { onEvent(HomeEvent.AddPlanStep) },
+                        onSave = { onEvent(HomeEvent.SavePlan) },
+                        onDismiss = { onEvent(HomeEvent.HidePlanEditor) }
+                    )
+                }
+                if (isExpanded) {
+                    PlanEditorDialog(
+                        draft = uiState.planDraft,
+                        onRowChoice = editorCallbacks.onRowChoice,
+                        onStepMinutes = editorCallbacks.onStepMinutes,
+                        onAddStep = editorCallbacks.onAddStep,
+                        onSave = editorCallbacks.onSave,
+                        onDismiss = editorCallbacks.onDismiss
+                    )
+                } else {
+                    PlanEditorSheet(
+                        draft = uiState.planDraft,
+                        onRowChoice = editorCallbacks.onRowChoice,
+                        onStepMinutes = editorCallbacks.onStepMinutes,
+                        onAddStep = editorCallbacks.onAddStep,
+                        onSave = editorCallbacks.onSave,
+                        onDismiss = editorCallbacks.onDismiss
+                    )
+                }
             }
         }
     }
 }
+
+private class PlanEditorCallbacks(
+    val onRowChoice: (Int, PlanRowChoice) -> Unit,
+    val onStepMinutes: (Int, Int) -> Unit,
+    val onAddStep: () -> Unit,
+    val onSave: () -> Unit,
+    val onDismiss: () -> Unit
+)
 
 /**
  * The timer half of Home: mode toggle, timer, transport controls and the bar
