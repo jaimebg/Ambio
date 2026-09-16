@@ -71,4 +71,5 @@
     <string name="a11y_decrease_pause">Decrease pause duration</string>
     <string name="a11y_increase_pause">Increase pause duration</string>
     <string name="a11y_plan_row_choice">Step type</string>
+    <string name="a11y_plan_row_state">Step %1$d: %2$s</string>
 </resources>

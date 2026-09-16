@@ -1,6 +1,7 @@
 package com.jbgsoft.ambio.feature.home.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jbgsoft.ambio.core.domain.model.PlanRowChoice
 import com.jbgsoft.ambio.core.domain.model.PlanStep
@@ -129,9 +132,13 @@ private fun StepRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         RowNumber(index)
+        // The stepper is a fixed pair of buttons, so the dropdown absorbs the
+        // slack and ellipsizes rather than pushing the stepper off the row.
         ChoiceDropdown(
+            index = index,
             current = if (isFocus) PlanRowChoice.FOCUS else PlanRowChoice.BREAK,
-            onChoice = onChoice
+            onChoice = onChoice,
+            modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.width(8.dp))
         NumberStepper(
@@ -156,8 +163,10 @@ private fun TerminatorRow(index: Int, repeat: Boolean, onChoice: (PlanRowChoice)
     ) {
         RowNumber(index)
         ChoiceDropdown(
+            index = index,
             current = if (repeat) PlanRowChoice.LOOP else PlanRowChoice.END,
-            onChoice = onChoice
+            onChoice = onChoice,
+            modifier = Modifier.weight(1f)
         )
     }
 }
@@ -172,26 +181,51 @@ private fun RowNumber(index: Int) {
     )
 }
 
+/**
+ * The button and its menu share a [Box] so the popup anchors to the button
+ * rather than to the row slot beside it.
+ *
+ * The content description names the control and the state description carries
+ * the row's number and current type, because merging the button's semantics
+ * would otherwise drop the label and leave a screen reader with "Step type"
+ * seven times over.
+ */
 @Composable
-private fun ChoiceDropdown(current: PlanRowChoice, onChoice: (PlanRowChoice) -> Unit) {
+private fun ChoiceDropdown(
+    index: Int,
+    current: PlanRowChoice,
+    onChoice: (PlanRowChoice) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var expanded by remember { mutableStateOf(false) }
     val description = stringResource(R.string.a11y_plan_row_choice)
-    OutlinedButton(
-        onClick = { expanded = true },
-        modifier = Modifier.semantics { contentDescription = description }
-    ) {
-        Text(current.label())
-        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-    }
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-        PlanRowChoice.entries.forEach { choice ->
-            DropdownMenuItem(
-                text = { Text(choice.label()) },
-                onClick = {
-                    expanded = false
-                    onChoice(choice)
-                }
+    val state = stringResource(R.string.a11y_plan_row_state, index + 1, current.label())
+    Box(modifier = modifier) {
+        OutlinedButton(
+            onClick = { expanded = true },
+            modifier = Modifier.semantics {
+                contentDescription = description
+                stateDescription = state
+            }
+        ) {
+            Text(
+                text = current.label(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false)
             )
+            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            PlanRowChoice.entries.forEach { choice ->
+                DropdownMenuItem(
+                    text = { Text(choice.label()) },
+                    onClick = {
+                        expanded = false
+                        onChoice(choice)
+                    }
+                )
+            }
         }
     }
 }

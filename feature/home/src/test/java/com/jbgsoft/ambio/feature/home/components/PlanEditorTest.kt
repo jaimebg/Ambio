@@ -1,6 +1,9 @@
 package com.jbgsoft.ambio.feature.home.components
 
 import android.content.Context
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -46,6 +49,21 @@ class PlanEditorTest {
 
         compose.onAllNodesWithContentDescription(context.getString(R.string.a11y_plan_row_choice))
             .assertCountEquals(7)
+    }
+
+    @Test
+    fun `a row's dropdown states its number and current type`() {
+        compose.setContent {
+            PlanEditorContent(draft = six, onRowChoice = { _, _ -> }, onStepMinutes = { _, _ -> }, onAddStep = {}, onSave = {})
+        }
+
+        val expected = context.getString(
+            R.string.a11y_plan_row_state,
+            2,
+            context.getString(R.string.plan_step_pause)
+        )
+        compose.onAllNodesWithContentDescription(context.getString(R.string.a11y_plan_row_choice))[1]
+            .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, expected))
     }
 
     @Test
