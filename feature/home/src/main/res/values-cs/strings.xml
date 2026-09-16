@@ -54,6 +54,11 @@
     <string name="label_focus_duration">Délka soustředění</string>
     <string name="label_break_duration">Délka přestávky</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Zastavit po</string>
+    <string name="sleep_timer_off">Vypnuto</string>
+    <string name="state_sleep_timer">Časovač spánku</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Zkrátit délku soustředění</string>
     <string name="a11y_increase_focus">Prodloužit délku soustředění</string>

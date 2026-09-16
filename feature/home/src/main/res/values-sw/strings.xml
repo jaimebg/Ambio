@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Muda wa umakini</string>
     <string name="label_break_duration">Muda wa mapumziko</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Simamisha baada ya</string>
+    <string name="sleep_timer_off">Imezimwa</string>
+    <string name="state_sleep_timer">Kipima muda cha kulala</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Punguza muda wa umakini</string>
     <string name="a11y_increase_focus">Ongeza muda wa umakini</string>

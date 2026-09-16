@@ -30,6 +30,8 @@ class PreferencesRepositoryImpl @Inject constructor(
         preferencesDataStore.setLastMode(mode)
     }
 
+    override suspend fun setSleepMinutes(minutes: Int) = preferencesDataStore.setSleepMinutes(minutes)
+
     override suspend fun setBreakMinutes(minutes: Int) {
         preferencesDataStore.setBreakMinutes(minutes)
     }

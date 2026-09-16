@@ -17,6 +17,7 @@ sealed class HomeEvent {
     data object CustomMinutesChangeFinished : HomeEvent()
     data class SetBreakMinutes(val minutes: Int) : HomeEvent()
     data object BreakMinutesChangeFinished : HomeEvent()
+    data class SetSleepMinutes(val minutes: Int) : HomeEvent()
     data class SetVolume(val volume: Float) : HomeEvent()
     data object VolumeChangeFinished : HomeEvent()
     data object PlayPause : HomeEvent()

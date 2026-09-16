@@ -15,6 +15,7 @@ interface PreferencesRepository {
     suspend fun setSessionPlan(plan: SessionPlan)
     suspend fun setBreakSoundEnabled(enabled: Boolean)
     suspend fun setLastMode(mode: AppMode)
+    suspend fun setSleepMinutes(minutes: Int)
     suspend fun setHapticsEnabled(enabled: Boolean)
     suspend fun setChimeEnabled(enabled: Boolean)
     suspend fun setEffectsEnabled(enabled: Boolean)

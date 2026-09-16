@@ -54,6 +54,11 @@
     <string name="label_focus_duration">Susikaupimo trukmė</string>
     <string name="label_break_duration">Pertraukos trukmė</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Sustabdyti po</string>
+    <string name="sleep_timer_off">Išjungta</string>
+    <string name="state_sleep_timer">Miego laikmatis</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Sumažinti susikaupimo trukmę</string>
     <string name="a11y_increase_focus">Padidinti susikaupimo trukmę</string>

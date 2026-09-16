@@ -48,6 +48,11 @@
     <string name="label_focus_duration">ระยะเวลาโฟกัส</string>
     <string name="label_break_duration">ระยะเวลาพัก</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">หยุดหลังจาก</string>
+    <string name="sleep_timer_off">ปิด</string>
+    <string name="state_sleep_timer">ตัวตั้งเวลานอน</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">ลดระยะเวลาโฟกัส</string>
     <string name="a11y_increase_focus">เพิ่มระยะเวลาโฟกัส</string>

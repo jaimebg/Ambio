@@ -52,6 +52,11 @@
     <string name="label_focus_duration">Durada de la concentració</string>
     <string name="label_break_duration">Durada del descans</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Atura després de</string>
+    <string name="sleep_timer_off">Desactivat</string>
+    <string name="state_sleep_timer">Temporitzador de son</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Redueix la durada de la concentració</string>
     <string name="a11y_increase_focus">Augmenta la durada de la concentració</string>

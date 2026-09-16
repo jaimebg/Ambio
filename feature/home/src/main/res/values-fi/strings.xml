@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Keskittymisen kesto</string>
     <string name="label_break_duration">Tauon kesto</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Pysäytä</string>
+    <string name="sleep_timer_off">Pois</string>
+    <string name="state_sleep_timer">Uniajastin</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Lyhennä keskittymisen kestoa</string>
     <string name="a11y_increase_focus">Pidennä keskittymisen kestoa</string>

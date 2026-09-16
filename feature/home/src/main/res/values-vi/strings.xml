@@ -48,6 +48,11 @@
     <string name="label_focus_duration">Thời lượng tập trung</string>
     <string name="label_break_duration">Thời lượng nghỉ</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Dừng sau</string>
+    <string name="sleep_timer_off">Tắt</string>
+    <string name="state_sleep_timer">Hẹn giờ ngủ</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Giảm thời lượng tập trung</string>
     <string name="a11y_increase_focus">Tăng thời lượng tập trung</string>

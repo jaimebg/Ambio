@@ -48,6 +48,11 @@
     <string name="label_focus_duration">专注时长</string>
     <string name="label_break_duration">休息时长</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">定时停止</string>
+    <string name="sleep_timer_off">关闭</string>
+    <string name="state_sleep_timer">睡眠定时器</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">缩短专注时长</string>
     <string name="a11y_increase_focus">延长专注时长</string>

@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Διάρκεια εστίασης</string>
     <string name="label_break_duration">Διάρκεια διαλείμματος</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Διακοπή μετά από</string>
+    <string name="sleep_timer_off">Ανενεργό</string>
+    <string name="state_sleep_timer">Χρονόμετρο ύπνου</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Μείωση διάρκειας εστίασης</string>
     <string name="a11y_increase_focus">Αύξηση διάρκειας εστίασης</string>

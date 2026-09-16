@@ -53,6 +53,11 @@
     <string name="label_focus_duration">Focus Duration</string>
     <string name="label_break_duration">Break Duration</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Stop after</string>
+    <string name="sleep_timer_off">Off</string>
+    <string name="state_sleep_timer">Sleep timer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Decrease focus duration</string>
     <string name="a11y_increase_focus">Increase focus duration</string>

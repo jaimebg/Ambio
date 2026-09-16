@@ -52,6 +52,11 @@
     <string name="label_focus_duration">משך המיקוד</string>
     <string name="label_break_duration">משך ההפסקה</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">עצירה אחרי</string>
+    <string name="sleep_timer_off">כבוי</string>
+    <string name="state_sleep_timer">טיימר שינה</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">קיצור משך המיקוד</string>
     <string name="a11y_increase_focus">הארכת משך המיקוד</string>

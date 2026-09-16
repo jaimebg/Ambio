@@ -34,6 +34,7 @@ class PreferencesDataStore @Inject constructor(
         val BREAK_MIX = stringPreferencesKey("break_mix")
         val SESSION_PLAN = stringPreferencesKey("session_plan")
         val BREAK_SOUND_ENABLED = booleanPreferencesKey("break_sound_enabled")
+        val SLEEP_MINUTES = intPreferencesKey("sleep_minutes")
     }
 
     val preferences: Flow<UserPreferences> = dataStore.data.map { prefs ->
@@ -48,6 +49,7 @@ class PreferencesDataStore @Inject constructor(
             lastMode = prefs[PreferencesKeys.LAST_MODE]?.let {
                 AppMode.valueOf(it)
             } ?: AppMode.TIMER,
+            sleepMinutes = prefs[PreferencesKeys.SLEEP_MINUTES] ?: 0,
             hapticsEnabled = prefs[PreferencesKeys.HAPTICS_ENABLED] ?: true,
             chimeEnabled = prefs[PreferencesKeys.CHIME_ENABLED] ?: true,
             effectsEnabled = prefs[PreferencesKeys.EFFECTS_ENABLED] ?: true,
@@ -113,5 +115,9 @@ class PreferencesDataStore @Inject constructor(
 
     suspend fun setBreakSoundEnabled(enabled: Boolean) {
         dataStore.edit { prefs -> prefs[PreferencesKeys.BREAK_SOUND_ENABLED] = enabled }
+    }
+
+    suspend fun setSleepMinutes(minutes: Int) {
+        dataStore.edit { prefs -> prefs[PreferencesKeys.SLEEP_MINUTES] = minutes }
     }
 }

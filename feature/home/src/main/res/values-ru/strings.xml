@@ -54,6 +54,11 @@
     <string name="label_focus_duration">Длительность концентрации</string>
     <string name="label_break_duration">Длительность перерыва</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Остановить через</string>
+    <string name="sleep_timer_off">Выкл.</string>
+    <string name="state_sleep_timer">Таймер сна</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Уменьшить длительность концентрации</string>
     <string name="a11y_increase_focus">Увеличить длительность концентрации</string>

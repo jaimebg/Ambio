@@ -48,6 +48,11 @@
     <string name="label_focus_duration">Tempoh fokus</string>
     <string name="label_break_duration">Tempoh rehat</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Berhenti selepas</string>
+    <string name="sleep_timer_off">Mati</string>
+    <string name="state_sleep_timer">Pemasa tidur</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Kurangkan tempoh fokus</string>
     <string name="a11y_increase_focus">Tambahkan tempoh fokus</string>

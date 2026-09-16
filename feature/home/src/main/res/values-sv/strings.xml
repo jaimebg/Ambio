@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Fokuslängd</string>
     <string name="label_break_duration">Rastlängd</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Stoppa efter</string>
+    <string name="sleep_timer_off">Av</string>
+    <string name="state_sleep_timer">Sovtimer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Minska fokuslängden</string>
     <string name="a11y_increase_focus">Öka fokuslängden</string>

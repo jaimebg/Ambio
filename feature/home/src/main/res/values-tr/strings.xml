@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Odaklanma süresi</string>
     <string name="label_break_duration">Mola süresi</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Şu süre sonra durdur</string>
+    <string name="sleep_timer_off">Kapalı</string>
+    <string name="state_sleep_timer">Uyku zamanlayıcısı</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Odaklanma süresini azalt</string>
     <string name="a11y_increase_focus">Odaklanma süresini artır</string>

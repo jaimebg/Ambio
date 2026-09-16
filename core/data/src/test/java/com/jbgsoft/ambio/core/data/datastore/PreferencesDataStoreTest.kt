@@ -101,6 +101,16 @@ class PreferencesDataStoreTest {
     }
 
     @Test
+    fun `the sleep timer is off by default and persists a duration`() = runTest {
+        val dataStore = newPreferencesDataStore()
+        assertThat(dataStore.preferences.first().sleepMinutes).isEqualTo(0)
+
+        dataStore.setSleepMinutes(30)
+
+        assertThat(dataStore.preferences.first().sleepMinutes).isEqualTo(30)
+    }
+
+    @Test
     fun `the session plan defaults and round-trips`() = runTest {
         val dataStore = newPreferencesDataStore()
         assertThat(dataStore.preferences.first().sessionPlan).isEqualTo(SessionPlan.DEFAULT)

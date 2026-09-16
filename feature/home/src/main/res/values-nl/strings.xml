@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Focusduur</string>
     <string name="label_break_duration">Pauzeduur</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Stoppen na</string>
+    <string name="sleep_timer_off">Uit</string>
+    <string name="state_sleep_timer">Slaaptimer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Focusduur verlagen</string>
     <string name="a11y_increase_focus">Focusduur verhogen</string>

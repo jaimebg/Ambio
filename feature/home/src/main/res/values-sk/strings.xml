@@ -54,6 +54,11 @@
     <string name="label_focus_duration">Dĺžka sústredenia</string>
     <string name="label_break_duration">Dĺžka prestávky</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Zastaviť po</string>
+    <string name="sleep_timer_off">Vypnuté</string>
+    <string name="state_sleep_timer">Časovač spánku</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Skrátiť dĺžku sústredenia</string>
     <string name="a11y_increase_focus">Predĺžiť dĺžku sústredenia</string>

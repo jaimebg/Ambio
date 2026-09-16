@@ -58,6 +58,11 @@
     <string name="label_focus_duration">مدة التركيز</string>
     <string name="label_break_duration">مدة الاستراحة</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">إيقاف بعد</string>
+    <string name="sleep_timer_off">إيقاف</string>
+    <string name="state_sleep_timer">مؤقت النوم</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">تقليل مدة التركيز</string>
     <string name="a11y_increase_focus">زيادة مدة التركيز</string>

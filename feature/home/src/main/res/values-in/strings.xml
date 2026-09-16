@@ -48,6 +48,11 @@
     <string name="label_focus_duration">Durasi fokus</string>
     <string name="label_break_duration">Durasi istirahat</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Berhenti setelah</string>
+    <string name="sleep_timer_off">Nonaktif</string>
+    <string name="state_sleep_timer">Timer tidur</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Kurangi durasi fokus</string>
     <string name="a11y_increase_focus">Tambah durasi fokus</string>

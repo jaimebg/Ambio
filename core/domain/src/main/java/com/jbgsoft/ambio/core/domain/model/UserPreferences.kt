@@ -10,6 +10,8 @@ data class UserPreferences(
     val breakMinutes: Int = 5,
     val sessionPlan: SessionPlan = SessionPlan.DEFAULT,
     val lastMode: AppMode = AppMode.TIMER,
+    /** Minutes Ambient mode plays before stopping on its own. 0 is off: play until paused. */
+    val sleepMinutes: Int = 0,
     // Preferences — how the user wants the app to behave
     val hapticsEnabled: Boolean = true,
     val chimeEnabled: Boolean = true,

@@ -52,6 +52,11 @@
     <string name="label_focus_duration">Duración de la concentración</string>
     <string name="label_break_duration">Duración del descanso</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Detener después de</string>
+    <string name="sleep_timer_off">Apagado</string>
+    <string name="state_sleep_timer">Temporizador de sueño</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Reducir la duración de la concentración</string>
     <string name="a11y_increase_focus">Aumentar la duración de la concentración</string>

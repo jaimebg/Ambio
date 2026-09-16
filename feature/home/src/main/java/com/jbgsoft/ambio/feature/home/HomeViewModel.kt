@@ -131,8 +131,25 @@ class HomeViewModel @Inject constructor(
 
     private fun observeTimerState() {
         timerRepository.timerState
-            .onEach { state -> _uiState.update { it.copy(timerState = state) } }
+            .onEach { state ->
+                _uiState.update { it.copy(timerState = state) }
+                if (state is TimerState.Completed) onTimerCompleted()
+            }
             .launchIn(viewModelScope)
+    }
+
+    /**
+     * A plan's steps end through the runner, which owns that Completed (see
+     * [onSessionEvent]). A countdown with no plan behind it can only be Ambient
+     * mode's sleep timer, and the whole point of that one is a listener who is
+     * asleep: the audio goes, and nothing chimes, buzzes or gets recorded.
+     */
+    private fun onTimerCompleted() {
+        val state = _uiState.value
+        if (state.mode != AppMode.AMBIENT || state.sessionProgress != null) return
+        audioServiceConnection.stop()
+        // Back to Idle, so the dial shows the infinity sign again rather than 00:00.
+        viewModelScope.launch { timerRepository.resetTimer() }
     }
 
     private fun observeSession() {
@@ -179,6 +196,7 @@ class HomeViewModel @Inject constructor(
                         customMinutes = prefs.lastTimerMinutes.takeIf { it !in listOf(25, 50) }
                             ?: state.customMinutes,
                         breakMinutes = prefs.breakMinutes,
+                        sleepMinutes = prefs.sleepMinutes,
                         sessionPlan = prefs.sessionPlan,
                         hapticsEnabled = prefs.hapticsEnabled,
                         chimeEnabled = prefs.chimeEnabled,
@@ -227,6 +245,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.CustomMinutesChangeFinished -> persistCustomMinutes()
             is HomeEvent.SetBreakMinutes -> setBreakMinutes(event.minutes)
             is HomeEvent.BreakMinutesChangeFinished -> persistBreakMinutes()
+            is HomeEvent.SetSleepMinutes -> setSleepMinutes(event.minutes)
             is HomeEvent.SetVolume -> setVolume(event.volume, persist = false)
             is HomeEvent.VolumeChangeFinished -> persistVolume()
             is HomeEvent.PlayPause -> playPause()
@@ -250,9 +269,17 @@ class HomeViewModel @Inject constructor(
             viewModelScope.launch { sessionRunner.stop() }
         }
 
-        // Stop audio when switching to Timer mode so button shows "play"
-        if (mode == AppMode.TIMER && _uiState.value.isPlaying) {
-            audioServiceConnection.stop()
+        if (mode == AppMode.TIMER) {
+            // Stop audio when switching to Timer mode so button shows "play"
+            if (_uiState.value.isPlaying) audioServiceConnection.stop()
+            // A sleep countdown has no plan behind it, so nothing else would ever
+            // clear it, and the timer screen would come up counting down something
+            // it never started.
+            if (_uiState.value.sessionProgress == null &&
+                _uiState.value.timerState !is TimerState.Idle
+            ) {
+                viewModelScope.launch { timerRepository.resetTimer() }
+            }
         }
 
         _uiState.update { it.copy(mode = mode) }
@@ -380,6 +407,27 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * The choice is measured from now, not from the earlier press of play: a
+     * countdown already running restarts at the new length, or is dropped when
+     * the timer is turned off, and playback itself is untouched either way. A
+     * paused countdown is dropped too, so the next play starts a fresh one.
+     */
+    private fun setSleepMinutes(minutes: Int) {
+        haptic { click() }
+        _uiState.update { it.copy(sleepMinutes = minutes) }
+        viewModelScope.launch {
+            preferencesRepository.setSleepMinutes(minutes)
+            val state = _uiState.value
+            if (state.mode != AppMode.AMBIENT || state.timerState is TimerState.Idle) return@launch
+            if (state.isPlaying && minutes > 0) {
+                timerRepository.startTimer(minutes * 60_000L)
+            } else {
+                timerRepository.resetTimer()
+            }
+        }
+    }
+
     private fun setVolume(volume: Float, persist: Boolean = true) {
         val clampedVolume = volume.coerceIn(0f, 1f)
         _uiState.update { it.copy(volume = clampedVolume) }
@@ -406,11 +454,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when {
                 state.mode == AppMode.AMBIENT -> {
-                    // In ambient mode, just toggle play/pause for audio
+                    // Ambient mode has no plan; the timer here is the sleep
+                    // countdown, which follows the audio: paused with it, resumed
+                    // with it, and started fresh when there is none to resume.
                     if (state.isPlaying) {
                         audioServiceConnection.pause()
+                        if (state.timerState is TimerState.Running) timerRepository.pauseTimer()
                     } else {
                         startPlayback()
+                        when {
+                            state.timerState is TimerState.Paused -> timerRepository.resumeTimer()
+                            state.sleepMinutes > 0 -> timerRepository.startTimer(state.sleepMinutes * 60_000L)
+                        }
                     }
                 }
                 state.timerState is TimerState.Running -> {

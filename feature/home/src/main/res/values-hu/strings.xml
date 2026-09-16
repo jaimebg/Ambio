@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Fókusz hossza</string>
     <string name="label_break_duration">Szünet hossza</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Leállítás ennyi után</string>
+    <string name="sleep_timer_off">Ki</string>
+    <string name="state_sleep_timer">Alvásidőzítő</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Fókuszidő csökkentése</string>
     <string name="a11y_increase_focus">Fókuszidő növelése</string>

@@ -52,6 +52,11 @@
     <string name="label_focus_duration">Koncentrēšanās ilgums</string>
     <string name="label_break_duration">Pārtraukuma ilgums</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Apturēt pēc</string>
+    <string name="sleep_timer_off">Izslēgts</string>
+    <string name="state_sleep_timer">Miega taimeris</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Samazināt koncentrēšanās ilgumu</string>
     <string name="a11y_increase_focus">Palielināt koncentrēšanās ilgumu</string>

@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Keskendumise kestus</string>
     <string name="label_break_duration">Pausi kestus</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Peata pärast</string>
+    <string name="sleep_timer_off">Väljas</string>
+    <string name="state_sleep_timer">Unetaimer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Vähenda keskendumise kestust</string>
     <string name="a11y_increase_focus">Suurenda keskendumise kestust</string>

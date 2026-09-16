@@ -48,6 +48,11 @@
     <string name="label_focus_duration">집중 시간</string>
     <string name="label_break_duration">휴식 시간</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">다음 시간 후 정지</string>
+    <string name="sleep_timer_off">끄기</string>
+    <string name="state_sleep_timer">취침 타이머</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">집중 시간 줄이기</string>
     <string name="a11y_increase_focus">집중 시간 늘리기</string>

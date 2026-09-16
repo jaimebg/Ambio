@@ -24,6 +24,8 @@ data class HomeUiState(
     val selectedPreset: TimerPreset = TimerPreset.FOCUS_25,
     val customMinutes: Int = 25,
     val breakMinutes: Int = 5,
+    /** Ambient mode's sleep timer, in minutes. 0 is off. */
+    val sleepMinutes: Int = 0,
     val sessionPlan: SessionPlan = SessionPlan.DEFAULT,
     val planDraft: SessionPlan? = null,
     val volume: Float = 0.7f,

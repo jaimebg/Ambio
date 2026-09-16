@@ -54,6 +54,11 @@
     <string name="label_focus_duration">Czas skupienia</string>
     <string name="label_break_duration">Czas przerwy</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Zatrzymaj po</string>
+    <string name="sleep_timer_off">Wył.</string>
+    <string name="state_sleep_timer">Wyłącznik czasowy</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Skróć czas skupienia</string>
     <string name="a11y_increase_focus">Wydłuż czas skupienia</string>

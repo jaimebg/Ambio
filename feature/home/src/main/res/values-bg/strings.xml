@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Продължителност на фокуса</string>
     <string name="label_break_duration">Продължителност на почивката</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Спиране след</string>
+    <string name="sleep_timer_off">Изкл.</string>
+    <string name="state_sleep_timer">Таймер за сън</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Намаляване на продължителността на фокуса</string>
     <string name="a11y_increase_focus">Увеличаване на продължителността на фокуса</string>

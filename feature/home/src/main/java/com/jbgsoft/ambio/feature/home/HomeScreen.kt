@@ -65,6 +65,7 @@ import com.jbgsoft.ambio.feature.home.components.ModeToggle
 import com.jbgsoft.ambio.feature.home.components.PlanEditorDialog
 import com.jbgsoft.ambio.feature.home.components.PlanEditorSheet
 import com.jbgsoft.ambio.feature.home.components.PlayPauseButton
+import com.jbgsoft.ambio.feature.home.components.SleepTimerSelector
 import com.jbgsoft.ambio.feature.home.components.SoundBottomSheet
 import com.jbgsoft.ambio.feature.home.components.SoundPickerContent
 import com.jbgsoft.ambio.feature.home.components.TimerDisplay
@@ -419,6 +420,20 @@ private fun HomeContentColumn(
                                 onBreakMinutesChanged = { onEvent(HomeEvent.SetBreakMinutes(it)) },
                                 onBreakMinutesChangeFinished = { onEvent(HomeEvent.BreakMinutesChangeFinished) },
                                 onEditPlan = { onEvent(HomeEvent.ShowPlanEditor) },
+                                modifier = Modifier.fillMaxWidth(),
+                                isCompact = isSmallScreen
+                            )
+                        }
+
+                        // Sleep timer (only in Ambient mode), in the presets' place
+                        AnimatedVisibility(
+                            visible = uiState.mode == AppMode.AMBIENT,
+                            enter = fadeIn(tween(300)) + expandVertically(tween(300)),
+                            exit = fadeOut(tween(300)) + shrinkVertically(tween(300))
+                        ) {
+                            SleepTimerSelector(
+                                sleepMinutes = uiState.sleepMinutes,
+                                onSleepMinutesSelected = { onEvent(HomeEvent.SetSleepMinutes(it)) },
                                 modifier = Modifier.fillMaxWidth(),
                                 isCompact = isSmallScreen
                             )

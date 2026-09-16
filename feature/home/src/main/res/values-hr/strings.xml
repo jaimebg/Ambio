@@ -52,6 +52,11 @@
     <string name="label_focus_duration">Trajanje fokusiranja</string>
     <string name="label_break_duration">Trajanje pauze</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Zaustavi nakon</string>
+    <string name="sleep_timer_off">Isključeno</string>
+    <string name="state_sleep_timer">Mjerač vremena za spavanje</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Smanji trajanje fokusiranja</string>
     <string name="a11y_increase_focus">Povećaj trajanje fokusiranja</string>

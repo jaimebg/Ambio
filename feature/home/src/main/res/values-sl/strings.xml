@@ -54,6 +54,11 @@
     <string name="label_focus_duration">Trajanje zbranosti</string>
     <string name="label_break_duration">Trajanje odmora</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Ustavi po</string>
+    <string name="sleep_timer_off">Izklopljeno</string>
+    <string name="state_sleep_timer">Časovnik spanja</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Skrajšaj trajanje zbranosti</string>
     <string name="a11y_increase_focus">Podaljšaj trajanje zbranosti</string>

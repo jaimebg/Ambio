@@ -54,6 +54,11 @@
     <string name="label_focus_duration">Тривалість зосередження</string>
     <string name="label_break_duration">Тривалість перерви</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Зупинити через</string>
+    <string name="sleep_timer_off">Вимк.</string>
+    <string name="state_sleep_timer">Таймер сну</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Зменшити тривалість зосередження</string>
     <string name="a11y_increase_focus">Збільшити тривалість зосередження</string>

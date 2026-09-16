@@ -50,6 +50,11 @@
     <string name="label_focus_duration">फ़ोकस की अवधि</string>
     <string name="label_break_duration">ब्रेक की अवधि</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">इसके बाद रोकें</string>
+    <string name="sleep_timer_off">बंद</string>
+    <string name="state_sleep_timer">स्लीप टाइमर</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">फ़ोकस की अवधि घटाएं</string>
     <string name="a11y_increase_focus">फ़ोकस की अवधि बढ़ाएं</string>

@@ -167,6 +167,7 @@ class HomeViewModelTest {
             coEvery { setBreakMinutes(any()) } just Runs
             coEvery { setSessionPlan(any()) } just Runs
             coEvery { setLastMode(any()) } just Runs
+            coEvery { setSleepMinutes(any()) } just Runs
         }
 
         saveSessionUseCase = mockk()
@@ -721,6 +722,148 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         verify { audioServiceConnection.pause() }
+    }
+
+    // --- Sleep timer (Ambient mode) ---
+
+    private fun ambientViewModel(sleepMinutes: Int): HomeViewModel {
+        preferencesFlow.value = UserPreferences(lastMode = AppMode.AMBIENT, sleepMinutes = sleepMinutes)
+        val viewModel = createViewModel()
+        return viewModel
+    }
+
+    @Test
+    fun `ambient play with a sleep timer set starts a countdown of that length`() = runTest(testDispatcher) {
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        coVerify { timerRepository.startTimer(30 * 60_000L) }
+    }
+
+    @Test
+    fun `ambient play with the sleep timer off starts no countdown`() = runTest(testDispatcher) {
+        val viewModel = ambientViewModel(sleepMinutes = 0)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        coVerify(exactly = 0) { timerRepository.startTimer(any()) }
+    }
+
+    @Test
+    fun `a finished sleep timer stops the audio with no chime and no session`() = runTest(testDispatcher) {
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 1_000L, totalMs = 30 * 60_000L)
+        advanceUntilIdle()
+
+        timerStateFlow.value = TimerState.Completed()
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.stop() }
+        coVerify { timerRepository.resetTimer() }
+        verify(exactly = 0) { chimePlayer.playChime(any()) }
+        verify(exactly = 0) { hapticManager.timerComplete() }
+        coVerify(exactly = 0) { saveSessionUseCase(any(), any(), any()) }
+    }
+
+    @Test
+    fun `a timer completing inside a plan is left to the runner`() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        progressFlow.value = SessionProgress(SessionPlan.DEFAULT, 0, 0)
+        timerStateFlow.value = TimerState.Running(remainingMs = 1_000L, totalMs = 25 * 60_000L)
+        advanceUntilIdle()
+
+        timerStateFlow.value = TimerState.Completed()
+        advanceUntilIdle()
+
+        // The runner emits StepCompleted for this; the ViewModel must not stop
+        // the audio on its own or the break that follows would start from a
+        // second stop.
+        verify(exactly = 0) { audioServiceConnection.stop() }
+        coVerify(exactly = 0) { timerRepository.resetTimer() }
+        assertThat(viewModel.uiState.value.sessionProgress).isNotNull()
+    }
+
+    @Test
+    fun `pausing ambient playback pauses the sleep countdown`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 30 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.pause() }
+        coVerify { timerRepository.pauseTimer() }
+    }
+
+    @Test
+    fun `resuming ambient playback resumes the paused countdown rather than restarting it`() = runTest(testDispatcher) {
+        timerStateFlow.value = TimerState.Paused(remainingMs = 10_000L, totalMs = 30 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.PlayPause)
+        advanceUntilIdle()
+
+        verify { audioServiceConnection.play() }
+        coVerify { timerRepository.resumeTimer() }
+        coVerify(exactly = 0) { timerRepository.startTimer(any()) }
+    }
+
+    @Test
+    fun `switching to timer mode drops a sleep countdown`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 30 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 30)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetMode(AppMode.TIMER))
+        advanceUntilIdle()
+
+        coVerify { timerRepository.resetTimer() }
+    }
+
+    @Test
+    fun `choosing a sleep duration persists it and restarts a running countdown`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 15 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 15)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetSleepMinutes(45))
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.sleepMinutes).isEqualTo(45)
+        coVerify { preferencesRepository.setSleepMinutes(45) }
+        coVerify { timerRepository.startTimer(45 * 60_000L) }
+    }
+
+    @Test
+    fun `turning the sleep timer off while playing drops the countdown and keeps playing`() = runTest(testDispatcher) {
+        isPlayingFlow.value = true
+        timerStateFlow.value = TimerState.Running(remainingMs = 10_000L, totalMs = 15 * 60_000L)
+        val viewModel = ambientViewModel(sleepMinutes = 15)
+        advanceUntilIdle()
+
+        viewModel.onEvent(HomeEvent.SetSleepMinutes(0))
+        advanceUntilIdle()
+
+        coVerify { timerRepository.resetTimer() }
+        verify(exactly = 0) { audioServiceConnection.stop() }
+        verify(exactly = 0) { audioServiceConnection.pause() }
     }
 
     // --- Reset Tests ---

@@ -50,6 +50,11 @@
     <string name="label_focus_duration">ফোকাসের সময়কাল</string>
     <string name="label_break_duration">বিরতির সময়কাল</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">এর পরে থামুন</string>
+    <string name="sleep_timer_off">বন্ধ</string>
+    <string name="state_sleep_timer">ঘুমের টাইমার</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">ফোকাসের সময়কাল কমান</string>
     <string name="a11y_increase_focus">ফোকাসের সময়কাল বাড়ান</string>

@@ -50,6 +50,11 @@
     <string name="label_focus_duration">Fokusvarighet</string>
     <string name="label_break_duration">Pausevarighet</string>
 
+    <!-- Sleep timer (Ambient mode) -->
+    <string name="label_sleep_timer">Stopp etter</string>
+    <string name="sleep_timer_off">Av</string>
+    <string name="state_sleep_timer">Sovetimer</string>
+
     <!-- Accessibility -->
     <string name="a11y_decrease_focus">Reduser fokusvarigheten</string>
     <string name="a11y_increase_focus">Øk fokusvarigheten</string>
