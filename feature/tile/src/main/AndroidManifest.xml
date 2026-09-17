@@ -25,6 +25,21 @@
             </intent-filter>
         </receiver>
 
+        <!-- The tile's cold-start path. Declared here, not in app/, because unlike
+             PlaybackTile it needs no app resource: the theme is the framework's.
+             taskAffinity="" keeps it out of the main task so it never drags the
+             app UI to the front; showWhenLocked lets a lock-screen tap play
+             without unlocking; noHistory + excludeFromRecents keep the
+             millisecond-long activity out of Back and Recents. -->
+        <activity
+            android:name=".TilePlayActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:showWhenLocked="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
     </application>
 
 </manifest>

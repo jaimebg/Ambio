@@ -61,6 +61,17 @@ class AmbioManifestTest {
     }
 
     @Test
+    fun `declares the tile's trampoline activity, without which a cold tile tap throws`() {
+        val activities = context.packageManager
+            .getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES)
+            .activities
+            .orEmpty()
+
+        assertThat(activities.map { it.name })
+            .contains("com.jbgsoft.ambio.feature.tile.TilePlayActivity")
+    }
+
+    @Test
     fun `guards the tile service behind the system-only bind permission`() {
         val tile = context.packageManager
             .getPackageInfo(context.packageName, PackageManager.GET_SERVICES)

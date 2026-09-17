@@ -122,9 +122,24 @@ class AudioService : MediaSessionService() {
             .build()
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val result = super.onStartCommand(intent, flags, startId)
+        if (intent?.action == ACTION_PLAY_STORED_MIX) {
+            // The service registers a session only when onGetSession hands it to a binding
+            // controller. Started by a bare action nothing binds, so without this the
+            // notification manager never attaches, startForeground never runs, and the
+            // system kills the service after the deadline.
+            mediaSession?.let { addSession(it) }
+            if (player.playbackState == Player.STATE_IDLE) loadStoredMixAndPlay() else player.play()
+        }
+        return result
+    }
+
     /**
-     * Called when something asks this service to play while it holds no sounds — the
-     * Quick Settings tile with the app closed, in practice.
+     * Called to fill an empty player before playing it. Two callers reach it: the tile's
+     * ACTION_PLAY_STORED_MIX start in onStartCommand — the real cold-start path, the app
+     * not running at all — and MixPlayer's onPlayRequestedWithEmptyMix hook, an in-app
+     * play arriving at an already-running player that holds nothing.
      *
      * Starting the service is not enough on its own: it comes up empty, and an empty
      * player publishes an empty timeline, so Media3 shows no notification, so
@@ -173,8 +188,17 @@ class AudioService : MediaSessionService() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
+        // The tile's trampoline activity lives in its own task and finishes the moment it
+        // has started this service, so its task is removed while the stored mix is still
+        // loading. That removal says nothing about what the user wants; only the app's
+        // own task does.
+        if (rootIntent?.hasCategory(CATEGORY_TILE_TRAMPOLINE) == true) {
+            Log.d(TAG, "Trampoline task removed; ignoring")
+            return
+        }
         val player = mediaSession?.player
         if (player?.playWhenReady == false || player?.mediaItemCount == 0) {
+            Log.d(TAG, "Task removed with nothing playing; stopping")
             stopSelf()
         }
     }
@@ -231,6 +255,21 @@ class AudioService : MediaSessionService() {
             }
             return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
         }
+
+        override fun onDisconnected(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo
+        ) {
+            // See shouldStopOnDisconnect for why only idle, and why not the notification.
+            if (shouldStopOnDisconnect(
+                    isNotificationController = session.isMediaNotificationController(controller),
+                    playbackState = session.player.playbackState
+                )
+            ) {
+                Log.d(TAG, "A controller left an idle player; stopping")
+                stopSelf()
+            }
+        }
     }
 
     companion object {
@@ -246,5 +285,14 @@ class AudioService : MediaSessionService() {
          */
         const val ACTION_PLAYBACK_CHANGED = "com.jbgsoft.ambio.PLAYBACK_CHANGED"
         const val EXTRA_IS_PLAYING = "is_playing"
+
+        // The tile's cold-start path; a media-button intent cannot do this because Media3
+        // intercepts play on an empty player before it reaches MixPlayer.
+        const val ACTION_PLAY_STORED_MIX = "com.jbgsoft.ambio.PLAY_STORED_MIX"
+
+        // Carried by the intent that launches the tile's trampoline activity; onTaskRemoved
+        // uses it to recognise that task, whose removal means nothing about the user's
+        // intent.
+        const val CATEGORY_TILE_TRAMPOLINE = "com.jbgsoft.ambio.category.TILE_TRAMPOLINE"
     }
 }
