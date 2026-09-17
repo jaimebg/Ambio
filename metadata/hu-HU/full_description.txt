@@ -13,8 +13,14 @@ A háttér élő színátmenet, a keveréked összes hangjából kikeverve: hűv
 FÓKUSZ IDŐZÍTŐ
 Pomodoro előbeállítások 25 vagy 50 perccel, vagy saját munka- és szünetidők. Lágy csengés zárja a menetet anélkül, hogy kirántana belőle. Tanuláshoz, íráshoz, programozáshoz és mindenhez, ami tartós figyelmet kíván.
 
+MENETTERVEK
+Egy körnél többre van szükséged? A Terv előbeállítással tetszőleges sorrendbe rakhatod a fókusz- és szünetlépéseket, ismételheted őket vagy befejezheted. A terv végét sikercsengés jelzi.
+
+KEVERÉK A SZÜNETEKRE
+Pihenj más hangra. Kapcsold be a hangot a szünetekben, és válassz egy második keveréket, ami csak pihenés közben szól — a szünet végén visszatér a fókuszkeverék.
+
 KÖRNYEZETI MÓD
-Épp nem mérsz semmit? Válts környezeti módra, és hagyd szólni a keveréket. Olvasáshoz, meditációhoz, lelassuláshoz vagy alváshoz.
+Épp nem mérsz semmit? Válts környezeti módra, és hagyd szólni a keveréket. Olvasáshoz, meditációhoz, lelassuláshoz vagy alváshoz — az alvásidőzítő leállítja helyetted a keveréket, ha már elaludtál.
 
 NÉZD MEG, HOVÁ LETT A FÓKUSZOD
 A munkamenetek előzménye számon tartja az órákat, amiket tényleg beletettél.

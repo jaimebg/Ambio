@@ -13,8 +13,14 @@ Pozadí je živý přechod smíchaný ze všech zvuků tvého mixu: chladné mod
 ČASOVAČ SOUSTŘEDĚNÍ
 Předvolby Pomodoro na 25 nebo 50 minut, nebo si nastav vlastní časy práce a přestávek. Jemné zacinkání ukončí sezení, aniž by tě z něj vytrhlo. Vytvořeno pro studium, psaní, programování a vše, co žádá vytrvalou pozornost.
 
+PLÁNY SEZENÍ
+Potřebuješ víc než jedno kolo? Předvolba Plán ti umožní seřadit kroky soustředění a přestávek v libovolném pořadí, opakovat je nebo skončit zde. Zacinkání úspěchu ohlásí konec plánu.
+
+MIX NA PŘESTÁVKY
+Odpočívej u jiného zvuku. Zapni zvuk během přestávek a vyber druhý mix, který hraje jen při odpočinku: po přestávce se vrátí mix pro soustředění.
+
 REŽIM PROSTŘEDÍ
-Nic zrovna neměříš? Přepni do režimu prostředí a nech mix běžet. Ke čtení, meditaci, zklidnění nebo spánku.
+Nic zrovna neměříš? Přepni do režimu prostředí a nech mix běžet. Ke čtení, meditaci, zklidnění nebo spánku: časovač spánku mix zastaví za tebe, až usneš.
 
 PODÍVEJ SE, KAM ŠLO TVÉ SOUSTŘEDĚNÍ
 Historie sezení sleduje hodiny, které jsi do toho opravdu dal.

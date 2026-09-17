@@ -13,8 +13,14 @@ O fundo é um gradiente vivo, misturado a partir de todos os sons da sua mistura
 TEMPORIZADOR DE CONCENTRAÇÃO
 Predefinições Pomodoro de 25 ou 50 minutos, ou defina os seus próprios tempos de trabalho e pausa. Um sino suave encerra a sessão sem o arrancar dela. Feito para estudar, escrever, programar ou para o que exija atenção prolongada.
 
+PLANOS DE SESSÃO
+Precisa de mais do que uma ronda? A predefinição Plano permite alinhar passos de concentração e pausa por qualquer ordem, repeti-los ou terminar aí. Um sino de sucesso marca o fim do plano.
+
+UMA MISTURA PARA AS PAUSAS
+Descanse com outro som. Ative o som durante as pausas e escolha uma segunda mistura que só toca enquanto descansa — a mistura de concentração volta quando a pausa termina.
+
 MODO AMBIENTE
-Não está a cronometrar nada? Mude para o modo ambiente e deixe a mistura correr. Para ler, meditar, abrandar ou adormecer.
+Não está a cronometrar nada? Mude para o modo ambiente e deixe a mistura correr. Para ler, meditar, abrandar ou adormecer — um temporizador de sono para a mistura por si depois de adormecer.
 
 VEJA PARA ONDE FOI A SUA CONCENTRAÇÃO
 Um histórico de sessões regista as horas que dedicou de facto.

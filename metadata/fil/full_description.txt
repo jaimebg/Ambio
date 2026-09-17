@@ -13,8 +13,14 @@ Ang likuran ay buhay na gradient, hinalo mula sa lahat ng tunog sa halo mo: mala
 TIMER NG POKUS
 Mga preset na Pomodoro na 25 o 50 minuto, o itakda ang sarili mong oras ng trabaho at pahinga. Isang banayad na kampana ang nagtatapos ng sesyon nang hindi ka hinihila palabas. Ginawa para sa pag-aaral, pagsulat, pag-code, at anumang nangangailangan ng tuloy-tuloy na atensyon.
 
+MGA PLANO NG SESYON
+Kailangan ng higit sa isang ikot? Sa preset na Plano, maihahanay mo ang mga hakbang ng pokus at pahinga sa anumang ayos, uulitin o tatapusin. Isang kampana ng tagumpay ang hudyat ng dulo ng plano.
+
+HALO PARA SA PAHINGA
+Magpahinga sa ibang tunog. Buksan ang tunog habang nagpapahinga at pumili ng ikalawang halo na tutugtog lang habang nagpapahinga ka; babalik ang halo ng pokus pagkatapos ng pahinga.
+
 AMBIENT NA MODE
-Wala kang tinitimbang na oras ngayon? Lumipat sa ambient na mode at hayaang tumugtog ang halo. Para sa pagbabasa, meditasyon, pagbagal, o pagtulog.
+Wala kang tinitimbang na oras ngayon? Lumipat sa ambient na mode at hayaang tumugtog ang halo. Para sa pagbabasa, meditasyon, pagbagal, o pagtulog; ihihinto ng sleep timer ang halo para sa iyo kapag nakatulog ka na.
 
 TINGNAN KUNG SAAN NAPUNTA ANG POKUS MO
 May kasaysayan ng mga sesyon na nagtatala ng oras na talagang inilaan mo.

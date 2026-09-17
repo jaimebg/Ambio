@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PIANI DI SESSIONE
+Nuovo preset Piano: metti in fila fasi di concentrazione e pausa, in loop o no. Un rintocco chiude.
+
+MIX PER LE PAUSE
+Attiva il suono durante le pause e scegli un mix riservato al riposo.
+
+TIMER DI SPEGNIMENTO
+In modalità ambiente, ferma il mix dopo un po'.
+
+INOLTRE
+- Più forte: suoni rimasterizzati a volume normale
+- La tile rapida avvia l'ultimo mix ad app chiusa
+- Uscire senza riproduzione ferma il servizio
+- Icona corretta sui launcher rotondi

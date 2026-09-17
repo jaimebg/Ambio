@@ -1,0 +1,16 @@
+Ambio 2.1
+
+OTURUM PLANLARI
+Plan ön ayarı: odak ve mola adımlarını sırala, tekrarla ya da bitir. Sonu bir çınlama belirtir.
+
+MOLALAR İÇİN MİKS
+Molalarda sesi aç ve yalnızca dinlenirken çalan ikinci bir miks seç.
+
+UYKU ZAMANLAYICISI
+Ortam modunda miksi bir süre sonra durdur.
+
+AYRICA
+- Daha gür: sesler normal telefon sesine göre ayarlandı
+- Hızlı ayarlar kutucuğu son miksini başlatır, uygulama kapalıyken de
+- Hiçbir şey çalmazken çıkmak servisi durdurur
+- Yuvarlak başlatıcılarda simge düzeltmesi

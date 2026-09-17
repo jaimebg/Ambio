@@ -13,8 +13,14 @@ The background is a living gradient blended from every sound in your mix — coo
 FOCUS TIMER
 Pomodoro presets at 25 or 50 minutes, or set your own focus and break lengths. A gentle chime closes the session without pulling you out of it. Made for studying, writing, coding, or anything that needs sustained attention.
 
+SESSION PLANS
+Need more than one round? The Plan preset lets you line up focus and break steps in any order, loop them or end there. A success chime marks the end of the plan.
+
+A MIX FOR BREAKS
+Rest to a different sound. Turn on sound during breaks and pick a second mix that plays only while you rest — the focus mix returns when the break ends.
+
 AMBIENT MODE
-Not timing anything? Switch to ambient mode and let the mix run. For reading, meditation, winding down, or sleep.
+Not timing anything? Switch to ambient mode and let the mix run. For reading, meditation, winding down, or sleep — a sleep timer stops the mix for you once you have drifted off.
 
 SEE WHERE YOUR FOCUS WENT
 A session history keeps track of the hours you actually put in.

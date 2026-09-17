@@ -13,8 +13,14 @@ De achtergrond is een levend verloop, gemengd uit alle geluiden in je mix: koele
 FOCUSTIMER
 Pomodoro-voorinstellingen van 25 of 50 minuten, of stel je eigen werk- en pauzetijden in. Een zachte toon sluit de sessie af zonder je eruit te trekken. Gemaakt om te studeren, schrijven, programmeren, of wat dan ook dat langdurige aandacht vraagt.
 
+SESSIEPLANNEN
+Meer dan één ronde nodig? Met de voorinstelling Plan zet je focus- en pauzestappen in elke volgorde op een rij, herhaal je ze of stop je daar. Een succestoon markeert het einde van het plan.
+
+EEN MIX VOOR PAUZES
+Rust uit met een ander geluid. Zet geluid tijdens pauzes aan en kies een tweede mix die alleen speelt terwijl je rust: als de pauze voorbij is, keert de focusmix terug.
+
 OMGEVINGSMODUS
-Klok je even niets? Schakel over naar de omgevingsmodus en laat de mix lopen. Om te lezen, mediteren, tot rust te komen of te slapen.
+Klok je even niets? Schakel over naar de omgevingsmodus en laat de mix lopen. Om te lezen, mediteren, tot rust te komen of te slapen. Een slaaptimer stopt de mix voor je zodra je bent weggedoezeld.
 
 ZIE WAAR JE FOCUS BLEEF
 Een sessiegeschiedenis houdt bij hoeveel uur je er echt in stak.

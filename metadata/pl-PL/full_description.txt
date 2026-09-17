@@ -13,8 +13,14 @@ Tło to żywy gradient zmieszany ze wszystkich dźwięków twojego miksu: chłod
 MINUTNIK SKUPIENIA
 Ustawienia Pomodoro na 25 lub 50 minut albo własne czasy pracy i przerwy. Delikatny dźwięk kończy sesję, nie wyrywając cię z niej. Zrobiony do nauki, pisania, programowania i wszystkiego, co wymaga długiej uwagi.
 
+PLANY SESJI
+Potrzebujesz więcej niż jednej rundy? Ustawienie Plan pozwala ułożyć kroki skupienia i przerw w dowolnej kolejności, powtarzać je albo zakończyć. Dźwięk sukcesu oznacza koniec planu.
+
+MIKS NA PRZERWY
+Odpoczywaj przy innym dźwięku. Włącz dźwięk podczas przerw i wybierz drugi miks, który gra tylko, gdy odpoczywasz — po przerwie wraca miks skupienia.
+
 TRYB OTOCZENIA
-Nic nie mierzysz? Przełącz się na tryb otoczenia i pozwól miksowi grać. Do czytania, medytacji, wyciszenia albo snu.
+Nic nie mierzysz? Przełącz się na tryb otoczenia i pozwól miksowi grać. Do czytania, medytacji, wyciszenia albo snu — wyłącznik czasowy zatrzyma miks za ciebie, gdy już zaśniesz.
 
 ZOBACZ, GDZIE PODZIAŁO SIĘ TWOJE SKUPIENIE
 Historia sesji zapisuje godziny, które naprawdę w to włożyłeś.

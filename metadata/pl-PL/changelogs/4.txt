@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLANY SESJI
+Ustawienie Plan: ułóż kroki skupienia i przerw, powtarzaj je albo zakończ. Dźwięk oznacza koniec.
+
+MIKS NA PRZERWY
+Włącz dźwięk podczas przerw i wybierz drugi miks tylko na odpoczynek.
+
+WYŁĄCZNIK CZASOWY
+W trybie otoczenia zatrzymaj miks po jakimś czasie.
+
+PONADTO
+- Głośniej: dźwięki zremasterowane do normalnej głośności
+- Kafelek szybkich ustawień działa przy zamkniętej aplikacji
+- Wyjście, gdy nic nie gra, zatrzymuje usługę
+- Poprawka ikony na okrągłych launcherach

@@ -13,8 +13,14 @@ Nền là một dải chuyển màu sống động, pha từ mọi âm trong b�
 ĐỒNG HỒ TẬP TRUNG
 Cài sẵn Pomodoro 25 hoặc 50 phút, hoặc tự đặt thời gian làm việc và nghỉ. Một tiếng chuông nhẹ khép lại phiên mà không giật bạn ra khỏi nó. Dành cho học, viết, lập trình và mọi việc đòi hỏi chú ý bền bỉ.
 
+KẾ HOẠCH PHIÊN
+Cần hơn một vòng? Cài sẵn Kế hoạch cho bạn xếp các bước tập trung và nghỉ theo thứ tự tùy ý, lặp lại hoặc kết thúc tại đó. Một tiếng chuông thành công báo hết kế hoạch.
+
+BẢN PHỐI CHO GIỜ NGHỈ
+Nghỉ với một âm thanh khác. Bật âm thanh trong giờ nghỉ và chọn bản phối thứ hai chỉ phát khi bạn nghỉ; hết giờ nghỉ, bản phối tập trung quay lại.
+
 CHẾ ĐỘ MÔI TRƯỜNG
-Không đang bấm giờ gì? Chuyển sang chế độ môi trường và để bản phối chạy. Để đọc, thiền, chậm lại hoặc ngủ.
+Không đang bấm giờ gì? Chuyển sang chế độ môi trường và để bản phối chạy. Để đọc, thiền, chậm lại hoặc ngủ; hẹn giờ ngủ sẽ dừng bản phối thay bạn khi bạn đã thiếp đi.
 
 XEM SỰ TẬP TRUNG CỦA BẠN ĐÃ ĐI ĐÂU
 Lịch sử phiên ghi lại số giờ bạn thực sự bỏ ra.

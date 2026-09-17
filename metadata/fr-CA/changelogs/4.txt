@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLANS DE SÉANCE
+Préréglage Plan : enchaînez concentration et pauses, en boucle ou non. Carillon final.
+
+MÉLANGE POUR LES PAUSES
+Activez le son pendant les pauses et choisissez un mélange réservé au repos.
+
+MINUTERIE DE SOMMEIL
+En mode ambiance, le mélange s'arrête tout seul.
+
+AUSSI
+- Plus fort : sons remasterisés, volume normal
+- La vignette de réglages rapides lance le dernier mélange, app fermée ou pas
+- Quitter sans lecture coupe le service
+- Icône corrigée, lanceurs ronds

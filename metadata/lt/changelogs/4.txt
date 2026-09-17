@@ -1,0 +1,16 @@
+Ambio 2.1
+
+SEANSŲ PLANAI
+Nustatymas „Planas“: sudėliok susikaupimo ir pertraukų žingsnius, kartok arba baik. Skambtelėjimas žymi pabaigą.
+
+MIŠINYS PERTRAUKOMS
+Įjunk garsą per pertraukas ir pasirink antrą mišinį vien poilsiui.
+
+MIEGO LAIKMATIS
+Aplinkos režime sustabdyk mišinį po kurio laiko.
+
+TAIP PAT
+- Garsiau: garsai permasteruoti įprastam garsumui
+- Sparčiųjų nustatymų plytelė veikia ir uždarius programėlę
+- Išėjus be garso, paslauga sustoja
+- Piktogramos pataisa apvaliems paleidikliams

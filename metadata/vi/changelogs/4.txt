@@ -1,0 +1,16 @@
+Ambio 2.1
+
+KẾ HOẠCH PHIÊN
+Cài sẵn Kế hoạch: xếp các bước tập trung và nghỉ, lặp lại hoặc kết thúc. Một tiếng chuông báo hết.
+
+BẢN PHỐI CHO GIỜ NGHỈ
+Bật âm thanh trong giờ nghỉ và chọn bản phối thứ hai chỉ phát khi bạn nghỉ.
+
+HẸN GIỜ NGỦ
+Ở chế độ môi trường, dừng bản phối sau một lúc.
+
+NGOÀI RA
+- To hơn: âm thanh được master lại cho âm lượng thường
+- Ô Cài đặt nhanh phát bản phối gần nhất, kể cả khi đã đóng app
+- Thoát khi không phát gì sẽ dừng dịch vụ
+- Sửa biểu tượng trên trình khởi chạy tròn

@@ -13,8 +13,14 @@ El fondo es un degradado vivo mezclado a partir de todos los sonidos de tu mezcl
 TEMPORIZADOR DE CONCENTRACIÓN
 Ajustes Pomodoro de 25 o 50 minutos, o define tus propios tiempos de concentración y descanso. Un suave timbre cierra la sesión sin sacarte de ella. Hecho para estudiar, escribir, programar o cualquier cosa que exija atención sostenida.
 
+PLANES DE SESIÓN
+¿Necesitas más de una ronda? El ajuste Plan te deja encadenar pasos de concentración y descanso en el orden que quieras, repetirlos o terminar ahí. Un timbre de éxito marca el final del plan.
+
+UNA MEZCLA PARA LOS DESCANSOS
+Descansa con otro sonido. Activa el sonido en los descansos y elige una segunda mezcla que suena solo mientras descansas: la mezcla de concentración vuelve cuando termina el descanso.
+
 MODO AMBIENTE
-¿No estás cronometrando nada? Cambia al modo ambiente y deja correr la mezcla. Para leer, meditar, desconectar o dormir.
+¿No estás cronometrando nada? Cambia al modo ambiente y deja correr la mezcla. Para leer, meditar, desconectar o dormir: un temporizador de sueño detiene la mezcla por ti cuando ya te dormiste.
 
 MIRA ADÓNDE FUE TU CONCENTRACIÓN
 Un historial de sesiones registra las horas que de verdad dedicaste.

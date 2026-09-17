@@ -1,0 +1,16 @@
+Ambio 2.1
+
+JAKSOSUUNNITELMAT
+Uusi esiasetus Suunnitelma: jonota keskittymis- ja taukovaiheet, toista tai lopeta. Lopussa kilahdus.
+
+MIKSAUS TAUOILLE
+Ota ääni taukojen aikana käyttöön ja valitse toinen miksaus lepoon.
+
+UNIAJASTIN
+Ympäristötilassa miksaus pysähtyy itsestään.
+
+MYÖS
+- Kovempaa: äänet masteroitu normaalille puhelinvoimakkuudelle
+- Pika-asetusten ruutu käynnistää viime miksauksen sovellus kiinnikin
+- Poistuminen ilman toistoa sulkee palvelun
+- Kuvakekorjaus pyöreisiin käynnistimiin

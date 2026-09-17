@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLANS DE SESSIÓ
+Preajust Pla: encadena passos de concentració i descans, repeteix-los o acaba aquí. Un timbre tanca el pla.
+
+MESCLA DE DESCANS
+Activa el so als descansos i tria una segona mescla només per a ells.
+
+TEMPORITZADOR DE SON
+En mode ambient, la barreja s'atura sola.
+
+TAMBÉ
+- Més fort: sons remasteritzats a volum normal de mòbil
+- La fitxa ràpida engega l'última barreja, també amb l'app tancada
+- Enrere sense so atura el servei
+- Icona arreglada en launchers rodons

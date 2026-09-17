@@ -1,0 +1,16 @@
+Ambio 2.1
+
+SITZUNGSPLÄNE
+Vorgabe Plan: Fokus- und Pausenschritte nach Wunsch, wiederholen oder hier beenden. Ein Klang beendet ihn.
+
+PAUSEN-MIX
+Schalte Sound in Pausen ein und wähle dafür einen zweiten Mix.
+
+SCHLAF-TIMER
+Im Ambiente-Modus stoppt die Mischung von selbst.
+
+AUSSERDEM
+- Lauter: Klänge für normale Handylautstärke neu gemastert
+- Die Kachel startet die letzte Mischung, auch bei geschlossener App
+- Zurück ohne Wiedergabe beendet den Dienst
+- Icon-Korrektur für runde Launcher

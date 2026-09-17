@@ -1,0 +1,16 @@
+Ambio 2.1
+
+SESSIONSPLANER
+Forindstillingen Plan: sæt fokus- og pausetrin i rækkefølge, gentag dem eller slut her. En klang markerer slut.
+
+ET MIX TIL PAUSER
+Slå lyd under pauser til, og vælg et andet mix kun til dem.
+
+SOVETIMER
+I omgivelsestilstand stopper mixet efter lidt tid.
+
+OGSÅ
+- Højere: lyde remasteret til normal telefonlydstyrke
+- Feltet i Hurtige indstillinger starter dit sidste mix, også med appen lukket
+- Tilbage uden afspilning stopper tjenesten
+- Ikonrettelse til runde launchere

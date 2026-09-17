@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLÁNY RELÁCIÍ
+Predvoľba Plán: zoraď kroky sústredenia a prestávok, opakuj ich alebo skonči. Cinknutie označí koniec.
+
+MIX NA PRESTÁVKY
+Zapni zvuk počas prestávok a vyber druhý mix, ktorý hrá len kým oddychuješ.
+
+ČASOVAČ SPÁNKU
+V režime prostredia zastav mix po chvíli.
+
+ĎALEJ
+- Hlasnejšie: zvuky preremastrované na bežnú hlasitosť
+- Dlaždica rýchlych nastavení spustí posledný mix, aj keď je aplikácia zavretá
+- Odchod, keď nič nehrá, zastaví službu
+- Oprava ikony pre okrúhle launchery

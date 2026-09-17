@@ -13,8 +13,14 @@ Lo sfondo è un gradiente vivo, miscelato da tutti i suoni del tuo mix: blu fred
 TIMER DI CONCENTRAZIONE
 Preset Pomodoro da 25 o 50 minuti, oppure imposta i tuoi tempi di lavoro e pausa. Un rintocco delicato chiude la sessione senza strapparti da essa. Fatto per studiare, scrivere, programmare o qualsiasi cosa richieda attenzione prolungata.
 
+PIANI DI SESSIONE
+Ti serve più di un giro? Il preset Piano mette in fila fasi di concentrazione e pausa nell'ordine che vuoi, le ripete o termina lì. Un rintocco di successo segna la fine del piano.
+
+UN MIX PER LE PAUSE
+Riposa con un suono diverso. Attiva il suono durante le pause e scegli un secondo mix che suona solo mentre riposi: il mix di concentrazione torna quando la pausa finisce.
+
 MODALITÀ AMBIENTE
-Non stai cronometrando nulla? Passa alla modalità ambiente e lascia scorrere il mix. Per leggere, meditare, rilassarti o dormire.
+Non stai cronometrando nulla? Passa alla modalità ambiente e lascia scorrere il mix. Per leggere, meditare, rilassarti o dormire: un timer di spegnimento ferma il mix per te una volta che ti sei addormentato.
 
 GUARDA DOV'È FINITA LA TUA CONCENTRAZIONE
 Uno storico delle sessioni tiene traccia delle ore che hai davvero dedicato.

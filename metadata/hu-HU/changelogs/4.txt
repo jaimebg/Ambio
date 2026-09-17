@@ -1,0 +1,16 @@
+Ambio 2.1
+
+MENETTERVEK
+Új előbeállítás, a Terv: sorold fel a fókusz- és szünetlépéseket, ismételve vagy egyszer. Végül csengés.
+
+SZÜNETKEVERÉK
+Kapcsold be a hangot a szünetekben, és válassz külön keveréket pihenéshez.
+
+ALVÁSIDŐZÍTŐ
+Környezeti módban idővel leáll a keverék.
+
+TOVÁBBÁ
+- Hangosabb: a hangok normál telefonhangerőre masterelve
+- A gyorsbeállítás-csempe zárt alkalmazásnál is indítja az utolsó keveréket
+- Kilépés lejátszás nélkül leállítja a szolgáltatást
+- Ikonjavítás kerek indítókra

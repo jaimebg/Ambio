@@ -1,0 +1,16 @@
+Ambio 2.1
+
+SESIJU PLĀNI
+Iestatījums „Plāns“: sakārto koncentrēšanās un pārtraukumu soļus, atkārto vai beidz. Zvans iezīmē beigas.
+
+MIKSS PĀRTRAUKUMIEM
+Ieslēdz skaņu pārtraukumos un izvēlies otru miksu, kas skan tikai atpūtā.
+
+MIEGA TAIMERIS
+Vides režīmā aptur miksu pēc kāda laika.
+
+ARĪ
+- Skaļāk: skaņas pārmasterētas parastam skaļumam
+- Ātro iestatījumu elements palaiž pēdējo miksu arī ar aizvērtu lietotni
+- Izejot, kad nekas neskan, pakalpojums apstājas
+- Ikonas labojums apaļiem palaidējiem

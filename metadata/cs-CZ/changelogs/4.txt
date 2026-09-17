@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLÁNY SEZENÍ
+Předvolba Plán: seřaď kroky soustředění a přestávek, opakuj je nebo skonči zde. Zacinkání ohlásí konec.
+
+MIX NA PŘESTÁVKY
+Zapni zvuk během přestávek a vyber pro ně druhý mix.
+
+ČASOVAČ SPÁNKU
+V režimu prostředí nech mix po chvíli zastavit.
+
+DÁLE
+- Hlasitěji: zvuky přemasterovány na běžnou hlasitost telefonu
+- Dlaždice v rychlém nastavení spustí poslední mix i se zavřenou aplikací
+- Odchod zpět bez přehrávání zastaví službu
+- Oprava ikony na kulatých launcherech

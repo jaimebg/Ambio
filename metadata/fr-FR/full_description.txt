@@ -13,8 +13,14 @@ Le fond est un dégradé vivant, mélangé à partir de tous les sons de votre m
 MINUTEUR DE CONCENTRATION
 Préréglages Pomodoro de 25 ou 50 minutes, ou définissez vos propres durées de travail et de pause. Un carillon doux clôt la séance sans vous en arracher. Fait pour étudier, écrire, coder, ou tout ce qui demande une attention soutenue.
 
+PLANS DE SÉANCE
+Besoin de plus d'un tour ? Le préréglage Plan enchaîne vos étapes de concentration et de pause dans l'ordre que vous voulez, en boucle ou jusqu'à la fin. Un carillon de réussite marque la fin du plan.
+
+UN MÉLANGE POUR LES PAUSES
+Reposez-vous sur un autre son. Activez le son pendant les pauses et choisissez un second mélange qui ne joue que pendant le repos — le mélange de concentration revient quand la pause se termine.
+
 MODE AMBIANCE
-Vous ne chronométrez rien ? Passez en mode ambiance et laissez tourner le mélange. Pour lire, méditer, décompresser ou dormir.
+Vous ne chronométrez rien ? Passez en mode ambiance et laissez tourner le mélange. Pour lire, méditer, décompresser ou dormir — un minuteur de sommeil arrête le mélange pour vous une fois que vous avez sombré.
 
 VOYEZ OÙ EST PASSÉE VOTRE CONCENTRATION
 Un historique des séances retient les heures que vous y avez vraiment consacrées.

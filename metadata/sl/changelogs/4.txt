@@ -1,0 +1,16 @@
+Ambio 2.1
+
+NAČRTI SEJ
+Prednastavitev Načrt: razvrsti korake zbranosti in odmora, ponavljaj ali končaj. Zvon označi konec.
+
+MEŠANICA ZA ODMORE
+Vklopi zvok med odmori in izberi drugo mešanico, ki igra samo med počitkom.
+
+ČASOVNIK SPANJA
+V načinu okolice ustavi mešanico čez nekaj časa.
+
+TUDI
+- Glasneje: zvoki umerjeni za običajno glasnost
+- Ploščica hitrih nastavitev zažene zadnjo mešanico tudi pri zaprti aplikaciji
+- Izhod brez predvajanja ustavi storitev
+- Popravek ikone za okrogle zaganjalnike

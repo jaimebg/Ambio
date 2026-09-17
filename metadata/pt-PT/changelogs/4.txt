@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLANOS DE SESSÃO
+Predefinição Plano: alinhe passos de concentração e pausa, repita ou termine aí. Um sino marca o fim.
+
+MISTURA PARA AS PAUSAS
+Ative o som nas pausas e escolha uma segunda mistura só para descansar.
+
+TEMPORIZADOR DE SONO
+No modo ambiente, pare a mistura após um tempo.
+
+TAMBÉM
+- Mais alto: sons remasterizados para volume normal
+- O mosaico de Definições rápidas funciona com a app fechada
+- Sair sem nada a tocar encerra o serviço
+- Ícone corrigido em launchers redondos

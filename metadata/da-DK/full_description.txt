@@ -13,8 +13,14 @@ Baggrunden er en levende gradient, blandet af alle lydene i dit mix: kølige bl�
 FOKUSTIMER
 Pomodoro-forindstillinger på 25 eller 50 minutter, eller sæt dine egne arbejds- og pausetider. En blid klang lukker sessionen uden at rive dig ud af den. Lavet til at læse, skrive, kode eller alt, der kræver vedvarende opmærksomhed.
 
+SESSIONSPLANER
+Brug for mere end én runde? Med forindstillingen Plan sætter du fokus- og pausetrin i den rækkefølge, du vil, gentager dem eller slutter her. En succesklang markerer planens slutning.
+
+ET MIX TIL PAUSER
+Hold pause til en anden lyd. Slå lyd under pauser til, og vælg et andet mix, der kun spiller, mens du holder pause: fokusmixet vender tilbage, når pausen er slut.
+
 OMGIVELSESTILSTAND
-Tager du ikke tid på noget? Skift til omgivelsestilstand og lad mixet køre. Til læsning, meditation, ro eller søvn.
+Tager du ikke tid på noget? Skift til omgivelsestilstand og lad mixet køre. Til læsning, meditation, ro eller søvn: en sovetimer stopper mixet for dig, når du er faldet i søvn.
 
 SE, HVOR DIT FOKUS BLEV AF
 En sessionshistorik holder styr på de timer, du faktisk lagde i det.

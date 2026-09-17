@@ -13,8 +13,14 @@ Pozadie je živý prechod zmiešaný zo všetkých zvukov tvojho mixu: chladné 
 ČASOVAČ SÚSTREDENIA
 Predvoľby Pomodoro na 25 alebo 50 minút, alebo si nastav vlastné časy práce a prestávok. Jemné cinknutie ukončí reláciu bez toho, aby ťa z nej vytrhlo. Vytvorené na štúdium, písanie, programovanie a všetko, čo žiada vytrvalú pozornosť.
 
+PLÁNY RELÁCIÍ
+Potrebuješ viac než jedno kolo? Predvoľba Plán ti dovolí zoradiť kroky sústredenia a prestávok v ľubovoľnom poradí, opakovať ich alebo skončiť. Koniec plánu označí cinknutie úspechu.
+
+MIX NA PRESTÁVKY
+Oddychuj pri inom zvuku. Zapni zvuk počas prestávok a vyber druhý mix, ktorý hrá len kým oddychuješ – keď prestávka skončí, vráti sa mix sústredenia.
+
 REŽIM PROSTREDIA
-Práve nič nemeriaš? Prepni do režimu prostredia a nechaj mix hrať. Na čítanie, meditáciu, upokojenie alebo spánok.
+Práve nič nemeriaš? Prepni do režimu prostredia a nechaj mix hrať. Na čítanie, meditáciu, upokojenie alebo spánok – keď zaspíš, časovač spánku zastaví mix za teba.
 
 POZRI SA, KAM IŠLO TVOJE SÚSTREDENIE
 História relácií sleduje hodiny, ktoré si do toho naozaj dal.

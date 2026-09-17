@@ -13,8 +13,14 @@ Taust on elav üleminek, segatud kõigist su miksi helidest: jahedad sinised vih
 KESKENDUMISTAIMER
 Pomodoro eelseaded 25 või 50 minutit või määra oma töö- ja pausiajad. Pehme helin lõpetab seansi ilma sind sellest välja rebimata. Tehtud õppimiseks, kirjutamiseks, koodi kirjutamiseks või kõigeks, mis nõuab püsivat tähelepanu.
 
+SEANSIPLAANID
+Vajad rohkem kui üht ringi? Eelseade Plaan laseb keskendumis- ja pausietapid suvalises järjekorras ritta seada, neid korrata või lõpetada. Õnnestumise helin märgib plaani lõpu.
+
+MIKS PAUSIDEKS
+Puhka teistsuguse heli saatel. Lülita sisse heli pauside ajal ja vali teine miks, mis mängib ainult puhkamise ajal — pausi lõppedes naaseb keskendumismiks.
+
 ÜMBRUSREŽIIM
-Ei mõõda praegu aega? Lülitu ümbrusrežiimi ja lase miksil käia. Lugemiseks, meditatsiooniks, rahunemiseks või uinumiseks.
+Ei mõõda praegu aega? Lülitu ümbrusrežiimi ja lase miksil käia. Lugemiseks, meditatsiooniks, rahunemiseks või uinumiseks — unetaimer peatab miksi sinu eest, kui oled juba uinunud.
 
 VAATA, KUHU SU KESKENDUMINE LÄKS
 Seansside ajalugu peab arvet tundide üle, mille tegelikult panustasid.

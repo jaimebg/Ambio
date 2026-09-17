@@ -13,8 +13,14 @@ Pozadina je živi prijelaz pomiješan iz svih zvukova tvog miksa: hladne plave z
 MJERAČ KONCENTRACIJE
 Pomodoro postavke od 25 ili 50 minuta ili vlastita vremena rada i pauze. Blagi zvon zatvara sesiju bez da te iz nje istrgne. Napravljeno za učenje, pisanje, programiranje i sve što traži postojanu pažnju.
 
+PLANOVI SESIJA
+Treba ti više od jednog kruga? Postavka Plan poreda korake koncentracije i pauze bilo kojim redom, ponavlja ih ili završava. Zvon uspjeha označava kraj plana.
+
+MIKS ZA PAUZE
+Odmori se uz drugi zvuk. Uključi zvuk tijekom pauze i odaberi drugi miks koji svira samo dok se odmaraš — miks za koncentraciju vraća se kad pauza završi.
+
 NAČIN OKOLINE
-Ništa ne mjeriš? Prebaci se na način okoline i pusti miks da svira. Za čitanje, meditaciju, smirivanje ili san.
+Ništa ne mjeriš? Prebaci se na način okoline i pusti miks da svira. Za čitanje, meditaciju, smirivanje ili san — mjerač vremena za spavanje zaustavit će miks umjesto tebe kad već zaspiš.
 
 VIDI KAMO JE OTIŠLA TVOJA PAŽNJA
 Povijest sesija bilježi sate koje si stvarno uložio.

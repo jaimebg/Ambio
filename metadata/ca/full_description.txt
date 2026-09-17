@@ -13,8 +13,14 @@ El fons és un degradat viu barrejat a partir de tots els sons de la teva barrej
 TEMPORITZADOR DE CONCENTRACIÓ
 Preajustos Pomodoro de 25 o 50 minuts, o defineix els teus propis temps de concentració i descans. Un timbre suau tanca la sessió sense treure-te'n. Fet per estudiar, escriure, programar o qualsevol cosa que demani atenció sostinguda.
 
+PLANS DE SESSIÓ
+Necessites més d'una ronda? El preajust Pla et deixa encadenar passos de concentració i descans en l'ordre que vulguis, repetir-los o acabar aquí. Un timbre d'èxit marca el final del pla.
+
+UNA MESCLA PER ALS DESCANSOS
+Descansa amb un so diferent. Activa el so durant els descansos i tria una segona mescla que només sona mentre descanses: la barreja de concentració torna quan s'acaba el descans.
+
 MODE AMBIENT
-No estàs cronometrant res? Canvia al mode ambient i deixa córrer la barreja. Per llegir, meditar, desconnectar o dormir.
+No estàs cronometrant res? Canvia al mode ambient i deixa córrer la barreja. Per llegir, meditar, desconnectar o dormir: un temporitzador de son atura la barreja per tu quan ja t'has adormit.
 
 MIRA ON HA ANAT LA TEVA CONCENTRACIÓ
 Un historial de sessions registra les hores que realment hi has dedicat.

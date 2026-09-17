@@ -13,8 +13,14 @@ O fundo é um degradê vivo, misturado a partir de todos os sons da sua mistura:
 TIMER DE FOCO
 Predefinições Pomodoro de 25 ou 50 minutos, ou defina seus próprios tempos de foco e pausa. Um sino suave encerra a sessão sem tirar você dela. Feito para estudar, escrever, programar ou qualquer coisa que exija atenção contínua.
 
+PLANOS DE SESSÃO
+Precisa de mais de uma rodada? A predefinição Plano deixa você enfileirar etapas de foco e intervalo na ordem que quiser, repetir ou terminar ali. Um sino de sucesso marca o fim do plano.
+
+UMA MISTURA PARA INTERVALOS
+Descanse com outro som. Ative o som durante os intervalos e escolha uma segunda mistura que toca só enquanto você descansa — a mistura de foco volta quando o intervalo termina.
+
 MODO AMBIENTE
-Não está cronometrando nada? Mude para o modo ambiente e deixe a mistura rolar. Para ler, meditar, desacelerar ou dormir.
+Não está cronometrando nada? Mude para o modo ambiente e deixe a mistura rolar. Para ler, meditar, desacelerar ou dormir — um temporizador de sono para a mistura por você depois que você pegar no sono.
 
 VEJA PARA ONDE FOI SEU FOCO
 Um histórico de sessões registra as horas que você realmente dedicou.

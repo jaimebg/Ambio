@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLANO NG SESYON
+Bagong preset, Plano: ihanay ang pokus at pahinga, ulitin o tapusin. Kampana sa dulo.
+
+HALO SA PAHINGA
+Buksan ang tunog sa pahinga at pumili ng ikalawang halo para roon lang.
+
+SLEEP TIMER
+Sa ambient na mode, ihinto ang halo maya-maya.
+
+BUKOD PA
+- Mas malakas: ni-remaster ang tunog sa normal na volume
+- Sinisimulan ng Quick Settings tile ang huling halo kahit sarado ang app
+- Humihinto ang serbisyo paglabas nang walang tumutugtog
+- Ayos sa icon sa bilog na launcher

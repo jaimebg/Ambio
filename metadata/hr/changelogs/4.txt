@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLANOVI SESIJA
+Četvrta postavka, Plan: poredaj korake koncentracije i pauze, ponavljaj ili završi. Zvon označava kraj.
+
+MIKS ZA PAUZE
+Uključi zvuk tijekom pauze i odaberi drugi miks samo za odmor.
+
+MJERAČ ZA SPAVANJE
+U načinu okoline miks stane nakon nekog vremena.
+
+TAKOĐER
+- Glasnije: zvukovi remasterirani za normalnu glasnoću
+- Pločica brzih postavki pokreće zadnji miks i uz zatvorenu aplikaciju
+- Izlazak bez reprodukcije zaustavlja uslugu
+- Ispravak ikone za okrugle pokretače

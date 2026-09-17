@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PLAN DE SESIÓN
+Ajuste Plan: encadena pasos de concentración y descanso, repítelos o termina ahí. Un timbre lo cierra.
+
+MEZCLA DE DESCANSO
+Sonido en los descansos: elige una segunda mezcla solo para ellos.
+
+TEMPORIZADOR DE SUEÑO
+En modo ambiente, la mezcla se detiene sola.
+
+ADEMÁS
+- Más fuerte: sonidos remasterizados a volumen normal
+- La ficha rápida inicia tu última mezcla, aun con la app cerrada
+- Salir sin sonido detiene el servicio
+- Icono corregido en launchers redondos

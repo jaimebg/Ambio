@@ -1,0 +1,16 @@
+Ambio 2.1
+
+RENCANA SESI
+Prasetel baru, Rencana: susun langkah fokus dan istirahat, ulangi atau akhiri. Denting di akhir.
+
+CAMPURAN ISTIRAHAT
+Aktifkan suara saat istirahat dan pilih campuran kedua khusus untuk istirahat.
+
+TIMER TIDUR
+Di mode ambien, campuran bisa berhenti sendiri.
+
+JUGA
+- Lebih keras: suara di-remaster untuk volume ponsel normal
+- Ubin Setelan Cepat memutar campuran terakhir meski aplikasi tertutup
+- Keluar tanpa pemutaran menghentikan layanan
+- Perbaikan ikon di peluncur bulat

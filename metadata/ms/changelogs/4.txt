@@ -1,0 +1,16 @@
+Ambio 2.1
+
+PELAN SESI
+Praset Pelan: susun langkah fokus dan rehat, ulang atau tamatkan. Deringan menandakan penghujungnya.
+
+ADUNAN UNTUK REHAT
+Hidupkan bunyi semasa rehat dan pilih adunan kedua khas untuk berehat.
+
+PEMASA TIDUR
+Dalam mod ambien, hentikan adunan selepas seketika.
+
+JUGA
+- Lebih kuat: bunyi dimaster semula untuk kelantangan biasa
+- Jubin Tetapan Pantas berfungsi walaupun aplikasi ditutup
+- Keluar tanpa bunyi menghentikan perkhidmatan
+- Ikon dibetulkan untuk pelancar bulat

@@ -1,0 +1,16 @@
+Ambio 2.1
+
+SESSIEPLANNEN
+Voorinstelling Plan: zet focus- en pauzestappen op een rij, herhaal ze of stop daar. Een toon markeert het einde.
+
+EEN MIX VOOR PAUZES
+Zet geluid tijdens pauzes aan en kies een tweede mix, alleen om te rusten.
+
+SLAAPTIMER
+Laat de mix in omgevingsmodus na een tijdje stoppen.
+
+OOK
+- Luider: elk geluid opnieuw gemasterd voor normaal volume
+- De snelle-instellingentegel werkt ook met de app dicht
+- Weggaan zonder muziek stopt de service
+- Pictogramfix voor ronde launchers

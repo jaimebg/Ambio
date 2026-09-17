@@ -1,0 +1,16 @@
+Ambio 2.1
+
+SEANSIPLAANID
+Neljas eelseade, Plaan: sea keskendumis- ja pausietapid ritta, korda neid või lõpeta. Helin märgib lõpu.
+
+MIKS PAUSIDEKS
+Lülita sisse heli pauside ajal ja vali teine miks ainult puhkamiseks.
+
+UNETAIMER
+Ümbrusrežiimis peata miks mõne aja pärast.
+
+SAMUTI
+- Valjem: helid masterdatud tavalisele telefonihelitugevusele
+- Kiirseadete paan käivitab viimase miksi ka suletud rakendusega
+- Tagasi minnes ilma esituseta peatub teenus
+- Ikooniparandus ümaratele käivitajatele

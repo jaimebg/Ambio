@@ -13,8 +13,14 @@ Fons ir dzīva krāsu pāreja, sajaukta no visām tava miksa skaņām: vēsi zil
 KONCENTRĒŠANĀS TAIMERIS
 Pomodoro iestatījumi 25 vai 50 minūtes, vai iestati savus darba un pārtraukuma laikus. Maigs zvans noslēdz sesiju, neizraujot tevi no tās. Radīts mācībām, rakstīšanai, programmēšanai vai jebkam, kas prasa noturīgu uzmanību.
 
+SESIJU PLĀNI
+Vajag vairāk par vienu kārtu? Iestatījums „Plāns“ ļauj sakārtot koncentrēšanās un pārtraukumu soļus jebkādā secībā, atkārtot tos vai beigt. Plāna beigas iezīmē veiksmes zvans.
+
+MIKSS PĀRTRAUKUMIEM
+Atpūties ar citu skaņu. Ieslēdz skaņu pārtraukumos un izvēlies otru miksu, kas skan tikai atpūtas laikā – kad pārtraukums beidzas, atgriežas koncentrēšanās mikss.
+
 VIDES REŽĪMS
-Neko nemēri laikā? Pārslēdzies uz vides režīmu un ļauj miksam skanēt. Lasīšanai, meditācijai, nomierināšanai vai miegam.
+Neko nemēri laikā? Pārslēdzies uz vides režīmu un ļauj miksam skanēt. Lasīšanai, meditācijai, nomierināšanai vai miegam – kad būsi aizmidzis, miega taimeris apturēs miksu tavā vietā.
 
 REDZI, KUR AIZGĀJA TAVA UZMANĪBA
 Sesiju vēsture uzskaita stundas, ko patiešām ieguldīji.

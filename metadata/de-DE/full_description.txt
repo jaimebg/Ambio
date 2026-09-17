@@ -13,8 +13,14 @@ Der Hintergrund ist ein lebendiger Verlauf, gemischt aus allen Klängen deiner M
 FOKUS-TIMER
 Pomodoro-Vorgaben mit 25 oder 50 Minuten, oder setze eigene Arbeits- und Pausenzeiten. Ein sanfter Klang schließt die Sitzung, ohne dich herauszureißen. Gemacht zum Lernen, Schreiben, Programmieren und für alles, was dauerhafte Aufmerksamkeit braucht.
 
+SITZUNGSPLÄNE
+Du brauchst mehr als eine Runde? Mit der Vorgabe Plan reihst du Fokus- und Pausenschritte in beliebiger Reihenfolge aneinander, wiederholst sie oder beendest hier. Ein Erfolgsklang markiert das Ende des Plans.
+
+EIN MIX FÜR PAUSEN
+Ruh dich bei einem anderen Klang aus. Schalte Sound in Pausen ein und wähle einen zweiten Mix, der nur läuft, während du ruhst: die Fokus-Mischung kehrt zurück, sobald die Pause vorbei ist.
+
 AMBIENTE-MODUS
-Du stoppst gerade nichts? Wechsle in den Ambiente-Modus und lass die Mischung laufen. Zum Lesen, Meditieren, Runterkommen oder Einschlafen.
+Du stoppst gerade nichts? Wechsle in den Ambiente-Modus und lass die Mischung laufen. Zum Lesen, Meditieren, Runterkommen oder Einschlafen: ein Schlaf-Timer stoppt die Mischung für dich, wenn du eingeschlafen bist.
 
 SIEH, WOHIN DEIN FOKUS GING
 Ein Sitzungsverlauf hält fest, wie viele Stunden du wirklich investiert hast.

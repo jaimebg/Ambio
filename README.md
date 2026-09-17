@@ -64,6 +64,8 @@ the mix, not just one of them.
 - **Dynamic Theming** — The palette is mixed from every sound in the mix, not just one
 - **Ambient Visuals** — A particle field behind the timer that answers the whole mix, and can be switched off
 - **Pomodoro Timer** — 25-min and 50-min presets, or your own focus and break lengths
+- **Session Plans** — A Plan preset that lines up focus and break steps in any order, looped or run once, with a chime at the end
+- **Break Mix** — An optional second mix that plays only during breaks, edited from the same picker
 - **Ambient Mode** — Continuous playback for relaxation or sleep, with a sleep timer that stops it for you
 - **Session History** — Statistics for the hours you actually put in
 - **Adaptive Tablet Layout** — Two panes, the mixer permanently beside the timer past 840dp
@@ -148,7 +150,7 @@ metadata/      # Published F-Droid store listing (synced from fastlane/, tracked
 ```bash
 ./gradlew assembleDebug          # Build debug APK
 ./gradlew lint                   # Run lint checks
-./gradlew test                   # Run unit tests (724: 362 tests × debug and release variants)
+./gradlew test                   # Run unit tests (968: 484 tests × debug and release variants)
 ./gradlew clean                  # Clean build cache
 ./gradlew syncFdroidMetadata     # Refresh metadata/ from fastlane/ after changing store text
 ./gradlew validateFdroidMetadata # Check metadata/ against F-Droid's limits (runs on CI)

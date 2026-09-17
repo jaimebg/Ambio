@@ -1,0 +1,16 @@
+Ambio 2.1
+
+SESSION PLANS
+A fourth preset, Plan: line up focus and break steps, loop them or end there. A chime marks the end.
+
+A MIX FOR BREAKS
+Turn on sound during breaks and pick a second mix that plays only while you rest.
+
+SLEEP TIMER
+In Ambient mode, stop the mix after a while.
+
+ALSO
+- Louder: every sound remastered for a normal phone volume
+- The Quick Settings tile starts your last mix, app closed or not
+- Backing out with nothing playing stops the service
+- Icon fix for round launchers
