@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import com.jbgsoft.ambio.media.AudioService
 
 /**
  * Quick Settings toggle for the mix.
@@ -36,13 +37,16 @@ class PlaybackTile : TileService() {
     }
 
     /**
-     * API 34 replaced the Intent overload of startActivityAndCollapse with a
-     * PendingIntent one; the Intent overload still works below 34 and minSdk is 31.
-     * The Intent overload is reached only below API 34, where the PendingIntent overload does not exist.
+     * API 34 replaced the Intent overload of startActivityAndCollapse with a PendingIntent
+     * one; the Intent overload is reached only below 34, where the PendingIntent overload
+     * does not exist; minSdk is 31.
      */
     @SuppressLint("StartActivityAndCollapseDeprecated")
     private fun launchPlay() {
+        // The category is how AudioService.onTaskRemoved tells this task apart from the
+        // app's; explicit intents resolve by component, so it changes nothing else.
         val intent = Intent(this, TilePlayActivity::class.java)
+            .addCategory(AudioService.CATEGORY_TILE_TRAMPOLINE)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startActivityAndCollapse(

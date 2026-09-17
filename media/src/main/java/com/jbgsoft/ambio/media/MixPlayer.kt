@@ -315,12 +315,11 @@ class MixPlayer(
 
     override fun handleSetPlayWhenReady(playWhenReady: Boolean): ListenableFuture<*> {
         if (playWhenReady) {
-            // Before anything else, and specifically before asking for audio focus.
-            // A play request can arrive from the Quick Settings tile with the app closed,
-            // and this player then holds nothing: taking focus at that point silences
-            // whatever the user was actually listening to, in order to play silence.
-            // The service owns the fix — it can read the stored mix, and this class
-            // deliberately cannot.
+            // This is the in-app case: a controller's play request reaching a player that
+            // holds nothing. Do not take audio focus for silence — that would steal it from
+            // whatever the user is actually listening to, in order to play nothing. The
+            // service owns the fix: it can read the stored mix, and this class deliberately
+            // cannot.
             if (entries.isEmpty()) {
                 onPlayRequestedWithEmptyMix()
                 return Futures.immediateVoidFuture()

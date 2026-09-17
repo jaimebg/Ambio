@@ -44,11 +44,6 @@ class AudioService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
     private lateinit var player: MixPlayer
 
-    // Set while loadStoredMixAndPlay is reading the stored mix; onTaskRemoved must not
-    // stop the service in that window, because the tile's trampoline task is removed the
-    // instant it finishes, before the mix is loaded.
-    private var coldStartInFlight = false
-
     @Inject
     lateinit var mixSource: MixSource
 
@@ -141,8 +136,10 @@ class AudioService : MediaSessionService() {
     }
 
     /**
-     * Called when something asks this service to play while it holds no sounds — the
-     * Quick Settings tile with the app closed, in practice.
+     * Called to fill an empty player before playing it. Two callers reach it: the tile's
+     * ACTION_PLAY_STORED_MIX start in onStartCommand — the real cold-start path, the app
+     * not running at all — and MixPlayer's onPlayRequestedWithEmptyMix hook, an in-app
+     * play arriving at an already-running player that holds nothing.
      *
      * Starting the service is not enough on its own: it comes up empty, and an empty
      * player publishes an empty timeline, so Media3 shows no notification, so
@@ -159,35 +156,30 @@ class AudioService : MediaSessionService() {
      * cannot learn what to play cannot honor a startForeground() deadline either.
      */
     private fun loadStoredMixAndPlay() {
-        coldStartInFlight = true
         serviceScope.launch {
-            try {
-                val mix = try {
-                    mixSource.currentMix()
-                } catch (e: CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to read the stored mix; stopping", e)
-                    stopSelf()
-                    return@launch
-                }
-                if (mix.isEmpty()) {
-                    // Should not happen — the repository never yields an empty mix — but the
-                    // bug this guards against was a service waiting forever for a
-                    // startForeground that could not come. Stopping is the difference between
-                    // a no-op and a system-level crash.
-                    stopSelf()
-                    return@launch
-                }
-                // Empty title, deliberately: media cannot see sound names — they are string
-                // resources in core:data, which this module is not allowed to reach — and the
-                // notification's text is not what this fix is about. The app overwrites it with
-                // a real title the moment it next pushes a mix.
-                player.setMix(mix, "")
-                player.play()
-            } finally {
-                coldStartInFlight = false
+            val mix = try {
+                mixSource.currentMix()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to read the stored mix; stopping", e)
+                stopSelf()
+                return@launch
             }
+            if (mix.isEmpty()) {
+                // Should not happen — the repository never yields an empty mix — but the
+                // bug this guards against was a service waiting forever for a
+                // startForeground that could not come. Stopping is the difference between
+                // a no-op and a system-level crash.
+                stopSelf()
+                return@launch
+            }
+            // Empty title, deliberately: media cannot see sound names — they are string
+            // resources in core:data, which this module is not allowed to reach — and the
+            // notification's text is not what this fix is about. The app overwrites it with
+            // a real title the moment it next pushes a mix.
+            player.setMix(mix, "")
+            player.play()
         }
     }
 
@@ -196,8 +188,12 @@ class AudioService : MediaSessionService() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        if (coldStartInFlight) {
-            Log.d(TAG, "Task removed while the stored mix is still loading; the load decides")
+        // The tile's trampoline activity lives in its own task and finishes the moment it
+        // has started this service, so its task is removed while the stored mix is still
+        // loading. That removal says nothing about what the user wants; only the app's
+        // own task does.
+        if (rootIntent?.hasCategory(CATEGORY_TILE_TRAMPOLINE) == true) {
+            Log.d(TAG, "Trampoline task removed; ignoring")
             return
         }
         val player = mediaSession?.player
@@ -270,7 +266,7 @@ class AudioService : MediaSessionService() {
                     playbackState = session.player.playbackState
                 )
             ) {
-                Log.d(TAG, "Last real controller left an idle player; stopping")
+                Log.d(TAG, "A controller left an idle player; stopping")
                 stopSelf()
             }
         }
@@ -293,5 +289,10 @@ class AudioService : MediaSessionService() {
         // The tile's cold-start path; a media-button intent cannot do this because Media3
         // intercepts play on an empty player before it reaches MixPlayer.
         const val ACTION_PLAY_STORED_MIX = "com.jbgsoft.ambio.PLAY_STORED_MIX"
+
+        // Carried by the intent that launches the tile's trampoline activity; onTaskRemoved
+        // uses it to recognise that task, whose removal means nothing about the user's
+        // intent.
+        const val CATEGORY_TILE_TRAMPOLINE = "com.jbgsoft.ambio.category.TILE_TRAMPOLINE"
     }
 }

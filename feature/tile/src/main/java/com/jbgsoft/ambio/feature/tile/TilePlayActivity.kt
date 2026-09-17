@@ -34,5 +34,5 @@ class TilePlayActivity : Activity() {
 }
 
 /** An explicit [AudioService.ACTION_PLAY_STORED_MIX] service intent aimed at [AudioService]. */
-fun playIntent(context: Context): Intent =
+internal fun playIntent(context: Context): Intent =
     Intent(context, AudioService::class.java).setAction(AudioService.ACTION_PLAY_STORED_MIX)
