@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+MGA PAG-AYOS
+- Themed icon: ipinapakita ang simbolo ng Ambio sa halip ng blangkong bilog
+- Ang Back habang naka-pause o nakahinto ang mix ay ganap na nagsasara ng Ambio, pati ang notification
+- Ang Back kaagad pagkatapos ng Stop ay hindi na nag-iiwan ng tunog na tumutugtog

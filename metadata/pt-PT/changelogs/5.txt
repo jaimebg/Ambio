@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+CORREÇÕES
+- Ícone temático: mostra o símbolo do Ambio em vez de um círculo vazio
+- Voltar atrás com a mistura em pausa ou parada fecha agora o Ambio por completo, incluindo a notificação
+- Voltar atrás logo após Parar já não deixa o som a tocar

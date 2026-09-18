@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+CORREÇÕES
+- Ícone temático: mostra o símbolo do Ambio em vez de um círculo vazio
+- Voltar com a mixagem pausada ou parada agora fecha o Ambio por completo, inclusive a notificação
+- Voltar logo após Parar não deixa mais o som tocando

@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+REGSTELLINGS
+- Tema-ikoon: wys die Ambio-simbool in plaas van 'n leë sirkel
+- Terug met die mengsel onderbreek of gestop maak Ambio nou heeltemal toe, kennisgewing ingesluit
+- Terug direk ná Stop laat nie meer die klank aanhou speel nie

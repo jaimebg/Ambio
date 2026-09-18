@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+SỬA LỖI
+- Biểu tượng theo chủ đề: hiển thị ký hiệu Ambio thay vì vòng tròn trống
+- Quay lại khi bản phối đang tạm dừng hoặc đã dừng giờ sẽ đóng hẳn Ambio, kể cả thông báo
+- Quay lại ngay sau khi Dừng không còn để âm thanh tiếp tục phát

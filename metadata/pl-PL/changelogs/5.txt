@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+POPRAWKI
+- Ikona motywu: pokazuje symbol Ambio zamiast pustego koła
+- Wstecz przy wstrzymanym lub zatrzymanym miksie zamyka teraz Ambio całkowicie, razem z powiadomieniem
+- Wstecz tuż po zatrzymaniu nie zostawia już grającego dźwięku

@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+OPRAVY
+- Tematická ikona: zobrazuje symbol Ambio namiesto prázdneho kruhu
+- Späť pri pozastavenom alebo zastavenom mixe teraz Ambio úplne ukončí, vrátane upozornenia
+- Späť hneď po zastavení už nenechá zvuk hrať

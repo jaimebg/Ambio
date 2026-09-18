@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+REMEDIERI
+- Pictogramă tematică: afișează simbolul Ambio în locul unui cerc gol
+- Înapoi cu mixul în pauză sau oprit închide acum complet Ambio, inclusiv notificarea
+- Înapoi imediat după Oprire nu mai lasă sunetul pornit

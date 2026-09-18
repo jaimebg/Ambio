@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+FIXES
+- Themed icon: shows the Ambio symbol instead of a blank circle
+- Going back with the mix paused or stopped now closes Ambio completely, notification included
+- Going back right after Stop no longer leaves the sound playing

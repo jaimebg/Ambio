@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+ISPRAVCI
+- Tematska ikona: prikazuje simbol Ambija umjesto praznog kruga
+- Natrag s pauziranim ili zaustavljenim miksom sada potpuno zatvara Ambio, uključujući obavijest
+- Natrag odmah nakon zaustavljanja više ne ostavlja zvuk da svira

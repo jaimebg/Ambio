@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+PARANDUSED
+- Teemaikoon: näitab tühja ringi asemel Ambio sümbolit
+- Tagasi liikumine peatatud või pausil miksiga sulgeb nüüd Ambio täielikult, ka teavituse
+- Tagasi liikumine kohe pärast peatamist ei jäta heli enam mängima

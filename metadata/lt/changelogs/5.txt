@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+PATAISYMAI
+- Teminė piktograma: rodo Ambio simbolį vietoj tuščio apskritimo
+- Grįžus atgal, kai mišinys pristabdytas ar sustabdytas, Ambio užsidaro visiškai, kartu su pranešimu
+- Grįžus atgal iškart po sustabdymo garsas nebelieka groti

@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+PEMBETULAN
+- Ikon bertema: memaparkan simbol Ambio, bukan bulatan kosong
+- Kembali semasa campuran dijeda atau dihentikan kini menutup Ambio sepenuhnya, termasuk pemberitahuan
+- Kembali sejurus selepas Berhenti tidak lagi membiarkan bunyi terus dimainkan

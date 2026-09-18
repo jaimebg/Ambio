@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+CORRECCIONS
+- Icona temàtica: mostra el símbol d'Ambio en lloc d'un cercle buit
+- Sortir amb Enrere amb la mescla en pausa o aturada tanca Ambio del tot, notificació inclosa
+- Sortir amb Enrere just després d'Atura ja no deixa el so en marxa

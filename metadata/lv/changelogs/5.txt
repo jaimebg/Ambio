@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+LABOJUMI
+- Tematiskā ikona: rāda Ambio simbolu, nevis tukšu apli
+- Atpakaļ ar nopauzētu vai apturētu miksu tagad pilnībā aizver Ambio, arī paziņojumu
+- Atpakaļ uzreiz pēc apturēšanas vairs neatstāj skaņu skanam

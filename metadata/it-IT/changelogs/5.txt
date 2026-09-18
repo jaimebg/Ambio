@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+CORREZIONI
+- Icona a tema: mostra il simbolo di Ambio invece di un cerchio vuoto
+- Tornare indietro con il mix in pausa o fermo ora chiude Ambio del tutto, notifica compresa
+- Tornare indietro subito dopo Stop non lascia più il suono in riproduzione

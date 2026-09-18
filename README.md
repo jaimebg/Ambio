@@ -150,7 +150,7 @@ metadata/      # Published F-Droid store listing (synced from fastlane/, tracked
 ```bash
 ./gradlew assembleDebug          # Build debug APK
 ./gradlew lint                   # Run lint checks
-./gradlew test                   # Run unit tests (968: 484 tests × debug and release variants)
+./gradlew test                   # Run unit tests (980: 490 tests × debug and release variants)
 ./gradlew clean                  # Clean build cache
 ./gradlew syncFdroidMetadata     # Refresh metadata/ from fastlane/ after changing store text
 ./gradlew validateFdroidMetadata # Check metadata/ against F-Droid's limits (runs on CI)

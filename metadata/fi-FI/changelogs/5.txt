@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+KORJAUKSET
+- Teemakuvake: näyttää Ambion symbolin tyhjän ympyrän sijaan
+- Takaisin-painike miksin ollessa tauolla tai pysäytettynä sulkee nyt Ambion kokonaan, myös ilmoituksen
+- Takaisin heti pysäytyksen jälkeen ei enää jätä ääntä soimaan

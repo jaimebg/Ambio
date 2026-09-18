@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+CORRECTIONS
+- Icône thématique : affiche le symbole d'Ambio au lieu d'un cercle vide
+- Retour avec le mix en pause ou arrêté ferme maintenant Ambio complètement, notification comprise
+- Retour juste après Arrêter ne laisse plus le son en lecture

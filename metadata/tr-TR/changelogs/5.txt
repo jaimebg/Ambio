@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+DÜZELTMELER
+- Temalı simge: boş bir daire yerine Ambio sembolünü gösterir
+- Karışım duraklatılmış veya durdurulmuşken Geri artık Ambio'yu bildirimle birlikte tamamen kapatır
+- Durdur'dan hemen sonra Geri artık sesi çalar durumda bırakmaz

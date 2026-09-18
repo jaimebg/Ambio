@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+FEHLERBEHEBUNGEN
+- Themen-Symbol: zeigt das Ambio-Zeichen statt eines leeren Kreises
+- Zurück bei pausiertem oder gestopptem Mix beendet Ambio jetzt vollständig, samt Benachrichtigung
+- Zurück direkt nach Stopp lässt den Ton nicht mehr weiterlaufen

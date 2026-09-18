@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+RÄTTNINGAR
+- Temaikon: visar Ambio-symbolen i stället för en tom cirkel
+- Bakåt med mixen pausad eller stoppad stänger nu Ambio helt, även aviseringen
+- Bakåt direkt efter Stopp låter inte längre ljudet fortsätta spela

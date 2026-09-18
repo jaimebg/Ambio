@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+POPRAVKI
+- Tematska ikona: prikaže simbol Ambio namesto praznega kroga
+- Nazaj ob zaustavljeni ali ustavljeni mešanici zdaj povsem zapre Ambio, tudi obvestilo
+- Nazaj takoj po ustavitvi ne pusti več zvoka predvajati

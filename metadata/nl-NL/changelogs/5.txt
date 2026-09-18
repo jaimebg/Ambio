@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+OPLOSSINGEN
+- Thema-icoon: toont het Ambio-symbool in plaats van een lege cirkel
+- Terug met de mix gepauzeerd of gestopt sluit Ambio nu volledig af, inclusief de melding
+- Terug direct na Stop laat het geluid niet meer doorspelen

@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+CORRECCIONES
+- Ícono temático: muestra el símbolo de Ambio en vez de un círculo vacío
+- Salir con Atrás con la mezcla en pausa o detenida cierra Ambio por completo, notificación incluida
+- Salir con Atrás justo después de Detener ya no deja el sonido en marcha

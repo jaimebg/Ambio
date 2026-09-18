@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+JAVÍTÁSOK
+- Témázott ikon: az Ambio szimbólumát mutatja üres kör helyett
+- A Vissza szüneteltetett vagy leállított mixnél most teljesen bezárja az Ambiót, az értesítéssel együtt
+- A Vissza közvetlenül a leállítás után már nem hagyja szólni a hangot

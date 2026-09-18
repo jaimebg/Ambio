@@ -1,0 +1,6 @@
+Ambio 2.1.1
+
+RETTELSER
+- Temaikon: viser Ambio-symbolet i stedet for en tom cirkel
+- Tilbage med mixet på pause eller stoppet lukker nu Ambio helt, også notifikationen
+- Tilbage lige efter Stop lader ikke længere lyden spille videre
