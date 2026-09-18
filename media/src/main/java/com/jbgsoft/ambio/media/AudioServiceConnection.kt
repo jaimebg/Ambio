@@ -41,6 +41,10 @@ class AudioServiceConnection @Inject constructor(
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private val scope = CoroutineScope(Dispatchers.Main)
     private var fadeJob: Job? = null
+
+    // What the running fade-out is going to do once it is silent. Held outside the
+    // coroutine so disconnect() can do it now instead of never: see disconnect().
+    private var afterFadeOut: (() -> Unit)? = null
     private var targetVolume: Float = 1f
 
     private val _isConnected = MutableStateFlow(false)
@@ -139,6 +143,15 @@ class AudioServiceConnection @Inject constructor(
         _isConnected.value = false
         _isPlaying.value = false
         _hasError.value = false
+        // A fade-out still running has not delivered its stop() or pause() yet, and
+        // will find no controller to deliver it to once this returns. Back is quicker
+        // than the fade, so that was the ordinary case: the mix went on playing behind
+        // a closed app, at whatever level the fade had reached (issue #9).
+        afterFadeOut?.let { finish ->
+            fadeJob?.cancel()
+            afterFadeOut = null
+            finish()
+        }
         controller?.removeListener(playerListener)
         controllerFuture?.let { MediaController.releaseFuture(it) }
         controllerFuture = null
@@ -167,6 +180,7 @@ class AudioServiceConnection @Inject constructor(
 
     fun play() {
         fadeJob?.cancel()
+        afterFadeOut = null
         Log.d(TAG, "Play requested")
         controller?.apply {
             // A stop() right before this may have cancelled its own fade-out above,
@@ -211,6 +225,7 @@ class AudioServiceConnection @Inject constructor(
 
     private fun fadeIn(toVolume: Float) {
         fadeJob?.cancel()
+        afterFadeOut = null
         fadeJob = scope.launch {
             val steps = (FADE_IN_DURATION_MS / FADE_STEP_MS).toInt()
             val startVolume = 0f
@@ -231,6 +246,7 @@ class AudioServiceConnection @Inject constructor(
 
     private fun fadeOut(onComplete: () -> Unit) {
         fadeJob?.cancel()
+        afterFadeOut = onComplete
         fadeJob = scope.launch {
             val currentVolume = controller?.volume ?: targetVolume
             val steps = (FADE_OUT_DURATION_MS / FADE_STEP_MS).toInt()
@@ -245,6 +261,7 @@ class AudioServiceConnection @Inject constructor(
             }
             controller?.volume = 0f
             Log.d(TAG, "Fade out complete")
+            afterFadeOut = null
             onComplete()
         }
     }

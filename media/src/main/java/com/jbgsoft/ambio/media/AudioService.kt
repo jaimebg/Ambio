@@ -260,14 +260,20 @@ class AudioService : MediaSessionService() {
             session: MediaSession,
             controller: MediaSession.ControllerInfo
         ) {
-            // See shouldStopOnDisconnect for why only idle, and why not the notification.
+            // See shouldStopOnDisconnect for what counts as silent, and whose leaving counts.
             if (shouldStopOnDisconnect(
+                    isAppController = controller.packageName == packageName,
                     isNotificationController = session.isMediaNotificationController(controller),
-                    playbackState = session.player.playbackState
+                    playbackState = session.player.playbackState,
+                    playWhenReady = session.player.playWhenReady
                 )
             ) {
-                Log.d(TAG, "A controller left an idle player; stopping")
-                stopSelf()
+                Log.d(TAG, "The app left a silent player; stopping")
+                // Not stopSelf(): Media3 holds a paused service in the foreground for ten
+                // minutes (DEFAULT_FOREGROUND_SERVICE_TIMEOUT_MS) so it can be resumed,
+                // and a foreground service shrugs stopSelf() off. This drops that hold
+                // first. On an idle player it comes to the same thing.
+                pauseAllPlayersAndStopSelf()
             }
         }
     }

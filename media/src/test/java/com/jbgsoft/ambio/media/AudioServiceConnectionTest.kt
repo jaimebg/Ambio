@@ -6,6 +6,8 @@ import com.google.common.truth.Truth.assertThat
 import com.google.common.util.concurrent.ListenableFuture
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
+import io.mockk.verifyOrder
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -189,6 +191,61 @@ class AudioServiceConnectionTest {
         connection.play()
 
         assertThat(connection.isPlaying.value).isTrue()
+    }
+
+    @Test
+    fun `backing out during the stop fade still stops the controller`() {
+        val connection = connection()
+        val controller = mockk<MediaController>(relaxed = true)
+
+        connection.connect()
+        futures[0].completeWith(controller)
+        futures[0].dispatch()
+
+        // The fade is three seconds long and Back takes one. disconnect() used to
+        // release the controller underneath the fade, so the stop() waiting at the end
+        // of it found no controller and the mix played on behind a closed app.
+        connection.stop()
+        connection.disconnect()
+
+        verifyOrder {
+            controller.stop()
+            controller.release()
+        }
+    }
+
+    @Test
+    fun `backing out during the pause fade still pauses the controller`() {
+        val connection = connection()
+        val controller = mockk<MediaController>(relaxed = true)
+
+        connection.connect()
+        futures[0].completeWith(controller)
+        futures[0].dispatch()
+
+        connection.pause()
+        connection.disconnect()
+
+        verifyOrder {
+            controller.pause()
+            controller.release()
+        }
+    }
+
+    @Test
+    fun `a play that cancels the stop fade leaves nothing for disconnect to finish`() {
+        val connection = connection()
+        val controller = mockk<MediaController>(relaxed = true)
+
+        connection.connect()
+        futures[0].completeWith(controller)
+        futures[0].dispatch()
+
+        connection.stop()
+        connection.play()
+        connection.disconnect()
+
+        verify(exactly = 0) { controller.stop() }
     }
 
     @Test
