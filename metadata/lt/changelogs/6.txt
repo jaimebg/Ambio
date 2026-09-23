@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+PATAISYMAI
+- Pašalintas nenaudojamas leidimas peržiūrėti tinklo ryšius: Ambio niekada nesijungia prie interneto

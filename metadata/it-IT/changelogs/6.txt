@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+CORREZIONI
+- Rimossa l'autorizzazione inutilizzata per visualizzare le connessioni di rete: Ambio non si connette mai a Internet

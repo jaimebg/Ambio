@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+RETTELSER
+- Den ubrukte tillatelsen til å se nettverkstilkoblinger er fjernet: Ambio kobler seg aldri til internett

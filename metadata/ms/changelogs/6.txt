@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+PEMBETULAN
+- Kebenaran yang tidak digunakan untuk melihat sambungan rangkaian telah dibuang: Ambio tidak pernah bersambung ke internet

@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+KORJAUKSET
+- Käyttämätön lupa nähdä verkkoyhteydet on poistettu: Ambio ei koskaan muodosta yhteyttä internetiin

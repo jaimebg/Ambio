@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+RETTELSER
+- Den ubrugte tilladelse til at se netværksforbindelser er fjernet: Ambio går aldrig på internettet

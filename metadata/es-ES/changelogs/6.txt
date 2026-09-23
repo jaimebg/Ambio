@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+CORRECCIONES
+- Se ha quitado el permiso sin uso para ver las conexiones de red: Ambio nunca se conecta a internet

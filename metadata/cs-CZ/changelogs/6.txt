@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+OPRAVY
+- Odebráno nepoužívané oprávnění k zobrazení síťových připojení: Ambio se nikdy nepřipojuje k internetu

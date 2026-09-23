@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+RÄTTNINGAR
+- Den oanvända behörigheten att visa nätverksanslutningar har tagits bort: Ambio går aldrig ut på internet

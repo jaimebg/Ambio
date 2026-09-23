@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+LABOJUMI
+- Noņemta neizmantotā atļauja skatīt tīkla savienojumus: Ambio nekad neizveido savienojumu ar internetu

@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+CORREÇÕES
+- Removida a permissão não utilizada de ver ligações de rede: o Ambio nunca se liga à internet

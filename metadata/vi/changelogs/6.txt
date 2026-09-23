@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+SỬA LỖI
+- Đã gỡ quyền xem kết nối mạng không dùng đến: Ambio không bao giờ kết nối internet

@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+PERBAIKAN
+- Izin melihat koneksi jaringan yang tidak digunakan telah dihapus: Ambio tidak pernah terhubung ke internet

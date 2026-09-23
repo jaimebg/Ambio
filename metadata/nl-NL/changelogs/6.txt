@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+OPLOSSINGEN
+- Ongebruikte toestemming om netwerkverbindingen te bekijken verwijderd: Ambio gaat nooit online

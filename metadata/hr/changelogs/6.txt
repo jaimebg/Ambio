@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+ISPRAVCI
+- Uklonjeno je nekorišteno dopuštenje za prikaz mrežnih veza: Ambio se nikad ne spaja na internet

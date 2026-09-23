@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+FEHLERBEHEBUNGEN
+- Die ungenutzte Berechtigung „Netzwerkverbindungen abrufen“ wurde entfernt: Ambio geht nie online

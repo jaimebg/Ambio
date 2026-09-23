@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+POPRAVKI
+- Odstranjeno neuporabljeno dovoljenje za ogled omrežnih povezav: Ambio se nikoli ne poveže z internetom

@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+OPRAVY
+- Odstránené nepoužívané povolenie na zobrazenie sieťových pripojení: Ambio sa nikdy nepripája na internet

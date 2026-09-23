@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+CORRECCIONS
+- S'ha eliminat el permís no utilitzat per veure les connexions de xarxa: Ambio no es connecta mai a internet

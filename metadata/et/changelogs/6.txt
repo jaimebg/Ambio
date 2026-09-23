@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+PARANDUSED
+- Eemaldatud kasutamata luba võrguühenduste vaatamiseks: Ambio ei ühendu kunagi internetti

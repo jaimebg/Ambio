@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+MGA PAG-AYOS
+- Inalis ang hindi ginagamit na pahintulot na tingnan ang mga koneksyon sa network: hindi kailanman nag-o-online ang Ambio

@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+JAVÍTÁSOK
+- Eltávolítottuk a hálózati kapcsolatok megtekintésére szolgáló, nem használt engedélyt: az Ambio sosem csatlakozik az internethez

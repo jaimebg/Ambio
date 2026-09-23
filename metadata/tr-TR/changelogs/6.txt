@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+DÜZELTMELER
+- Kullanılmayan ağ bağlantılarını görüntüleme izni kaldırıldı: Ambio hiçbir zaman internete bağlanmaz

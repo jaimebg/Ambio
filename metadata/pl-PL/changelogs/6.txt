@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+POPRAWKI
+- Usunięto nieużywane uprawnienie do wyświetlania połączeń sieciowych: Ambio nigdy nie łączy się z internetem

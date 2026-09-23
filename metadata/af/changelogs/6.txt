@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+REGSTELLINGS
+- Die ongebruikte toestemming om netwerkverbindings te sien is verwyder: Ambio gaan nooit aanlyn nie

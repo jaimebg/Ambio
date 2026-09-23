@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+FIXES
+- Removed the unused permission to view network connections: Ambio never goes online

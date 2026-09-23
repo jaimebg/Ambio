@@ -1,0 +1,4 @@
+Ambio 2.1.2
+
+REMEDIERI
+- A fost eliminată permisiunea nefolosită de a vedea conexiunile la rețea: Ambio nu se conectează niciodată la internet
