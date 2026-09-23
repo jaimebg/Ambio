@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Required for foreground service -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -16,6 +17,15 @@
 
     <!-- Keep CPU awake during playback -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Merged in by media3-common and media3-exoplayer for NetworkTypeObserver, which only
+         feeds bandwidth estimates for streaming. Every sound here is a bundled raw resource
+         and the app has no INTERNET permission, so the estimate is never consulted; without
+         the permission Media3 catches the SecurityException and reports NETWORK_TYPE_UNKNOWN.
+         Removed so stores stop listing "view network connections" (#16). -->
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        tools:node="remove" />
 
     <application
         android:name=".AmbioApplication"
