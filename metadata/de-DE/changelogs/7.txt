@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+FEHLERBEHEBUNGEN
+- Zurück bei pausiertem oder gestopptem Mix beendet Ambio jetzt vollständig, samt Benachrichtigung, auch wenn es vom Startbildschirm geöffnet wurde

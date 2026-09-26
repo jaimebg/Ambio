@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+SỬA LỖI
+- Quay lại khi bản phối đang tạm dừng hoặc đã dừng giờ sẽ đóng hẳn Ambio, kể cả thông báo, ngay cả khi mở từ màn hình chính

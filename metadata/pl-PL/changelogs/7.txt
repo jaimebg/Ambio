@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+POPRAWKI
+- Wstecz przy wstrzymanym lub zatrzymanym miksie zamyka teraz Ambio całkowicie, razem z powiadomieniem, także po otwarciu z ekranu głównego

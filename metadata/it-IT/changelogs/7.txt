@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+CORREZIONI
+- Tornare indietro con il mix in pausa o fermo ora chiude Ambio del tutto, notifica compresa, anche se aperto dalla schermata Home

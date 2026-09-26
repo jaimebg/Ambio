@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+RETTELSER
+- Tilbake med miksen på pause eller stoppet lukker nå Ambio helt, også varselet, selv når appen er åpnet fra startskjermen

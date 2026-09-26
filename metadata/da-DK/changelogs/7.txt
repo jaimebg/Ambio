@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+RETTELSER
+- Tilbage med mixet på pause eller stoppet lukker nu Ambio helt, også notifikationen, selv når appen er åbnet fra startskærmen

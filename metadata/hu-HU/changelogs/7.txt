@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+JAVÍTÁSOK
+- A Vissza szüneteltetett vagy leállított mixnél most teljesen bezárja az Ambiót, az értesítéssel együtt, akkor is, ha a kezdőképernyőről nyitottad meg

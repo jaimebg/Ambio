@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+OPRAVY
+- Zpět při pozastaveném nebo zastaveném mixu nyní Ambio zcela ukončí, včetně oznámení, i když byl spuštěn z plochy

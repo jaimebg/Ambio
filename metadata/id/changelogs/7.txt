@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+PERBAIKAN
+- Kembali saat campuran dijeda atau dihentikan kini menutup Ambio sepenuhnya, termasuk notifikasinya, juga saat dibuka dari layar utama

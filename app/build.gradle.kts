@@ -30,8 +30,8 @@ android {
 
     defaultConfig {
         applicationId = "com.jbgsoft.ambio"
-        versionCode = 6
-        versionName = "2.1.2"
+        versionCode = 7
+        versionName = "2.1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+LABOJUMI
+- Atpakaļ ar nopauzētu vai apturētu miksu tagad pilnībā aizver Ambio, arī paziņojumu, arī ja tā atvērta no sākuma ekrāna

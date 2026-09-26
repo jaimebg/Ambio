@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+PATAISYMAI
+- Grįžus atgal, kai mišinys pristabdytas ar sustabdytas, Ambio užsidaro visiškai, kartu su pranešimu, net jei atidarytas iš pradžios ekrano

@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+ISPRAVCI
+- Natrag s pauziranim ili zaustavljenim miksom sada potpuno zatvara Ambio, uključujući obavijest, i kad je otvoren s početnog zaslona

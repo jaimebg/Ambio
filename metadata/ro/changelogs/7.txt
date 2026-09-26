@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+REMEDIERI
+- Înapoi cu mixul în pauză sau oprit închide acum complet Ambio, inclusiv notificarea, și când a fost deschis din ecranul de pornire

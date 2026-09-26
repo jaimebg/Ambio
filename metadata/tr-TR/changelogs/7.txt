@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+DÜZELTMELER
+- Ana ekrandan açıldığında da, karışım duraklatılmış veya durdurulmuşken Geri artık Ambio'yu bildirimle birlikte tamamen kapatır

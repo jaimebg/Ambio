@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+PARANDUSED
+- Tagasi liikumine peatatud või pausil miksiga sulgeb nüüd Ambio täielikult, ka teavituse, ka siis, kui see avati avakuvalt

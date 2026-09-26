@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+POPRAVKI
+- Nazaj ob zaustavljeni ali ustavljeni mešanici zdaj povsem zapre Ambio, tudi obvestilo, tudi če je bil odprt z začetnega zaslona

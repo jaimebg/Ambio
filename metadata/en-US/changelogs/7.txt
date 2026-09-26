@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+FIXES
+- Going back with the mix paused or stopped now closes Ambio completely when opened from the home screen too, notification included

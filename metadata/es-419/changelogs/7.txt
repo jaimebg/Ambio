@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+CORRECCIONES
+- Salir con Atrás con la mezcla en pausa o detenida cierra Ambio por completo, notificación incluida, también si lo abriste desde la pantalla de inicio

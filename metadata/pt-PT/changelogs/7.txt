@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+CORREÇÕES
+- Voltar atrás com a mistura em pausa ou parada fecha agora o Ambio por completo, incluindo a notificação, também quando aberto a partir do ecrã principal

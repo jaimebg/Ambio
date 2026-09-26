@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+MGA PAG-AYOS
+- Ang Back habang naka-pause o nakahinto ang mix ay ganap na nagsasara ng Ambio, pati ang notification, kahit binuksan ito mula sa home screen

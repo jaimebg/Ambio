@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+RÄTTNINGAR
+- Bakåt med mixen pausad eller stoppad stänger nu Ambio helt, även aviseringen, också när appen öppnats från startskärmen

@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+OPLOSSINGEN
+- Terug met de mix gepauzeerd of gestopt sluit Ambio nu volledig af, inclusief de melding, ook als je het via het startscherm opende

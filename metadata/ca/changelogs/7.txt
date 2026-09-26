@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+CORRECCIONS
+- Sortir amb Enrere amb la mescla en pausa o aturada tanca Ambio del tot, notificació inclosa, també si l'has obert des de la pantalla d'inici

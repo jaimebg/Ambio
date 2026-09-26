@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+REGSTELLINGS
+- Terug met die mengsel onderbreek of gestop maak Ambio nou ook heeltemal toe wanneer dit van die tuisskerm oopgemaak is, kennisgewing ingesluit

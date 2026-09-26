@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+KORJAUKSET
+- Takaisin-painike miksin ollessa tauolla tai pysäytettynä sulkee nyt Ambion kokonaan, myös ilmoituksen, vaikka se avattiin aloitusnäytöltä

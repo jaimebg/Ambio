@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+CORRECTIONS
+- Retour avec le mix en pause ou arrêté ferme désormais Ambio complètement, notification comprise, même ouvert depuis l'écran d'accueil

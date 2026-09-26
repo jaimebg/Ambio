@@ -1,0 +1,4 @@
+Ambio 2.1.3
+
+CORREÇÕES
+- Voltar com a mixagem pausada ou parada agora fecha o Ambio por completo, inclusive a notificação, também quando aberto pela tela inicial
