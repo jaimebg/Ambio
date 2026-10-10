@@ -307,7 +307,7 @@ class MixPlayer(
     private fun mixItem(): MediaItemData =
         MediaItemData.Builder(MIX_ITEM_ID)
             .setMediaItem(MediaItem.Builder().setMediaId(MIX_ITEM_ID).build())
-            .setMediaMetadata(MediaMetadata.Builder().setTitle(title).build())
+            .setMediaMetadata(MediaMetadata.Builder().setTitle(title).setArtist("").build())
             .setIsSeekable(false)
             // Endless looping ambience: live, with no meaningful duration to report.
             .setIsDynamic(true)

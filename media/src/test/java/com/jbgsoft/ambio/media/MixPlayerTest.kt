@@ -192,6 +192,17 @@ class MixPlayerTest {
     }
 
     @Test
+    fun `the media metadata reports an empty artist rather than none`() {
+        val mix = player()
+        mix.setSoundActive("rain", audioRes = 1, active = true)
+        mix.setMixTitle("Rain")
+
+        // A missing artist is drawn as the literal text "null" under the title in the
+        // system media card (#18); an empty one leaves the line blank.
+        assertThat(mix.mediaMetadata.artist?.toString()).isEmpty()
+    }
+
+    @Test
     fun `activating the same sound twice does not restart it`() {
         val mix = player()
         mix.setSoundActive("rain", audioRes = 1, active = true)
