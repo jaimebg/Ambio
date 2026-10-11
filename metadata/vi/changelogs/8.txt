@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+SỬA LỖI
+- Điều khiển phương tiện không còn hiện "null" dưới tên bản phối

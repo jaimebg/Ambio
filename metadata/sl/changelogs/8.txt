@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+POPRAVKI
+- Kontrolniki predstavnosti pod imenom mešanice ne prikazujejo več „null“

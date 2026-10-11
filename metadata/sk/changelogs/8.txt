@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+OPRAVY
+- Ovládanie médií už pod názvom mixu nezobrazuje „null“

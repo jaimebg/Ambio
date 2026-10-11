@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+JAVÍTÁSOK
+- A médiavezérlők már nem írják ki a „null” szót a mix neve alatt

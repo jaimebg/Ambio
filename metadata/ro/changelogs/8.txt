@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+REMEDIERI
+- Comenzile media nu mai afișează „null” sub numele mixului

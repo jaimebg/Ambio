@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+DÜZELTMELER
+- Medya kontrolleri artık karışım adının altında "null" göstermiyor

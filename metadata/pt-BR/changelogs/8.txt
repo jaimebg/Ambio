@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+CORREÇÕES
+- Os controles de mídia não mostram mais "null" abaixo do nome da mixagem

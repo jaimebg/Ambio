@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+CORRECCIONES
+- Los controles multimedia ya no muestran «null» debajo del nombre de la mezcla

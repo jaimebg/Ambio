@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+CORRECCIONS
+- Els controls multimèdia ja no mostren «null» sota el nom de la mescla

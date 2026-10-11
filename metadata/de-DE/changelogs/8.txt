@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+FEHLERBEHEBUNGEN
+- Die Mediensteuerung zeigt unter dem Namen des Mix nicht mehr „null“ an

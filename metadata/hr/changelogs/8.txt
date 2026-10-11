@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+ISPRAVCI
+- Kontrole medija više ne prikazuju „null” ispod naziva miksa

@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+PERBAIKAN
+- Kontrol media tidak lagi menampilkan "null" di bawah nama campuran

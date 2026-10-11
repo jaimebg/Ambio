@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+POPRAWKI
+- Sterowanie multimediami nie pokazuje już „null” pod nazwą miksu

@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+KORJAUKSET
+- Mediasäätimet eivät enää näytä miksin nimen alla tekstiä ”null”

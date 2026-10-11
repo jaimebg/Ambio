@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+LABOJUMI
+- Multivides vadīklas zem miksa nosaukuma vairs nerāda “null”

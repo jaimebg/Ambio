@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+PARANDUSED
+- Meedia juhtnupud ei näita enam miksi nime all „null“

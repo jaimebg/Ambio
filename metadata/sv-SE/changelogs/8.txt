@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+RÄTTNINGAR
+- Mediekontrollerna visar inte längre ”null” under mixens namn

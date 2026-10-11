@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+RETTELSER
+- Mediekontrollene viser ikke lenger «null» under navnet på miksen

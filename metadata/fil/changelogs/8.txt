@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+MGA PAG-AYOS
+- Hindi na nagpapakita ng "null" ang media controls sa ilalim ng pangalan ng mix

@@ -1,0 +1,4 @@
+Ambio 2.1.4
+
+PATAISYMAI
+- Medijos valdikliai po mišinio pavadinimu neberodo „null“
