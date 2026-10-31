@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+UZLABOJUMI
+- Multivides vadīklas tagad pārņem tava miksa krāsas

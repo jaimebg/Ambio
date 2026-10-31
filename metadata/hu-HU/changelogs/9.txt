@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+FEJLESZTÉSEK
+- A médiavezérlők mostantól a mixed színeit veszik fel

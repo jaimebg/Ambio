@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+PENINGKATAN
+- Kontrol media kini mengikuti warna campuran Anda

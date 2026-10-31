@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+MIGLIORAMENTI
+- I controlli multimediali ora prendono i colori del tuo mix

@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+İYİLEŞTİRMELER
+- Medya kontrolleri artık karışımının renklerini alıyor

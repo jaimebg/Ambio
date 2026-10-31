@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+MELHORIAS
+- Os controlos multimédia passam a usar as cores da sua mistura

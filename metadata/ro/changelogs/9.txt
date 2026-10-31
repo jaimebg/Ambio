@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+ÎMBUNĂTĂȚIRI
+- Comenzile media preiau acum culorile mixului tău

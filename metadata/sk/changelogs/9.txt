@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+VYLEPŠENIA
+- Ovládanie médií teraz preberá farby tvojho mixu

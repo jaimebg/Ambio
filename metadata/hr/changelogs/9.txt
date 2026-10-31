@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+POBOLJŠANJA
+- Kontrole medija sada preuzimaju boje tvog miksa

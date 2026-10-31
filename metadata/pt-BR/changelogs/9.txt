@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+MELHORIAS
+- Os controles de mídia agora usam as cores da sua mixagem

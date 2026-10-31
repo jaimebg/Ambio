@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+CẢI TIẾN
+- Điều khiển phương tiện giờ mang màu của bản phối của bạn

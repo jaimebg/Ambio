@@ -1,0 +1,4 @@
+Ambio 2.1.5
+
+MILLORES
+- Els controls multimèdia ara prenen els colors de la teva mescla
