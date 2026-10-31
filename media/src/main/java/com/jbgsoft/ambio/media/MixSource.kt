@@ -10,5 +10,14 @@ package com.jbgsoft.ambio.media
  */
 interface MixSource {
     /** Never empty in practice: the repository guarantees at least one active sound. */
-    suspend fun currentMix(): List<MixEntry>
+    suspend fun currentMix(): StoredMix
 }
+
+/**
+ * The stored mix, read once: its sounds, and the colours its artwork is painted with.
+ * [colors] is null only when [entries] is empty, since an empty mix has no gradient.
+ */
+data class StoredMix(
+    val entries: List<MixEntry>,
+    val colors: MixColors?
+)

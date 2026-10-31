@@ -30,7 +30,9 @@ class MixPlayer(
     looper: Looper,
     private val createTrack: (soundId: String) -> SoundTrack,
     private val audioFocus: AudioFocus,
-    private val onPlayRequestedWithEmptyMix: () -> Unit
+    private val onPlayRequestedWithEmptyMix: () -> Unit,
+    // A seam for tests, which count renders; production always encodes a PNG.
+    private val renderArtwork: (MixColors) -> ByteArray = MixArtwork::encode
 ) : SimpleBasePlayer(looper) {
 
     // ramp is the fade multiplier, 0..1. Membership decides its direction: an entry in
@@ -47,6 +49,12 @@ class MixPlayer(
     private var playWhenReadyValue = false
     private var masterVolume = 1f
     private var title = ""
+
+    // Rendered in setMix and only when the colours change: getState() runs on every
+    // fade tick, and the app re-sends an unchanged mix on every emission and reconnect.
+    // Reusing the same array also keeps MediaMetadata equal, so nothing is re-published.
+    private var colors: MixColors? = null
+    private var artwork: ByteArray? = null
 
     // Ducking must not overwrite masterVolume, or there is nothing exact to restore.
     private var duckMultiplier = 1f
@@ -206,7 +214,9 @@ class MixPlayer(
 
     /**
      * Makes the mix exactly [mix]: sounds no longer present are released, missing ones
-     * are started, and every level plus the title are re-asserted.
+     * are started, and every level plus the title are re-asserted. [colors] paint the
+     * session artwork; null publishes none, which the system card reads as "use the app
+     * icon".
      *
      * This is the only entry point the session exposes, and it is idempotent by
      * construction. handleStop() releases every track, and the service can be killed
@@ -215,7 +225,7 @@ class MixPlayer(
      * means "re-send it" is always a valid repair, so the caller never has to model
      * what the service currently holds.
      */
-    fun setMix(mix: List<MixEntry>, title: String) {
+    fun setMix(mix: List<MixEntry>, title: String, colors: MixColors?) {
         if (released) return
         val desired = mix.mapTo(mutableSetOf()) { it.soundId }
         entries.keys.toList()
@@ -228,7 +238,14 @@ class MixPlayer(
             setSoundLevel(entry.soundId, entry.level)
         }
         setMixTitle(title)
+        setColors(colors)
         invalidateState()
+    }
+
+    private fun setColors(colors: MixColors?) {
+        if (colors == this.colors) return
+        this.colors = colors
+        artwork = colors?.let(renderArtwork)
     }
 
     internal fun setSoundActive(soundId: String, @RawRes audioRes: Int, active: Boolean) {
@@ -307,7 +324,13 @@ class MixPlayer(
     private fun mixItem(): MediaItemData =
         MediaItemData.Builder(MIX_ITEM_ID)
             .setMediaItem(MediaItem.Builder().setMediaId(MIX_ITEM_ID).build())
-            .setMediaMetadata(MediaMetadata.Builder().setTitle(title).setArtist("").build())
+            .setMediaMetadata(
+                MediaMetadata.Builder()
+                    .setTitle(title)
+                    .setArtist("")
+                    .setArtworkData(artwork, artwork?.let { MediaMetadata.PICTURE_TYPE_FRONT_COVER })
+                    .build()
+            )
             .setIsSeekable(false)
             // Endless looping ambience: live, with no meaningful duration to report.
             .setIsDynamic(true)

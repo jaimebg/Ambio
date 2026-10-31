@@ -16,7 +16,7 @@ import androidx.media3.common.util.UnstableApi
  */
 object MixBundle {
 
-    fun encode(mix: List<MixEntry>, title: String): Bundle = Bundle().apply {
+    fun encode(mix: List<MixEntry>, title: String, colors: MixColors): Bundle = Bundle().apply {
         putStringArray(MixCommands.ARG_SOUND_IDS, mix.map { it.soundId }.toTypedArray())
         putIntArray(MixCommands.ARG_AUDIO_RES, mix.map { it.audioRes }.toIntArray())
         putFloatArray(
@@ -24,6 +24,7 @@ object MixBundle {
             mix.map { it.level.coerceIn(0f, 1f) }.toFloatArray()
         )
         putString(MixCommands.ARG_TITLE, title)
+        putIntArray(MixCommands.ARG_COLORS, (listOf(colors.base) + colors.stops).toIntArray())
     }
 
     /**
@@ -40,6 +41,17 @@ object MixBundle {
     }
 
     fun decodeTitle(args: Bundle): String = args.getString(MixCommands.ARG_TITLE).orEmpty()
+
+    /**
+     * Null when the colours are missing or the wrong size. Unlike [decode] that refuses
+     * nothing else: the colours only paint the artwork, so a bad set costs the artwork
+     * and never the mix.
+     */
+    fun decodeColors(args: Bundle): MixColors? {
+        val argb = args.getIntArray(MixCommands.ARG_COLORS) ?: return null
+        if (argb.size != 1 + MixColors.STOP_COUNT) return null
+        return MixColors(base = argb[0], stops = argb.drop(1))
+    }
 }
 
 /**
@@ -53,6 +65,6 @@ object MixBundle {
 @OptIn(markerClass = [UnstableApi::class])
 internal fun applySetMix(player: MixPlayer, args: Bundle): Boolean {
     val mix = MixBundle.decode(args) ?: return false
-    player.setMix(mix, MixBundle.decodeTitle(args))
+    player.setMix(mix, MixBundle.decodeTitle(args), MixBundle.decodeColors(args))
     return true
 }

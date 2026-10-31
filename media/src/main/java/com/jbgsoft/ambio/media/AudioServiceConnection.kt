@@ -158,15 +158,15 @@ class AudioServiceConnection @Inject constructor(
     }
 
     /**
-     * Declares the whole mix — every active sound, its level, and the title the media
-     * notification shows. Idempotent: re-sending the same mix is a no-op service-side,
+     * Declares the whole mix — every active sound, its level, and the title and colours
+     * the media notification shows. Idempotent: re-sending the same mix is a no-op service-side,
      * so callers re-assert rather than track what the service currently holds.
      *
      * Sounds are described by raw resource, not by anything domain-shaped: media does
      * not depend on core:domain.
      */
-    fun setMix(mix: List<MixEntry>, title: String) {
-        send(MixCommands.SET_MIX, MixBundle.encode(mix, title))
+    fun setMix(mix: List<MixEntry>, title: String, colors: MixColors) {
+        send(MixCommands.SET_MIX, MixBundle.encode(mix, title, colors))
     }
 
     private fun send(action: String, args: Bundle) {

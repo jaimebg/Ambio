@@ -1,6 +1,7 @@
 package com.jbgsoft.ambio.core.domain.model
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 
 /** The near-black every mix is painted onto, under the translucent blobs. */
 private val GRADIENT_BASE = Color(0xFF0C0E12)
@@ -34,6 +35,16 @@ data class MixGradient(
         require(stops.size == STOP_COUNT) { "A mix gradient always has $STOP_COUNT stops" }
     }
 }
+
+/**
+ * [MixGradient.base] as packed ARGB, for code that paints the gradient outside Compose:
+ * the media session's artwork (#23). Modules that keep Compose off their classpath, as
+ * core:di does, can read this where they cannot read a [Color].
+ */
+val MixGradient.baseArgb: Int get() = base.toArgb()
+
+/** [MixGradient.stops] as packed ARGB, in order. See [baseArgb]. */
+val MixGradient.stopsArgb: List<Int> get() = stops.map { it.toArgb() }
 
 /**
  * One stop per active sound, so a mix of N sounds looks like N sounds instead of

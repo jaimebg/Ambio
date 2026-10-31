@@ -19,6 +19,9 @@ import com.jbgsoft.ambio.core.domain.model.SoundTheme
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
 import com.jbgsoft.ambio.core.domain.model.UserPreferences
+import com.jbgsoft.ambio.core.domain.model.baseArgb
+import com.jbgsoft.ambio.core.domain.model.gradientOf
+import com.jbgsoft.ambio.core.domain.model.stopsArgb
 import com.jbgsoft.ambio.core.domain.repository.ChimeRepository
 import com.jbgsoft.ambio.core.domain.repository.PreferencesRepository
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
@@ -28,6 +31,7 @@ import com.jbgsoft.ambio.core.domain.session.SessionProgress
 import com.jbgsoft.ambio.core.domain.session.SessionRunner
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
 import com.jbgsoft.ambio.media.AudioServiceConnection
+import com.jbgsoft.ambio.media.MixColors
 import com.jbgsoft.ambio.media.MixEntry
 import io.mockk.Runs
 import io.mockk.clearMocks
@@ -191,7 +195,7 @@ class HomeViewModelTest {
             every { disconnect() } just Runs
             every { isConnected } returns isConnectedFlow
             every { isPlaying } returns isPlayingFlow
-            every { setMix(any(), any()) } just Runs
+            every { setMix(any(), any(), any()) } just Runs
             every { play() } just Runs
             every { pause() } just Runs
             every { stop() } just Runs
@@ -616,7 +620,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         verifyOrder {
-            audioServiceConnection.setMix(any(), any())
+            audioServiceConnection.setMix(any(), any(), any())
             audioServiceConnection.play()
         }
     }
@@ -1211,7 +1215,7 @@ class HomeViewModelTest {
         coVerify { soundRepository.setSoundActive("forest", true, MixSlot.FOCUS) }
         // The service hears about it through getActiveMix, never from the event: two
         // writers would be two sources of truth that can disagree.
-        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any(), any()) }
     }
 
     @Test
@@ -1225,7 +1229,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         coVerify { soundRepository.setSoundActive("forest", false, MixSlot.FOCUS) }
-        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any(), any()) }
     }
 
     @Test
@@ -1240,7 +1244,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         coVerify(exactly = 0) { soundRepository.setSoundActive("rain", false, MixSlot.FOCUS) }
-        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any(), any()) }
     }
 
     @Test
@@ -1272,7 +1276,7 @@ class HomeViewModelTest {
 
         // Live audio, because a level the user cannot hear until they let go is
         // unusable for balancing a mix.
-        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.3f)), any()) }
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.3f)), any(), any()) }
         // But no write: the repository's setSoundLevel is a DataStore edit behind a
         // mutex, and a drag would queue one per frame.
         coVerify(exactly = 0) { soundRepository.setSoundLevel(any(), any(), any()) }
@@ -1302,7 +1306,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         assertThat(viewModel.uiState.value.activeMix.single().level).isEqualTo(1f)
-        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any()) }
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any(), any()) }
     }
 
     @Test
@@ -1348,7 +1352,29 @@ class HomeViewModelTest {
         verify {
             audioServiceConnection.setMix(
                 listOf(MixEntry("rain", 1, 1f), MixEntry("forest", 3, 0.4f)),
+                any(),
                 any()
+            )
+        }
+    }
+
+    @Test
+    fun `the pushed mix carries its gradient for the notification artwork`() = runTest {
+        // Without these the system media card takes its colours from the app icon,
+        // so every mix gets the same card (#23).
+        createViewModel()
+        advanceUntilIdle()
+        clearMocks(audioServiceConnection, answers = false)
+
+        activeMixFlow.value = listOf(ActiveSound(testSound, 1f), ActiveSound(testSoundForest, 0.4f))
+        advanceUntilIdle()
+
+        val gradient = gradientOf(listOf(SoundGlow.RAIN, SoundGlow.FOREST))
+        verify {
+            audioServiceConnection.setMix(
+                any(),
+                any(),
+                MixColors(base = gradient.baseArgb, stops = gradient.stopsArgb)
             )
         }
     }
@@ -1368,6 +1394,7 @@ class HomeViewModelTest {
         verify {
             audioServiceConnection.setMix(
                 listOf(MixEntry("rain", 1, 1f), MixEntry("forest", 3, 0.4f)),
+                any(),
                 any()
             )
         }
@@ -1382,12 +1409,12 @@ class HomeViewModelTest {
         isConnectedFlow.value = true
         advanceUntilIdle()
 
-        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any(), any()) }
 
         activeMixFlow.value = listOf(ActiveSound(testSound, 1f))
         advanceUntilIdle()
 
-        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any()) }
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any(), any()) }
     }
 
     @Test
@@ -1409,7 +1436,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         verifyOrder {
-            audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any())
+            audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1f)), any(), any())
             audioServiceConnection.play()
         }
     }
@@ -1461,7 +1488,7 @@ class HomeViewModelTest {
         eventsFlow.emit(breakStarted())
         advanceUntilIdle()
 
-        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.5f)), any()) }
+        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.5f)), any(), any()) }
         verify { audioServiceConnection.play() }
         assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.BREAK)
         assertThat(viewModel.uiState.value.activeMix.map { it.sound.id }).containsExactly("forest")
@@ -1479,7 +1506,7 @@ class HomeViewModelTest {
         eventsFlow.emit(SessionEvent.StepStarted(PlanStep.Focus(25), 2))
         advanceUntilIdle()
 
-        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1.0f)), any()) }
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 1.0f)), any(), any()) }
         assertThat(viewModel.uiState.value.audibleSlot).isEqualTo(MixSlot.FOCUS)
     }
 
@@ -1540,7 +1567,7 @@ class HomeViewModelTest {
 
         viewModel.onEvent(HomeEvent.SetSoundLevel("forest", 0.2f))
 
-        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any(), any()) }
         assertThat(viewModel.uiState.value.breakMix.single().level).isEqualTo(0.2f)
         assertThat(viewModel.uiState.value.focusMix.single().level).isEqualTo(1.0f)
     }
@@ -1570,7 +1597,7 @@ class HomeViewModelTest {
         breakMixFlow.value = listOf(ActiveSound(testSoundForest, 0.9f))
         advanceUntilIdle()
 
-        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.9f)), any()) }
+        verify { audioServiceConnection.setMix(listOf(MixEntry("forest", 3, 0.9f)), any(), any()) }
     }
 
     @Test
@@ -1582,7 +1609,7 @@ class HomeViewModelTest {
         breakMixFlow.value = listOf(ActiveSound(testSoundForest, 0.9f))
         advanceUntilIdle()
 
-        verify(exactly = 0) { audioServiceConnection.setMix(any(), any()) }
+        verify(exactly = 0) { audioServiceConnection.setMix(any(), any(), any()) }
     }
 
     @Test
@@ -1642,7 +1669,7 @@ class HomeViewModelTest {
         activeMixFlow.value = listOf(ActiveSound(testSound, 0.9f))
         advanceUntilIdle()
 
-        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.9f)), any()) }
+        verify { audioServiceConnection.setMix(listOf(MixEntry("rain", 1, 0.9f)), any(), any()) }
     }
 
     @Test

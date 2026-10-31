@@ -14,6 +14,9 @@ import com.jbgsoft.ambio.core.domain.model.SessionPlan
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.TimerPreset
 import com.jbgsoft.ambio.core.domain.model.TimerState
+import com.jbgsoft.ambio.core.domain.model.baseArgb
+import com.jbgsoft.ambio.core.domain.model.gradientOf
+import com.jbgsoft.ambio.core.domain.model.stopsArgb
 import com.jbgsoft.ambio.core.domain.model.withAddedStep
 import com.jbgsoft.ambio.core.domain.model.withRowChoice
 import com.jbgsoft.ambio.core.domain.model.withStepMinutes
@@ -25,6 +28,7 @@ import com.jbgsoft.ambio.core.domain.session.SessionEvent
 import com.jbgsoft.ambio.core.domain.session.SessionRunner
 import com.jbgsoft.ambio.core.domain.usecase.SaveSessionUseCase
 import com.jbgsoft.ambio.media.AudioServiceConnection
+import com.jbgsoft.ambio.media.MixColors
 import com.jbgsoft.ambio.media.MixEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -125,9 +129,16 @@ class HomeViewModel @Inject constructor(
         if (mix.isEmpty()) return
         audioServiceConnection.setMix(
             mix.map { MixEntry(it.sound.id, it.sound.audioRes, it.level) },
-            mixTitle(mix)
+            mixTitle(mix),
+            mixColors(mix)
         )
     }
+
+    /** The same gradient Home paints behind itself, for the notification's artwork. */
+    private fun mixColors(mix: List<ActiveSound>): MixColors =
+        gradientOf(mix.map { it.sound.glow }).let {
+            MixColors(base = it.baseArgb, stops = it.stopsArgb)
+        }
 
     private fun observeTimerState() {
         timerRepository.timerState

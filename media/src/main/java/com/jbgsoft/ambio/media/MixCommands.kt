@@ -26,4 +26,7 @@ object MixCommands {
     const val ARG_LEVELS = "levels"
 
     const val ARG_TITLE = "title"
+
+    /** The gradient as ARGB ints: the base first, then the stops in order. */
+    const val ARG_COLORS = "colors"
 }

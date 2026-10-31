@@ -7,7 +7,11 @@ import com.jbgsoft.ambio.core.domain.model.ActiveSound
 import com.jbgsoft.ambio.core.domain.model.Sound
 import com.jbgsoft.ambio.core.domain.model.SoundGlow
 import com.jbgsoft.ambio.core.domain.model.SoundTheme
+import com.jbgsoft.ambio.core.domain.model.baseArgb
+import com.jbgsoft.ambio.core.domain.model.gradientOf
+import com.jbgsoft.ambio.core.domain.model.stopsArgb
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
+import com.jbgsoft.ambio.media.MixColors
 import com.jbgsoft.ambio.media.MixEntry
 import io.mockk.every
 import io.mockk.mockk
@@ -63,7 +67,7 @@ class RepositoryMixSourceTest {
             )
         )
 
-        val result = mixSource.currentMix()
+        val result = mixSource.currentMix().entries
 
         assertThat(result).containsExactly(
             MixEntry(soundId = "rain", audioRes = 101, level = 1.0f),
@@ -79,6 +83,21 @@ class RepositoryMixSourceTest {
 
         val result = mixSource.currentMix()
 
-        assertThat(result).isEmpty()
+        assertThat(result.entries).isEmpty()
+        assertThat(result.colors).isNull()
+    }
+
+    @Test
+    fun `the stored mix carries the gradient of its sounds`() = runTest {
+        // A tile start plays without the app, so these are the only colours the
+        // notification's artwork gets until the app next pushes a mix (#23).
+        val mixSource = RepositoryMixSource(
+            repositoryWith(listOf(ActiveSound(rain, 1.0f), ActiveSound(forest, 0.4f)))
+        )
+
+        val result = mixSource.currentMix()
+
+        val gradient = gradientOf(listOf(SoundGlow.RAIN, SoundGlow.FOREST))
+        assertThat(result.colors).isEqualTo(MixColors(gradient.baseArgb, gradient.stopsArgb))
     }
 }

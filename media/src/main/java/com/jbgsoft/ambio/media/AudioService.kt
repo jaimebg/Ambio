@@ -166,7 +166,7 @@ class AudioService : MediaSessionService() {
                 stopSelf()
                 return@launch
             }
-            if (mix.isEmpty()) {
+            if (mix.entries.isEmpty()) {
                 // Should not happen — the repository never yields an empty mix — but the
                 // bug this guards against was a service waiting forever for a
                 // startForeground that could not come. Stopping is the difference between
@@ -177,8 +177,9 @@ class AudioService : MediaSessionService() {
             // Empty title, deliberately: media cannot see sound names — they are string
             // resources in core:data, which this module is not allowed to reach — and the
             // notification's text is not what this fix is about. The app overwrites it with
-            // a real title the moment it next pushes a mix.
-            player.setMix(mix, "")
+            // a real title the moment it next pushes a mix. The colours do come through:
+            // a tile start is exactly when the card is looked at without the app open.
+            player.setMix(mix.entries, "", mix.colors)
             player.play()
         }
     }

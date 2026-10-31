@@ -1,8 +1,13 @@
 package com.jbgsoft.ambio.core.di
 
+import com.jbgsoft.ambio.core.domain.model.baseArgb
+import com.jbgsoft.ambio.core.domain.model.gradientOf
+import com.jbgsoft.ambio.core.domain.model.stopsArgb
 import com.jbgsoft.ambio.core.domain.repository.SoundRepository
+import com.jbgsoft.ambio.media.MixColors
 import com.jbgsoft.ambio.media.MixEntry
 import com.jbgsoft.ambio.media.MixSource
+import com.jbgsoft.ambio.media.StoredMix
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -23,14 +28,22 @@ import javax.inject.Singleton
 class RepositoryMixSource @Inject constructor(
     private val soundRepository: SoundRepository
 ) : MixSource {
-    override suspend fun currentMix(): List<MixEntry> =
-        soundRepository.getActiveMix().first().map { active ->
-            MixEntry(
-                soundId = active.sound.id,
-                audioRes = active.sound.audioRes,
-                level = active.level
-            )
-        }
+    override suspend fun currentMix(): StoredMix {
+        val mix = soundRepository.getActiveMix().first()
+        return StoredMix(
+            entries = mix.map { active ->
+                MixEntry(
+                    soundId = active.sound.id,
+                    audioRes = active.sound.audioRes,
+                    level = active.level
+                )
+            },
+            // gradientOf refuses an empty mix, and an empty mix has nothing to paint.
+            colors = mix.takeIf { it.isNotEmpty() }
+                ?.let { gradientOf(it.map { active -> active.sound.glow }) }
+                ?.let { MixColors(base = it.baseArgb, stops = it.stopsArgb) }
+        )
+    }
 }
 
 @Module

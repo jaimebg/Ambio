@@ -136,6 +136,17 @@ class MixGradientTest {
     }
 
     @Test
+    fun `the ARGB form carries the same colours, base and stops in order`() {
+        // What the media session paints its artwork from (#23); media cannot see Color.
+        val gradient = gradientOf(listOf(SoundGlow.RAIN, SoundGlow.FIREPLACE, SoundGlow.FOREST))
+
+        assertThat(gradient.baseArgb).isEqualTo(0xFF0C0E12.toInt())
+        assertThat(gradient.stopsArgb)
+            .containsExactly(0xFF181D3E.toInt(), 0xFF582A1F.toInt(), 0xFF0D472F.toInt())
+            .inOrder()
+    }
+
+    @Test
     fun `an empty mix is rejected`() {
         try {
             gradientOf(emptyList())

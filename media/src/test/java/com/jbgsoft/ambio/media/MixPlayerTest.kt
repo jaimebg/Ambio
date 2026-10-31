@@ -1,6 +1,7 @@
 package com.jbgsoft.ambio.media
 
 import android.os.Looper
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import com.google.common.truth.Truth.assertThat
 import java.time.Duration
@@ -214,6 +215,73 @@ class MixPlayerTest {
         assertThat(first!!.released).isFalse()
     }
 
+    // --- artwork: what the system media card takes its colours from (#23) ---
+
+    private val dusk = MixColors(base = 0xFF0C0E12.toInt(), stops = List(3) { 0xFF582A1F.toInt() })
+    private val night = MixColors(base = 0xFF0C0E12.toInt(), stops = List(3) { 0xFF181D3E.toInt() })
+
+    /** Stands in for the PNG encoder: counts renders and tags the bytes with the colours. */
+    private val renders = mutableListOf<MixColors>()
+
+    private fun countingPlayer(): MixPlayer =
+        MixPlayer(
+            Looper.getMainLooper(),
+            { id -> FakeTrack().also { tracks[id] = it } },
+            focus,
+            { emptyPlayRequests++ },
+            renderArtwork = { colors ->
+                renders += colors
+                colors.stops.first().toString().toByteArray()
+            }
+        )
+
+    @Test
+    fun `the mix colours reach the media metadata as front cover artwork`() {
+        val mix = countingPlayer()
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Fireplace", colors = dusk)
+
+        assertThat(mix.mediaMetadata.artworkData)
+            .isEqualTo(dusk.stops.first().toString().toByteArray())
+        assertThat(mix.mediaMetadata.artworkDataType)
+            .isEqualTo(MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+    }
+
+    @Test
+    fun `new colours replace the artwork`() {
+        val mix = countingPlayer()
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Fireplace", colors = dusk)
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = night)
+
+        assertThat(mix.mediaMetadata.artworkData)
+            .isEqualTo(night.stops.first().toString().toByteArray())
+    }
+
+    @Test
+    fun `a mix without colours publishes no artwork`() {
+        val mix = countingPlayer()
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Fireplace", colors = dusk)
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
+
+        assertThat(mix.mediaMetadata.artworkData).isNull()
+    }
+
+    @Test
+    fun `re-sending unchanged colours does not render the artwork again`() {
+        // The app re-sends the whole mix on every emission and every reconnect, and a
+        // fade invalidates the state every tick: an encode on any of those paths would
+        // run a PNG compression on the main thread for a picture that has not changed.
+        val mix = countingPlayer()
+
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Fireplace", colors = dusk)
+        mix.setMix(listOf(MixEntry("rain", 1, 0.5f)), title = "Fireplace", colors = dusk)
+        settle()
+
+        assertThat(renders).containsExactly(dusk)
+    }
+
     // --- setMix: the full-state command the session actually exposes ---
 
     @Test
@@ -221,10 +289,11 @@ class MixPlayerTest {
         val mix = player()
         mix.setMix(
             listOf(MixEntry("rain", 1, 1f), MixEntry("ocean", 2, 1f)),
-            title = "Rain + Ocean"
+            title = "Rain + Ocean",
+            colors = null
         )
 
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
 
         assertThat(tracks["ocean"]!!.released).isTrue()
         assertThat(tracks["rain"]!!.released).isFalse()
@@ -233,11 +302,12 @@ class MixPlayerTest {
     @Test
     fun `setMix starts newly added sounds and applies their levels`() {
         val mix = player()
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
 
         mix.setMix(
             listOf(MixEntry("rain", 1, 0.5f), MixEntry("forest", 7, 0.25f)),
-            title = "Rain + Forest"
+            title = "Rain + Forest",
+            colors = null
         )
 
         assertThat(tracks["forest"]!!.startedWith).isEqualTo(7)
@@ -249,12 +319,13 @@ class MixPlayerTest {
     @Test
     fun `setMix does not restart sounds that are already playing`() {
         val mix = player()
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
         val first = tracks["rain"]
 
         mix.setMix(
             listOf(MixEntry("rain", 1, 1f), MixEntry("ocean", 2, 1f)),
-            title = "Rain + Ocean"
+            title = "Rain + Ocean",
+            colors = null
         )
 
         assertThat(tracks["rain"]).isSameInstanceAs(first)
@@ -266,12 +337,12 @@ class MixPlayerTest {
         // The Player contract lets stop() clear everything; the mix has to be
         // re-declarable, or "stop then play" is silence.
         val mix = player()
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
         mix.play()
         mix.stop()
         assertThat(mix.playbackState).isEqualTo(Player.STATE_IDLE)
 
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
         mix.play()
 
         assertThat(tracks["rain"]!!.startedWith).isEqualTo(1)
@@ -284,7 +355,7 @@ class MixPlayerTest {
     fun `setMix carries the title into the media metadata`() {
         val mix = player()
 
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain + Fireplace")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain + Fireplace", colors = null)
 
         assertThat(mix.mediaMetadata.title.toString()).isEqualTo("Rain + Fireplace")
     }
@@ -294,7 +365,7 @@ class MixPlayerTest {
         val mix = player()
         mix.release()
 
-        mix.setMix(listOf(MixEntry("ocean", 2, 1f)), title = "Ocean")
+        mix.setMix(listOf(MixEntry("ocean", 2, 1f)), title = "Ocean", colors = null)
 
         assertThat(tracks["ocean"]).isNull()
     }
@@ -475,7 +546,7 @@ class MixPlayerTest {
         focus.emit(FocusChange.LOST_TRANSIENT_DUCK)
 
         mix.stop()
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
 
         assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(1f)
     }
@@ -756,11 +827,12 @@ class MixPlayerTest {
         val mix = player()
         mix.setMix(
             listOf(MixEntry("rain", 1, 1f), MixEntry("ocean", 2, 1f)),
-            title = "Rain + Ocean"
+            title = "Rain + Ocean",
+            colors = null
         )
         mix.play()
 
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
 
         assertThat(tracks["ocean"]!!.released).isFalse()
         advance(MixPlayer.FADE_OUT_MS + MixPlayer.TICK_MS)
@@ -832,7 +904,7 @@ class MixPlayerTest {
         mix.play()
 
         mix.stop()
-        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain")
+        mix.setMix(listOf(MixEntry("rain", 1, 1f)), title = "Rain", colors = null)
 
         assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(1f)
     }

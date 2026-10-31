@@ -44,22 +44,47 @@ class MixBundleTest {
 
     private val rain = MixEntry("rain", 42, 0.75f)
     private val ocean = MixEntry("ocean", 7, 0.5f)
+    private val colors = MixColors(
+        base = 0xFF0C0E12.toInt(),
+        stops = listOf(0xFF181D3E.toInt(), 0xFF0F2E45.toInt(), 0xFF164062.toInt())
+    )
 
     // --- round trip ---
 
     @Test
     fun `a round trip preserves every entry and the title`() {
-        val bundle = MixBundle.encode(listOf(rain, ocean), "Rain + Ocean")
+        val bundle = MixBundle.encode(listOf(rain, ocean), "Rain + Ocean", colors)
 
         assertThat(MixBundle.decode(bundle)).containsExactly(rain, ocean).inOrder()
         assertThat(MixBundle.decodeTitle(bundle)).isEqualTo("Rain + Ocean")
+        assertThat(MixBundle.decodeColors(bundle)).isEqualTo(colors)
+    }
+
+    // --- colours: cosmetic, so a bad set costs the artwork and never the mix ---
+
+    @Test
+    fun `a bundle without colours still decodes its mix, with no colours`() {
+        val bundle = MixBundle.encode(listOf(rain), "Rain", colors)
+        bundle.remove(MixCommands.ARG_COLORS)
+
+        assertThat(MixBundle.decode(bundle)).containsExactly(rain)
+        assertThat(MixBundle.decodeColors(bundle)).isNull()
+    }
+
+    @Test
+    fun `a colour array of the wrong size decodes to no colours`() {
+        val bundle = MixBundle.encode(listOf(rain), "Rain", colors)
+        bundle.putIntArray(MixCommands.ARG_COLORS, intArrayOf(0xFF000000.toInt(), 0xFFFFFFFF.toInt()))
+
+        assertThat(MixBundle.decode(bundle)).containsExactly(rain)
+        assertThat(MixBundle.decodeColors(bundle)).isNull()
     }
 
     // --- refusals ---
 
     @Test
     fun `a bundle missing the levels array is refused`() {
-        val bundle = MixBundle.encode(listOf(rain), "Rain")
+        val bundle = MixBundle.encode(listOf(rain), "Rain", colors)
         bundle.remove(MixCommands.ARG_LEVELS)
 
         assertThat(MixBundle.decode(bundle)).isNull()
@@ -67,7 +92,7 @@ class MixBundleTest {
 
     @Test
     fun `a bundle missing the audio resources is refused`() {
-        val bundle = MixBundle.encode(listOf(rain), "Rain")
+        val bundle = MixBundle.encode(listOf(rain), "Rain", colors)
         bundle.remove(MixCommands.ARG_AUDIO_RES)
 
         assertThat(MixBundle.decode(bundle)).isNull()
@@ -75,7 +100,7 @@ class MixBundleTest {
 
     @Test
     fun `arrays of differing lengths are refused rather than truncated`() {
-        val bundle = MixBundle.encode(listOf(rain, ocean), "Rain + Ocean")
+        val bundle = MixBundle.encode(listOf(rain, ocean), "Rain + Ocean", colors)
         bundle.putFloatArray(MixCommands.ARG_LEVELS, floatArrayOf(1f))
 
         assertThat(MixBundle.decode(bundle)).isNull()
@@ -90,7 +115,7 @@ class MixBundleTest {
     fun `an empty mix is refused`() {
         // The repository never produces one, so receiving it means something is wrong —
         // and obeying it would release every track.
-        assertThat(MixBundle.decode(MixBundle.encode(emptyList(), "Nothing"))).isNull()
+        assertThat(MixBundle.decode(MixBundle.encode(emptyList(), "Nothing", colors))).isNull()
     }
 
     // --- the symptom the refusal exists to prevent ---
@@ -98,8 +123,8 @@ class MixBundleTest {
     @Test
     fun `a malformed bundle leaves the running mix untouched`() {
         val mix = player()
-        assertThat(applySetMix(mix, MixBundle.encode(listOf(rain, ocean), "Rain + Ocean")))
-            .isTrue()
+        val wellFormed = MixBundle.encode(listOf(rain, ocean), "Rain + Ocean", colors)
+        assertThat(applySetMix(mix, wellFormed)).isTrue()
 
         val malformed = Bundle().apply {
             putStringArray(MixCommands.ARG_SOUND_IDS, arrayOf("rain", "ocean"))
@@ -117,11 +142,12 @@ class MixBundleTest {
     fun `a well formed bundle is applied to the player`() {
         val mix = player()
 
-        val accepted = applySetMix(mix, MixBundle.encode(listOf(rain), "Rain"))
+        val accepted = applySetMix(mix, MixBundle.encode(listOf(rain), "Rain", colors))
 
         assertThat(accepted).isTrue()
         assertThat(tracks["rain"]!!.startedWith).isEqualTo(42)
         assertThat(tracks["rain"]!!.appliedVolume).isWithin(0.001f).of(0.75f)
         assertThat(mix.mediaMetadata.title.toString()).isEqualTo("Rain")
+        assertThat(mix.mediaMetadata.artworkData).isNotNull()
     }
 }
